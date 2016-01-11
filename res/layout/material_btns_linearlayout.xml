@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:columnCount="2">
+
+    <ImageButton
+        android:id="@+id/imgBtnAddPic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/material_btn_margin"
+        android:background="@drawable/iconfont_paizhao"
+        android:contentDescription="@string/imgBtnAddPic"
+        android:padding="@dimen/material_btn_padding" />
+
+    <ImageButton
+        android:id="@+id/imgBtnChoosePic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/material_btn_margin"
+        android:background="@drawable/iconfont_tupian"
+        android:contentDescription="@string/imgBtnChoosePic"
+        android:padding="@dimen/material_btn_padding" />
+
+    <ImageButton
+        android:id="@+id/imgBtnAddVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/material_btn_margin"
+        android:background="@drawable/iconfont_iconluxiang"
+        android:contentDescription="@string/imgBtnAddVideo"
+        android:padding="@dimen/material_btn_padding" />
+
+    <ImageButton
+        android:id="@+id/imgBtnChooseVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/material_btn_margin"
+        android:background="@drawable/iconfont_shipin"
+        android:contentDescription="@string/imgBtnChooseVideo"
+        android:padding="@dimen/material_btn_padding" />
+
+</GridLayout>
