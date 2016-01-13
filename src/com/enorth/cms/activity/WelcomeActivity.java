@@ -6,7 +6,6 @@ import java.util.List;
 import com.enorth.cms.adapter.ViewPagerAdapter;
 import com.enorth.cms.consts.ParamConst;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -24,14 +23,13 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class WelcomeActivity extends Activity implements OnPageChangeListener {
+public class WelcomeActivity extends BaseActivity implements OnPageChangeListener {
 	
 	private ViewPager viewPager;
 	/**
@@ -70,7 +68,6 @@ public class WelcomeActivity extends Activity implements OnPageChangeListener {
 	 * 初始化alpha动画（渐变透明度动画效果）
 	 */
 	private AlphaAnimation alphaAnimation;
-
 	/**
 	 * 轮播的图片
 	 */
@@ -101,8 +98,8 @@ public class WelcomeActivity extends Activity implements OnPageChangeListener {
 	private void initViewPager() {
 		viewPager = (ViewPager) findViewById(R.id.welcomeViewPager);
 		LayoutInflater lf = LayoutInflater.from(this);
-		final int colorWhite = ContextCompat.getColor(this, R.color.color_white);
-		final int colorBlack = ContextCompat.getColor(this, R.color.color_black);
+		final int colorWhite = ContextCompat.getColor(this, R.color.white);
+		final int colorBlack = ContextCompat.getColor(this, R.color.black);
 		for (int resource : resources) {
 			// 初始化每一个页面
 			final View view = lf.inflate(R.layout.view_pager_welcome, null);
@@ -220,6 +217,7 @@ public class WelcomeActivity extends Activity implements OnPageChangeListener {
 	private void toMainActivity() {
 		intent.setClass(WelcomeActivity.this, MainActivity.class);
 		startActivity(intent);
+		// TODO 正式使用时要取消下面注解的方法（将ParamConst.ACTIVITY_IS_FIRST_ENTER的参数变为false，表示该APP已经看过一次引导图了，下次进入不需要再看）
 //		saveTag();
 		finish();
 	}
@@ -280,5 +278,10 @@ public class WelcomeActivity extends Activity implements OnPageChangeListener {
 				}
 			}
 		};
+	}
+	
+	@Override
+	public void exitClick() {
+		Toast.makeText(WelcomeActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT);
 	}
 }

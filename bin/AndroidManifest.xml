@@ -24,6 +24,7 @@
         </activity>
         <activity android:name=".WelcomeActivity"></activity>
         <activity android:name=".MainActivity"></activity>
+        <activity android:name=".PullableWebViewActivity"></activity>
         <activity android:name=".MaterialUploadActivity"></activity>
         <activity android:name=".MaterialBtnActivity"></activity>
     </application>

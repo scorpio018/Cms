@@ -1,12 +1,12 @@
 package com.enorth.cms.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
-public class MainActivity extends Activity {
+public class MainActivity extends BaseActivity {
 	
 	private Intent intent = new Intent();
 	
@@ -22,6 +22,7 @@ public class MainActivity extends Activity {
 	private void init() {
 		initBtnToMaterialUploadActivity();
 		initBtnToMaterialBtnActivity();
+		initBtnToPullableWebViewActivity();
 	}
 	
 	private void initBtnToMaterialUploadActivity() {
@@ -46,5 +47,22 @@ public class MainActivity extends Activity {
 				startActivity(intent);
 			}
 		});
+	}
+	
+	private void initBtnToPullableWebViewActivity() {
+		View btnToPullableWebViewActivity = findViewById(R.id.btnToPullableWebViewActivity);
+		btnToPullableWebViewActivity.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				intent.setClass(MainActivity.this, PullableWebViewActivity.class);
+				startActivity(intent);
+			}
+		});
+	}
+	
+	@Override
+	public void exitClick() {
+		Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT);
 	}
 }

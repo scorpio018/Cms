@@ -7,8 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.WindowManager;
+import android.widget.Toast;
 
-public class SplashActivity extends Activity {
+public class SplashActivity extends BaseActivity {
 	
 	private Intent intent = new Intent();
 	
@@ -36,5 +37,10 @@ public class SplashActivity extends Activity {
 	private void toMainActivity() {
 		intent.setClass(SplashActivity.this, MainActivity.class);
 		startActivity(intent);
+	}
+	
+	@Override
+	public void exitClick() {
+		Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT);
 	}
 }

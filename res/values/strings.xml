@@ -9,8 +9,21 @@
     <string name="to_main_activity">点击进入</string>
     <string name="skip_to_main_activity">跳过</string>
     
+    <string name="head">这里是HeadView</string>
+    <string name="pull_to_refresh">下拉刷新</string>
+    <string name="release_to_refresh">释放立即刷新</string>
+    <string name="refreshing">正在刷新...</string>
+    <string name="refresh_succeed">刷新成功</string>
+    <string name="refresh_fail">刷新失败</string>
+    <string name="pullup_to_load">上拉加载更多</string>
+    <string name="release_to_load">释放立即加载</string>
+    <string name="loading">正在加载...</string>
+    <string name="load_succeed">加载成功</string>
+    <string name="load_fail">加载失败</string>
+    
     <string name="btnToMaterialUploadActivity">跳转到素材上传页面</string>
     <string name="btnToMaterialBtnActivity">跳转到素材按钮动画实现页面</string>
+    <string name="btnToPullableWebViewActivity">跳转到webView控件+下拉刷新+上拉加载更多</string>
     <string name="imgBtnAddPic">照相</string>
     <string name="imgBtnChoosePic">相册</string>
     <string name="imgBtnAddVideo">录像</string>
