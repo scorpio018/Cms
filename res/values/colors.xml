@@ -8,7 +8,9 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="gray">#aaaaaa</color>
+    <color name="dark_gray">#666666</color>
     <color name="light_blue">#6593cb</color>
+    <color name="yellow">#f4c600</color>
     <color name="common_blue">#56abe4</color>
     <color name="news_sub_title_color_basic">#D8D9DD</color>
     <color name="bottom_color_basic">#D8D9DD</color>

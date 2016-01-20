@@ -3,7 +3,7 @@ package com.enorth.cms.activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.enorth.cms.adapter.ViewPagerAdapter;
+import com.enorth.cms.adapter.WelcomeViewPagerAdapter;
 import com.enorth.cms.consts.ParamConst;
 
 import android.content.SharedPreferences;
@@ -127,7 +127,7 @@ public class WelcomeActivity extends BaseActivity implements OnPageChangeListene
 			v.setScaleType(ScaleType.FIT_XY);*/
 			viewList.add(view);
 		}
-		ViewPagerAdapter adapter = new ViewPagerAdapter(viewList, imageViewStart);
+		WelcomeViewPagerAdapter adapter = new WelcomeViewPagerAdapter(viewList);
 		viewPager.setAdapter(adapter);
 		viewPager.addOnPageChangeListener(this);
 	}

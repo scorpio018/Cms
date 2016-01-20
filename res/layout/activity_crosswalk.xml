@@ -1,0 +1,16 @@
+<com.enorth.cms.refreshlayout.CrossWalkRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/refresh_cross_walk"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <include layout="@layout/refresh_head" />
+    <!-- 支持所有实现Pullable接口的View -->
+
+    <com.enorth.cms.pullableview.PullableXWalkView
+        android:id="@+id/content_cross_walk"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <include layout="@layout/load_more" />
+
+</com.enorth.cms.refreshlayout.CrossWalkRefreshLayout>
