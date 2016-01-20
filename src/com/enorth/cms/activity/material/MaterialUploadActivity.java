@@ -1,10 +1,13 @@
-package com.enorth.cms.activity;
+package com.enorth.cms.activity.material;
+
+import com.enorth.cms.activity.R;
+import com.enorth.cms.activity.R.layout;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-public class MaterialUploadActivity extends BaseActivity {
+public class MaterialUploadActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -12,8 +15,4 @@ public class MaterialUploadActivity extends BaseActivity {
 		setContentView(R.layout.activity_material_upload);
 	}
 	
-	@Override
-	public void exitClick() {
-		Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT);
-	}
 }

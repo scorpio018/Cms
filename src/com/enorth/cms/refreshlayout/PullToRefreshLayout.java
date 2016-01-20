@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -27,49 +28,16 @@ import android.widget.TextView;
  * 
  * @author yangyang
  */
-public class PullToRefreshLayout extends RelativeLayout {
-	public static final String TAG = "PullToRefreshLayout";
-
-	/**
-	 * 初始状态
-	 */
-	public static final int INIT = 0;
-	/**
-	 * 释放刷新
-	 */
-	public static final int RELEASE_TO_REFRESH = 1;
-	/**
-	 * 正在刷新
-	 */
-	public static final int REFRESHING = 2;
-	/**
-	 * 释放加载
-	 */
-	public static final int RELEASE_TO_LOAD = 3;
-	/**
-	 * 正在加载
-	 */
-	public static final int LOADING = 4;
-	/**
-	 * 操作完毕
-	 */
-	public static final int DONE = 5;
+public class PullToRefreshLayout extends FrameLayout {
+//	public static final String TAG = "PullToRefreshLayout";
 	/**
 	 * 当前状态
 	 */
-	private int state = INIT;
+	private int state = ParamConst.INIT;
 	/**
 	 * 刷新回调接口
 	 */
 	public OnRefreshListener mListener;
-	/**
-	 * 刷新成功
-	 */
-	public static final int SUCCEED = 0;
-	/**
-	 * 刷新失败
-	 */
-	public static final int FAIL = 1;
 	/**
 	 * 按下Y坐标，移动时的最新的Y坐标，上一个事件点Y坐标
 	 */
@@ -118,6 +86,10 @@ public class PullToRefreshLayout extends RelativeLayout {
 	 * 下拉箭头的转180°动画
 	 */
 	private RotateAnimation rotateAnimation;
+	/**
+	 * 下拉箭头的回转180°动画
+	 */
+	private RotateAnimation rotateBackAnimation;
 	/**
 	 * 均匀旋转动画
 	 */
@@ -186,7 +158,7 @@ public class PullToRefreshLayout extends RelativeLayout {
 	 * 表示当前是否可以进行刷新/加载更多的操作
 	 */
 	private int isFresh = ParamConst.IS_REFRESH_DEFAULT;
-
+	
 	/**
 	 * 执行自动回滚的handler
 	 */
@@ -211,11 +183,11 @@ public class PullToRefreshLayout extends RelativeLayout {
 			if (!isTouch) {
 //				Log.w("updateHandler.handleMessage", "手已经离开屏幕");
 				// 正在刷新，且没有往上推的话则悬停，显示"正在刷新..."
-				if (state == REFRESHING && pullDownY <= refreshDist) {
+				if (state == ParamConst.REFRESHING && pullDownY <= refreshDist) {
 					Log.w("updateHandler.handleMessage", "state为【正在刷新】且下拉的距离≤释放刷新的距离，将释放刷新的距离赋值给下拉距离并取消timer");
 					pullDownY = refreshDist;
 					timer.cancel();
-				} else if (state == LOADING && -pullUpY <= loadmoreDist) {
+				} else if (state == ParamConst.LOADING && -pullUpY <= loadmoreDist) {
 					Log.w("updateHandler.handleMessage", "state为【正在加载】且上拉的距离≤释放加载的距离，将释放加载的距离赋值给上拉距离并取消timer");
 					pullUpY = -loadmoreDist;
 					timer.cancel();
@@ -237,8 +209,8 @@ public class PullToRefreshLayout extends RelativeLayout {
 				}
 				pullView.clearAnimation();
 				// 隐藏下拉头时有可能还在刷新，只有当前状态不是正在刷新时才改变状态
-				if (state != REFRESHING && state != LOADING)
-					changeState(INIT);
+				if (state != ParamConst.REFRESHING && state != ParamConst.LOADING)
+					changeState(ParamConst.INIT);
 				timer.cancel();
 				requestLayout();
 			}
@@ -277,10 +249,12 @@ public class PullToRefreshLayout extends RelativeLayout {
 		timer = new MyTimer(updateHandler);
 		Log.w("initView", "给当前传入的view添加动画");
 		rotateAnimation = (RotateAnimation) AnimationUtils.loadAnimation(context, R.anim.reverse_anim);
+		rotateBackAnimation = (RotateAnimation) AnimationUtils.loadAnimation(context, R.anim.reverse_back_anim);
 		refreshingAnimation = (RotateAnimation) AnimationUtils.loadAnimation(context, R.anim.rotating);
 		// 添加匀速转动动画
 		LinearInterpolator lir = new LinearInterpolator();
 		rotateAnimation.setInterpolator(lir);
+		rotateBackAnimation.setInterpolator(lir);
 		refreshingAnimation.setInterpolator(lir);
 	}
 
@@ -301,14 +275,14 @@ public class PullToRefreshLayout extends RelativeLayout {
 		refreshingView.clearAnimation();
 		refreshingView.setVisibility(View.GONE);
 		switch (refreshResult) {
-		case SUCCEED:
+		case ParamConst.SUCCEED:
 			// 刷新成功
 			Log.w("refreshFinish", "刷新结果为【刷新成功】");
 			refreshStateImageView.setVisibility(View.VISIBLE);
 			refreshStateTextView.setText(R.string.refresh_succeed);
 			refreshStateImageView.setBackgroundResource(R.drawable.refresh_succeed);
 			break;
-		case FAIL:
+		case ParamConst.FAIL:
 		default:
 			// 刷新失败
 			Log.w("refreshFinish", "刷新结果为【刷新失败】");
@@ -323,13 +297,13 @@ public class PullToRefreshLayout extends RelativeLayout {
 				@Override
 				public void handleMessage(Message msg) {
 					Log.w("refreshFinish", "刷新的view还没有完全回到最初状态");
-					changeState(DONE);
+					changeState(ParamConst.DONE);
 					hide();
 				}
 			}.sendEmptyMessageDelayed(0, 1000);
 		} else {
 			Log.w("refreshFinish", "刷新的view已经回到最初状态");
-			changeState(DONE);
+			changeState(ParamConst.DONE);
 			hide();
 		}
 	}
@@ -344,13 +318,13 @@ public class PullToRefreshLayout extends RelativeLayout {
 		loadingView.clearAnimation();
 		loadingView.setVisibility(View.GONE);
 		switch (refreshResult) {
-		case SUCCEED:
+		case ParamConst.SUCCEED:
 			// 加载成功
 			loadStateImageView.setVisibility(View.VISIBLE);
 			loadStateTextView.setText(R.string.load_succeed);
 			loadStateImageView.setBackgroundResource(R.drawable.load_succeed);
 			break;
-		case FAIL:
+		case ParamConst.FAIL:
 		default:
 			// 加载失败
 			loadStateImageView.setVisibility(View.VISIBLE);
@@ -363,40 +337,43 @@ public class PullToRefreshLayout extends RelativeLayout {
 			new Handler() {
 				@Override
 				public void handleMessage(Message msg) {
-					changeState(DONE);
+					changeState(ParamConst.DONE);
 					hide();
 				}
 			}.sendEmptyMessageDelayed(0, 1000);
 		} else {
-			changeState(DONE);
+			changeState(ParamConst.DONE);
 			hide();
 		}
 	}
 
 	public void changeState(int to) {
 		Log.e("changeState", "改变state的状态");
+		firstInit();
 		state = to;
 		switch (state) {
-		case INIT:
+		case ParamConst.INIT:
 			// 下拉布局初始状态
 			Log.w("changeState", "状态变为【初始状态】");
 			refreshStateImageView.setVisibility(View.GONE);
 			refreshStateTextView.setText(R.string.pull_to_refresh);
-			pullView.clearAnimation();
+			pullView.startAnimation(rotateBackAnimation);
+//			pullView.clearAnimation();
 			pullView.setVisibility(View.VISIBLE);
 			// 上拉布局初始状态
 			loadStateImageView.setVisibility(View.GONE);
 			loadStateTextView.setText(R.string.pullup_to_load);
-			pullUpView.clearAnimation();
+//			pullUpView.clearAnimation();
+			pullUpView.startAnimation(rotateBackAnimation);
 			pullUpView.setVisibility(View.VISIBLE);
 			break;
-		case RELEASE_TO_REFRESH:
+		case ParamConst.RELEASE_TO_REFRESH:
 			// 释放刷新状态
 			Log.w("changeState", "状态变为【释放刷新状态】");
 			refreshStateTextView.setText(R.string.release_to_refresh);
 			pullView.startAnimation(rotateAnimation);
 			break;
-		case REFRESHING:
+		case ParamConst.REFRESHING:
 			// 正在刷新状态
 			Log.w("changeState", "状态变为【正在刷新状态】");
 			pullView.clearAnimation();
@@ -405,13 +382,13 @@ public class PullToRefreshLayout extends RelativeLayout {
 			refreshingView.startAnimation(refreshingAnimation);
 			refreshStateTextView.setText(R.string.refreshing);
 			break;
-		case RELEASE_TO_LOAD:
+		case ParamConst.RELEASE_TO_LOAD:
 			// 释放加载状态
 			Log.w("changeState", "状态变为【释放加载状态】");
 			loadStateTextView.setText(R.string.release_to_load);
 			pullUpView.startAnimation(rotateAnimation);
 			break;
-		case LOADING:
+		case ParamConst.LOADING:
 			// 正在加载状态
 			Log.w("changeState", "状态变为【正在加载状态】");
 			pullUpView.clearAnimation();
@@ -420,7 +397,7 @@ public class PullToRefreshLayout extends RelativeLayout {
 			loadingView.startAnimation(refreshingAnimation);
 			loadStateTextView.setText(R.string.loading);
 			break;
-		case DONE:
+		case ParamConst.DONE:
 			// 刷新或加载完毕，啥都不做
 			Log.w("changeState", "状态变为【刷新或加载完毕】");
 			break;
@@ -463,7 +440,7 @@ public class PullToRefreshLayout extends RelativeLayout {
 		case MotionEvent.ACTION_MOVE:
 			Log.w("dispatchTouchEvent", "手在滑动");
 			if (mEvents == 0) {
-				if (pullDownY > 0 || (((Pullable) pullableView).canPullDown() && canPullDown && state != LOADING)) {
+				if (pullDownY > 0 || (((Pullable) pullableView).canPullDown() && canPullDown && state != ParamConst.LOADING)) {
 					Log.w("dispatchTouchEvent", "当前位置可以下拉");
 					// 如果isFresh变成true，则说明isRefreshAction方法已经断定当前操作是刷新操作
 					moveY = ev.getY();
@@ -487,12 +464,12 @@ public class PullToRefreshLayout extends RelativeLayout {
 					}
 					if (pullDownY > getMeasuredHeight())
 						pullDownY = getMeasuredHeight();
-					if (state == REFRESHING) {
+					if (state == ParamConst.REFRESHING) {
 						// 正在刷新的时候触摸移动
 						Log.w("dispatchTouchEvent", "当前状态为【正在刷新】，将isTouch改为true");
 						isTouch = true;
 					}
-				} else if (pullUpY < 0 || (((Pullable) pullableView).canPullUp() && canPullUp && state != REFRESHING)) {
+				} else if (pullUpY < 0 || (((Pullable) pullableView).canPullUp() && canPullUp && state != ParamConst.REFRESHING)) {
 					// 可以上拉，正在刷新时不能上拉
 					Log.w("dispatchTouchEvent", "当前位置可以上拉");
 					pullUpY = pullUpY + (ev.getY() - lastY) / radio;
@@ -503,16 +480,18 @@ public class PullToRefreshLayout extends RelativeLayout {
 					}
 					if (pullUpY < -getMeasuredHeight())
 						pullUpY = -getMeasuredHeight();
-					if (state == LOADING) {
+					if (state == ParamConst.LOADING) {
 						// 正在加载的时候触摸移动
 						Log.e("dispatchTouchEvent", "当前状态为【正在加载】，将isTouch改为true");
 						isTouch = true;
 					}
-				} else
+				} else {
 					Log.w("dispatchTouchEvent", "当前位置既不能刷新也不能加载更多，不限制上拉或下拉");
+				}
 				releasePull();
-			} else
+			} else {
 				mEvents = 0;
+			}
 			lastY = ev.getY();
 			// 根据下拉距离改变比例
 			radio = (float) (2 + 2 * Math.tan(Math.PI / 2 / getMeasuredHeight() * (pullDownY + Math.abs(pullUpY))));
@@ -523,29 +502,28 @@ public class PullToRefreshLayout extends RelativeLayout {
 			}
 			if (pullDownY > 0) {
 				Log.w("dispatchTouchEvent", "pullDownY【" + pullDownY + "】＞0");
-				if (pullDownY <= refreshDist && (state == RELEASE_TO_REFRESH || state == DONE)) {
+				if (pullDownY <= refreshDist && (state == ParamConst.RELEASE_TO_REFRESH || state == ParamConst.DONE)) {
 					// 如果下拉距离没达到刷新的距离且当前状态是释放刷新，改变状态为下拉刷新
 					Log.w("dispatchTouchEvent", "下拉距离没达到刷新的距离且当前状态是释放刷新，改变状态为下拉刷新");
-					changeState(INIT);
+					changeState(ParamConst.INIT);
 				}
-				if (pullDownY >= refreshDist && state == INIT) {
+				if (pullDownY >= refreshDist && state == ParamConst.INIT) {
 					// 如果下拉距离达到刷新的距离且当前状态是初始状态刷新，改变状态为释放刷新
 					Log.w("dispatchTouchEvent", "下拉距离达到刷新的距离且当前状态是初始状态刷新，改变状态为释放刷新");
-					changeState(RELEASE_TO_REFRESH);
+					changeState(ParamConst.RELEASE_TO_REFRESH);
 				}
 			} else if (pullUpY < 0) {
 				Log.w("dispatchTouchEvent", "pullUpY【" + pullUpY + "】＜0");
 				// 下面是判断上拉加载的，同上，注意pullUpY是负值
-				if (-pullUpY <= loadmoreDist && (state == RELEASE_TO_LOAD || state == DONE)) {
+				if (-pullUpY <= loadmoreDist && (state == ParamConst.RELEASE_TO_LOAD || state == ParamConst.DONE)) {
 					Log.w("dispatchTouchEvent", "上拉距离没达到加载的距离且当前状态是释放加载，改变状态为初始状态");
-					changeState(INIT);
+					changeState(ParamConst.INIT);
 				}
 				// 上拉操作
-				if (-pullUpY >= loadmoreDist && state == INIT) {
+				if (-pullUpY >= loadmoreDist && state == ParamConst.INIT) {
 					Log.w("dispatchTouchEvent", "上拉距离达到加载的距离且当前状态是初始状态刷新，改变状态为释放加载");
-					changeState(RELEASE_TO_LOAD);
+					changeState(ParamConst.RELEASE_TO_LOAD);
 				}
-
 			}
 			// 因为刷新和加载操作不能同时进行，所以pullDownY和pullUpY不会同时不为0，因此这里用(pullDownY +
 			// Math.abs(pullUpY))就可以不对当前状态作区分了
@@ -562,14 +540,14 @@ public class PullToRefreshLayout extends RelativeLayout {
 				Log.w("dispatchTouchEvent", "当前移动的距离＞刷新/加载的距离");
 				isTouch = false;
 			}
-			if (state == RELEASE_TO_REFRESH) {
-				Log.w("dispatchTouchEvent", "降状态改为【正在刷新】");
-				changeState(REFRESHING);
+			if (state == ParamConst.RELEASE_TO_REFRESH) {
+				Log.w("dispatchTouchEvent", "将状态改为【正在刷新】");
+				changeState(ParamConst.REFRESHING);
 				// 刷新操作
 				if (mListener != null)
 					mListener.onRefresh(this);
-			} else if (state == RELEASE_TO_LOAD) {
-				changeState(LOADING);
+			} else if (state == ParamConst.RELEASE_TO_LOAD) {
+				changeState(ParamConst.LOADING);
 				// 加载操作
 				if (mListener != null)
 					mListener.onLoadMore(this);
@@ -632,7 +610,7 @@ public class PullToRefreshLayout extends RelativeLayout {
 	public void autoLoad() {
 		pullUpY = -loadmoreDist;
 		requestLayout();
-		changeState(LOADING);
+		changeState(ParamConst.LOADING);
 		// 加载操作
 		if (mListener != null)
 			mListener.onLoadMore(this);
@@ -650,10 +628,8 @@ public class PullToRefreshLayout extends RelativeLayout {
 		loadingView = loadmoreView.findViewById(R.id.loading_icon);
 		loadStateImageView = loadmoreView.findViewById(R.id.loadstate_iv);
 	}
-
-	@Override
-	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		Log.d("Test", "Test");
+	
+	private void firstInit() {
 		if (!isLayout) {
 			// 这里是第一次进来的时候做一些初始化
 			refreshView = getChildAt(0);
@@ -664,6 +640,12 @@ public class PullToRefreshLayout extends RelativeLayout {
 			refreshDist = ((ViewGroup) refreshView).getChildAt(0).getMeasuredHeight();
 			loadmoreDist = ((ViewGroup) loadmoreView).getChildAt(0).getMeasuredHeight();
 		}
+	}
+
+	@Override
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		Log.d("Test", "Test");
+		firstInit();
 		// 改变子控件的布局，这里直接用(pullDownY + pullUpY)作为偏移量，这样就可以不对当前状态作区分
 		refreshView.layout(0, (int) (pullDownY + pullUpY) - refreshView.getMeasuredHeight(),
 				refreshView.getMeasuredWidth(), (int) (pullDownY + pullUpY));

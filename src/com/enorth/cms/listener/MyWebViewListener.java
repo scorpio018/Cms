@@ -1,5 +1,6 @@
 package com.enorth.cms.listener;
 
+import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.refreshlayout.PullToRefreshLayout;
 
 import android.os.Handler;
@@ -26,7 +27,7 @@ public class MyWebViewListener implements OnRefreshListener {
 			@Override
 			public void handleMessage(Message msg) {
 				// 千万别忘了告诉控件加载完毕了哦！
-				pullToRefreshLayout.loadmoreFinish(PullToRefreshLayout.SUCCEED);
+				pullToRefreshLayout.loadmoreFinish(ParamConst.SUCCEED);
 			}
 		}.sendEmptyMessageDelayed(0, 5000);
 	}

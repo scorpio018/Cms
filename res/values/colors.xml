@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="color_picker_border_color">#B0B0B0</color>
+    <color name="color_picker_background_color">#FFFFFF</color>
+    <color name="dropdown_divider_color">#E5E5E5</color>
+    <color name="dropdown_dark_divider_color">#C0C0C0</color>
+    <color name="keyboard_accessory_suggestion_background_color">#4286F5</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="gray">#aaaaaa</color>
     <color name="light_blue">#6593cb</color>
+    <color name="common_blue">#56abe4</color>
+    <color name="news_sub_title_color_basic">#D8D9DD</color>
+    <color name="bottom_color_basic">#D8D9DD</color>
+    <color name="bottom_color_pressed">#999999</color>
+    <color name="bottom_text_color_basic">#ecf0f1</color>
+    <color name="bottom_text_color_blue">#56abe4</color>
+    <color name="bottom_text_color_green">#11cd6e</color>
+    <color name="bottom_text_color_yellow">#f4c600</color>
+    <color name="bottom_text_color_red">#eb4f38</color>
 </resources>

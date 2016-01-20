@@ -2,25 +2,43 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     style="?android:attr/buttonBarStyle">
 
     <Button 
         android:id="@+id/btnToMaterialUploadActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:text="@string/btnToMaterialUploadActivity"/>
     
     <Button 
         android:id="@+id/btnToMaterialBtnActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:text="@string/btnToMaterialBtnActivity"/>
     
     <Button 
         android:id="@+id/btnToPullableWebViewActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:text="@string/btnToPullableWebViewActivity"/>
+    
+    <Button 
+        android:id="@+id/btnToCrossWalkActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/btnToCrossWalkActivity"/>
+    
+    <Button 
+        android:id="@+id/btnToNewsListActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/btnToNewsListActivity"/>
     
 
 </LinearLayout>

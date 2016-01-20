@@ -1,5 +1,6 @@
 package com.enorth.cms.task;
 
+import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.refreshlayout.PullToRefreshLayout;
 
 import android.os.AsyncTask;
@@ -32,7 +33,7 @@ public class AutoRefreshAndLoadTask extends AsyncTask<Integer, Float, String> {
 
 	@Override
 	protected void onPostExecute(String result) {
-		layout.changeState(layout.REFRESHING);
+		layout.changeState(ParamConst.REFRESHING);
 		// 刷新操作
 		if (layout.mListener != null)
 			layout.mListener.onRefresh(layout);
@@ -42,7 +43,7 @@ public class AutoRefreshAndLoadTask extends AsyncTask<Integer, Float, String> {
 	@Override
 	protected void onProgressUpdate(Float... values) {
 		if (layout.pullDownY > layout.refreshDist)
-			layout.changeState(layout.RELEASE_TO_REFRESH);
+			layout.changeState(ParamConst.RELEASE_TO_REFRESH);
 		layout.requestLayout();
 	}
 

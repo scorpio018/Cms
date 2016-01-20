@@ -5,7 +5,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="material_btn_padding">30dp</dimen>
     <dimen name="material_btn_margin">30dp</dimen>
-    
+    <dimen name="link_preview_overlay_radius">7dp</dimen>
     <dimen name="margin_top_common">20dip</dimen>
     <dimen name="margin_bottom_common">20dip</dimen>
     <dimen name="margin_left_common">20dip</dimen>
@@ -13,6 +13,31 @@
     <dimen name="margin_right_common">20dip</dimen>
     <dimen name="margin_end_common">20dip</dimen>
     
+    <dimen name="news_title_height">50dip</dimen>
+    <dimen name="news_sub_title_height">30dip</dimen>
+    
     <dimen name="skip_btn_height">32dip</dimen>
+    <dimen name="news_item_height">90dip</dimen>
+    <dimen name="news_operate_btn_layout_height">50dip</dimen>
+    
+    <dimen name="btn_radius_common">4dp</dimen>
+    
+    <dimen name="news_item_check_btn_layout_width">60dip</dimen>
+    <dimen name="news_item_check_btn_layout_height">60dip</dimen>
+    <dimen name="news_item_check_btn_margin_left">20dip</dimen>
+    <dimen name="news_item_check_btn_margin_right">20dip</dimen>
+    <dimen name="news_item_check_btn_margin_top">20dip</dimen>
+    <dimen name="news_item_check_btn_margin_bottom">20dip</dimen>
+    <dimen name="news_item_check_btn_padding_left">20dip</dimen>
+    <dimen name="news_item_check_btn_padding_right">20dip</dimen>
+    <dimen name="news_item_check_btn_padding_top">20dip</dimen>
+    <dimen name="news_item_check_btn_padding_bottom">20dip</dimen>
+    
+    
+    <dimen name="news_item_news_title_margin_top">10dip</dimen>
+    <dimen name="news_item_news_title_margin_left">10dip</dimen>
+    <dimen name="news_item_news_title_margin_bottom">10dip</dimen>
+    
+    <dimen name="news_operate_btn_layout_padding_common">20dip</dimen>
 
 </resources>

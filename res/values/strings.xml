@@ -21,9 +21,14 @@
     <string name="load_succeed">加载成功</string>
     <string name="load_fail">加载失败</string>
     
+    <string name="news_title_text">普通新闻</string>
+    <string name="news_sub_title_Text">新闻中心</string>
+    
     <string name="btnToMaterialUploadActivity">跳转到素材上传页面</string>
     <string name="btnToMaterialBtnActivity">跳转到素材按钮动画实现页面</string>
     <string name="btnToPullableWebViewActivity">跳转到webView控件+下拉刷新+上拉加载更多</string>
+    <string name="btnToCrossWalkActivity">跳转到CrossWalk控件+下拉刷新+上拉加载更多</string>
+    <string name="btnToNewsListActivity">新闻列表</string>
     <string name="imgBtnAddPic">照相</string>
     <string name="imgBtnChoosePic">相册</string>
     <string name="imgBtnAddVideo">录像</string>

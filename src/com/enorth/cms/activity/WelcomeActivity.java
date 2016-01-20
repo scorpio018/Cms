@@ -6,7 +6,6 @@ import java.util.List;
 import com.enorth.cms.adapter.ViewPagerAdapter;
 import com.enorth.cms.consts.ParamConst;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -76,15 +75,10 @@ public class WelcomeActivity extends BaseActivity implements OnPageChangeListene
 
 	private List<View> viewList = new ArrayList<View>();
 
-	private Intent intent = new Intent();
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_welcome_paper);
-		// getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-		// WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		initWelcomePager();
 	}
 
@@ -236,7 +230,7 @@ public class WelcomeActivity extends BaseActivity implements OnPageChangeListene
 	@Override
 	public void onPageScrollStateChanged(int state) {
 		if (state == 1) {
-			if (currentPos == resources.length - 1) {
+			if (currentPos != resources.length - 1) {
 				imageViewStart.setVisibility(View.GONE);
 			}
 		}
