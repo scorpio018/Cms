@@ -1,22 +1,35 @@
 package com.enorth.cms.utils;
 
-import com.enorth.cms.activity.R;
-
-import android.app.ActionBar.LayoutParams;
-import android.content.res.Resources;
+import android.widget.AbsListView.LayoutParams;
 
 public class LayoutParamsUtil {
 	/**
-	 * 初始化新闻列表/直播列表中的待编辑、待签发、已签发的按钮的基本样式
+	 * 初始化WRAP_CONTENT的宽和高
 	 * @param resources
 	 * @return
 	 */
-	public static LayoutParams initEnableSimpleChangeButtonLayout(Resources resources) {
+	public static LayoutParams initWrapLayout() {
 		LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-//		params.leftMargin = (int) resources.getDimension(R.dimen.news_title_change_viewpager_btn_margin_left);
-//		params.rightMargin = (int) resources.getDimension(R.dimen.news_title_change_viewpager_btn_margin_right);
-//		params.topMargin = (int) resources.getDimension(R.dimen.news_title_change_viewpager_btn_margin_top);
-//		params.bottomMargin = (int) resources.getDimension(R.dimen.news_title_change_viewpager_btn_margin_bottom);
+		return params;
+	}
+	
+	/**
+	 * 初始化MATCH_CONTENT的宽和高
+	 * @return
+	 */
+	public static LayoutParams initMatchLayout() {
+		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+		return params;
+	}
+	
+	/**
+	 * 初始化自定义的宽和高
+	 * @param width
+	 * @param height
+	 * @return
+	 */
+	public static LayoutParams initCustomLayout(int width, int height) {
+		LayoutParams params = new LayoutParams(width, height);
 		return params;
 	}
 }

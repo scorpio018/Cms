@@ -14,8 +14,9 @@
     <dimen name="margin_end_common">20dip</dimen>
     
     <dimen name="news_title_height">50dp</dimen>
-    <dimen name="news_menu_margin_left">20dp</dimen>
-    <dimen name="news_search_margin_right">20dp</dimen>
+    <dimen name="news_title_text_size">18dp</dimen>
+    <dimen name="news_title_left_icon_margin_left">20dp</dimen>
+    <dimen name="news_title_right_icon_margin_right">20dp</dimen>
     <dimen name="news_sub_title_height">30dp</dimen>
     <dimen name="news_sub_title_margin_left">15dp</dimen>
     <dimen name="news_sort_margin_right">20dp</dimen>
@@ -29,6 +30,8 @@
     <dimen name="news_title_change_viewpager_btn_margin_right">40dp</dimen>
     <dimen name="news_title_change_viewpager_btn_margin_top">5dp</dimen>
     <dimen name="news_title_change_viewpager_btn_margin_bottom">5dp</dimen>
+    
+    <dimen name="news_list_view_default_text">30dp</dimen>
     
     <dimen name="skip_btn_height">32dip</dimen>
     <dimen name="news_item_height">90dip</dimen>
@@ -47,11 +50,35 @@
     <dimen name="news_item_check_btn_padding_top">20dip</dimen>
     <dimen name="news_item_check_btn_padding_bottom">20dip</dimen>
     
-    
+    <dimen name="news_item_news_xinxi_layout_width">60dip</dimen>
+    <dimen name="news_item_news_xinxi_padding_top">10dip</dimen>
+    <dimen name="news_item_news_xinxi_padding_left">10dip</dimen>
+    <dimen name="news_item_news_xinxi_padding_bottom">10dip</dimen>
+    <dimen name="news_item_news_xinxi_padding_right">10dip</dimen>
+    <dimen name="news_item_news_xinxi_margin_right">20dip</dimen>
+    <dimen name="news_item_news_xinxi_margin_bottom">10dip</dimen>
+    <dimen name="news_item_news_xinxi_margin_left">10dip</dimen>
     <dimen name="news_item_news_title_margin_top">10dip</dimen>
     <dimen name="news_item_news_title_margin_left">10dip</dimen>
     <dimen name="news_item_news_title_margin_bottom">10dip</dimen>
+    <dimen name="news_item_news_title_margin_right">20dip</dimen>
     
     <dimen name="news_operate_btn_layout_padding_common">20dip</dimen>
+    
+    <dimen name="news_add_margin_bottom">70dip</dimen>
+    <dimen name="news_add_margin_right">30dip</dimen>
+    
+    <dimen name="channel_search_line_layout_height">50dip</dimen>
+    <dimen name="channel_search_edit_margin_left">10dip</dimen>
+    <dimen name="channel_search_edit_margin_top">10dip</dimen>
+    <dimen name="channel_search_edit_margin_right">10dip</dimen>
+    <dimen name="channel_search_edit_margin_bottom">10dip</dimen>
+    
+    <dimen name="channel_search_item_height">40dip</dimen>
+    <dimen name="channel_search_item_margin_left">30dip</dimen>
+    <dimen name="channel_search_item_next_padding_left">20dip</dimen>
+    <dimen name="channel_search_item_next_padding_top">20dip</dimen>
+    <dimen name="channel_search_item_next_padding_right">20dip</dimen>
+    <dimen name="channel_search_item_next_padding_bottom">20dip</dimen>
 
 </resources>

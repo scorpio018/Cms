@@ -10,23 +10,48 @@ import android.view.View.OnTouchListener;
 
 public abstract class CommonOnTouchListener implements OnTouchListener {
 
-	protected float downY = 0;
-
 	protected float downX = 0;
+
+	protected float downY = 0;
 
 	protected float moveX = 0;
 
 	protected float moveY = 0;
+	
+	protected float touchStartX = 0;
+	
+	protected float touchStartY = 0;
+	
+	protected float touchCurrentX = 0;
+	
+	protected float touchCurrentY = 0;
+	
+	protected float startX = 0;
+	
+	protected float startY = 0;
 
 	protected boolean isClick = false;
 
 	protected int touchSlop;
+	
+	protected int pressColor = R.color.gray_lighter;
+	
+	protected int normalColor = R.color.bottom_color_basic;
+	
+	public void changeColor(int pressColor, int normalColor) {
+		this.pressColor = pressColor;
+		this.normalColor = normalColor;
+	}
 	
 	/**
 	 * 判断点击的时候是否要将背景变成灰色
 	 * @return
 	 */
 	public abstract boolean isClickBackgroungColorChange();
+	/**
+	 * 当进行拖动时触发该方法
+	 */
+	public abstract void touchMove(View v);
 	/**
 	 * 当确定当前状态为点击事件时，在进行改变操作前进行的判断，如果返回false，则不继续进行onImgChangeDo方法的操作
 	 * @return
@@ -49,8 +74,12 @@ public abstract class CommonOnTouchListener implements OnTouchListener {
 		case MotionEvent.ACTION_DOWN:
 			downX = v.getScaleX();
 			downY = v.getScaleY();
+			touchStartX = event.getRawX();
+			touchStartY = event.getRawY();
+			startX = event.getX();
+			startY = event.getY();
 			if (isClickBackgroungColorChange()) {
-				int color = ContextCompat.getColor(v.getContext(), R.color.bottom_color_pressed);
+				int color = ContextCompat.getColor(v.getContext(), pressColor);
 				v.setBackgroundColor(color);
 			}
 			Log.w("MotionEvent.ACTION_DOWN", "【x:" + downX + "、y:" + downY + "】");
@@ -70,21 +99,30 @@ public abstract class CommonOnTouchListener implements OnTouchListener {
 			if (distinct >= touchSlop) {
 				isClick = false;
 			}
+			touchCurrentX = event.getRawX();
+			touchCurrentY = event.getRawY();
+			touchMove(v);
+			touchStartX = touchCurrentX;
+			touchStartY = touchCurrentY;
 			break;
 		case MotionEvent.ACTION_UP:
+			if (isClickBackgroungColorChange()) {
+				int color = ContextCompat.getColor(v.getContext(), normalColor);
+				v.setBackgroundColor(color);
+			}
 			if (isClick) {
 				boolean isContinue = onImgChangeBegin();
 				if (isContinue) {
 					onImgChangeDo();
 				}
 			}
-			if (isClickBackgroungColorChange()) {
-				int color = ContextCompat.getColor(v.getContext(), R.color.bottom_color_basic);
-				v.setBackgroundColor(color);
-			}
 			onImgChangeEnd();
 			break;
 		default:
+			if (isClickBackgroungColorChange()) {
+				int color = ContextCompat.getColor(v.getContext(), normalColor);
+				v.setBackgroundColor(color);
+			}
 			Log.w("default", String.valueOf(event.getActionMasked()));
 			break;
 		}

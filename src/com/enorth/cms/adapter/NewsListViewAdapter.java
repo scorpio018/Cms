@@ -2,6 +2,8 @@ package com.enorth.cms.adapter;
 
 import java.util.List;
 
+import com.enorth.cms.utils.ViewUtil;
+
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.view.View;
@@ -50,7 +52,10 @@ public class NewsListViewAdapter implements ListAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		return items.get(position);
+		View view = items.get(position);
+//		int height = ViewUtil.refreshListViewItemHeight(view);
+//		view.measure(view.getMeasuredWidth(), height);
+		return view;
 	}
 
 	@Override

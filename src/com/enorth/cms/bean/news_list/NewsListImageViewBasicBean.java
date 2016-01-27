@@ -1,8 +1,10 @@
-package com.enorth.cms.bean;
+package com.enorth.cms.bean.news_list;
+
+import com.enorth.cms.bean.ImageBasicBean;
 
 import android.widget.ImageView;
 
-public class ImageViewBasicBean extends ImageBasicBean {
+public class NewsListImageViewBasicBean extends ImageBasicBean {
 	
 
 	private boolean isSelected = false;

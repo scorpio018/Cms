@@ -1,5 +1,6 @@
-package com.enorth.cms.bean;
+package com.enorth.cms.bean.news_list;
 
+import com.enorth.cms.bean.ImageBasicBean;
 import com.enorth.cms.consts.ParamConst;
 
 import android.widget.ImageView;

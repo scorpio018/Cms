@@ -2,8 +2,7 @@
 <!-- 新闻列表的主页面 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:layout_height="fill_parent">
     
     <!-- 标题、副标题、新闻列表 -->
     <LinearLayout 
@@ -28,8 +27,8 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/news_menu_margin_left"
-                android:layout_marginStart="@dimen/news_menu_margin_left"
+                android:layout_marginLeft="@dimen/news_title_left_icon_margin_left"
+                android:layout_marginStart="@dimen/news_title_left_icon_margin_left"
                 />
             
             <TextView 
@@ -50,8 +49,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/news_search_margin_right"
-                android:layout_marginEnd="@dimen/news_search_margin_right"
+                android:layout_marginRight="@dimen/news_title_right_icon_margin_right"
+                android:layout_marginEnd="@dimen/news_title_right_icon_margin_right"
                 />
             
         </RelativeLayout>
@@ -62,17 +61,35 @@
             android:layout_height="@dimen/news_sub_title_height"
             android:background="@color/news_sub_title_color_basic">
             
-            <TextView 
-                android:id="@+id/newsSubTitleText"
+            <LinearLayout 
+                android:id="@+id/newsSubTitleLineLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:text="@string/news_sub_title_Text"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/news_sub_title_margin_left"
-                android:layout_marginStart="@dimen/news_sub_title_margin_left"
-                />
+                android:layout_marginStart="@dimen/news_sub_title_margin_left">
+                
+                <TextView 
+	                android:id="@+id/newsSubTitleText"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/news_sub_title_Text"
+	                android:layout_marginLeft="@dimen/news_sub_title_margin_left"
+	                android:layout_marginStart="@dimen/news_sub_title_margin_left"
+	                android:layout_gravity="center_vertical"
+	                android:gravity="center_vertical"
+	                />
+                
+                <ImageView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/news_sub_title_channel_iv"
+                    android:layout_gravity="center_vertical"/>
+                
+            </LinearLayout>
             
             <ImageView 
                 android:id="@+id/newsSubTitleSort"
@@ -110,7 +127,8 @@
         <android.support.v4.view.ViewPager
         android:id="@+id/newsListViewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        android:background="@color/bg_gray_default"/>
     
 	    <!-- <ListView 
 	        android:id="@+id/newsListView"
@@ -217,6 +235,17 @@
 		</LinearLayout>
         
     </LinearLayout>
-        
+    
+    <ImageView 
+        android:id="@+id/addNewsBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/news_add"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="@dimen/news_add_margin_bottom"
+        android:layout_marginRight="@dimen/news_add_margin_right"
+        android:layout_marginEnd="@dimen/news_add_margin_right"/>
     
 </RelativeLayout>

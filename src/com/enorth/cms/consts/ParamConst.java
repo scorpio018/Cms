@@ -120,6 +120,10 @@ public class ParamConst {
 	 */
 	public static final int CAN_ENABLE_STATE_MORE = 2;
 	
+	public static final int MESSAGE_WHAT_SUCCESS = 0;
+	public static final int MESSAGE_WHAT_ERROR = 1;
+	public static final int MESSAGE_WHAT_NO_DATA = 2;
+	
 	/**
 	 * 上次更新时间的字符串常量，用于作为SharedPreferences的键值
 	 */

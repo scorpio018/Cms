@@ -61,5 +61,14 @@
 	    <item name="android:textColor">@color/white</item>
 	    <item name="android:layout_marginRight">@dimen/news_title_change_viewpager_btn_margin_right</item>
     </style>
-
+    
+    <style name="Theme.Transparent" parent="android:Theme">
+        <item name="android:windowBackground">@drawable/news_dialog</item>//此对话框的背景
+        <item name="android:windowIsTranslucent">true</item>//对话框是否透明
+        <item name="android:windowContentOverlay">@null</item>//对话框是否有遮盖
+        <item name="android:windowNoTitle">true</item>//对话框无标题
+        <item name="android:windowIsFloating">true</item>//对话框是否浮动
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+    
 </resources>

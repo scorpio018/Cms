@@ -56,7 +56,7 @@ public class ButtonColorBasicBean {
 
 	public int getmBgPressedColor() {
 		if (mBgPressedColor == 0) {
-			mBgPressedColor = ContextCompat.getColor(context, R.color.dark_gray);
+			mBgPressedColor = ContextCompat.getColor(context, R.color.gray_lighter);
 		}
 		return mBgPressedColor;
 	}
@@ -67,7 +67,7 @@ public class ButtonColorBasicBean {
 
 	public int getmTextPressedColor() {
 		if (mTextPressedColor == 0) {
-			mTextPressedColor = ContextCompat.getColor(context, R.color.yellow);
+			mTextPressedColor = ContextCompat.getColor(context, R.color.black);
 		}
 		return mTextPressedColor;
 	}
