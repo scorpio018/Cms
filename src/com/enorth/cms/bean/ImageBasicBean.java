@@ -1,6 +1,8 @@
 package com.enorth.cms.bean;
 
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 
 public class ImageBasicBean {
 	private int imageCheckedResource;
@@ -12,6 +14,10 @@ public class ImageBasicBean {
 	private String textContent;
 	
 	private View view;
+	
+	private OnTouchListener onTouchListener;
+	
+	private OnClickListener onClickListener;
 
 	public int getImageCheckedResource() {
 		return imageCheckedResource;
@@ -51,6 +57,22 @@ public class ImageBasicBean {
 
 	public void setView(View view) {
 		this.view = view;
+	}
+
+	public OnTouchListener getOnTouchListener() {
+		return onTouchListener;
+	}
+
+	public void setOnTouchListener(OnTouchListener onTouchListener) {
+		this.onTouchListener = onTouchListener;
+	}
+
+	public OnClickListener getOnClickListener() {
+		return onClickListener;
+	}
+
+	public void setOnClickListener(OnClickListener onClickListener) {
+		this.onClickListener = onClickListener;
 	}
 
 }

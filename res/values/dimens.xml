@@ -1,11 +1,11 @@
 <resources>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="material_btn_padding">30dp</dimen>
-    <dimen name="material_btn_margin">30dp</dimen>
-    <dimen name="link_preview_overlay_radius">7dp</dimen>
+    <dimen name="activity_horizontal_margin">16dip</dimen>
+    <dimen name="activity_vertical_margin">16dip</dimen>
+    <dimen name="material_btn_padding">30dip</dimen>
+    <dimen name="material_btn_margin">30dip</dimen>
+    <dimen name="link_preview_overlay_radius">7dip</dimen>
     <dimen name="margin_top_common">20dip</dimen>
     <dimen name="margin_bottom_common">20dip</dimen>
     <dimen name="margin_left_common">20dip</dimen>
@@ -13,31 +13,38 @@
     <dimen name="margin_right_common">20dip</dimen>
     <dimen name="margin_end_common">20dip</dimen>
     
-    <dimen name="news_title_height">50dp</dimen>
-    <dimen name="news_title_text_size">18dp</dimen>
-    <dimen name="news_title_left_icon_margin_left">20dp</dimen>
-    <dimen name="news_title_right_icon_margin_right">20dp</dimen>
-    <dimen name="news_sub_title_height">30dp</dimen>
-    <dimen name="news_sub_title_margin_left">15dp</dimen>
-    <dimen name="news_sort_margin_right">20dp</dimen>
+    <dimen name="common_radius_and_stroke_padding_left">2dip</dimen>
+    <dimen name="common_radius_and_stroke_padding_top">2dip</dimen>
+    <dimen name="common_radius_and_stroke_padding_right">2dip</dimen>
+    <dimen name="common_radius_and_stroke_padding_bottom">2dip</dimen>
     
-    <dimen name="news_title_change_viewpager_btn_height">20dp</dimen>
-    <dimen name="news_title_change_viewpager_btn_padding_left">40dp</dimen>
-    <dimen name="news_title_change_viewpager_btn_padding_right">40dp</dimen>
-    <dimen name="news_title_change_viewpager_btn_padding_top">5dp</dimen>
-    <dimen name="news_title_change_viewpager_btn_padding_bottom">5dp</dimen>
-    <dimen name="news_title_change_viewpager_btn_margin_left">40dp</dimen>
-    <dimen name="news_title_change_viewpager_btn_margin_right">40dp</dimen>
-    <dimen name="news_title_change_viewpager_btn_margin_top">5dp</dimen>
-    <dimen name="news_title_change_viewpager_btn_margin_bottom">5dp</dimen>
+    <dimen name="news_title_height">50dip</dimen>
+    <dimen name="news_title_text_size">18dip</dimen>
+    <dimen name="news_title_left_icon_margin_left">20dip</dimen>
+    <dimen name="news_title_right_icon_margin_right">20dip</dimen>
+    <dimen name="news_sub_title_height">50dip</dimen>
+    <dimen name="news_sub_title_margin_left">15dip</dimen>
+    <dimen name="news_sort_margin_right">20dip</dimen>
     
-    <dimen name="news_list_view_default_text">30dp</dimen>
+    <dimen name="news_type_btn_rela_layout_margin_top">5dip</dimen>
+    
+    <dimen name="news_title_change_viewpager_btn_height">20dip</dimen>
+    <dimen name="news_title_change_viewpager_btn_padding_left">40dip</dimen>
+    <dimen name="news_title_change_viewpager_btn_padding_right">40dip</dimen>
+    <dimen name="news_title_change_viewpager_btn_padding_top">5dip</dimen>
+    <dimen name="news_title_change_viewpager_btn_padding_bottom">5dip</dimen>
+    <dimen name="news_title_change_viewpager_btn_margin_left">40dip</dimen>
+    <dimen name="news_title_change_viewpager_btn_margin_right">40dip</dimen>
+    <dimen name="news_title_change_viewpager_btn_margin_top">5dip</dimen>
+    <dimen name="news_title_change_viewpager_btn_margin_bottom">5dip</dimen>
+    
+    <dimen name="news_list_view_default_text">30dip</dimen>
     
     <dimen name="skip_btn_height">32dip</dimen>
-    <dimen name="news_item_height">90dip</dimen>
+    <dimen name="news_item_height">100dip</dimen>
     <dimen name="news_operate_btn_layout_height">50dip</dimen>
     
-    <dimen name="btn_radius_common">4dp</dimen>
+    <dimen name="btn_radius_common">4dip</dimen>
     
     <dimen name="news_item_check_btn_layout_width">60dip</dimen>
     <dimen name="news_item_check_btn_layout_height">60dip</dimen>
@@ -45,10 +52,12 @@
     <dimen name="news_item_check_btn_margin_right">20dip</dimen>
     <dimen name="news_item_check_btn_margin_top">20dip</dimen>
     <dimen name="news_item_check_btn_margin_bottom">20dip</dimen>
-    <dimen name="news_item_check_btn_padding_left">20dip</dimen>
-    <dimen name="news_item_check_btn_padding_right">20dip</dimen>
-    <dimen name="news_item_check_btn_padding_top">20dip</dimen>
-    <dimen name="news_item_check_btn_padding_bottom">20dip</dimen>
+    <dimen name="news_item_check_btn_padding_left">5dip</dimen>
+    <dimen name="news_item_check_btn_padding_right">5dip</dimen>
+    <dimen name="news_item_check_btn_padding_top">5dip</dimen>
+    <dimen name="news_item_check_btn_padding_bottom">5dip</dimen>
+    <dimen name="news_type_btn_line_layout_margin_left">10dip</dimen>
+    <dimen name="news_type_btn_line_layout_margin_right">10dip</dimen>
     
     <dimen name="news_item_news_xinxi_layout_width">60dip</dimen>
     <dimen name="news_item_news_xinxi_padding_top">10dip</dimen>
@@ -74,11 +83,18 @@
     <dimen name="channel_search_edit_margin_right">10dip</dimen>
     <dimen name="channel_search_edit_margin_bottom">10dip</dimen>
     
+    <dimen name="channel_search_common_text_size">18dip</dimen>
+    <dimen name="channel_search_common_text_margin_left">5dip</dimen>
+    
     <dimen name="channel_search_item_height">40dip</dimen>
     <dimen name="channel_search_item_margin_left">30dip</dimen>
     <dimen name="channel_search_item_next_padding_left">20dip</dimen>
     <dimen name="channel_search_item_next_padding_top">20dip</dimen>
     <dimen name="channel_search_item_next_padding_right">20dip</dimen>
     <dimen name="channel_search_item_next_padding_bottom">20dip</dimen>
+    
+    <dimen name="channel_back_to_prev_search_layout_margin_right">5dip</dimen>
+    <dimen name="channel_back_to_prev_search_layout_margin_top">5dip</dimen>
+    
 
 </resources>

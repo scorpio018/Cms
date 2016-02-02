@@ -7,6 +7,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
@@ -56,6 +58,11 @@ public class EnableSimpleChangeButton extends Button {
 	 * 默认的圆角半径
 	 */
 	private int mRadius = 20;
+	
+	private float outRectr[];
+	
+	private boolean needRefreshOutRectr = true;
+	
 	/**
 	 * 默认文字和背景颜色bean
 	 */
@@ -78,7 +85,7 @@ public class EnableSimpleChangeButton extends Button {
 	 * @param context
 	 */
 	private void initUI(Context context) {
-		initPadding(context);
+//		initPadding(context);
 		initAllState();
 		setGravity(Gravity.CENTER);
 		buildDraweableState();
@@ -134,7 +141,58 @@ public class EnableSimpleChangeButton extends Button {
 		ColorStateList colorStateList = new ColorStateList(allState, allTextColor);
 		setTextColor(colorStateList);
 	}
-
+	
+	/**
+	 * 按照左上-右上-右下-左下的顺序确定需要圆角的位置，默认都有圆角
+	 * 0、1：左上角
+	 * 2、3：右上角
+	 * 4、5：右下角
+	 * 6、7：左下角
+	 * @param top
+	 * @param right
+	 * @param bottom
+	 * @param left
+	 */
+	public void needRaduisPosition(boolean top, boolean right, boolean bottom, boolean left) {
+		// 将outRectr归零，然后按照需要圆角的位置存入圆角
+		outRectr = new float[]{0, 0, 0, 0, 0, 0, 0, 0};
+		int length = outRectr.length;
+		for (int i = 0; i < length; i++) {
+			switch(i) {
+			case 0:
+				// 左上角
+				if (left || top) {
+					outRectr[0] = mRadius;
+					outRectr[1] = mRadius;
+				}
+				break;
+			case 2:
+				// 右上角
+				if (right || top) {
+					outRectr[2] = mRadius;
+					outRectr[3] = mRadius;
+				}
+				break;
+			case 4:
+				// 右下角
+				if (right || bottom) {
+					outRectr[4] = mRadius;
+					outRectr[5] = mRadius;
+				}
+				break;
+			case 6:
+				// 左下角
+				if (left || bottom) {
+					outRectr[6] = mRadius;
+					outRectr[7] = mRadius;
+				}
+				break;
+			}
+		}
+		needRefreshOutRectr = false;
+//		buildDraweableState();
+	}
+	
 	/**
 	 * 构建背景Drawble
 	 */
@@ -142,7 +200,9 @@ public class EnableSimpleChangeButton extends Button {
 	@SuppressLint("NewApi")
 	private void buildDraweableState() {
 		initAllBgColor();
-		float outRectr[] = new float[] { mRadius, mRadius, mRadius, mRadius, mRadius, mRadius, mRadius, mRadius };
+		if (needRefreshOutRectr) {
+			outRectr = new float[] { mRadius, mRadius, mRadius, mRadius, mRadius, mRadius, mRadius, mRadius };
+		}
 		// 创建状态管理器
 		StateListDrawable drawable = new StateListDrawable();
 		/**
@@ -186,6 +246,8 @@ public class EnableSimpleChangeButton extends Button {
 		} else {
 			setBackground(drawable);
 		}
+		
+	    
 		buildColorDrawableState();
 	}
 
@@ -196,6 +258,7 @@ public class EnableSimpleChangeButton extends Button {
 	 */
 	public void setRadius(int radius) {
 		this.mRadius = radius;
+		needRefreshOutRectr = true;
 		buildDraweableState();
 	}
 	

@@ -2,10 +2,6 @@ package com.enorth.cms.consts;
 
 public class ParamConst {
 	/**
-	 * 判断当前APK是否为第一次访问的key值（存入SharedPreference）
-	 */
-	public static String ACTIVITY_IS_FIRST_ENTER = "isFirst";
-	/**
 	 * 下拉状态
 	 */
 	public static final int STATUS_PULL_TO_REFRESH = 0;
@@ -123,9 +119,40 @@ public class ParamConst {
 	public static final int MESSAGE_WHAT_SUCCESS = 0;
 	public static final int MESSAGE_WHAT_ERROR = 1;
 	public static final int MESSAGE_WHAT_NO_DATA = 2;
+	/**
+	 * 文字宽度（此处是估算出来的，以后需要用算法计算）
+	 */
+	public static final int FONT_WIDTH = 46;
+	/**
+	 * 默认的频道ID
+	 */
+	public static final Long DEFAULT_CHANNEL_ID = 0L;
+	/**
+	 * 默认的频道名称
+	 */
+	public static final String DEFAULT_CHANNEL_NAME = "新闻中心";
 	
+	/*---------------------SharedPreferences中的存值及其含义 start---------------------*/
+	/**
+	 * 判断当前APK是否为第一次访问的key值（存入SharedPreference）
+	 */
+	public static String ACTIVITY_IS_FIRST_ENTER = "isFirst";
 	/**
 	 * 上次更新时间的字符串常量，用于作为SharedPreferences的键值
 	 */
 	public static final String UPDATED_AT = "updated_at";
+	/**
+	 * 当前的频道ID
+	 */
+	public static final String CUR_CHANNEL_ID = "channelId";
+	/**
+	 * 当前的频道名称
+	 */
+	public static final String CUR_CHANNEL_NAME = "channelName";
+	/**
+	 * 显示当前已选择的频道时，需要将第一级的和当前选择的频道进行显示，中间的用“...”代替，其中此字段存的即为第一级
+	 */
+	public static final String ROOT_CHANNEL_NAME = "rootChannelName";
+	
+	/*---------------------SharedPreferences中的存值及其含义 end-----------------------*/
 }

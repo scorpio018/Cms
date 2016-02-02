@@ -11,8 +11,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.enorth.cms.activity.R;
-import com.enorth.cms.adapter.ListViewViewPagerAdapter;
-import com.enorth.cms.adapter.NewsListViewAdapter;
+import com.enorth.cms.adapter.news.ListViewViewPagerAdapter;
+import com.enorth.cms.adapter.news.NewsListViewAdapter;
 import com.enorth.cms.bean.ButtonColorBasicBean;
 import com.enorth.cms.bean.news_list.BottomMenuBasicBean;
 import com.enorth.cms.bean.news_list.BottomMenuOperateDataBasicBean;
@@ -27,11 +27,13 @@ import com.enorth.cms.listener.listview.ListViewItemOnTouchListener;
 import com.enorth.cms.listener.listview.bottom_menu.BottomMenuOnTouchListener;
 import com.enorth.cms.utils.HttpUtil;
 import com.enorth.cms.utils.LayoutParamsUtil;
+import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.view.listview.newslist.NewsListListView;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -58,8 +60,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressLint("CommitPrefEdits")
 public class NewsListActivity extends Activity implements OnPageChangeListener {
-	
 	/**
 	 * 底部的操作按钮布局
 	 */
@@ -68,6 +70,10 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 	 * 新闻操作类型的按钮布局（待编辑、待签发、已签发），外层需要套一个RelativeLayout以保证按钮能水平居中
 	 */
 	private LinearLayout newsTypeBtnLineLayout;
+	/**
+	 * 副标题左侧的频道名称
+	 */
+	private TextView newsSubTitleTV;
 	/**
 	 * 新闻列表的ViewPager，里面根据newsTypeBtnText的length放相应的ListView
 	 */
@@ -111,7 +117,11 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 	/**
 	 * 手机的宽度
 	 */
-//	private int phoneWidth;
+	private int phoneWidth;
+	/**
+	 * 新闻列表中的标题最多能显示多少字
+	 */
+	private int newsTitleAllowLength;
 	/**
 	 * ViewPager当前页
 	 */
@@ -131,18 +141,19 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 	 */
 	private NewsListActivity thisActivity;
 	/**
+	 * 频道ID
+	 */
+	private Long channelId;
+	/**
+	 * 新闻频道名称
+	 */
+	private String newsSubTitleText;
+	/**
 	 * 进行日期格式化
 	 */
 	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
 	
 	private Intent intent = new Intent();
-	
-	private Handler mHandler = new Handler() {  
-        @Override  
-        public void handleMessage(Message msg) {  
-            super.handleMessage(msg);
-        }  
-    };  
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -166,7 +177,15 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 //		initNewsListLayout();
 		// 加载底部菜单
 		initNewsOperateBtnLayout();
-		
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		channelId = SharedPreUtil.getLong(this, ParamConst.CUR_CHANNEL_ID);
+		newsSubTitleText = SharedPreUtil.getString(thisActivity, ParamConst.CUR_CHANNEL_NAME);
+//		Toast.makeText(thisActivity, "channelId【" + channelId + "】、channelName【" + newsSubTitleText + "】", Toast.LENGTH_SHORT).show();
+		newsSubTitleTV.setText(newsSubTitleText);
 	}
 	
 	/**
@@ -180,23 +199,37 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 		newsOperateBtnBasicColor = ContextCompat.getColor(thisActivity, R.color.bottom_text_color_basic);
 		whiteColor = ContextCompat.getColor(this, R.color.white);
 		blueColor = ContextCompat.getColor(this, R.color.common_blue);
+		// 获取屏幕的分辨率
 		Display display = thisActivity.getWindowManager().getDefaultDisplay();
 		Point size = new Point();
 		display.getSize(size);
-//		phoneWidth = size.x;
+		phoneWidth = size.x;
+		newsTitleAllowLength = phoneWidth / ParamConst.FONT_WIDTH;
 		phoneHeight = size.y;
+		// 另一种获得屏幕分辨率的方式，这里得到的像素值是设备独立像素dp
+		/*DisplayMetrics metrics = new DisplayMetrics();
+		Display dis = this.getWindowManager().getDefaultDisplay();
+		dis.getMetrics(metrics);*/
 		
-		
-		///disableHint/newsOperateBtnCanEnableState
+		// 如果没有频道ID，则存入默认的频道ID
+		channelId = SharedPreUtil.getLong(thisActivity, ParamConst.CUR_CHANNEL_ID);
+		if (channelId == -1L) {
+			SharedPreUtil.resetChannelIdData(thisActivity);
+			newsSubTitleText = ParamConst.DEFAULT_CHANNEL_NAME;
+		} else {
+			newsSubTitleText = SharedPreUtil.getString(thisActivity, ParamConst.CUR_CHANNEL_NAME);
+		}
 	}
 	
 	private void initNewsTitle() {
 		
 	}
 	
+	/**
+	 * 副标题：包括频道名称、排序按钮
+	 */
 	private void initNewsSubTitle() {
 		LinearLayout layout = (LinearLayout) findViewById(R.id.newsSubTitleLineLayout);
-		
 		OnClickListener listener = new View.OnClickListener() {
 			
 			@Override
@@ -206,11 +239,12 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 			}
 		};
 		layout.setOnClickListener(listener);
+		newsSubTitleTV = (TextView) layout.findViewById(R.id.newsSubTitleText);
+		newsSubTitleTV.setText(newsSubTitleText);
 	}
 	
 	@Override
 	public boolean onMenuOpened(int featureId, Menu menu) {
-		// TODO Auto-generated method stub
 		return super.onMenuOpened(featureId, menu);
 	}
 	
@@ -223,9 +257,16 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 		newsTypeBtnLineLayout = (LinearLayout) newsTypeBtnRelaLayout.getChildAt(0);
 		int length = newsTypeBtnText.length;
 		// 此处初始化待编辑、待签发、已签发三个按钮的基本样式
-		LayoutParams params = LayoutParamsUtil.initWrapLayout();
+		LinearLayout.LayoutParams params = LayoutParamsUtil.initPercentWeight(0.9f);
 		for (int i = 0; i < length; i++) {
 			EnableSimpleChangeButton btn = new EnableSimpleChangeButton(this);
+			if (i == 0) {
+				btn.needRaduisPosition(false, false, false, true);
+			} else if (i == length - 1) {
+				btn.needRaduisPosition(false, true, false, false);
+			} else {
+				btn.needRaduisPosition(false, false, false, false);
+			}
 			btn.setText(newsTypeBtnText[i]);
 			ButtonColorBasicBean colorBasicBean = new ButtonColorBasicBean(this);
 			boolean needFocused = i == 0 ? true : false;
@@ -237,15 +278,23 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 				
 				@Override
 				public void onClick(View v) {
-					/*Handler handler = new Handler() {
+//					AnimUtil.showRefreshFrame(thisActivity);
+					new Handler() {
 						@Override
 						public void handleMessage(Message msg) {
 							super.handleMessage(msg);
-							
+							newsListViewPager.setCurrentItem(position, false);
+							try {
+								changeNewsTypeBtnStyleByFocusedState(position);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+							curPosition = position;
+							initNewsOperateBtn();
+//							AnimUtil.hideRefreshFrame(thisActivity);
 						}
-					};*/
-//					newsListViewPager.setCurrentItem(position);
-					newsListViewPager.setCurrentItem(position, false);
+					}.sendEmptyMessage(0);
+					
 					// 调用arrowScroll方法用参数1或者17就可以实现向左翻页；参数2或66就可以实现向右翻页。
 					// 注：当UI中有EditText这种获得focus的widget时，则必须用17和66，否则要报错。
 					/*if (position > curFocusBtn) {
@@ -260,13 +309,7 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 							newsListViewPager.arrowScroll(focusLeft);
 						}
 					}*/
-					try {
-						changeNewsTypeBtnStyleByFocusedState(position);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					curPosition = position;
-					initNewsOperateBtn();
+					
 				}
 			});
 			newsTypeBtnLineLayout.addView(btn, params);
@@ -315,6 +358,7 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 	}
 	
 	private void initViewPager() throws Exception {
+//		AnimUtil.showRefreshFrame(thisActivity);
 		newsListViewPager = (ViewPager) findViewById(R.id.newsListViewPager);
 		LayoutParams layoutParams = LayoutParamsUtil.initCustomLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		views = new ArrayList<View>();
@@ -329,6 +373,7 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 		}
 		ListViewViewPagerAdapter adapter = new ListViewViewPagerAdapter(views);
 		newsListViewPager.setAdapter(adapter);
+//		AnimUtil.hideRefreshFrame(thisActivity);
 		newsListViewPager.addOnPageChangeListener(this);
 	}
 	
@@ -363,6 +408,7 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 							final List<View> items = (List<View>) msg.obj;
 							ListAdapter adapter = new NewsListViewAdapter(items);
 							newsListView.setAdapter(adapter);
+//							AnimUtil.hideRefreshFrame(thisActivity);
 //							ViewUtil.setListViewHeightBasedOnChildren(newsListView);
 						break;
 						case ParamConst.MESSAGE_WHAT_NO_DATA:
@@ -386,11 +432,12 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 			Resources resources = getResources();
 			float titleHeight = resources.getDimension(R.dimen.news_title_height);
 			float subTitleHeight = resources.getDimension(R.dimen.news_sub_title_height);
-//			float operateBtnHeight = resources.getDimension(R.dimen.news_operate_btn_layout_height);
-			int height = (int) (phoneHeight - titleHeight - subTitleHeight);
+			float operateBtnHeight = resources.getDimension(R.dimen.news_operate_btn_layout_height);
+			int height = (int) ((phoneHeight - titleHeight - subTitleHeight - operateBtnHeight) / 2 + titleHeight + subTitleHeight);
 			List<View> items = initDefaultData(errorHint, height);
 			ListAdapter adapter = new NewsListViewAdapter(items);
 			newsListView.setAdapter(adapter);
+//			AnimUtil.hideRefreshFrame(thisActivity);
 		}
 	}
 	
@@ -451,7 +498,11 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 //						addXinxiTouchEvent(itemBean);
 						
 						TextView newsTitle = (TextView) view.findViewById(R.id.tv_news_title);
-						newsTitle.setText(jo.getString("newsTitle"));
+						String title = jo.getString("newsTitle");
+						if (title.length() > newsTitleAllowLength) {
+							title = title.substring(0, newsTitleAllowLength) + "...";
+						}
+						newsTitle.setText(title);
 						TextView newsTime = (TextView) view.findViewById(R.id.tv_news_time);
 						newsTime.setText(jo.getString("newsTime"));
 						TextView newsAuthorName = (TextView) view.findViewById(R.id.tv_news_author_name);
@@ -779,38 +830,52 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 	 */
 	@Override
 	public void onPageSelected(final int position) {
-		Log.e("【开始】", sdf.format(new Date()));
-		int childCount = newsTypeBtnLineLayout.getChildCount();
-		for (int i = 0; i < childCount; i++) {
-			Handler handler = new Handler() {
-				@Override
-				public void handleMessage(Message msg) {
-					super.handleMessage(msg);
+//		AnimUtil.showRefreshFrame(thisActivity);
+		new Handler() {
+			@Override
+			public void handleMessage(Message msg) {
+				super.handleMessage(msg);
+				int childCount = newsTypeBtnLineLayout.getChildCount();
+				for (int i = 0; i < childCount; i++) {
+					
+					ButtonColorBasicBean colorBasicBean = null;
 					try {
-						switch (msg.what) {
-						case ParamConst.MESSAGE_WHAT_SUCCESS:
-							NewsListListView listView = (NewsListListView) msg.obj;
-							initNewsListData(listView, true, "数据请求错误");
-							break;
-						case ParamConst.MESSAGE_WHAT_NO_DATA:
-							listView = (NewsListListView) msg.obj;
-							initNewsListData(listView, false, null);
-						default:
-							break;
+						colorBasicBean = new ButtonColorBasicBean(thisActivity);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					NewsListListView listView = (NewsListListView) views.get(i);
+					try {
+						if (i== position) {
+							changeToCurPosition(colorBasicBean, listView);
+						} else {
+							changeToOtherPosition(colorBasicBean, listView, Math.abs(position - i) > 1, i);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+					Log.e("改变按钮的样式【开始】", sdf.format(new Date()));
+					EnableSimpleChangeButton btn = (EnableSimpleChangeButton) newsTypeBtnLineLayout.getChildAt(i);
+					btn.setColorBasicBean(colorBasicBean);
+					Log.e("改变按钮的样式【结束】", sdf.format(new Date()));
 				}
-			};
+				curPosition = position;
+				initNewsOperateBtn();
+				Log.e("【结束】", sdf.format(new Date()));
+//				AnimUtil.hideRefreshFrame(thisActivity);
+			}
+		}.sendEmptyMessage(0);
+		/*int childCount = newsTypeBtnLineLayout.getChildCount();
+		for (int i = 0; i < childCount; i++) {
+			
 			ButtonColorBasicBean colorBasicBean = null;
 			try {
 				colorBasicBean = new ButtonColorBasicBean(thisActivity);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			NewsListListView listView = (NewsListListView) views.get(i);
+			changeToCurPosition(colorBasicBean, listView);
 			if (i == position) {
 				initNewsTypeBtnStyleByFocusedState(colorBasicBean, true);
 				NewsListViewAdapter adapter = (NewsListViewAdapter) listView.getAdapter();
@@ -846,9 +911,53 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 		}
 		curPosition = position;
 		initNewsOperateBtn();
-		Log.e("【结束】", sdf.format(new Date()));
+		Log.e("【结束】", sdf.format(new Date()));*/
 	}
 	
+	/*private Handler onPageSelectedHandler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			try {
+				switch (msg.what) {
+				case ParamConst.MESSAGE_WHAT_SUCCESS:
+					NewsListListView listView = (NewsListListView) msg.obj;
+					initNewsListData(listView, true, "数据请求错误");
+					break;
+				case ParamConst.MESSAGE_WHAT_NO_DATA:
+					listView = (NewsListListView) msg.obj;
+					initNewsListData(listView, false, null);
+				default:
+					break;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	};*/
+	
+	private void changeToCurPosition(ButtonColorBasicBean colorBasicBean, NewsListListView listView) throws Exception {
+		initNewsTypeBtnStyleByFocusedState(colorBasicBean, true);
+		NewsListViewAdapter adapter = (NewsListViewAdapter) listView.getAdapter();
+//		ListAdapter adapter = listView.getAdapter();
+		int count = adapter.getCount();
+		if (count == 1) {
+			View view = adapter.getView(0, null, null);
+			if (view instanceof RelativeLayout) {
+				initNewsListData(listView, true, "数据请求错误");
+			}
+		}
+		
+	}
+	
+	
+	private void changeToOtherPosition(ButtonColorBasicBean colorBasicBean, NewsListListView listView, boolean needCleanListView, int myPosision) throws Exception {
+		initNewsTypeBtnStyleByFocusedState(colorBasicBean, false);
+		if (needCleanListView) {
+			selectedNewsCount[myPosision] = 0;
+			initNewsListData(listView, false, null);
+		}
+	}
 	/**
 	 * 初始化“添加新闻”按钮，并且可以拖动
 	 * @return

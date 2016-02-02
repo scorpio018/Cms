@@ -1,6 +1,7 @@
 package com.enorth.cms.utils;
 
 import android.widget.AbsListView.LayoutParams;
+import android.widget.LinearLayout;
 
 public class LayoutParamsUtil {
 	/**
@@ -19,6 +20,16 @@ public class LayoutParamsUtil {
 	 */
 	public static LayoutParams initMatchLayout() {
 		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+		return params;
+	}
+	
+	/**
+	 * 初始化按照百分比分配的params
+	 * @param weight
+	 * @return
+	 */
+	public static LinearLayout.LayoutParams initPercentWeight(float weight) {
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, weight);
 		return params;
 	}
 	

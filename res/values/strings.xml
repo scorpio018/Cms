@@ -36,6 +36,8 @@
     <string name="imgBtnChooseVideo">视频</string>
 
     <string name="channel_search_title_text">选择频道</string>
+    <string name="channel_search_title_confirm">完成</string>
     <string name="channel_search_edit_hint">请输入频道名称筛选</string>
     <string name="channel_search_no_change_text1">已选择：</string>
+    <string name="channel_back_to_prev_search">上一级</string>
 </resources>

@@ -6,6 +6,7 @@ import java.util.List;
 import com.enorth.cms.adapter.WelcomeViewPagerAdapter;
 import com.enorth.cms.consts.ParamConst;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -212,12 +213,12 @@ public class WelcomeActivity extends BaseActivity implements OnPageChangeListene
 		intent.setClass(WelcomeActivity.this, MainActivity.class);
 		startActivity(intent);
 		// TODO 正式使用时要取消下面注解的方法（将ParamConst.ACTIVITY_IS_FIRST_ENTER的参数变为false，表示该APP已经看过一次引导图了，下次进入不需要再看）
-//		saveTag();
+		saveTag();
 		finish();
 	}
 
 	private void saveTag() {
-		SharedPreferences pre = getSharedPreferences(ParamConst.ACTIVITY_IS_FIRST_ENTER, 0);
+		SharedPreferences pre = getSharedPreferences(ParamConst.ACTIVITY_IS_FIRST_ENTER, Context.MODE_PRIVATE);
 		Editor editor = pre.edit();
 		editor.putBoolean(ParamConst.ACTIVITY_IS_FIRST_ENTER, false);
 		editor.commit();

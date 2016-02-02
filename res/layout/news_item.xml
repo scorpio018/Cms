@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:minHeight="@dimen/news_item_height"
     android:orientation="horizontal" >
     
 	<ImageView 
@@ -23,18 +23,22 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    >
+	    <LinearLayout 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:gravity="start|top"
+	        android:layout_alignParentTop="true">
 	    <TextView 
 	        android:id="@+id/tv_news_title"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:gravity="start|top"
-	        android:layout_alignParentTop="true"
 	        android:layout_marginTop="@dimen/news_item_news_title_margin_top"
 	        android:layout_marginLeft="@dimen/news_item_news_title_margin_left"
 	        android:layout_marginStart="@dimen/news_item_news_title_margin_left"
 	        android:layout_marginRight="@dimen/news_item_news_title_margin_right"
 	        android:layout_marginEnd="@dimen/news_item_news_title_margin_right"
 	        android:textSize="@dimen/news_title_text_size"/>
+	    </LinearLayout>
 	    <RelativeLayout 
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"

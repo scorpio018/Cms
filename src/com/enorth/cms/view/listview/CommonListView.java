@@ -10,12 +10,12 @@ public class CommonListView extends ListView {
 		super(context);
 	}
 
-	/*public CommonListView(Context context, AttributeSet attr) {
+	public CommonListView(Context context, AttributeSet attr) {
 		super(context, attr);
 	}
 	
 	public CommonListView(Context context, AttributeSet attr, int defStyleAttr) {
 		super(context, attr, defStyleAttr);
-	}*/
+	}
 	
 }

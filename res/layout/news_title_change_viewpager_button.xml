@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<com.enorth.cms.common.EnableSimpleChangeButton xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/news_title_change_viewpager_btn"
-    style="@style/news_title_change_viewpager_btn"
-    >
-    
-
-</com.enorth.cms.common.EnableSimpleChangeButton>

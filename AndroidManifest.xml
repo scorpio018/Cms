@@ -25,7 +25,7 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Light.NoTitleBar" >
         <!-- 正式使用时的开始页面 -->
-        <!-- <activity
+        <activity
             android:name=".SplashActivity"
             android:label="@string/app_name" >
             <intent-filter>
@@ -33,7 +33,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> -->
+        </activity>
         <!-- 使用CrossWalk加载web页面的activity -->
         <!-- <activity
             android:name=".CrossWalkActivity"
@@ -44,15 +44,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> -->
-        <activity
+        <!-- <activity
             android:name=".news.NewsListActivity"
+            android:screenOrientation="portrait"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity> -->
         <activity android:name=".WelcomeActivity"></activity>
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".web.PullableWebViewActivity"></activity>
@@ -60,8 +61,10 @@
         <activity android:name=".material.MaterialUploadActivity"></activity>
         <activity android:name=".material.MaterialBtnActivity"></activity>
         <activity android:name=".BaseActivity"></activity>
-        <activity android:name=".news.ChannelSearchActivity"></activity>
-        <!-- <activity android:name=".news.NewsListActivity"></activity> -->
+        <!-- 软键盘默认不弹出  -->
+        <activity android:name=".news.ChannelSearchActivity"
+            android:windowSoftInputMode="stateUnspecified|stateHidden"></activity>
+        <activity android:name=".news.NewsListActivity"></activity>
     </application>
 
 </manifest>
