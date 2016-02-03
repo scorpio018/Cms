@@ -13,9 +13,10 @@ import org.json.JSONObject;
 import com.enorth.cms.activity.R;
 import com.enorth.cms.adapter.news.ListViewViewPagerAdapter;
 import com.enorth.cms.adapter.news.NewsListViewAdapter;
+import com.enorth.cms.bean.BottomMenuOperateDataBasicBean;
 import com.enorth.cms.bean.ButtonColorBasicBean;
 import com.enorth.cms.bean.news_list.BottomMenuBasicBean;
-import com.enorth.cms.bean.news_list.BottomMenuOperateDataBasicBean;
+import com.enorth.cms.bean.news_list.NewsListBottomMenuOperateDataBean;
 import com.enorth.cms.bean.news_list.NewsListImageViewBasicBean;
 import com.enorth.cms.bean.news_list.NewsListListViewItemBasicBean;
 import com.enorth.cms.common.EnableSimpleChangeButton;
@@ -97,7 +98,7 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 	/**
 	 * 底部菜单的基础bean（里面包括按钮可选/不可选图标、文组描述、提示信息、颜色）
 	 */
-	private BottomMenuOperateDataBasicBean bottomMenuOperateBean = new BottomMenuOperateDataBasicBean();
+	private BottomMenuOperateDataBasicBean bottomMenuOperateBean = new NewsListBottomMenuOperateDataBean();
 	/**
 	 * 底部菜单的默认颜色
 	 */
@@ -278,7 +279,6 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 				
 				@Override
 				public void onClick(View v) {
-//					AnimUtil.showRefreshFrame(thisActivity);
 					new Handler() {
 						@Override
 						public void handleMessage(Message msg) {
@@ -291,7 +291,6 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 							}
 							curPosition = position;
 							initNewsOperateBtn();
-//							AnimUtil.hideRefreshFrame(thisActivity);
 						}
 					}.sendEmptyMessage(0);
 					
@@ -358,7 +357,6 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 	}
 	
 	private void initViewPager() throws Exception {
-//		AnimUtil.showRefreshFrame(thisActivity);
 		newsListViewPager = (ViewPager) findViewById(R.id.newsListViewPager);
 		LayoutParams layoutParams = LayoutParamsUtil.initCustomLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		views = new ArrayList<View>();
@@ -373,7 +371,6 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 		}
 		ListViewViewPagerAdapter adapter = new ListViewViewPagerAdapter(views);
 		newsListViewPager.setAdapter(adapter);
-//		AnimUtil.hideRefreshFrame(thisActivity);
 		newsListViewPager.addOnPageChangeListener(this);
 	}
 	
@@ -408,7 +405,6 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 							final List<View> items = (List<View>) msg.obj;
 							ListAdapter adapter = new NewsListViewAdapter(items);
 							newsListView.setAdapter(adapter);
-//							AnimUtil.hideRefreshFrame(thisActivity);
 //							ViewUtil.setListViewHeightBasedOnChildren(newsListView);
 						break;
 						case ParamConst.MESSAGE_WHAT_NO_DATA:
@@ -437,7 +433,6 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 			List<View> items = initDefaultData(errorHint, height);
 			ListAdapter adapter = new NewsListViewAdapter(items);
 			newsListView.setAdapter(adapter);
-//			AnimUtil.hideRefreshFrame(thisActivity);
 		}
 	}
 	
@@ -830,7 +825,6 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 	 */
 	@Override
 	public void onPageSelected(final int position) {
-//		AnimUtil.showRefreshFrame(thisActivity);
 		new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
@@ -862,7 +856,6 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 				curPosition = position;
 				initNewsOperateBtn();
 				Log.e("【结束】", sdf.format(new Date()));
-//				AnimUtil.hideRefreshFrame(thisActivity);
 			}
 		}.sendEmptyMessage(0);
 		/*int childCount = newsTypeBtnLineLayout.getChildCount();
@@ -875,7 +868,12 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 				e.printStackTrace();
 			}
 			NewsListListView listView = (NewsListListView) views.get(i);
-			changeToCurPosition(colorBasicBean, listView);
+			try {
+				changeToCurPosition(colorBasicBean, listView);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			if (i == position) {
 				initNewsTypeBtnStyleByFocusedState(colorBasicBean, true);
 				NewsListViewAdapter adapter = (NewsListViewAdapter) listView.getAdapter();
@@ -888,7 +886,12 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 						message.obj = listView;
 						message.what = ParamConst.MESSAGE_WHAT_SUCCESS;
 						Log.e("向handler中发送一个message刷新数据【开始】", sdf.format(new Date()));
-						handler.sendMessage(message);
+						try {
+							initNewsListData(listView, true, "数据请求错误");
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						Log.e("向handler中发送一个message刷新数据【结束】", sdf.format(new Date()));
 					}
 				}
@@ -900,7 +903,11 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 					message.obj = listView;
 					message.what = ParamConst.MESSAGE_WHAT_NO_DATA;
 					Log.e("向handler中发送一个message清除数据【开始】", sdf.format(new Date()));
-					handler.sendMessage(message);
+					try {
+						initNewsListData(listView, false, null);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 					Log.e("向handler中发送一个message清除数据【结束】", sdf.format(new Date()));
 				}
 			}

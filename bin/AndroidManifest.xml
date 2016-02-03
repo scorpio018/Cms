@@ -64,7 +64,9 @@
         <!-- 软键盘默认不弹出  -->
         <activity android:name=".news.ChannelSearchActivity"
             android:windowSoftInputMode="stateUnspecified|stateHidden"></activity>
-        <activity android:name=".news.NewsListActivity"></activity>
+        <!-- <activity android:name=".news.NewsListActivity"></activity> -->
+        <!-- <activity android:name=".news.NewsListFixActivity"></activity> -->
+        <activity android:name=".news.NewsListFragActivity"></activity>
     </application>
 
 </manifest>

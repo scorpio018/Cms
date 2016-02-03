@@ -131,6 +131,10 @@ public class ParamConst {
 	 * 默认的频道名称
 	 */
 	public static final String DEFAULT_CHANNEL_NAME = "新闻中心";
+	/**
+	 * 新闻列表中的Fragment的标识
+	 */
+	public static final String NEWS_FRAG_PAGE = "page_num";
 	
 	/*---------------------SharedPreferences中的存值及其含义 start---------------------*/
 	/**

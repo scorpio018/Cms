@@ -269,7 +269,8 @@ public class ChannelSearchActivity extends Activity {
 			public void onClick(View v) {
 				try {
 					channelId = jsonObject.getLong("parentId");
-					if (channelId == 0L) {
+					int channelLevel = jsonObject.getInt("deptLevel");
+					if (channelLevel == 0) {
 						Toast.makeText(thisActivity, "当前已经是最上级", Toast.LENGTH_SHORT).show();
 						return;
 					}
@@ -510,10 +511,10 @@ public class ChannelSearchActivity extends Activity {
 			channelName = substrText(channelName, newsTitleAllowLength);
 			SharedPreUtil.put(thisActivity, ParamConst.ROOT_CHANNEL_NAME, channelName);
 		} else if (channelLevel == 2) {
-			channelName = substrText(SharedPreUtil.getString(thisActivity, ParamConst.ROOT_CHANNEL_NAME), newsTitleAllowLength / 2) + "/" + substrText(channelName, newsTitleAllowLength / 2);
+			channelName = substrText(SharedPreUtil.getString(thisActivity, ParamConst.ROOT_CHANNEL_NAME), newsTitleAllowLength / 2 - 1) + "/" + substrText(channelName, newsTitleAllowLength / 2 - 1);
 //			channelName = SharedPreUtil.getString(thisActivity, ParamConst.ROOT_CHANNEL_NAME) + "/" + channelName;
 		} else {
-			channelName = substrText(SharedPreUtil.getString(thisActivity, ParamConst.ROOT_CHANNEL_NAME), newsTitleAllowLength / 2 - 1) + "/.../" + substrText(channelName, newsTitleAllowLength / 2 - 1);
+			channelName = substrText(SharedPreUtil.getString(thisActivity, ParamConst.ROOT_CHANNEL_NAME), newsTitleAllowLength / 2 - 3) + "/../" + substrText(channelName, newsTitleAllowLength / 2 - 3);
 //			channelName = SharedPreUtil.getString(thisActivity, ParamConst.ROOT_CHANNEL_NAME, "") + "/.../" + channelName;
 		}
 		channelSearchCheckedText.setText(channelName);
@@ -521,6 +522,10 @@ public class ChannelSearchActivity extends Activity {
 	}
 	
 	private String substrText(String text, int length) {
-		return text.substring(0, length);
+		if (text.length() > length) {
+			return text.substring(0, length) + "..";
+		} else {
+			return text;
+		}
 	}
 }

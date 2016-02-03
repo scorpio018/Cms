@@ -1,26 +1,21 @@
-package com.enorth.cms.bean.news_list;
+package com.enorth.cms.bean;
 
 import com.enorth.cms.activity.R;
 import com.enorth.cms.consts.ParamConst;
 
-public class BottomMenuOperateDataBasicBean {
+public abstract class BottomMenuOperateDataBasicBean {
 	/**
 	 * 待编辑时底部菜单选中时的图片样式（按照修改、批注、送签、删除的顺序排列）
 	 */
-	private int[] newsOperateBtnChecked1 = {R.drawable.operate_btn_xiugai_checked, 
-			R.drawable.operate_btn_pizhu_checked, R.drawable.operate_btn_songqian_checked,
-			R.drawable.operate_btn_shanchu_checked};
+	protected int[] newsOperateBtnChecked1;
 	/**
 	 * 待签发时底部菜单选中时的图片样式（按照修改、批注、签发、退回的顺序排列）
 	 */
-	private int[] newsOperateBtnChecked2 = {R.drawable.operate_btn_xiugai_checked, 
-			R.drawable.operate_btn_pizhu_checked, R.drawable.operate_btn_songqian_checked, 
-			R.drawable.operate_btn_tuihui_checked};
+	protected int[] newsOperateBtnChecked2;
 	/**
 	 * 已签发时底部菜单选中时的图片样式（按照修改、批注、撤稿的顺序排列）
 	 */
-	private int[] newsOperateBtnChecked3 = {R.drawable.operate_btn_xiugai_checked, 
-			R.drawable.operate_btn_pizhu_checked, 0, R.drawable.operate_btn_chegao_checked};
+	protected int[] newsOperateBtnChecked3;
 	/**
 	 * 底部菜单选中时的图片样式
 	 */
@@ -28,20 +23,15 @@ public class BottomMenuOperateDataBasicBean {
 	/**
 	 * 待编辑时底部菜单禁止点击时的图片样式（按照修改、批注、送签、删除的顺序排列）
 	 */
-	private int[] newsOperateBtnDisabled1 = {R.drawable.operate_btn_xiugai_uncheck, 
-			R.drawable.operate_btn_pizhu_uncheck, R.drawable.operate_btn_songqian_uncheck,
-			R.drawable.operate_btn_shanchu_uncheck};
+	protected int[] newsOperateBtnDisabled1;
 	/**
 	 * 待签发时底部菜单禁止点击时的图片样式（按照修改、批注、签发、退回的顺序排列）
 	 */
-	private int[] newsOperateBtnDisabled2 = {R.drawable.operate_btn_xiugai_uncheck, 
-			R.drawable.operate_btn_pizhu_uncheck, R.drawable.operate_btn_songqian_uncheck,
-			R.drawable.operate_btn_tuihui_unchecked};
+	protected int[] newsOperateBtnDisabled2;
 	/**
 	 * 已签发时底部菜单禁止点击时的图片样式（按照修改、批注、撤稿的顺序排列）
 	 */
-	private int[] newsOperateBtnDisabled3 = {R.drawable.operate_btn_xiugai_uncheck, 
-			R.drawable.operate_btn_pizhu_uncheck, 0, R.drawable.operate_btn_chegao_uncheck};
+	protected int[] newsOperateBtnDisabled3;
 	/**
 	 * 底部菜单禁止点击时的图片样式
 	 */
@@ -49,19 +39,16 @@ public class BottomMenuOperateDataBasicBean {
 	/**
 	 * 底部菜单的文字描述
 	 */
-	private String[] newsOperateBtnTextContent1 = {"修改", "批注", "送签", "删除"};
-	private String[] newsOperateBtnTextContent2 = {"修改", "批注", "签发", "退回"};
-	private String[] newsOperateBtnTextContent3 = {"修改", "批注", "", "撤稿"};
+	protected String[] newsOperateBtnTextContent1;
+	protected String[] newsOperateBtnTextContent2;
+	protected String[] newsOperateBtnTextContent3;
 	private String[][] newsOperateBtnTextContent;
 	/**
 	 * 底部菜单禁止点击时如果点击，所提示的信息
 	 */
-	private String[] disableHint1 = {"必须选择且仅选择一条待编辑新闻时才可以进行修改", "必须至少选择一条待编辑新闻才能进行批注", 
-			"必须至少选择一条待编辑新闻才能进行送签", "必须至少选择一条待编辑新闻才能进行删除"};
-	private String[] disableHint2 = {"必须选择且仅选择一条待签发新闻时才可以进行修改", "必须至少选择一条待签发新闻才能进行批注", 
-			"必须至少选择一条待签发新闻才能进行签发", "必须至少选择一条待签发新闻才能进行退回"};
-	private String[] disableHint3 = {"必须选择且仅选择一条已签发新闻时才可以进行修改", "必须至少选择一条已签发新闻才能进行批注", 
-			"", "必须至少选择一条已签发新闻才能进行撤稿"};
+	protected String[] disableHint1;
+	protected String[] disableHint2;
+	protected String[] disableHint3;
 	private String[][] disableHint;
 	/**
 	 * 底部菜单可以变为可以点击的条件
@@ -70,17 +57,19 @@ public class BottomMenuOperateDataBasicBean {
 	 * 2.只选中了一个【ParamConst.CAN_ENABLE_STATE_SIMPLE】
 	 * 3.选中了至少一个【ParamConst.CAN_ENABLE_STATE_MORE】
 	 */
-	private int[] newsOperateBtnCanEnableState1 = {ParamConst.CAN_ENABLE_STATE_SIMPLE, ParamConst.CAN_ENABLE_STATE_SIMPLE, ParamConst.CAN_ENABLE_STATE_MORE, ParamConst.CAN_ENABLE_STATE_MORE};
-	private int[] newsOperateBtnCanEnableState2 = {ParamConst.CAN_ENABLE_STATE_SIMPLE, ParamConst.CAN_ENABLE_STATE_SIMPLE, ParamConst.CAN_ENABLE_STATE_MORE, ParamConst.CAN_ENABLE_STATE_MORE};
-	private int[] newsOperateBtnCanEnableState3 = {ParamConst.CAN_ENABLE_STATE_SIMPLE, ParamConst.CAN_ENABLE_STATE_SIMPLE, ParamConst.CAN_ENABLE_STATE_DEFAULT, ParamConst.CAN_ENABLE_STATE_MORE};
+	protected int[] newsOperateBtnCanEnableState1;
+	protected int[] newsOperateBtnCanEnableState2;
+	protected int[] newsOperateBtnCanEnableState3;
 	private int[][] newsOperateBtnCanEnableState;
 	/**
 	 * 当底部菜单可以点击时，文字显示的颜色（按照修改、批注、送签、删除的顺序排列）
 	 */
-	private int[] newsOperateBtnColor = {R.color.bottom_text_color_blue, R.color.bottom_text_color_green, R.color.bottom_text_color_yellow, R.color.bottom_text_color_red};
+	protected int[] newsOperateBtnColor;
 	
+	public abstract void initData();
 	
 	public BottomMenuOperateDataBasicBean() {
+		initData();
 		// 将底部菜单的所有内容进行初始化
 		newsOperateBtnChecked = new int[3][4];
 		newsOperateBtnChecked[0] = newsOperateBtnChecked1;

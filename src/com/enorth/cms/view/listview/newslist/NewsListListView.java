@@ -26,11 +26,11 @@ public class NewsListListView extends CommonListView {
 		this.view = view;
 	}
 	
-	@Override
+	/*@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
 		super.onMeasure(widthMeasureSpec, expandSpec);
-	}
+	}*/
 
 	/*@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

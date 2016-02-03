@@ -2,8 +2,7 @@ package com.enorth.cms.activity;
 
 import com.enorth.cms.activity.material.MaterialBtnActivity;
 import com.enorth.cms.activity.material.MaterialUploadActivity;
-import com.enorth.cms.activity.news.NewsListActivity;
-import com.enorth.cms.activity.web.CrossWalkActivity;
+import com.enorth.cms.activity.news.NewsListFragActivity;
 import com.enorth.cms.activity.web.PullableWebViewActivity;
 
 import android.os.Bundle;
@@ -27,7 +26,7 @@ public class MainActivity extends BaseActivity {
 		initBtnToMaterialUploadActivity();
 		initBtnToMaterialBtnActivity();
 		initBtnToPullableWebViewActivity();
-		initBtnToCrossWalkActivity();
+//		initBtnToCrossWalkActivity();
 		initBtnToNewsListActivity();
 	}
 	
@@ -67,7 +66,7 @@ public class MainActivity extends BaseActivity {
 		});
 	}
 	
-	private void initBtnToCrossWalkActivity() {
+	/*private void initBtnToCrossWalkActivity() {
 		btnToCrossWalkActivity = (Button) findViewById(R.id.btnToCrossWalkActivity);
 		btnToCrossWalkActivity.setOnClickListener(new View.OnClickListener() {
 			
@@ -77,7 +76,7 @@ public class MainActivity extends BaseActivity {
 				startActivity(intent);
 			}
 		});
-	}
+	}*/
 	
 	private void initBtnToNewsListActivity() {
 		btnToNewsListActivity = (Button) findViewById(R.id.btnToNewsListActivity);
@@ -85,7 +84,9 @@ public class MainActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				intent.setClass(MainActivity.this, NewsListActivity.class);
+//				intent.setClass(MainActivity.this, NewsListActivity.class);
+//				intent.setClass(MainActivity.this, NewsListFixActivity.class);
+				intent.setClass(MainActivity.this, NewsListFragActivity.class);
 				startActivity(intent);
 			}
 		});
