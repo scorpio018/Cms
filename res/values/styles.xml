@@ -78,4 +78,11 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
     
+    <style name="AnimationFade">
+
+        <!-- PopupWindow左右弹出的效果 -->
+        <item name="android:windowEnterAnimation">@anim/fade_in_bottom_to_top</item>
+        <item name="android:windowExitAnimation">@anim/fade_out_top_to_bottom</item>
+    </style>
+    
 </resources>

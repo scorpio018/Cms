@@ -1,14 +1,12 @@
 package com.enorth.cms.common;
 
-import com.enorth.cms.activity.R;
 import com.enorth.cms.bean.ButtonColorBasicBean;
+import com.enorth.cms.view.R;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;

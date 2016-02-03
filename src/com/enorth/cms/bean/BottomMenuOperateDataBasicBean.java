@@ -1,8 +1,5 @@
 package com.enorth.cms.bean;
 
-import com.enorth.cms.activity.R;
-import com.enorth.cms.consts.ParamConst;
-
 public abstract class BottomMenuOperateDataBasicBean {
 	/**
 	 * 待编辑时底部菜单选中时的图片样式（按照修改、批注、送签、删除的顺序排列）

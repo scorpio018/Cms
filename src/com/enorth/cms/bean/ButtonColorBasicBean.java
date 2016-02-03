@@ -1,6 +1,6 @@
 package com.enorth.cms.bean;
 
-import com.enorth.cms.activity.R;
+import com.enorth.cms.view.R;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;

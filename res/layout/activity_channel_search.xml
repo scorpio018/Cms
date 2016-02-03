@@ -24,15 +24,28 @@
             android:layout_marginStart="@dimen/news_title_left_icon_margin_left"
             />
         
-        <TextView 
-            android:id="@+id/channelSearchTitleText"
+        <!-- android:text="@string/channel_search_title_text" -->
+        <LinearLayout 
+            android:id="@+id/channelSearchTitleLayout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:text="@string/channel_search_title_text"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            />
+			android:layout_centerVertical="true"
+			android:gravity="center_vertical">
+            
+            <TextView 
+				android:id="@+id/channelSearchTitleText"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textColor="@color/white"
+				android:drawableLeft="@drawable/news_sub_title_channel_iv"
+				android:drawableStart="@drawable/news_sub_title_channel_iv"
+				android:layout_gravity="center_vertical"
+	         />
+            
+        </LinearLayout>
+            
         
         <TextView 
             android:id="@+id/channelTitleMenuConfirm"
@@ -156,12 +169,12 @@
     </RelativeLayout>
     
     <!-- 当前选中频道对应的下级频道 -->
-    <com.enorth.cms.view.listview.newslist.NewsListListView 
+    <com.enorth.cms.widget.listview.newslist.NewsListListView 
         android:id="@+id/childChannelListView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         
-    </com.enorth.cms.view.listview.newslist.NewsListListView>
+    </com.enorth.cms.widget.listview.newslist.NewsListListView>
     <!-- <ListView 
         android:id="@+id/childChannelListView"
         android:layout_width="match_parent"

@@ -1,11 +1,11 @@
 package com.enorth.cms.refreshlayout;
 
-import com.enorth.cms.activity.R;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.listener.OnRefreshListener;
 import com.enorth.cms.pullableview.Pullable;
 import com.enorth.cms.task.AutoRefreshAndLoadTask;
 import com.enorth.cms.task.MyTimer;
+import com.enorth.cms.view.R;
 
 import android.content.Context;
 import android.os.Handler;
@@ -19,7 +19,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**

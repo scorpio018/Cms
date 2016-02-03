@@ -135,6 +135,14 @@ public class ParamConst {
 	 * 新闻列表中的Fragment的标识
 	 */
 	public static final String NEWS_FRAG_PAGE = "page_num";
+	/**
+	 * 全部频道
+	 */
+	public static final String ALL_CHANNEL = "全部频道";
+	/**
+	 * 我的频道
+	 */
+	public static final String MY_CHANNEL = "我的频道";
 	
 	/*---------------------SharedPreferences中的存值及其含义 start---------------------*/
 	/**
@@ -157,6 +165,10 @@ public class ParamConst {
 	 * 显示当前已选择的频道时，需要将第一级的和当前选择的频道进行显示，中间的用“...”代替，其中此字段存的即为第一级
 	 */
 	public static final String ROOT_CHANNEL_NAME = "rootChannelName";
+	/**
+	 * 当前选择的频道类型（分为全部频道、我的频道两种）
+	 */
+	public static final String CUR_CHOOSE_CHANNEL_TYPE = "curChooseChannelType";
 	
 	/*---------------------SharedPreferences中的存值及其含义 end-----------------------*/
 }

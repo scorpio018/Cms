@@ -1,4 +1,4 @@
-package com.enorth.cms.activity;
+package com.enorth.cms.view;
 
 import java.util.ArrayList;
 import java.util.List;

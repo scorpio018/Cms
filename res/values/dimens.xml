@@ -18,6 +18,9 @@
     <dimen name="common_radius_and_stroke_padding_right">2dip</dimen>
     <dimen name="common_radius_and_stroke_padding_bottom">2dip</dimen>
     
+    <dimen name="common_padding">5dip</dimen>
+    <dimen name="common_margin">20dip</dimen>
+    
     <dimen name="news_title_height">50dip</dimen>
     <dimen name="news_title_text_size">18dip</dimen>
     <dimen name="news_title_left_icon_margin_left">20dip</dimen>

@@ -1,6 +1,6 @@
 package com.enorth.cms.listener;
 
-import com.enorth.cms.activity.R;
+import com.enorth.cms.view.R;
 
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -32,7 +32,7 @@ public abstract class CommonOnTouchListener implements OnTouchListener {
 
 	protected boolean isClick = false;
 
-	protected int touchSlop;
+	protected int touchSlop = 0;
 	
 	protected int pressColor = R.color.gray_lighter;
 	

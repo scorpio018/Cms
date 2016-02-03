@@ -2,7 +2,7 @@ package com.enorth.cms.fragment;
 
 import java.util.Random;
 
-import com.enorth.cms.activity.R;
+import com.enorth.cms.view.R;
 
 import android.app.Fragment;
 import android.os.Bundle;

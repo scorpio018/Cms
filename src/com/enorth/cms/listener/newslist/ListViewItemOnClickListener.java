@@ -1,4 +1,4 @@
-package com.enorth.cms.listener.listview;
+package com.enorth.cms.listener.newslist;
 
 import com.enorth.cms.bean.news_list.NewsListListViewItemBasicBean;
 import com.enorth.cms.listener.CommonOnClickListener;

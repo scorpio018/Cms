@@ -1,6 +1,6 @@
 package com.enorth.cms.utils;
 
-import com.enorth.cms.activity.R;
+import com.enorth.cms.view.R;
 
 import android.view.View;
 import android.view.ViewGroup;

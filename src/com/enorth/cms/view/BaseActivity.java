@@ -1,4 +1,4 @@
-package com.enorth.cms.activity;
+package com.enorth.cms.view;
 
 import android.app.Activity;
 import android.content.Intent;

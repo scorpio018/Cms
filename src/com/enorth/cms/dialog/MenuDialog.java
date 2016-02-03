@@ -1,7 +1,7 @@
 package com.enorth.cms.dialog;
 
 
-import com.enorth.cms.activity.R;
+import com.enorth.cms.view.R;
 
 import android.app.Dialog;
 import android.content.Context;

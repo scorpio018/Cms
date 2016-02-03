@@ -1,4 +1,4 @@
-package com.enorth.cms.activity;
+package com.enorth.cms.view;
 
 import com.enorth.cms.consts.ParamConst;
 
@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 public class SplashActivity extends Activity {
 	

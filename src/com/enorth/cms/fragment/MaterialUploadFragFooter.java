@@ -1,6 +1,6 @@
 package com.enorth.cms.fragment;
 
-import com.enorth.cms.activity.R;
+import com.enorth.cms.view.R;
 
 import android.app.Fragment;
 import android.graphics.Interpolator;
