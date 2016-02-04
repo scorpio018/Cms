@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
+
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.MultipartBuilder;
@@ -154,7 +156,14 @@ public class HttpUtil {
 		int code = response.code();
 		switch (code) {
 		case 200:
-			return response.body().string();
+			String result = response.body().string();
+			JSONObject jo = new JSONObject(result);
+			int errorCode = jo.getInt("errorCode");
+			if (errorCode != 0) {
+				throw new Exception(jo.getString("errorMsg"));
+			} else {
+				return jo.getString("result");
+			}
 		case 404:
 			throw new Exception("未找到对应页面");
 		default:

@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 新闻列表的主页面 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    
+    <!-- 标题、副标题、新闻列表 -->
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="@dimen/news_operate_btn_layout_height"
+        android:layout_alignParentTop="true">
+        
+        <!-- 标题 -->
+        <RelativeLayout 
+            android:id="@+id/newsTitle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/news_title_height"
+            android:background="@color/common_blue">
+            
+            <ImageView 
+                android:id="@+id/newsTitleMenuBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/news_menu"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/news_title_left_icon_margin_left"
+                android:layout_marginStart="@dimen/news_title_left_icon_margin_left"
+                />
+            
+            <TextView 
+                android:id="@+id/newsTitleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="@string/news_title_text"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                />
+            
+            <ImageView 
+                android:id="@+id/newsTitleMenuSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/news_search"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/news_title_right_icon_margin_right"
+                android:layout_marginEnd="@dimen/news_title_right_icon_margin_right"
+                />
+            
+        </RelativeLayout>
+        
+        <!-- 副标题 -->
+        <RelativeLayout android:id="@+id/newsSubTitle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/news_sub_title_height"
+            android:background="@color/news_sub_title_color_basic">
+            
+            <LinearLayout 
+                android:id="@+id/newsSubTitleLineLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/news_sub_title_margin_left"
+                android:layout_marginStart="@dimen/news_sub_title_margin_left"
+                android:gravity="center_vertical">
+                
+                <!-- android:text="@string/news_sub_title_Text" -->
+                <TextView 
+	                android:id="@+id/newsSubTitleText"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_marginLeft="@dimen/news_sub_title_margin_left"
+	                android:layout_marginStart="@dimen/news_sub_title_margin_left"
+	                android:layout_gravity="center_vertical"
+	                android:gravity="center_vertical"
+	                android:drawableRight="@drawable/news_sub_title_channel_iv"
+	                android:drawableEnd="@drawable/news_sub_title_channel_iv"
+	                />
+                
+                <!-- <ImageView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/news_sub_title_channel_iv"
+                    android:layout_gravity="center_vertical"/> -->
+                
+            </LinearLayout>
+            
+            <ImageView 
+                android:id="@+id/newsSubTitleSort"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/news_sort"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/news_sort_margin_right"
+                android:layout_marginEnd="@dimen/news_sort_margin_right"
+                />
+            
+        </RelativeLayout>
+        
+        <!-- 待编辑、待签发、已签发按钮 -->
+        <RelativeLayout
+            android:id="@+id/newsTypeBtnRelaLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/news_type_btn_rela_layout_margin_top"
+            android:layout_gravity="center_horizontal">
+            
+            <LinearLayout 
+                android:id="@+id/newsTypeBtnLineLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:weightSum="3"
+                ></LinearLayout>
+            
+        </RelativeLayout>
+        
+        <android.support.v4.view.ViewPager
+        android:id="@+id/newsListViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_gray_default"/>
+        
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/newsOperateBtnLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/news_operate_btn_layout_height"
+        android:orientation="horizontal"
+        android:background="@color/bottom_color_basic"
+        android:layout_alignParentBottom="true">
+        
+        <LinearLayout
+		    style="@style/news_operate_btn_layout"
+		    android:orientation="vertical" >
+		    
+		    <ImageView 
+		        android:id="@+id/operateBtnImageView1"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        />
+		    
+		    <TextView 
+		        android:id="@+id/operateBtnText1"
+		        style="@style/news_operate_btn"/>
+		
+		</LinearLayout>
+        <LinearLayout
+		    style="@style/news_operate_btn_layout"
+		    android:orientation="vertical" >
+		    
+		    <ImageView 
+		        android:id="@+id/operateBtnImageView2"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        />
+		    
+		    <TextView 
+		        android:id="@+id/operateBtnText2"
+		        style="@style/news_operate_btn"/>
+		
+		</LinearLayout>
+        <LinearLayout
+		    style="@style/news_operate_btn_layout"
+		    android:orientation="vertical" >
+		    
+		    <ImageView 
+		        android:id="@+id/operateBtnImageView3"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        />
+		    
+		    <TextView 
+		        android:id="@+id/operateBtnText3"
+		        style="@style/news_operate_btn"/>
+		
+		</LinearLayout>
+        <LinearLayout
+		    style="@style/news_operate_btn_layout"
+		    android:orientation="vertical" >
+		    
+		    <ImageView 
+		        android:id="@+id/operateBtnImageView4"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        />
+		    
+		    <TextView 
+		        android:id="@+id/operateBtnText4"
+		        style="@style/news_operate_btn"/>
+		
+		</LinearLayout>
+        
+    </LinearLayout>
+    
+    <ImageView 
+        android:id="@+id/addNewsBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/news_add"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="@dimen/news_add_margin_bottom"
+        android:layout_marginRight="@dimen/news_add_margin_right"
+        android:layout_marginEnd="@dimen/news_add_margin_right"/>
+    
+</RelativeLayout>
