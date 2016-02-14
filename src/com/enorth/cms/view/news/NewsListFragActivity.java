@@ -4,13 +4,12 @@ import com.enorth.cms.bean.BottomMenuOperateDataBasicBean;
 import com.enorth.cms.bean.news_list.NewsListBottomMenuOperateDataBean;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.handler.newslist.NewsSubTitleHandler;
-import com.enorth.cms.listener.newslist.subtitle.ChooseChannelOnClickListener;
 import com.enorth.cms.listener.newslist.subtitle.ChooseChannelOnTouchListener;
 import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.view.R;
 
 import android.app.Activity;
-import android.view.View.OnClickListener;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -58,8 +57,8 @@ public class NewsListFragActivity extends NewsCommonActivity {
 		layout.setOnTouchListener(listener);
 //		OnClickListener listener = new ChooseChannelOnClickListener(thisActivity);
 //		layout.setOnClickListener(listener);
-		newsSubTitleTV = (TextView) layout.findViewById(R.id.newsSubTitleText);
-		newsSubTitleTV.setText(newsSubTitleText);
+		/*newsSubTitleTV = (TextView) layout.findViewById(R.id.newsSubTitleText);
+		newsSubTitleTV.setText(newsSubTitleText);*/
 	}
 
 

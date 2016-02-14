@@ -20,7 +20,6 @@ import com.enorth.cms.common.EnableSimpleChangeButton;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.fragment.NewsListFragment;
 import com.enorth.cms.handler.newslist.NewsListViewHandler;
-import com.enorth.cms.handler.newslist.NewsSubTitleHandler;
 import com.enorth.cms.listener.CommonOnTouchListener;
 import com.enorth.cms.listener.imageview.ImageViewOnTouchListener;
 import com.enorth.cms.listener.newslist.ListViewItemOnTouchListener;
@@ -142,6 +141,10 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	 */
 	protected int canEnableState = ParamConst.CAN_ENABLE_STATE_DEFAULT;
 	/**
+	 * 在onResume中用于判断副标题的第一次加载是否已经完成
+	 */
+	public boolean isSubTitleInitFinish = false;
+	/**
 	 * 当前activity（用于在匿名内部类中获取当前activity）
 	 */
 	protected Activity thisActivity;
@@ -213,10 +216,13 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	@Override
 	protected void onResume() {
 		super.onResume();
-		channelId = SharedPreUtil.getLong(this, ParamConst.CUR_CHANNEL_ID);
-		newsSubTitleText = SharedPreUtil.getString(thisActivity, ParamConst.CUR_CHANNEL_NAME);
-//		Toast.makeText(thisActivity, "channelId【" + channelId + "】、channelName【" + newsSubTitleText + "】", Toast.LENGTH_SHORT).show();
-		newsSubTitleTV.setText(newsSubTitleText);
+		if (isSubTitleInitFinish) {
+			channelId = SharedPreUtil.getLong(this, ParamConst.CUR_CHANNEL_ID);
+			Long parentId = SharedPreUtil.getLong(this, ParamConst.CUR_CHANNEL_ID_PARENT_ID);
+			newsSubTitleText = SharedPreUtil.getString(thisActivity, ParamConst.CUR_CHANNEL_NAME);
+//			Toast.makeText(thisActivity, "channelId【" + channelId + "】、channelName【" + newsSubTitleText + "】", Toast.LENGTH_SHORT).show();
+			newsSubTitleTV.setText(newsSubTitleText);
+		}
 	}
 	
 	/**
@@ -252,9 +258,10 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	 */
 	@Override
 	public void initSubTitleResult(String result, Handler handler) throws Exception {
+		JSONObject jo = new JSONObject(result);
 		Message msg = new Message();
 		msg.what = ParamConst.MESSAGE_WHAT_SUCCESS;
-		msg.obj = result;
+		msg.obj = jo;
 		handler.sendMessage(msg);
 	}
 	

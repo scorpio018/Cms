@@ -59,12 +59,17 @@ public class ChannelSearchPresenter implements IChannelSearchPresenter {
 
 
 	@Override
-	public void getMyChannel(Integer userId, Handler handler) throws Exception {
+	public void getMyChannel(Integer userId, final Handler handler) throws Exception {
 		Callback callback = new Callback() {
 			
 			@Override
-			public void onResponse(Response arg0) throws IOException {
-				
+			public void onResponse(Response r) throws IOException {
+				try {
+					String resultString = HttpUtil.checkResponseIsSuccess(r);
+					view.getMyChannel(resultString, handler);
+				} catch (Exception e) {
+					view.error(e);
+				}
 			}
 			
 			@Override

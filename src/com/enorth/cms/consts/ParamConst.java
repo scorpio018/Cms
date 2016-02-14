@@ -124,6 +124,15 @@ public class ParamConst {
 	 */
 	public static final int FONT_WIDTH = 46;
 	/**
+	 * 弹出浮层的默认宽度
+	 */
+	public static final int POP_WINDOW_COMMON_WIDTH = 200;
+	/**
+	 * 测试使用：用户ID
+	 */
+	@Deprecated
+	public static final int USER_ID = 1;
+	/**
 	 * 默认的频道ID
 	 */
 	public static final Long DEFAULT_CHANNEL_ID = 0L;
@@ -161,6 +170,10 @@ public class ParamConst {
 	 * 当前的频道名称
 	 */
 	public static final String CUR_CHANNEL_NAME = "channelName";
+	/**
+	 * 当前的频道ID对应的父ID
+	 */
+	public static final String CUR_CHANNEL_ID_PARENT_ID = "parentChannelId";
 	/**
 	 * 显示当前已选择的频道时，需要将第一级的和当前选择的频道进行显示，中间的用“...”代替，其中此字段存的即为第一级
 	 */

@@ -25,6 +25,18 @@
             />
         
         <!-- android:text="@string/channel_search_title_text" -->
+        <!-- <TextView 
+			android:id="@+id/channelSearchTitleText"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textColor="@color/white"
+			android:drawableRight="@drawable/news_sub_title_channel_iv"
+			android:drawableEnd="@drawable/news_sub_title_channel_iv"
+			android:layout_gravity="center_vertical"
+			android:layout_centerHorizontal="true"
+			android:layout_centerVertical="true"
+			android:gravity="center_vertical"
+        /> -->
         <LinearLayout 
             android:id="@+id/channelSearchTitleLayout"
             android:layout_width="wrap_content"
@@ -39,8 +51,8 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:textColor="@color/white"
-				android:drawableLeft="@drawable/news_sub_title_channel_iv"
-				android:drawableStart="@drawable/news_sub_title_channel_iv"
+				android:drawableRight="@drawable/news_sub_title_channel_iv"
+				android:drawableEnd="@drawable/news_sub_title_channel_iv"
 				android:layout_gravity="center_vertical"
 	         />
             
@@ -54,8 +66,10 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/news_title_right_icon_margin_right"
-            android:layout_marginEnd="@dimen/news_title_right_icon_margin_right"
+            android:paddingLeft="@dimen/news_title_right_icon_padding_left"
+            android:paddingStart="@dimen/news_title_right_icon_padding_left"
+            android:paddingRight="@dimen/news_title_right_icon_padding_right"
+            android:paddingEnd="@dimen/news_title_right_icon_padding_right"
             android:text="@string/channel_search_title_confirm"
             android:textColor="@color/white"
             />
@@ -76,6 +90,7 @@
     <!-- 搜索框 -->
     <!-- android:paddingTop="@dimen/channel_search_edit_margin_top" -->
     <RelativeLayout 
+        android:id="@+id/channelSearchEditLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/channel_search_line_layout_height"
         android:background="@color/gray"
@@ -101,6 +116,7 @@
     
     <!-- 当前选中频道和返回上一级按钮 -->
     <RelativeLayout 
+        android:id="@+id/ContentAndBackToPrevLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -108,20 +124,21 @@
         >
         <!-- 当前选中频道 -->
         <LinearLayout 
+            android:id="@+id/channelSearchContentLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true">
-            <TextView 
+            <!-- <TextView 
                 android:id="@+id/channelSearchNoChangeText1"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="@string/channel_search_no_change_text1"
 	            android:textSize="@dimen/channel_search_common_text_size"
 	            android:layout_marginLeft="@dimen/channel_search_common_text_margin_left"
-	            android:layout_marginStart="@dimen/channel_search_common_text_margin_left"/>
+	            android:layout_marginStart="@dimen/channel_search_common_text_margin_left"/> -->
         
 	        <TextView 
 	            android:id="@+id/channelSearchCheckedText"

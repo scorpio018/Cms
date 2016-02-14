@@ -25,6 +25,8 @@
     <dimen name="news_title_text_size">18dip</dimen>
     <dimen name="news_title_left_icon_margin_left">20dip</dimen>
     <dimen name="news_title_right_icon_margin_right">20dip</dimen>
+    <dimen name="news_title_right_icon_padding_left">20dip</dimen>
+    <dimen name="news_title_right_icon_padding_right">20dip</dimen>
     <dimen name="news_sub_title_height">50dip</dimen>
     <dimen name="news_sub_title_margin_left">15dip</dimen>
     <dimen name="news_sort_margin_right">20dip</dimen>
@@ -80,6 +82,7 @@
     <dimen name="news_add_margin_bottom">70dip</dimen>
     <dimen name="news_add_margin_right">30dip</dimen>
     
+    <dimen name="channel_confirm_btn_width">80dip</dimen>
     <dimen name="channel_search_line_layout_height">50dip</dimen>
     <dimen name="channel_search_edit_margin_left">10dip</dimen>
     <dimen name="channel_search_edit_margin_top">10dip</dimen>
@@ -99,5 +102,7 @@
     <dimen name="channel_back_to_prev_search_layout_margin_right">5dip</dimen>
     <dimen name="channel_back_to_prev_search_layout_margin_top">5dip</dimen>
     
+    <dimen name="popup_window_channel_search_layout_padding_top">10dip</dimen>
+    <dimen name="popup_window_channel_search_layout_padding_bottom">10dip</dimen>
 
 </resources>

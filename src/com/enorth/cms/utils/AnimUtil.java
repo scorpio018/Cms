@@ -69,7 +69,7 @@ public class AnimUtil {
 			refreshLayout = (FrameLayout) inflater.inflate(R.layout.refresh_layout_common, null);
 			int color = ContextCompat.getColor(activity, R.color.dark_gray);
 			refreshLayout.setBackgroundColor(color);
-			refreshLayout.getBackground().setAlpha(200);
+			refreshLayout.getBackground().setAlpha(120);
 			final ImageView refreshIV = (ImageView) refreshLayout.getChildAt(0);
 			rotateAnimation.setInterpolator(lir);
 			new Handler() {
