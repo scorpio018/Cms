@@ -684,7 +684,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 		};
 		listViewItemOnTouchListener.changeColor(R.color.bg_gray_press, R.color.bg_gray_default);
 		bean.getView().setOnTouchListener(listViewItemOnTouchListener);
-		CommonOnClickListener listViewItemOnClickListener = new CommonOnClickListener() {
+		/*CommonOnClickListener listViewItemOnClickListener = new CommonOnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -695,7 +695,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 				}
 			}
 		};
-		bean.getView().setOnClickListener(listViewItemOnClickListener);
+		bean.getView().setOnClickListener(listViewItemOnClickListener);*/
 	}
 	
 	private void channelClick(NewsListImageViewBasicBean bean) throws Exception {
@@ -707,6 +707,17 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 			curCheckChannelId = Long.parseLong(bean.getId());
 			curCheckChannelName = bean.getName();
 			checkChannel(bean);
+			if (bean.isSelected()) {
+				bean.getImageView().setImageResource(bean.getImageUncheckResource());
+				bean.getImageView().setSelected(false);
+				bean.setSelected(false);
+			} else {
+//				checkBtn.setImageResource(R.drawable.check_btn);
+//				checkBtn.setSelected(true);
+				bean.getImageView().setImageResource(bean.getImageCheckedResource());
+				bean.getImageView().setSelected(true);
+				bean.setSelected(true);
+			}
 		}
 	}
 	
