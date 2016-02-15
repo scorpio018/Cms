@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -86,6 +87,14 @@ public class AnimUtil {
 			refreshLayout = (FrameLayout) frameView;
 			refreshLayout.setVisibility(View.VISIBLE);
 		}
+		// 此处为了防止在显示时点击事件穿透到浮层后方的控件
+		refreshLayout.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				return true;
+			}
+		});
 		
 	}
 	

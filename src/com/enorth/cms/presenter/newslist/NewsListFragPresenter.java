@@ -53,6 +53,7 @@ public class NewsListFragPresenter implements INewsListFragPresenter {
 						msg.obj = "错误信息：" + e.getMessage();
 						handler.sendMessage(msg);
 					} catch (Exception e1) {
+						HttpUtil.responseOnFailure(r, e, handler);
 						e1.printStackTrace();
 					}
 				}
@@ -60,7 +61,7 @@ public class NewsListFragPresenter implements INewsListFragPresenter {
 
 			@Override
 			public void onFailure(Request r, IOException e) {
-				commonOnFailure(r, e, handler);
+				HttpUtil.requestOnFailure(r, e, handler);
 			}
 		};
 		HttpUtil.okPost(url, params, callback);
@@ -90,7 +91,7 @@ public class NewsListFragPresenter implements INewsListFragPresenter {
 			
 			@Override
 			public void onFailure(Request r, IOException e) {
-				commonOnFailure(r, e, handler);
+				HttpUtil.requestOnFailure(r, e, handler);
 			}
 		};
 		List<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
@@ -99,15 +100,4 @@ public class NewsListFragPresenter implements INewsListFragPresenter {
 		HttpUtil.okPost(UrlConst.GET_CUR_CHANNEL, params, callback);
 	}
 
-	public void commonOnFailure(Request r, IOException e, Handler handler) {
-		Message message = new Message();
-		String errorMsg = e.getMessage();
-		if (errorMsg == null) {
-			errorMsg = "服务器异常";
-		}
-		Log.e("错误信息", errorMsg);
-		message.what = ParamConst.MESSAGE_WHAT_ERROR;
-		message.obj = errorMsg;
-		handler.sendMessage(message);
-	}
 }

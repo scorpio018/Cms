@@ -19,6 +19,8 @@ public class NewsListImageViewBasicBean extends ImageBasicBean {
 	
 	private boolean canClick;
 	
+	private boolean hasChild;
+	
 	public boolean isSelected() {
 		return isSelected;
 	}
@@ -65,6 +67,40 @@ public class NewsListImageViewBasicBean extends ImageBasicBean {
 
 	public void setCanClick(boolean canClick) {
 		this.canClick = canClick;
+	}
+	
+	public boolean isHasChild() {
+		return hasChild;
+	}
+
+	public void setHasChild(boolean hasChild) {
+		this.hasChild = hasChild;
+	}
+
+	@Override
+	public int hashCode() {
+		return id == null ? 0 : id.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		NewsListImageViewBasicBean bean = (NewsListImageViewBasicBean) o;
+		if (id != null) {
+			if (!id.equals(bean.getId())) {
+				return false;
+			}
+		} else {
+			if (bean.getId() != null) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

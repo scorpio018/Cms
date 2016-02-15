@@ -97,7 +97,7 @@
         android:orientation="horizontal"
         >
         
-        <EditText 
+        <!-- <EditText 
             android:id="@+id/channelSearchEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -110,7 +110,21 @@
             android:gravity="center"
             android:layout_centerInParent="true"
             android:inputType="none"
-            />
+            /> -->
+        <AutoCompleteTextView 
+            android:id="@+id/channelSearchEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/channel_search_edit_margin_left"
+            android:layout_marginStart="@dimen/channel_search_edit_margin_left"
+            android:layout_marginRight="@dimen/channel_search_edit_margin_right"
+            android:layout_marginEnd="@dimen/channel_search_edit_margin_right"
+            android:layout_marginBottom="@dimen/channel_search_edit_margin_bottom"
+            android:hint="@string/channel_search_edit_hint"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:completionThreshold="1"
+            android:inputType="none"/>
         
     </RelativeLayout>
     

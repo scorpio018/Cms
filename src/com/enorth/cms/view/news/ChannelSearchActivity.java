@@ -1,7 +1,9 @@
 package com.enorth.cms.view.news;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,7 +15,6 @@ import com.enorth.cms.bean.news_list.NewsListImageViewBasicBean;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.handler.newslist.AllChannelSearchHandler;
 import com.enorth.cms.handler.newslist.MyChannelSearchHandler;
-import com.enorth.cms.listener.CommonOnClickListener;
 import com.enorth.cms.listener.CommonOnTouchListener;
 import com.enorth.cms.listener.imageview.ImageViewOnTouchListener;
 import com.enorth.cms.listener.newslist.ListViewItemOnTouchListener;
@@ -30,26 +31,21 @@ import com.enorth.cms.widget.listview.newslist.NewsListListView;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Loader;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AbsListView.LayoutParams;
-import android.widget.EditText;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -80,15 +76,15 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	/**
 	 * 当前已选择的频道ID
 	 */
-	private Long channelId = 0L;
+	public Long channelId = 0L;
 	/**
 	 * 当前已选择的频道名称
 	 */
-	private String channelName;
+	public String channelName;
 	/**
 	 * 当前进入该acitivity时频道ID对应的父ID
 	 */
-	private Long parentChannelId = 0L;
+	public Long parentChannelId = 0L;
 	
 //	private List<Long> channelIdSearchRecord;
 	/**
@@ -106,7 +102,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	/**
 	 * 搜索框
 	 */
-	private EditText searchChannelET;
+	public AutoCompleteTextView searchChannelET;
 	/**
 	 * 包裹当前频道的目录和返回上一级按钮的layout
 	 */
@@ -143,6 +139,10 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 * 接口返回的json数据
 	 */
 	private JSONObject jsonObject;
+	/**
+	 * 频道名称的缩写集合
+	 */
+	public List<Map<NewsListImageViewBasicBean, List<String>>> shortNames;
 	/**
 	 * 正在加载时的浮层的颜色
 	 */
@@ -417,8 +417,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	}
 	
 	private void initEditTextEvent() {
-		searchChannelET = (EditText) findViewById(R.id.channelSearchEdit);
-		
+		searchChannelET = (AutoCompleteTextView) findViewById(R.id.channelSearchEdit);
 	}
 	
 	/**
@@ -450,7 +449,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 * 将刚刚进入页面需要加载的频道列表和当前的频道的数据进行加载
 	 * @throws Exception
 	 */
-	private void initChannelDefaultData() throws Exception {
+	public void initChannelDefaultData() throws Exception {
 //		initDefaultData(null);
 		AnimUtil.showRefreshFrame(thisActivity);
 		String curChooseChannelType = SharedPreUtil.getString(thisActivity, ParamConst.CUR_CHOOSE_CHANNEL_TYPE);
@@ -573,6 +572,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	private synchronized List<View> setDataToItems(JSONArray jsonArray, boolean canClick) throws JSONException {
 		List<View> views = new ArrayList<View>();
 		listViewItem = new ArrayList<NewsListImageViewBasicBean>();
+		shortNames = new ArrayList<Map<NewsListImageViewBasicBean,List<String>>>();
  		LayoutInflater inflater = LayoutInflater.from(this);
 		int length = jsonArray.length();
 		for (int i = 0; i < length; i++) {
@@ -590,9 +590,11 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 			ivBean.setView(layout);
 			ImageView checkBtn = (ImageView) layout.findViewById(R.id.iv_check_btn);
 			ivBean.setImageView(checkBtn);
+			// 判断是否可以进入下一级频道的标识，在“我的频道”中，不允许进入下级频道
 			if (canClick) {
 				ImageView next = (ImageView) layout.findViewById(R.id.iv_news_next);
 				boolean isHasChild = jo.getBoolean("hasChild");
+				ivBean.setHasChild(isHasChild);
 				if (isHasChild) {
 					next.setVisibility(View.VISIBLE);
 					ivBean.setCanClick(true);
@@ -603,6 +605,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 			}
 			addCheckBtnClickEvent(ivBean);
 			addListViewItemClickEvent(ivBean);
+			saveShortNames(jo.getString("pinyin"), ivBean);
 			listViewItem.add(ivBean);
 			views.add(layout);
 		}
@@ -654,7 +657,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 		bean.getImageView().setOnTouchListener(listViewCheckBtnOnTouchListener);
 	}
 	
-	private void checkChannel(NewsListImageViewBasicBean bean) {
+	public void checkChannel(NewsListImageViewBasicBean bean) {
 		if (!bean.getImageView().isSelected()) {
 			for (NewsListImageViewBasicBean b : listViewItem) {
 				if (b.getImageView().isSelected()) {
@@ -696,6 +699,17 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 			}
 		};
 		bean.getView().setOnClickListener(listViewItemOnClickListener);*/
+	}
+	
+	private void saveShortNames(String shortName, NewsListImageViewBasicBean bean) {
+		Map<NewsListImageViewBasicBean, List<String>> resultMap = new HashMap<NewsListImageViewBasicBean, List<String>>();
+		String[] splitShortNames = shortName.split(",");
+		List<String> resultNames = new ArrayList<String>();
+		for (String str : splitShortNames) {
+			resultNames.add(str);
+		}
+		resultMap.put(bean, resultNames);
+		shortNames.add(resultMap);
 	}
 	
 	private void channelClick(NewsListImageViewBasicBean bean) throws Exception {

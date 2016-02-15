@@ -1,5 +1,8 @@
 package com.enorth.cms.view;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import com.enorth.cms.view.material.MaterialBtnActivity;
 import com.enorth.cms.view.material.MaterialUploadActivity;
 import com.enorth.cms.view.news.NewsListFragActivity;
@@ -8,6 +11,7 @@ import com.enorth.cms.view.web.PullableWebViewActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends BaseActivity {
@@ -23,11 +27,18 @@ public class MainActivity extends BaseActivity {
 	}
 
 	private void init() {
+		initCurTime();
 		initBtnToMaterialUploadActivity();
 		initBtnToMaterialBtnActivity();
 		initBtnToPullableWebViewActivity();
 //		initBtnToCrossWalkActivity();
 		initBtnToNewsListActivity();
+	}
+	
+	private void initCurTime() {
+		String curTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		TextView curTimeTv = (TextView) findViewById(R.id.curTime);
+		curTimeTv.setText(curTime);
 	}
 	
 	private void initBtnToMaterialUploadActivity() {

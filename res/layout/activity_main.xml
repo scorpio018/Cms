@@ -4,6 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     style="?android:attr/buttonBarStyle">
+    
+    <TextView 
+        android:id="@+id/curTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/light_blue"
+        android:textSize="24dip"/>
 
     <Button 
         android:id="@+id/btnToMaterialUploadActivity"

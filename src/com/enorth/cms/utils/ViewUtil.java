@@ -1,7 +1,13 @@
 package com.enorth.cms.utils;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import com.enorth.cms.bean.news_list.NewsListImageViewBasicBean;
 import com.enorth.cms.view.R;
 
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -9,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ViewUtil {
 	public static void setListViewHeightBasedOnChildren(ListView listView) {
@@ -54,5 +61,15 @@ public class ViewUtil {
 			}
 		}
 		return heightMeasureSpec;
+	}
+	
+	public static NewsListImageViewBasicBean getNewsListImageViewBasicBean(Map<NewsListImageViewBasicBean, List<String>> value, Context context) {
+		Set<NewsListImageViewBasicBean> key = value.keySet();
+		if (key.size() > 1) {
+			Toast.makeText(context, "搜索数据有误，请联系管理员", Toast.LENGTH_SHORT).show();
+			return null;
+		}
+		Object[] array = key.toArray();
+		return (NewsListImageViewBasicBean) array[0];
 	}
 }

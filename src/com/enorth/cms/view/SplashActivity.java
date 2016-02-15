@@ -1,6 +1,7 @@
 package com.enorth.cms.view;
 
 import com.enorth.cms.consts.ParamConst;
+import com.enorth.cms.view.news.NewsListFragActivity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -48,7 +49,8 @@ public class SplashActivity extends Activity {
 	}
 	
 	private void toMainActivity() {
-		intent.setClass(SplashActivity.this, MainActivity.class);
+//		intent.setClass(SplashActivity.this, MainActivity.class);
+		intent.setClass(SplashActivity.this, NewsListFragActivity.class);
 		startActivity(intent);
 	}
 	

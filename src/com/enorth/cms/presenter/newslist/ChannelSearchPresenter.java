@@ -42,7 +42,7 @@ public class ChannelSearchPresenter implements IChannelSearchPresenter {
 					view.initChannelData(resultString, handler);
 				} catch (Exception e) {
 					Log.e("error", e.getMessage());
-					view.onFailure(e);
+					HttpUtil.responseOnFailure(r, e, handler);
 					e.printStackTrace();
 				}
 				
@@ -50,7 +50,7 @@ public class ChannelSearchPresenter implements IChannelSearchPresenter {
 			
 			@Override
 			public void onFailure(Request r, IOException e) {
-				view.onFailure(e);
+				HttpUtil.requestOnFailure(r, e, handler);
 			}
 		};
 		HttpUtil.okPost(UrlConst.CHANNEL_SEARCH_POST_URL, params, callback);
@@ -68,13 +68,14 @@ public class ChannelSearchPresenter implements IChannelSearchPresenter {
 					String resultString = HttpUtil.checkResponseIsSuccess(r);
 					view.getMyChannel(resultString, handler);
 				} catch (Exception e) {
-					view.error(e);
+//					view.error(e);
+					HttpUtil.responseOnFailure(r, e, handler);
 				}
 			}
 			
 			@Override
 			public void onFailure(Request r, IOException e) {
-				view.onFailure(e);
+				HttpUtil.requestOnFailure(r, e, handler);
 			}
 		};
 		List<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();

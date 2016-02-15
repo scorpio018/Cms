@@ -7,6 +7,7 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import com.enorth.cms.consts.ParamConst;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.MultipartBuilder;
@@ -14,6 +15,10 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
+
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 
 public class HttpUtil {
 	// OkHttpClient只需要保持一个对象即可，没必要多次实例化
@@ -249,5 +254,25 @@ public class HttpUtil {
 	 */
 	public static String attachHttpGetParam(String url, String name, String value) {
 		return url + "?" + name + "=" + value;
+	}
+	
+	public static void requestOnFailure(Request r, Exception e, Handler handler) {
+		commonOnFailure(e, handler);
+	}
+	
+	public static void responseOnFailure(Response r, Exception e, Handler handler) {
+		commonOnFailure(e, handler);
+	}
+	
+	public static void commonOnFailure(Exception e, Handler handler) {
+		Message message = new Message();
+		String errorMsg = e.getMessage();
+		if (errorMsg == null) {
+			errorMsg = "服务器异常";
+		}
+		Log.e("错误信息", errorMsg);
+		message.what = ParamConst.MESSAGE_WHAT_ERROR;
+		message.obj = errorMsg;
+		handler.sendMessage(message);
 	}
 }

@@ -8,7 +8,12 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="21" />
     
+    <!-- CCESS_COARSE_LOCATION或者ACCESS_FINE_LOCATION权限是使用LoactionManger方法所必须依靠的。
+    	例如，如果你的应用程序仅仅使用基于网络的位置提供者，你需要声明ACCESS_COARSE_LOCATION权限。
+    	更高精度的GPS需要ACCESS_FINE_LOCATION权限。
+    	注意声明ACCESS_FINE_LOCATION权限已经包含了ACCESS_COARSE_LOCATION。 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> -->
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 	<uses-permission android:name="android.permission.CAMERA" />
