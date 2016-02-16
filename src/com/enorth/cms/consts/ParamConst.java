@@ -132,6 +132,15 @@ public class ParamConst {
 	 */
 	@Deprecated
 	public static final int USER_ID = 1;
+	// 由于频道搜索页中有频道列表的ListView和搜索频道的ListView，所以需要考虑到用户是选择哪个上面的频道后进行跳转到下一级或选择频道返回新闻列表中
+	/**
+	 * 当前用户点击的频道item是在ChannelSearchActivity中
+	 */
+	public static final int CUR_CHANNEL_LIST_ENABLE_VIEW_CHANNEL_SEARCH_ACTIVITY = 1;
+	/**
+	 * 当前用户点击的频道item时在AutoCompleteTextView中
+	 */
+	public static final int CUR_CHANNEL_LIST_ENABLE_VIEW_AUTO_COMPLETE_TEXT_VIEW = 2;
 	/**
 	 * 默认的频道ID
 	 */

@@ -42,7 +42,10 @@ public abstract class CommonOnTouchListener implements OnTouchListener {
 		this.pressColor = pressColor;
 		this.normalColor = normalColor;
 	}
-	
+	/**
+	 * 在手指刚刚触摸时触发该方法（用于获取焦点时提供的方法）
+	 */
+	public abstract void onTouchBegin();
 	/**
 	 * 判断点击的时候是否要将背景变成灰色
 	 * @return
@@ -72,6 +75,7 @@ public abstract class CommonOnTouchListener implements OnTouchListener {
 	public boolean onTouch(View v, MotionEvent event) {
 		switch (event.getActionMasked()) {
 		case MotionEvent.ACTION_DOWN:
+			onTouchBegin();
 			downX = v.getScaleX();
 			downY = v.getScaleY();
 			touchStartX = event.getRawX();
@@ -82,7 +86,7 @@ public abstract class CommonOnTouchListener implements OnTouchListener {
 				int color = ContextCompat.getColor(v.getContext(), pressColor);
 				v.setBackgroundColor(color);
 			}
-			Log.w("MotionEvent.ACTION_DOWN", "【x:" + downX + "、y:" + downY + "】");
+//			Log.w("MotionEvent.ACTION_DOWN", "【x:" + downX + "、y:" + downY + "】");
 			isClick = true;
 			break;
 		case MotionEvent.ACTION_POINTER_DOWN:

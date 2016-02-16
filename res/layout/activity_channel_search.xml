@@ -111,19 +111,23 @@
             android:layout_centerInParent="true"
             android:inputType="none"
             /> -->
+            <!-- android:layout_marginLeft="@dimen/channel_search_edit_margin_left"
+            android:layout_marginStart="@dimen/channel_search_edit_margin_left"
+            android:layout_marginRight="@dimen/channel_search_edit_margin_right"
+            android:layout_marginEnd="@dimen/channel_search_edit_margin_right"
+            android:layout_marginBottom="@dimen/channel_search_edit_margin_bottom" -->
         <AutoCompleteTextView 
             android:id="@+id/channelSearchEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/channel_search_edit_margin_left"
-            android:layout_marginStart="@dimen/channel_search_edit_margin_left"
-            android:layout_marginRight="@dimen/channel_search_edit_margin_right"
-            android:layout_marginEnd="@dimen/channel_search_edit_margin_right"
-            android:layout_marginBottom="@dimen/channel_search_edit_margin_bottom"
             android:hint="@string/channel_search_edit_hint"
             android:gravity="center"
             android:layout_centerInParent="true"
             android:completionThreshold="1"
+            android:drawableLeft="@drawable/edit_text_search"
+            android:drawableStart="@drawable/edit_text_search"
+            android:drawableRight="@drawable/edit_text_cross"
+            android:drawableEnd="@drawable/edit_text_cross"
             android:inputType="none"/>
         
     </RelativeLayout>

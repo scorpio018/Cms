@@ -1,6 +1,5 @@
 package com.enorth.cms.view.news;
 
-import android.app.DownloadManager.Request;
 import android.os.Handler;
 
 public interface IChannelSearchView {

@@ -30,7 +30,15 @@ public class ChannelSearchOnItemClickListener extends CommonOnItemClickListener 
 		if (bean == null) {
 			return;
 		}
-		
+		try {
+			adapter.channelClick(bean);
+			adapter.objects.clear();
+			// 此处为搜索框中弹出的PopupWindow
+			activity.searchChannelET.dismissDropDown();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

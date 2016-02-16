@@ -1,6 +1,8 @@
 package com.enorth.cms.adapter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.enorth.cms.filter.SearchCommonFilter;
@@ -35,7 +37,7 @@ public abstract class SearchCommonFilterAdapter<T> extends BaseAdapter implement
 	
 	protected SearchCommonFilter<T> filter;
 	
-	private LayoutInflater inflater;
+	protected LayoutInflater inflater;
 	/**
 	 * 在getView时使用，放入全局变量是为了能够让继承该类的子类在getItem方法中能够获取该view
 	 */
@@ -136,31 +138,7 @@ public abstract class SearchCommonFilterAdapter<T> extends BaseAdapter implement
 	 * @param resource
 	 * @return
 	 */
-	public View createViewFromResource(int position, View convertView, ViewGroup parent, int resource) {
-		TextView text = null;
-		if (convertView == null) {
-			curView = inflater.inflate(resource, parent, false);
-		} else {
-			curView = convertView;
-		}
-		// 此处判断是否存在该TextView，如果不存在，则说明是在getItem中进行自定义了，不需要进行多余的步骤，直接返回curView即可
-		try {
-			text = (TextView) curView.findViewById(R.id.channel_search_item_tv);
-		} catch (ClassCastException e) {
-			throw new IllegalStateException("公共搜索适配器无法将该resourceId[" + resource + "]转换成TextView", e);
-		} catch (Exception e) {
-			getItem(position);
-			return curView;
-		}
-		// 如果到达此步骤，则说明是默认的搜索布局，只需单纯的获得text值并存入TextView中即可
-		Object item = getItem(position);
-		if (item instanceof CharSequence) {
-			text.setText((CharSequence) item);
-		} else {
-			text.setText(item.toString());
-		}
-		return curView;
-	}
+	public abstract View createViewFromResource(int position, View convertView, ViewGroup parent, int resource);
 
 	@Override
 	public Filter getFilter() {

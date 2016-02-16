@@ -22,13 +22,6 @@ public class SearchChannelFilter extends SearchCommonFilter<Map<NewsListImageVie
 		if (constraint == null) {
 			return;
 		}
-		/*Set<NewsListImageViewBasicBean> key = value.keySet();
-		if (key.size() > 1) {
-			Toast.makeText(super.context, "搜索数据有误，请联系管理员", Toast.LENGTH_SHORT).show();
-			return;
-		}
-		Object[] array = key.toArray();
-		NewsListImageViewBasicBean bean = (NewsListImageViewBasicBean) array[0];*/
 		NewsListImageViewBasicBean bean = ViewUtil.getNewsListImageViewBasicBean(value, context);
 		if (bean == null) {
 			return;

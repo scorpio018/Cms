@@ -10,14 +10,20 @@ import com.enorth.cms.view.R;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class ViewUtil {
+	
+	public static InputMethodManager inputMethodManager;
+	
 	public static void setListViewHeightBasedOnChildren(ListView listView) {
 		// 获取ListView对应的Adapter
 		ListAdapter listAdapter = listView.getAdapter();
@@ -63,6 +69,12 @@ public class ViewUtil {
 		return heightMeasureSpec;
 	}
 	
+	/**
+	 * 在频道搜索页进行频道搜索时使用，获取item对应的bean
+	 * @param value
+	 * @param context
+	 * @return
+	 */
 	public static NewsListImageViewBasicBean getNewsListImageViewBasicBean(Map<NewsListImageViewBasicBean, List<String>> value, Context context) {
 		Set<NewsListImageViewBasicBean> key = value.keySet();
 		if (key.size() > 1) {
@@ -71,5 +83,48 @@ public class ViewUtil {
 		}
 		Object[] array = key.toArray();
 		return (NewsListImageViewBasicBean) array[0];
+	}
+	
+	/**
+	 * 软键盘的显示和隐藏
+	 * @param context
+	 * @param v
+	 * @param hasFocus
+	 */
+	public static void keyboardDo(Context context, View v, boolean hasFocus) {
+        if (hasFocus) {//如果有焦点就显示软件盘
+        	initInputMethodManager(context);
+        } else {//否则就隐藏
+    	   keyboardHidden(context, v);
+       }
+	}
+	
+	/**
+	 * 初始化软键盘管理类
+	 * @param context
+	 */
+	private static void initInputMethodManager(Context context) {
+		if (inputMethodManager == null) {
+			inputMethodManager = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+		}
+	}
+	
+	/**
+	 * 显示软键盘
+	 * @param context
+	 * @param v
+	 */
+	public static void keyboardShow(Context context, View v) {
+		initInputMethodManager(context);
+		inputMethodManager.showSoftInputFromInputMethod(v.getWindowToken() , 0);
+	}
+	/**
+	 * 隐藏软键盘
+	 * @param context
+	 * @param v
+	 */
+	public static void keyboardHidden(Context context, View v) {
+		initInputMethodManager(context);
+		inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
 	}
 }

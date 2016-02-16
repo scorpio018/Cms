@@ -601,6 +601,12 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 				}
 				changeCanEnableState();
 			}
+
+			@Override
+			public void onTouchBegin() {
+				// TODO Auto-generated method stub
+				
+			}
 		};
 		bean.getImageView().setOnTouchListener(listViewCheckBtnOnTouchListener);
 	}
@@ -621,6 +627,12 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 			@Override
 			public void onImgChangeDo() {
 				Toast.makeText(thisActivity, "点击的新闻ID为【" + bean.getId() + "】", Toast.LENGTH_SHORT).show();
+			}
+
+			@Override
+			public void onTouchBegin() {
+				// TODO Auto-generated method stub
+				
 			}
 		};
 		listViewItemOnTouchListener.changeColor(R.color.bg_gray_press, R.color.bg_gray_default);
@@ -763,6 +775,12 @@ public class NewsListActivity extends Activity implements OnPageChangeListener {
 
 				@Override
 				public void onImgChangeDo() {
+					
+				}
+
+				@Override
+				public void onTouchBegin() {
+					// TODO Auto-generated method stub
 					
 				}
 			};

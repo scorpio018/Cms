@@ -112,4 +112,10 @@ public class PopupWindowOnTouchListener extends CommonOnTouchListener {
 		activity.popupWindow = null;
 	}
 
+	@Override
+	public void onTouchBegin() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

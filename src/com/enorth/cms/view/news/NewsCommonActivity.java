@@ -496,6 +496,12 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 				}
 				changeCanEnableState();
 			}
+
+			@Override
+			public void onTouchBegin() {
+				// TODO Auto-generated method stub
+				
+			}
 		};
 		bean.getImageView().setOnTouchListener(listViewCheckBtnOnTouchListener);
 	}
@@ -510,6 +516,12 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 			@Override
 			public void onImgChangeDo() {
 				Toast.makeText(thisActivity, "点击的新闻ID为【" + bean.getId() + "】", Toast.LENGTH_SHORT).show();
+			}
+
+			@Override
+			public void onTouchBegin() {
+				// TODO Auto-generated method stub
+				
 			}
 		};
 		listViewItemOnTouchListener.changeColor(R.color.bg_gray_press, R.color.bg_gray_default);
@@ -611,6 +623,12 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 				@Override
 				public void onImgChangeDo() {
 
+				}
+
+				@Override
+				public void onTouchBegin() {
+					// TODO Auto-generated method stub
+					
 				}
 			};
 			layout.setOnTouchListener(listener);

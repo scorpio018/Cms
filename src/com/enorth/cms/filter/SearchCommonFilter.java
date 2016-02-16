@@ -1,6 +1,8 @@
 package com.enorth.cms.filter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.enorth.cms.adapter.SearchCommonFilterAdapter;
@@ -8,6 +10,7 @@ import com.enorth.cms.adapter.SearchCommonFilterAdapter;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.Filter;
 
 public abstract class SearchCommonFilter<T> extends Filter {

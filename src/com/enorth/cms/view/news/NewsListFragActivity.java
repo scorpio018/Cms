@@ -52,6 +52,12 @@ public class NewsListFragActivity extends NewsCommonActivity {
 				intent.setClass(thisActivity, ChannelSearchActivity.class);
 				thisActivity.startActivity(intent);
 			}
+
+			@Override
+			public void onTouchBegin() {
+				// TODO Auto-generated method stub
+				
+			}
 		};
 		listener.changeColor(R.color.white, R.color.news_sub_title_color_basic);
 		layout.setOnTouchListener(listener);
