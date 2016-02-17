@@ -64,7 +64,7 @@ public abstract class ChannelSearchCommonHandler extends Handler {
 			break;
 			}
 			if (needResetContent()) {
-				activity.resetCurChannelSearchCheckedText();
+				activity.resetCurChannelSearchCheckedText(false);
 			}
 			// 每次重新选择一个频道后都要进行清空，除非是第一次进入（第一次进入，需要传入接口的是父ID，然后将当前频道进行选中。并将当前频道进行存入）
 			if (activity.isFirstEnter) {

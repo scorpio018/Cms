@@ -11,6 +11,7 @@ import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.view.R;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -54,7 +55,7 @@ public class NewsListFragActivity extends NewsCommonActivity {
 		channelId = SharedPreUtil.getLong(thisActivity, ParamConst.CUR_CHANNEL_ID);
 		newsSubTitleHandler = new NewsSubTitleHandler(this);
 		try {
-			presenter.requestCurChannelData(channelId, 1, newsSubTitleHandler);
+			presenter.requestCurChannelData(channelId, ParamConst.USER_ID, newsSubTitleHandler);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -63,7 +64,11 @@ public class NewsListFragActivity extends NewsCommonActivity {
 			@Override
 			public void onImgChangeDo() {
 				intent.setClass(thisActivity, ChannelSearchActivity.class);
-				thisActivity.startActivity(intent);
+				// 将当前用户的频道传到频道搜索中
+				Bundle bundle = initChannelId();
+				intent.putExtras(bundle);
+//				thisActivity.startActivity(intent);
+				startActivityForResult(intent, ParamConst.NEWS_COMMON_ACTIVITY_TO_CHANNEL_SEARCH_ACTIVITY_REQUEST_CODE);
 			}
 
 			@Override
@@ -79,7 +84,14 @@ public class NewsListFragActivity extends NewsCommonActivity {
 		/*newsSubTitleTV = (TextView) layout.findViewById(R.id.newsSubTitleText);
 		newsSubTitleTV.setText(newsSubTitleText);*/
 	}
-
-
+	
+	private Bundle initChannelId() {
+		Bundle bundle = new Bundle();
+		long channelId = SharedPreUtil.getLong(thisActivity, ParamConst.CUR_CHANNEL_ID);
+		long parentChannelId = SharedPreUtil.getLong(thisActivity, ParamConst.CUR_CHANNEL_ID_PARENT_ID);
+		bundle.putLong(ParamConst.CUR_CHANNEL_ID, channelId);
+		bundle.putLong(ParamConst.CUR_CHANNEL_ID_PARENT_ID, parentChannelId);
+		return bundle;
+	}
 	
 }

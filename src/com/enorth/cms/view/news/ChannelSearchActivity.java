@@ -27,15 +27,18 @@ import com.enorth.cms.listener.popup.PopupWindowOnTouchListener;
 import com.enorth.cms.presenter.newslist.ChannelSearchPresenter;
 import com.enorth.cms.presenter.newslist.IChannelSearchPresenter;
 import com.enorth.cms.utils.AnimUtil;
+import com.enorth.cms.utils.ExceptionUtil;
 import com.enorth.cms.utils.ReflectUtil;
 import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.utils.StringUtil;
+import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.R;
 import com.enorth.cms.widget.listview.newslist.NewsListListView;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -367,30 +370,49 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 			@Override
 			public void onClick(View v) {
 				boolean isNotSelectChannel = false;
-				switch (curChannelListEnableView) {
-				case ParamConst.CUR_CHANNEL_LIST_ENABLE_VIEW_CHANNEL_SEARCH_ACTIVITY:
-					isNotSelectChannel = curCheckChannelId == -1L;
-					confirmClickCommonEvent(isNotSelectChannel, curCheckChannelId, curCheckChannelName, parentChannelId);
-					break;
-				case ParamConst.CUR_CHANNEL_LIST_ENABLE_VIEW_AUTO_COMPLETE_TEXT_VIEW:
-					isNotSelectChannel = searchChannelFilterAdapter != null && searchChannelFilterAdapter.curCheckChannelId == -1L;
-					confirmClickCommonEvent(isNotSelectChannel, searchChannelFilterAdapter.curCheckChannelId, searchChannelFilterAdapter.curCheckChannelName, searchChannelFilterAdapter.parentChannelId);
-					break;
+				try {
+					switch (curChannelListEnableView) {
+					case ParamConst.CUR_CHANNEL_LIST_ENABLE_VIEW_CHANNEL_SEARCH_ACTIVITY:
+						isNotSelectChannel = curCheckChannelId == -1L;
+						confirmClickCommonEvent(isNotSelectChannel, curCheckChannelId, curCheckChannelName, parentChannelId);
+						break;
+					case ParamConst.CUR_CHANNEL_LIST_ENABLE_VIEW_AUTO_COMPLETE_TEXT_VIEW:
+						isNotSelectChannel = searchChannelFilterAdapter != null && searchChannelFilterAdapter.curCheckChannelId == -1L;
+						confirmClickCommonEvent(isNotSelectChannel, searchChannelFilterAdapter.curCheckChannelId, searchChannelFilterAdapter.curCheckChannelName, searchChannelFilterAdapter.parentChannelId);
+						break;
+					default:
+						ExceptionUtil.simpleExceptionCatch("点击完成时发生错误", new Exception("curChannelListEnableView【" + curChannelListEnableView + "】未知"));
+						break;
+					}
+				} catch (JSONException e) {
+					ExceptionUtil.simpleExceptionCatch("点击完成时发生错误", e);
 				}
+				
 			}
 		});
 	}
 	
-	private void confirmClickCommonEvent(boolean isNotSelectChannel, long curCheckChannelId, String curCheckChannelName, long parentChannelId) {
+	private void confirmClickCommonEvent(boolean isNotSelectChannel, long curCheckChannelId, String curCheckChannelName, long parentChannelId) throws JSONException {
 		if (curCheckChannelId == -1L) {
 			Toast.makeText(thisActivity, "请先选择一个频道", Toast.LENGTH_SHORT).show();
 			return;
 		} else {
-			SharedPreUtil.put(thisActivity, ParamConst.CUR_CHANNEL_ID, curCheckChannelId);
+			/*SharedPreUtil.put(thisActivity, ParamConst.CUR_CHANNEL_ID, curCheckChannelId);
 			SharedPreUtil.put(thisActivity, ParamConst.CUR_CHANNEL_NAME, curCheckChannelName);
-			SharedPreUtil.put(thisActivity, ParamConst.CUR_CHANNEL_ID_PARENT_ID, parentChannelId);
+			SharedPreUtil.put(thisActivity, ParamConst.CUR_CHANNEL_ID_PARENT_ID, parentChannelId);*/
+			Bundle bundle = initChannelIdForPrevActivity();
+			ViewUtil.takeParamsBackToPrevActivity(thisActivity, bundle, ParamConst.CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_COMMON_ACTIVITY_RESULT_CODE);
 		}
-		thisActivity.onBackPressed();
+	}
+	
+	private Bundle initChannelIdForPrevActivity() throws JSONException {
+		Bundle bundle = new Bundle();
+		bundle.putLong(ParamConst.CUR_CHANNEL_ID, curCheckChannelId);
+		bundle.putString(ParamConst.CUR_CHANNEL_NAME, curCheckChannelName);
+		bundle.putLong(ParamConst.CUR_CHANNEL_ID_PARENT_ID, parentChannelId);
+		String channelContent = getChannelContent(true);
+		bundle.putString(ParamConst.CUR_CHANNEL_CONTENT, channelContent);
+		return bundle;
 	}
 	
 	private void initEditTextEvent() {
@@ -757,9 +779,21 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	}
 	
 	/**
-	 * 获取存入SharedPreferences中的当前选中的频道信息
+	 * 获取传入该activity的新闻ID和对应的父ID
 	 */
 	private void getCurCheckedChannelId() {
+		Intent intent = getIntent();
+		Bundle extras = intent.getExtras();
+		if (extras.containsKey(ParamConst.CUR_CHANNEL_ID) && extras.containsKey(ParamConst.CUR_CHANNEL_ID_PARENT_ID)) {
+			channelId = extras.getLong(ParamConst.CUR_CHANNEL_ID);
+			parentChannelId = extras.getLong(ParamConst.CUR_CHANNEL_ID_PARENT_ID);
+		}
+	}
+	
+	/**
+	 * 获取存入SharedPreferences中的当前选中的频道信息(注解原因：由于有很多activity都会进入这个搜索频道页，为了适配，此方法不适用)
+	 */
+	/*private void getCurCheckedChannelId() {
 		channelId = SharedPreUtil.getLong(thisActivity, ParamConst.CUR_CHANNEL_ID);
 		if (channelId == -1L) {
 			SharedPreUtil.resetChannelIdData(thisActivity);
@@ -768,28 +802,49 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 			channelName = SharedPreUtil.getString(thisActivity, ParamConst.CUR_CHANNEL_NAME);
 			parentChannelId = SharedPreUtil.getLong(thisActivity, ParamConst.CUR_CHANNEL_ID_PARENT_ID);
 		}
-	}
+	}*/
 	
 	/**
 	 * 重置频道目录
+	 * @param useCurChannelName 判断是否在目录的最后用的当前频道的频道名
+	 * @throws JSONException
 	 */
-	public void resetCurChannelSearchCheckedText() throws JSONException {
+	public void resetCurChannelSearchCheckedText(boolean useCurChannelName) throws JSONException {
+		channelName = getChannelContent(useCurChannelName);
+		channelSearchCheckedText.setText(channelName);
+		JSONObject jo = jsonObject.getJSONObject("curChannel");
+		parentChannelId = jo.getLong("deptId");
+		AnimUtil.hideRefreshFrame(thisActivity);
+	}
+	
+	/**
+	 * 将接口返回的频道数据进行处理，最后生成频道目录
+	 * 目录的最后一个频道根据传入的boolean值进行变化：true表示使用当前选中的频道名（当为true的时候，channelName不能为空）；false表示使用父频道的频道名
+	 * @param useCurChannelName
+	 * @return
+	 * @throws JSONException
+	 */
+	private String getChannelContent(boolean useCurChannelName) throws JSONException {
 		JSONArray ja = jsonObject.getJSONArray("channelContent");
 		JSONObject jo = jsonObject.getJSONObject("curChannel");
 		int length = ja.length();
-		channelName = jo.getString("deptName");
+		
 		JSONObject firstDept = ja.getJSONObject(0);
-		JSONObject lastDept = ja.getJSONObject(length - 1);
+//		JSONObject lastDept = ja.getJSONObject(length - 1);
+		String lastDeptName = null;
+		if (useCurChannelName) {
+			lastDeptName = channelName;
+		} else {
+			lastDeptName = jo.getString("deptName");;
+		}
 		if (length == 1) {
 			channelName = substrText(channelName, newsTitleAllowLength);
 		} else if (length == 2) {
-			channelName = substrText(firstDept.getString("deptName"), newsTitleAllowLength / 2 - 1) + "/" + substrText(lastDept.getString("deptName"), newsTitleAllowLength / 2 - 1);
+			channelName = substrText(firstDept.getString("deptName"), newsTitleAllowLength / 2 - 1) + "/" + substrText(lastDeptName, newsTitleAllowLength / 2 - 1);
 		} else {
-			channelName = substrText(firstDept.getString("deptName"), newsTitleAllowLength / 2 - 3) + "/../" + substrText(lastDept.getString("deptName"), newsTitleAllowLength / 2 - 3);
+			channelName = substrText(firstDept.getString("deptName"), newsTitleAllowLength / 2 - 3) + "/../" + substrText(lastDeptName, newsTitleAllowLength / 2 - 3);
 		}
-		channelSearchCheckedText.setText(channelName);
-		parentChannelId = jo.getLong("deptId");
-		AnimUtil.hideRefreshFrame(thisActivity);
+		return channelName;
 	}
 	
 	private String substrText(String text, int length) {

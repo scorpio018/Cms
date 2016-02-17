@@ -31,12 +31,12 @@ public class NewsSubTitleHandler extends UrlRequestCommonHandler {
 		long channelId = jo.getLong("deptId");
 		SharedPreUtil.put(activity, ParamConst.CUR_CHANNEL_ID, channelId);
 		SharedPreUtil.put(activity, ParamConst.CUR_CHANNEL_ID_PARENT_ID, jo.getLong("parentId"));
-		activity.newsSubTitleText = jo.getString("deptName");
+		activity.setNewsSubTitleText(jo.getString("deptName"));
 		LinearLayout layout = (LinearLayout) activity.findViewById(R.id.newsSubTitleLineLayout);
-		activity.newsSubTitleTV = (TextView) layout.findViewById(R.id.newsSubTitleText);
-		activity.newsSubTitleTV.setText(activity.newsSubTitleText);
-		SharedPreUtil.put(activity, ParamConst.CUR_CHANNEL_NAME, activity.newsSubTitleText);
-		activity.isSubTitleInitFinish = true;
+		activity.setNewsSubTitleTV((TextView) layout.findViewById(R.id.newsSubTitleText));
+		activity.getNewsSubTitleTV().setText(activity.getNewsSubTitleText());
+		SharedPreUtil.put(activity, ParamConst.CUR_CHANNEL_NAME, activity.getNewsSubTitleText());
+		activity.setSubTitleInitFinish(true);
 	}
 
 	@Override

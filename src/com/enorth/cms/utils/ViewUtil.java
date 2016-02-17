@@ -201,7 +201,7 @@ public class ViewUtil {
 	 * @param activity
 	 * @param bundle
 	 */
-	public static void takeParamsBackToPrevActivity(Activity activity, Bundle bundle) {
+	public static void takeParamsBackToPrevActivity(Activity activity, Bundle bundle, int resultCode) {
 		Intent intent = new Intent();
 		/*Bundle values = null;
 		try {
@@ -211,7 +211,7 @@ public class ViewUtil {
 			e.printStackTrace();
 		}*/
 		intent.putExtras(bundle);
-		activity.setResult(ParamConst.NEWS_SEARCH_ACTIVITY_BACK_TONEWS_COMMON_ACTIVITY_RESULT_CODE, intent);
+		activity.setResult(resultCode, intent);
 		activity.finish();
 	}
 	

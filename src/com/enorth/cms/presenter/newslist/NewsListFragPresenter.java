@@ -62,6 +62,9 @@ public class NewsListFragPresenter implements INewsListFragPresenter {
 		HttpUtil.okPost(url, params, callback);
 	}
 
+	/**
+	 * 将当前软件缓存中的频道id和当前的用户ID传入接口中，接口返回一个频道的json数据
+	 */
 	@Override
 	public void requestCurChannelData(Long channelId, int userId, final Handler handler) throws Exception {
 		Callback callback = new Callback() {

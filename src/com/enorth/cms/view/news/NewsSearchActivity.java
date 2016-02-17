@@ -15,8 +15,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -47,6 +49,10 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 	 */
 	private List<EnableSimpleChangeButton> mergeTypeBtns;
 	/**
+	 * “返回上一级”按钮
+	 */
+	private ImageView back;
+	/**
 	 * 新闻ID文本框
 	 */
 	private EditText newsSearchNewsIdET;
@@ -65,6 +71,7 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 		setContentView(R.layout.activity_news_search);
 		
 		try {
+			initTitle();
 			initBtnGroup();
 			initEditText();
 			initSubmmitBtn();
@@ -72,6 +79,24 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 			Log.e("error", e.getMessage());
 			e.printStackTrace();
 		}
+	}
+	
+	private void initTitle() throws Exception {
+		initBackEvent();
+	}
+	
+	/**
+	 * 初始化返回键事件
+	 */
+	private void initBackEvent() throws Exception {
+		back = (ImageView) findViewById(R.id.channelSearchTitleBackBtn);
+		back.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				NewsSearchActivity.this.onBackPressed();
+			}
+		});
 	}
 	
 	/**
@@ -167,7 +192,7 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 			Toast.makeText(NewsSearchActivity.this, "在NewsSearchActivity进行返回时发生错误：【" + e.getMessage() + "】", Toast.LENGTH_SHORT).show();
 			e.printStackTrace();
 		}
-		ViewUtil.takeParamsBackToPrevActivity(this, values);
+		ViewUtil.takeParamsBackToPrevActivity(this, values, ParamConst.NEWS_SEARCH_ACTIVITY_BACK_TO_NEWS_COMMON_ACTIVITY_RESULT_CODE);
 	}
 	
 	private Bundle getValues() throws Exception {

@@ -70,7 +70,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	/**
 	 * 副标题左侧的频道名称
 	 */
-	public TextView newsSubTitleTV;
+	private TextView newsSubTitleTV;
 	/**
 	 * 新闻列表的ViewPager，里面根据newsTypeBtnText的length放相应的ListView
 	 */
@@ -149,7 +149,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	/**
 	 * 在onResume中用于判断副标题的第一次加载是否已经完成
 	 */
-	public boolean isSubTitleInitFinish = false;
+	private boolean isSubTitleInitFinish = false;
 	/**
 	 * 当前activity（用于在匿名内部类中获取当前activity）
 	 */
@@ -161,7 +161,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	/**
 	 * 新闻频道名称
 	 */
-	public String newsSubTitleText;
+	private String newsSubTitleText;
 	/**
 	 * 进行日期格式化
 	 */
@@ -219,7 +219,8 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 		initNewsOperateBtnLayout();
 	}
 	
-	@Override
+	// 由于使用了activity之间传值，所以这种写法已经不需要了
+	/*@Override
 	protected void onResume() {
 		super.onResume();
 		if (isSubTitleInitFinish) {
@@ -229,14 +230,14 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 //			Toast.makeText(thisActivity, "channelId【" + channelId + "】、channelName【" + newsSubTitleText + "】", Toast.LENGTH_SHORT).show();
 			newsSubTitleTV.setText(newsSubTitleText);
 		}
-	}
+	}*/
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch(requestCode) {
 		// 从当前activity跳转到NewsSearchActivity并返回到当前activity时进入此条件
 		case ParamConst.NEWS_COMMON_ACTIVITY_TO_NEWS_SEARCH_ACTIVITY_REQUEST_CODE:
-			if (resultCode == ParamConst.NEWS_SEARCH_ACTIVITY_BACK_TONEWS_COMMON_ACTIVITY_RESULT_CODE) {
+			if (resultCode == ParamConst.NEWS_SEARCH_ACTIVITY_BACK_TO_NEWS_COMMON_ACTIVITY_RESULT_CODE) {
 				Bundle extras = data.getExtras();
 				Set<String> keySet = extras.keySet();
 				for (String key : keySet) {
@@ -253,6 +254,19 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 				Log.e("keywordText", keywordText);*/
 			}
 			break;
+		case ParamConst.NEWS_COMMON_ACTIVITY_TO_CHANNEL_SEARCH_ACTIVITY_REQUEST_CODE:
+			if (resultCode == ParamConst.CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_COMMON_ACTIVITY_RESULT_CODE) {
+				Bundle extras = data.getExtras();
+				if (extras.containsKey(ParamConst.CUR_CHANNEL_ID) && extras.containsKey(ParamConst.CUR_CHANNEL_ID_PARENT_ID) && extras.containsKey(ParamConst.CUR_CHANNEL_NAME)) {
+					channelId = extras.getLong(ParamConst.CUR_CHANNEL_ID);
+					Long parentId = extras.getLong(ParamConst.CUR_CHANNEL_ID_PARENT_ID);
+					newsSubTitleText = extras.getString(ParamConst.CUR_CHANNEL_NAME);
+					newsSubTitleTV.setText(newsSubTitleText);
+					SharedPreUtil.put(thisActivity, ParamConst.CUR_CHANNEL_ID, channelId);
+					SharedPreUtil.put(thisActivity, ParamConst.CUR_CHANNEL_ID_PARENT_ID, parentId);
+					SharedPreUtil.put(thisActivity, ParamConst.CUR_CHANNEL_NAME, newsSubTitleText);
+				}
+			}
 		default:
 			super.onActivityResult(requestCode, resultCode, data);
 		}
@@ -820,6 +834,22 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	public void setNewsListViewPager(ViewPager newsListViewPager) {
 		this.newsListViewPager = newsListViewPager;
 	}
-	
-	
+	public String getNewsSubTitleText() {
+		return newsSubTitleText;
+	}
+	public void setNewsSubTitleText(String newsSubTitleText) {
+		this.newsSubTitleText = newsSubTitleText;
+	}
+	public TextView getNewsSubTitleTV() {
+		return newsSubTitleTV;
+	}
+	public void setNewsSubTitleTV(TextView newsSubTitleTV) {
+		this.newsSubTitleTV = newsSubTitleTV;
+	}
+	public boolean isSubTitleInitFinish() {
+		return isSubTitleInitFinish;
+	}
+	public void setSubTitleInitFinish(boolean isSubTitleInitFinish) {
+		this.isSubTitleInitFinish = isSubTitleInitFinish;
+	}
 }
