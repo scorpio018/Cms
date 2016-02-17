@@ -2,9 +2,10 @@ package com.enorth.cms.view.news;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,18 +25,18 @@ import com.enorth.cms.listener.CommonOnTouchListener;
 import com.enorth.cms.listener.imageview.ImageViewOnTouchListener;
 import com.enorth.cms.listener.newslist.ListViewItemOnTouchListener;
 import com.enorth.cms.listener.newslist.bottommenu.BottomMenuOnTouchListener;
-import com.enorth.cms.listener.newslist.newstypebtn.NewsTypeBtnOnClickListener;
 import com.enorth.cms.presenter.newslist.INewsListFragPresenter;
 import com.enorth.cms.presenter.newslist.NewsListFragPresenter;
-import com.enorth.cms.utils.LayoutParamsUtil;
+import com.enorth.cms.utils.ColorUtil;
+import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.utils.SharedPreUtil;
+import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.R;
 import com.enorth.cms.widget.listview.newslist.NewsListListView;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -44,7 +45,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -74,7 +74,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	/**
 	 * 新闻列表的ViewPager，里面根据newsTypeBtnText的length放相应的ListView
 	 */
-	public ViewPager newsListViewPager;
+	private ViewPager newsListViewPager;
 	/**
 	 * 右下角的“+”图案
 	 */
@@ -95,7 +95,13 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	/**
 	 * 切换新闻列表的标头按钮
 	 */
-	public String[] newsTypeBtnText = { "待编辑", "待签发", "已签发" };
+	private String[] newsTypeBtnText = { "待编辑", "待签发", "已签发" };
+	/**
+	 * 切换新闻列表的标头按钮对应的id
+	 */
+	private String[] newsTypeBtnId = {"waitEdit", "tobeIssued", "hasIssued"};
+	
+	private List<EnableSimpleChangeButton> newsTypeBtns;
 	/**
 	 * 右下角的"+"在对应的新闻列表中是否显示
 	 */
@@ -119,11 +125,11 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	/**
 	 * 手机的高度
 	 */
-	protected int phoneHeight;
+//	protected int phoneHeight;
 	/**
 	 * 手机的宽度
 	 */
-	protected int phoneWidth;
+//	protected int phoneWidth;
 	/**
 	 * 新闻列表中的标题最多能显示多少字
 	 */
@@ -225,6 +231,33 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 		}
 	}
 	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch(requestCode) {
+		// 从当前activity跳转到NewsSearchActivity并返回到当前activity时进入此条件
+		case ParamConst.NEWS_COMMON_ACTIVITY_TO_NEWS_SEARCH_ACTIVITY_REQUEST_CODE:
+			if (resultCode == ParamConst.NEWS_SEARCH_ACTIVITY_BACK_TONEWS_COMMON_ACTIVITY_RESULT_CODE) {
+				Bundle extras = data.getExtras();
+				Set<String> keySet = extras.keySet();
+				for (String key : keySet) {
+					Log.e(key, extras.getString(key));
+					Toast.makeText(thisActivity, key + ":" + extras.getString(key), Toast.LENGTH_SHORT).show();
+				}
+				/*String curCrawlTypeId = extras.getString("curCrawlTypeId");
+				String curMergeTypeId = extras.getString("curMergeTypeId");
+				String newsIdText = extras.getString("newsIdText");
+				String keywordText = extras.getString("keywordText");
+				Log.e("curCrawlTypeId", curCrawlTypeId);
+				Log.e("curMergeTypeId", curMergeTypeId);
+				Log.e("newsIdText", newsIdText);
+				Log.e("keywordText", keywordText);*/
+			}
+			break;
+		default:
+			super.onActivityResult(requestCode, resultCode, data);
+		}
+	}
+	
 	/**
 	 * 初始化基本数据
 	 * @throws Exception 
@@ -236,15 +269,11 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 		this.thisActivity = getCurActivity();
 		presenter = new NewsListFragPresenter(this);
 		newsOperateBtnBasicColor = ContextCompat.getColor(thisActivity, R.color.bottom_text_color_basic);
-		whiteColor = ContextCompat.getColor(this, R.color.white);
-		blueColor = ContextCompat.getColor(this, R.color.common_blue);
+		whiteColor = ColorUtil.getWhiteColor(thisActivity);
+		blueColor = ColorUtil.getCommonBlueColor(thisActivity);
 		// 获取屏幕的分辨率
-		Display display = thisActivity.getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		phoneWidth = size.x;
-		newsTitleAllowLength = phoneWidth / ParamConst.FONT_WIDTH;
-		phoneHeight = size.y;
+		
+		newsTitleAllowLength = ScreenTools.getPhoneWidth(thisActivity) / ParamConst.FONT_WIDTH;
 		/*if (channelId == -1L) {
 			SharedPreUtil.resetChannelIdData(thisActivity);
 			newsSubTitleText = ParamConst.DEFAULT_CHANNEL_NAME;
@@ -270,32 +299,10 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	 * 
 	 * @throws Exception
 	 */
-	protected void initNewsTypeBtnLayout() throws Exception {
+	private void initNewsTypeBtnLayout() throws Exception {
 		RelativeLayout newsTypeBtnRelaLayout = (RelativeLayout) findViewById(R.id.newsTypeBtnRelaLayout);
 		newsTypeBtnLineLayout = (LinearLayout) newsTypeBtnRelaLayout.getChildAt(0);
-		int length = newsTypeBtnText.length;
-		// 此处初始化待编辑、待签发、已签发三个按钮的基本样式
-		LinearLayout.LayoutParams params = LayoutParamsUtil.initPercentWeight(0.9f);
-		for (int i = 0; i < length; i++) {
-			EnableSimpleChangeButton btn = new EnableSimpleChangeButton(this);
-			if (i == 0) {
-				btn.needRaduisPosition(false, false, false, true);
-			} else if (i == length - 1) {
-				btn.needRaduisPosition(false, true, false, false);
-			} else {
-				btn.needRaduisPosition(false, false, false, false);
-			}
-			btn.setText(newsTypeBtnText[i]);
-			ButtonColorBasicBean colorBasicBean = new ButtonColorBasicBean(this);
-			boolean needFocused = i == 0 ? true : false;
-			initNewsTypeBtnStyleByFocusedState(colorBasicBean, needFocused);
-			btn.setColorBasicBean(colorBasicBean);
-			final int position = i;
-			// 加点击事件，切换到相应的ListView中
-			NewsTypeBtnOnClickListener listener = new NewsTypeBtnOnClickListener(this, position);
-			btn.setOnClickListener(listener);
-			newsTypeBtnLineLayout.addView(btn, params);
-		}
+		newsTypeBtns = ViewUtil.initBtnGroupLayout(thisActivity, newsTypeBtnLineLayout, newsTypeBtnText, newsTypeBtnId, 0.9f);
 	}
 	
 	/**
@@ -359,7 +366,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 			float titleHeight = resources.getDimension(R.dimen.news_title_height);
 			float subTitleHeight = resources.getDimension(R.dimen.news_sub_title_height);
 			float operateBtnHeight = resources.getDimension(R.dimen.news_operate_btn_layout_height);
-			int height = (int) ((phoneHeight - titleHeight - subTitleHeight - operateBtnHeight) / 2 + titleHeight
+			int height = (int) ((ScreenTools.getPhoneHeight(thisActivity) - titleHeight - subTitleHeight - operateBtnHeight) / 2 + titleHeight
 					+ subTitleHeight);
 			List<View> items = initDefaultData(errorHint, height);
 			ListAdapter adapter = new NewsListViewAdapter(items);
@@ -376,7 +383,12 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	 * @throws Exception
 	 */
 	protected void initData(final Handler handler) throws Exception {
-		presenter.requestListViewData(handler);
+		final int start = 1;
+		final int end = 10;
+		List<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
+		params.add(new BasicNameValuePair("start", String.valueOf(start)));
+		params.add(new BasicNameValuePair("end", String.valueOf(end)));
+		presenter.requestListViewData(handler, params);
 	}
 	
 	/**
@@ -534,7 +546,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	 * @param colorBasicBean
 	 * @param needFocused
 	 */
-	protected void initNewsTypeBtnStyleByFocusedState(ButtonColorBasicBean colorBasicBean, boolean needFocused) {
+	/*protected void initNewsTypeBtnStyleByFocusedState(ButtonColorBasicBean colorBasicBean, boolean needFocused) {
 		if (needFocused) {
 			// 需要选中
 			colorBasicBean.setmBgNormalColor(blueColor);
@@ -543,8 +555,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 			colorBasicBean.setmBgNormalColor(whiteColor);
 			colorBasicBean.setmTextNormalColor(blueColor);
 		}
-
-	}
+	}*/
 	
 	/**
 	 * 根据当前选中的标头按钮的位置改变需要改变样式的按钮，并清除需要清除的ListView中的数据（只要在当前ListView前后超过一个间隔，则清空）
@@ -553,14 +564,23 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	 * @throws Exception
 	 */
 	public void changeNewsTypeBtnStyleByFocusedState(int position) throws Exception {
+		ViewUtil.changeBtnGroupStyleByFocusedState(thisActivity, newsTypeBtnLineLayout, position, ColorUtil.getCommonBlueColor(thisActivity), ColorUtil.getWhiteColor(thisActivity));
 		int childCount = newsTypeBtnLineLayout.getChildCount();
+		for (int i = 0; i < childCount; i++) {
+			if (Math.abs(position - i) > 1) {
+				NewsListListView listView = (NewsListListView) newsListViewPager.getChildAt(i);
+				listView.removeAllViews();
+				selectedNewsCount[i] = 0;
+			}
+		}
+		/*int childCount = newsTypeBtnLineLayout.getChildCount();
 		for (int i = 0; i < childCount; i++) {
 			EnableSimpleChangeButton btn = (EnableSimpleChangeButton) newsTypeBtnLineLayout.getChildAt(i);
 			ButtonColorBasicBean colorBasicBean = new ButtonColorBasicBean(this);
 			if (i == position) {
-				initNewsTypeBtnStyleByFocusedState(colorBasicBean, true);
+				ViewUtil.initBtnGroupStyleByFocusedState(colorBasicBean, true, blueColor, whiteColor);
 			} else {
-				initNewsTypeBtnStyleByFocusedState(colorBasicBean, false);
+//				ViewUtil.initBtnGroupStyleByFocusedState(colorBasicBean, false, whiteColor, blueColor);
 				if (Math.abs(position - i) > 1) {
 					NewsListListView listView = (NewsListListView) newsListViewPager.getChildAt(i);
 					listView.removeAllViews();
@@ -568,7 +588,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 				}
 			}
 			btn.setColorBasicBean(colorBasicBean);
-		}
+		}*/
 	}
 	
 	/**
@@ -742,25 +762,22 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					NewsListListView listView = (NewsListListView) (views.get(i).newsListView);
+					NewsListListView listView = (NewsListListView) (views.get(i).getNewsListView());
+					EnableSimpleChangeButton btn = (EnableSimpleChangeButton) newsTypeBtnLineLayout.getChildAt(i);
 					try {
 						if (i == position) {
-							changeToCurPosition(colorBasicBean, listView);
+							changeToCurPosition(colorBasicBean, btn, listView);
 						} else {
 //							changeToOtherPosition(colorBasicBean, listView, Math.abs(position - i) > 1, i);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					Log.e("改变按钮的样式【开始】", sdf.format(new Date()));
-					EnableSimpleChangeButton btn = (EnableSimpleChangeButton) newsTypeBtnLineLayout.getChildAt(i);
 					btn.setColorBasicBean(colorBasicBean);
-					Log.e("改变按钮的样式【结束】", sdf.format(new Date()));
 				}
 				curPosition = position;
 				changeAddNewsBtnVisible();
 				initNewsOperateBtn();
-				Log.e("【结束】", sdf.format(new Date()));
 				// AnimUtil.hideRefreshFrame(thisActivity);
 			}
 		}.sendEmptyMessage(0);
@@ -774,8 +791,8 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 		}
 	}
 
-	protected void changeToCurPosition(ButtonColorBasicBean colorBasicBean, NewsListListView listView) throws Exception {
-		initNewsTypeBtnStyleByFocusedState(colorBasicBean, true);
+	protected void changeToCurPosition(ButtonColorBasicBean colorBasicBean, EnableSimpleChangeButton btn, NewsListListView listView) throws Exception {
+		ViewUtil.initBtnGroupStyleByFocusedState(colorBasicBean, btn, true, blueColor, whiteColor);
 		NewsListViewAdapter adapter = (NewsListViewAdapter) listView.getAdapter();
 		// ListAdapter adapter = listView.getAdapter();
 		int count = adapter.getCount();
@@ -788,12 +805,21 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 
 	}
 
-	protected void changeToOtherPosition(ButtonColorBasicBean colorBasicBean, NewsListListView listView,
+	/*protected void changeToOtherPosition(ButtonColorBasicBean colorBasicBean, NewsListListView listView,
 			boolean needCleanListView, int myPosision) throws Exception {
-		initNewsTypeBtnStyleByFocusedState(colorBasicBean, false);
+		ViewUtil.initBtnGroupStyleByFocusedState(colorBasicBean, false, whiteColor, blueColor);
 		if (needCleanListView) {
 			selectedNewsCount[myPosision] = 0;
 			initNewsListData(listView, false, null);
 		}
+	}*/
+	
+	public ViewPager getNewsListViewPager() {
+		return newsListViewPager;
 	}
+	public void setNewsListViewPager(ViewPager newsListViewPager) {
+		this.newsListViewPager = newsListViewPager;
+	}
+	
+	
 }

@@ -20,6 +20,7 @@
     <string name="loading">正在加载...</string>
     <string name="load_succeed">加载成功</string>
     <string name="load_fail">加载失败</string>
+    <string name="submit_btn_common">确定</string>
     
     <string name="news_title_text">普通新闻</string>
     <string name="news_sub_title_Text">新闻中心</string>
@@ -40,4 +41,8 @@
     <string name="channel_search_edit_hint">请输入频道名称筛选</string>
     <string name="channel_search_no_change_text1">已选择：</string>
     <string name="channel_back_to_prev_search">上一级</string>
+    
+    <string name="news_search_title_reset">重置</string>
+    <string name="news_search_et_news_id_hint">新闻ID</string>
+    <string name="news_search_et_keyword_hint">关键词</string>
 </resources>

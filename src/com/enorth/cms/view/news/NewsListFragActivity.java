@@ -5,11 +5,14 @@ import com.enorth.cms.bean.news_list.NewsListBottomMenuOperateDataBean;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.handler.newslist.NewsSubTitleHandler;
 import com.enorth.cms.listener.newslist.subtitle.ChooseChannelOnTouchListener;
+import com.enorth.cms.listener.newslist.title.NewsSearchOnTouchListener;
+import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.view.R;
 
 import android.app.Activity;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,7 +35,17 @@ public class NewsListFragActivity extends NewsCommonActivity {
 
 	@Override
 	public void initNewsTitle() {
-		
+		ImageView newsTitleNewsSearch = (ImageView) findViewById(R.id.newsTitleNewsSearch);
+		NewsSearchOnTouchListener listener = new NewsSearchOnTouchListener(touchSlop) {
+			
+			@Override
+			public void onImgChangeDo() {
+				intent.setClass(thisActivity, NewsSearchActivity.class);
+//				startActivity(intent);
+				startActivityForResult(intent, ParamConst.NEWS_COMMON_ACTIVITY_TO_NEWS_SEARCH_ACTIVITY_REQUEST_CODE);
+			}
+		};
+		newsTitleNewsSearch.setOnTouchListener(listener);
 	}
 
 	@Override

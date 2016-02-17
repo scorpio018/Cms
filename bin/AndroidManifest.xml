@@ -72,6 +72,7 @@
         <!-- <activity android:name=".news.NewsListActivity"></activity> -->
         <!-- <activity android:name=".news.NewsListFixActivity"></activity> -->
         <activity android:name=".news.NewsListFragActivity"></activity>
+        <activity android:name=".news.NewsSearchActivity"></activity>
     </application>
 
 </manifest>

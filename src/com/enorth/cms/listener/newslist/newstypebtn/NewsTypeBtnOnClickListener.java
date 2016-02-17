@@ -1,21 +1,31 @@
 package com.enorth.cms.listener.newslist.newstypebtn;
 
 import com.enorth.cms.listener.CommonOnClickListener;
+import com.enorth.cms.utils.ColorUtil;
+import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.news.NewsCommonActivity;
 
+import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class NewsTypeBtnOnClickListener extends CommonOnClickListener {
 	
-	private NewsCommonActivity activity;
+	private Activity activity;
 	
 	private int position;
+	/**
+	 * 按钮组的layout
+	 */
+	private LinearLayout layout;
 	
-	public NewsTypeBtnOnClickListener(NewsCommonActivity activity, int position) {
+	public NewsTypeBtnOnClickListener(Activity activity, LinearLayout layout, int position) {
 		this.activity = activity;
 		this.position = position;
+		this.layout = layout;
 	}
 
 	@Override
@@ -25,15 +35,27 @@ public class NewsTypeBtnOnClickListener extends CommonOnClickListener {
 			@Override
 			public void handleMessage(Message msg) {
 				super.handleMessage(msg);
-				activity.newsListViewPager.setCurrentItem(position, false);
-				try {
-					activity.changeNewsTypeBtnStyleByFocusedState(position);
-				} catch (Exception e) {
-					e.printStackTrace();
+				// 如果是NewsCommonActivity，则会有后续的ViewPager操作
+				if (activity instanceof NewsCommonActivity) {
+					NewsCommonActivity newsCommonActivity = (NewsCommonActivity) activity;
+					newsCommonActivity.getNewsListViewPager().setCurrentItem(position, false);
+					try {
+						newsCommonActivity.changeNewsTypeBtnStyleByFocusedState(position);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					newsCommonActivity.curPosition = position;
+					newsCommonActivity.changeAddNewsBtnVisible();
+					newsCommonActivity.initNewsOperateBtn();
+				} else {
+					try {
+						ViewUtil.changeBtnGroupStyleByFocusedState(activity, layout, position, ColorUtil.getCommonBlueColor(activity), ColorUtil.getWhiteColor(activity));
+					} catch (Exception e) {
+						Toast.makeText(activity, "按钮组状态切换时出现错误:【" + e.getMessage() + "】", Toast.LENGTH_SHORT).show();
+						e.printStackTrace();
+					}
 				}
-				activity.curPosition = position;
-				activity.changeAddNewsBtnVisible();
-				activity.initNewsOperateBtn();
+				
 			}
 		}.sendEmptyMessage(0);
 	}

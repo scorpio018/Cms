@@ -30,13 +30,8 @@ public class NewsListFragPresenter implements INewsListFragPresenter {
 	 * 请求新闻列表的接口，并将结果传入activity中进行处理
 	 */
 	@Override
-	public void requestListViewData(final Handler handler) throws Exception {
+	public void requestListViewData(final Handler handler, List<BasicNameValuePair> params) throws Exception {
 		String url = UrlConst.NEWS_LIST_POST_URL;
-		final int start = 1;
-		final int end = 10;
-		List<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
-		params.add(new BasicNameValuePair("start", String.valueOf(start)));
-		params.add(new BasicNameValuePair("end", String.valueOf(end)));
 		Callback callback = new Callback() {
 
 			@Override

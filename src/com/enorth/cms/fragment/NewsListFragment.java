@@ -15,7 +15,7 @@ public class NewsListFragment extends ListFragment {
 	
 	private NewsCommonActivity activity;
 	
-	public static NewsListListView newsListView;
+	private NewsListListView newsListView;
 	
 	public NewsListFragment(NewsCommonActivity activity, int curPageNum) {
 		this.activity = activity;
@@ -47,6 +47,14 @@ public class NewsListFragment extends ListFragment {
 			e.printStackTrace();
 		}
 		return newsListView;
+	}
+
+	public NewsListListView getNewsListView() {
+		return newsListView;
+	}
+
+	public void setNewsListView(NewsListListView newsListView) {
+		this.newsListView = newsListView;
 	}
 	
 }

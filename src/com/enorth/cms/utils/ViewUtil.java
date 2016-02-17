@@ -1,29 +1,42 @@
 package com.enorth.cms.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.enorth.cms.bean.ButtonColorBasicBean;
 import com.enorth.cms.bean.news_list.NewsListImageViewBasicBean;
+import com.enorth.cms.common.EnableSimpleChangeButton;
+import com.enorth.cms.consts.ParamConst;
+import com.enorth.cms.listener.newslist.newstypebtn.NewsTypeBtnOnClickListener;
 import com.enorth.cms.view.R;
+import com.enorth.cms.view.news.NewsSearchActivity;
+import com.enorth.cms.widget.listview.newslist.NewsListListView;
 
+import android.R.color;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class ViewUtil {
 	
 	public static InputMethodManager inputMethodManager;
-	
+	/**
+	 * 根据ListView里面的item的高度和设置ListView的总高度
+	 * @param listView
+	 */
 	public static void setListViewHeightBasedOnChildren(ListView listView) {
 		// 获取ListView对应的Adapter
 		ListAdapter listAdapter = listView.getAdapter();
@@ -67,6 +80,149 @@ public class ViewUtil {
 			}
 		}
 		return heightMeasureSpec;
+	}
+	
+	/**
+	 * 初始化平行多个按钮的按钮布局，并设置默认选中和未选中的颜色
+	 * @param activity
+	 * @param layout
+	 * @param btnText
+	 * @param btnId
+	 * @throws Exception
+	 */
+	public static List<EnableSimpleChangeButton> initBtnGroupLayout(Activity activity, LinearLayout layout, String[] btnText, String[] btnId, float percentWeight) throws Exception {
+//		RelativeLayout newsTypeBtnRelaLayout = (RelativeLayout) activity.findViewById(R.id.newsTypeBtnRelaLayout);
+//		newsTypeBtnLineLayout = (LinearLayout) newsTypeBtnRelaLayout.getChildAt(0);
+		int checkedColor = ColorUtil.getCommonBlueColor(activity);
+		int unCheckedColor = ColorUtil.getWhiteColor(activity);
+		return initBtnGroupLayout(activity, layout, btnText, btnId, percentWeight, checkedColor, unCheckedColor);
+	}
+	
+	/**
+	 * 初始化平行多个按钮的按钮布局
+	 * @param activity
+	 * @param layout
+	 * @param btnText
+	 * @param btnId
+	 * @param checkedColor
+	 * @param unCheckedColor
+	 * @throws Exception
+	 */
+	public static List<EnableSimpleChangeButton> initBtnGroupLayout(Activity activity, LinearLayout layout, String[] btnText, String[] btnId, float percentWeight, int checkedColor, int unCheckedColor) throws Exception {
+		int length = btnText.length;
+		// 此处初始化按钮的基本样式
+		LinearLayout.LayoutParams params = LayoutParamsUtil.initPercentWeight(percentWeight);
+		List<EnableSimpleChangeButton> btns = new ArrayList<EnableSimpleChangeButton>();
+		for (int i = 0; i < length; i++) {
+			EnableSimpleChangeButton btn = new EnableSimpleChangeButton(activity);
+			btn.setButtonId(btnId[i]);
+			if (i == 0) {
+				btn.needRaduisPosition(false, false, false, true);
+			} else if (i == length - 1) {
+				btn.needRaduisPosition(false, true, false, false);
+			} else {
+				btn.needRaduisPosition(false, false, false, false);
+			}
+			btn.setText(btnText[i]);
+			ButtonColorBasicBean colorBasicBean = new ButtonColorBasicBean(activity);
+			boolean needFocused = i == 0 ? true : false;
+			initBtnGroupStyleByFocusedState(colorBasicBean, btn, needFocused, checkedColor, unCheckedColor);
+			btn.setColorBasicBean(colorBasicBean);
+			final int position = i;
+			// 加点击事件，切换到相应的ListView中
+			NewsTypeBtnOnClickListener listener = new NewsTypeBtnOnClickListener(activity, layout, position);
+			btn.setOnClickListener(listener);
+			btns.add(btn);
+			layout.addView(btn, params);
+		}
+		return btns;
+	}
+	
+	/**
+	 * 如果是选中的话，则将背景设置为选中颜色，字体设置为未选中颜色，反之相反
+	 * @param colorBasicBean
+	 * @param needFocused
+	 * @param checkedColor
+	 * @param unCheckedColor
+	 */
+	public static void initBtnGroupStyleByFocusedState(ButtonColorBasicBean colorBasicBean, EnableSimpleChangeButton btn, boolean needFocused, int checkedColor, int unCheckedColor) {
+		if (needFocused) {
+			// 需要选中
+			colorBasicBean.setmBgNormalColor(checkedColor);
+			colorBasicBean.setmTextNormalColor(unCheckedColor);
+			btn.setChecked(true);
+		} else {
+			colorBasicBean.setmBgNormalColor(unCheckedColor);
+			colorBasicBean.setmTextNormalColor(checkedColor);
+			btn.setChecked(false);
+		}
+	}
+	
+	/**
+	 * 根据当前选中的标头按钮的位置改变需要改变样式的按钮
+	 * 
+	 * @param position
+	 * @throws Exception
+	 */
+	public static void changeBtnGroupStyleByFocusedState(Activity activity, LinearLayout layout, int position, int checkedColor, int unCheckedColor) throws Exception {
+		int childCount = layout.getChildCount();
+		for (int i = 0; i < childCount; i++) {
+			EnableSimpleChangeButton btn = (EnableSimpleChangeButton) layout.getChildAt(i);
+			ButtonColorBasicBean colorBasicBean = new ButtonColorBasicBean(activity);
+			if (i == position) {
+				initBtnGroupStyleByFocusedState(colorBasicBean, btn, true, checkedColor, unCheckedColor);
+			} else {
+				btn.setChecked(false);
+//				initBtnGroupStyleByFocusedState(colorBasicBean, false, unCheckedColor, checkedColor);
+			}
+			btn.setColorBasicBean(colorBasicBean);
+		}
+	}
+	
+	/**
+	 * 在按钮组总找到当前选中的按钮并把id进行返回
+	 * @param btns
+	 * @return
+	 * @throws Exception
+	 */
+	public static String getCurCheckedBtnGroupId(List<EnableSimpleChangeButton> btns) throws Exception {
+		int size = btns.size();
+		for (int i = 0; i < size; i++) {
+			EnableSimpleChangeButton btn = btns.get(i);
+			if (btn.isChecked()) {
+				return btn.getButtonId();
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * 将所需参数返回给上一个activity
+	 * @param activity
+	 * @param bundle
+	 */
+	public static void takeParamsBackToPrevActivity(Activity activity, Bundle bundle) {
+		Intent intent = new Intent();
+		/*Bundle values = null;
+		try {
+			values = getValues();
+		} catch (Exception e) {
+			Toast.makeText(NewsSearchActivity.this, "在NewsSearchActivity进行返回时发生错误：【" + e.getMessage() + "】", Toast.LENGTH_SHORT).show();
+			e.printStackTrace();
+		}*/
+		intent.putExtras(bundle);
+		activity.setResult(ParamConst.NEWS_SEARCH_ACTIVITY_BACK_TONEWS_COMMON_ACTIVITY_RESULT_CODE, intent);
+		activity.finish();
+	}
+	
+	/**
+	 * 将传入的控件的宽度按照百分比进行设置（没用上。。。）
+	 * @param view
+	 * @param percentWeight
+	 */
+	public static void initViewByWeight(View view, float percentWeight) {
+		LinearLayout.LayoutParams params = LayoutParamsUtil.initPercentWeight(percentWeight);
+		view.setLayoutParams(params);
 	}
 	
 	/**

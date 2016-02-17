@@ -15,41 +15,49 @@ import android.widget.Button;
 
 public class EnableSimpleChangeButton extends Button {
 	/**
+	 * 用于表示当前button在点击的时候所代表的id值
+	 */
+	private String buttonId;
+	/**
+	 * 是否被选中（用于获取对应的ID）
+	 */
+	private boolean isChecked = false;
+	/**
 	 * 初始化ColorStateList时需要传入的states值
 	 */
-	public int[][] allState;
+	private int[][] allState;
 	/**
 	 * 当按压按钮时的state（从按下动作到可选的状态？）
 	 */
-	public int[] mPressState = new int[] { android.R.attr.state_pressed, android.R.attr.state_enabled };
+	private int[] mPressState = new int[] { android.R.attr.state_pressed, android.R.attr.state_enabled };
 	/**
 	 * 当选中按钮时的state（从可选的状态到选中？）
 	 */
-	public int[] mFocusState = new int[] { android.R.attr.state_enabled, android.R.attr.state_focused };
+	private int[] mFocusState = new int[] { android.R.attr.state_enabled, android.R.attr.state_focused };
 	/**
 	 * 默认按钮时的state
 	 */
-	public int[] mNormalState = new int[] { android.R.attr.state_enabled };
+	private int[] mNormalState = new int[] { android.R.attr.state_enabled };
 	/**
 	 * 当选中按钮时的state（单纯的选中）
 	 */
-	public int[] mFocusStateSecond = new int[] {android.R.attr.state_focused};
+	private int[] mFocusStateSecond = new int[] {android.R.attr.state_focused};
 	/**
 	 * 当不可用时的state
 	 */
-	public int[] mUnableState = new int[] {android.R.attr.state_window_focused};
+	private int[] mUnableState = new int[] {android.R.attr.state_window_focused};
 	/**
 	 * 默认按钮时的state（空的）
 	 */
-	public int[] mNormalStateNone = new int[] {};
+	private int[] mNormalStateNone = new int[] {};
 	/**
 	 * 所有的背景颜色数组
 	 */
-	public int[] allBgColor;
+	private int[] allBgColor;
 	/**
 	 * 所有的文字颜色数组
 	 */
-	public int[] allTextColor;
+	private int[] allTextColor;
 
 //	public static int[] mSelectedState = new int[] { android.R.attr.state_selected, android.R.attr.state_enabled };
 	/**
@@ -361,6 +369,22 @@ public class EnableSimpleChangeButton extends Button {
 		colorBasicBean.setmTextFocusedColor(focusedColor);
 		colorBasicBean.setmTextUnabledColor(unableColor);
 		buildColorDrawableState();
+	}
+
+	public String getButtonId() {
+		return buttonId;
+	}
+
+	public void setButtonId(String buttonId) {
+		this.buttonId = buttonId;
+	}
+
+	public boolean isChecked() {
+		return isChecked;
+	}
+
+	public void setChecked(boolean isChecked) {
+		this.isChecked = isChecked;
 	}
 
 }

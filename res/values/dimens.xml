@@ -104,5 +104,7 @@
     
     <dimen name="popup_window_channel_search_layout_padding_top">10dip</dimen>
     <dimen name="popup_window_channel_search_layout_padding_bottom">10dip</dimen>
+    
+    <dimen name="news_search_common_margin_top">30dip</dimen>
 
 </resources>

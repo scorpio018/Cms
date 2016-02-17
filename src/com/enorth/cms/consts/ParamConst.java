@@ -141,6 +141,20 @@ public class ParamConst {
 	 * 当前用户点击的频道item时在AutoCompleteTextView中
 	 */
 	public static final int CUR_CHANNEL_LIST_ENABLE_VIEW_AUTO_COMPLETE_TEXT_VIEW = 2;
+	// ---------------------两个activity之间需要传值时定义的code值start-----------------------------//
+	/**
+	 * 从新闻列表跳转到搜索新闻页面的REQUEST_CODE值
+	 */
+	public static final int NEWS_COMMON_ACTIVITY_TO_NEWS_SEARCH_ACTIVITY_REQUEST_CODE = 1;
+	
+	/**
+	 * 从搜索新闻页面返回到新闻列表的RESULT_CODE值
+	 */
+	public static final int NEWS_SEARCH_ACTIVITY_BACK_TONEWS_COMMON_ACTIVITY_RESULT_CODE = 1;
+	
+	// ---------------------两个activity之间需要传值时定义的code值end-----------------------------//
+	
+	
 	/**
 	 * 默认的频道ID
 	 */
