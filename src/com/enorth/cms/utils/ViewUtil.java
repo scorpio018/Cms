@@ -9,7 +9,9 @@ import com.enorth.cms.bean.ButtonColorBasicBean;
 import com.enorth.cms.bean.news_list.NewsListImageViewBasicBean;
 import com.enorth.cms.common.EnableSimpleChangeButton;
 import com.enorth.cms.consts.ParamConst;
+import com.enorth.cms.listener.menu.LeftMenuCommonOnClickListener;
 import com.enorth.cms.listener.newslist.newstypebtn.NewsTypeBtnOnClickListener;
+import com.enorth.cms.view.LeftHorizontalScrollMenu;
 import com.enorth.cms.view.R;
 import com.enorth.cms.view.news.NewsSearchActivity;
 import com.enorth.cms.widget.listview.newslist.NewsListListView;
@@ -19,6 +21,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -239,6 +242,34 @@ public class ViewUtil {
 		}
 		Object[] array = key.toArray();
 		return (NewsListImageViewBasicBean) array[0];
+	}
+	
+	/**
+	 * 当activity需要左侧导航栏时调用此处
+	 * @param activity 当前activity
+	 * @param layoutId 当前activity使用的layout的xml文件
+	 */
+	public static void setContentViewForMenu(Activity activity, int layoutId) {
+		// 首先将当前activity与带左侧导航栏的xml文件进行绑定
+		activity.setContentView(R.layout.activity_main);
+		// 然后将当前activity对应的真正的xml文件存入activity_main中的一个id为menuAndContentLayout的LinearLayout中
+		View view = activity.getLayoutInflater().inflate(layoutId, null);
+		LinearLayout menuAndContentLayout = (LinearLayout) activity.findViewById(R.id.menuAndContentLayout);
+		menuAndContentLayout.addView(view);
+	}
+	
+	/**
+	 * 给传入的View添加显示菜单事件
+	 * @param view
+	 */
+	public static void initMenuEvent(Activity activity, View view) {
+		// 获取菜单控件
+		LeftHorizontalScrollMenu menu = (LeftHorizontalScrollMenu) activity.findViewById(R.id.leftMenu);
+//		ImageView menuBtn = (ImageView) activity.findViewById(R.id.newsTitleMenuBtn);
+//		menuBtn.setBackgroundResource(R.drawable.news_menu);
+		// 给传入的View添加显示/隐藏菜单事件
+		LeftMenuCommonOnClickListener listener = new LeftMenuCommonOnClickListener(menu);
+		view.setOnClickListener(listener);
 	}
 	
 	/**

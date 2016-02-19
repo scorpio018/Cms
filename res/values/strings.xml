@@ -23,18 +23,24 @@
     <string name="submit_btn_common">确定</string>
     
     <string name="news_title_text">普通新闻</string>
+    <string name="news_live_title_text">图文直播</string>
+    <string name="material_upload_title_text">素材上传</string>
     <string name="news_sub_title_Text">新闻中心</string>
     <string name="news_list_view_default_text">北方网手机发布系统</string>
     
-    <string name="btnToMaterialUploadActivity">跳转到素材上传页面</string>
     <string name="btnToMaterialBtnActivity">跳转到素材按钮动画实现页面</string>
     <string name="btnToPullableWebViewActivity">跳转到webView控件+下拉刷新+上拉加载更多</string>
     <string name="btnToCrossWalkActivity">跳转到CrossWalk控件+下拉刷新+上拉加载更多</string>
     <string name="btnToNewsListActivity">新闻列表</string>
+    <string name="btnToMaterialUploadActivity">素材上传</string>
+    <string name="materialUploadBtnGroupHint">随时随地上传视频</string>
     <string name="imgBtnAddPic">照相</string>
     <string name="imgBtnChoosePic">相册</string>
     <string name="imgBtnAddVideo">录像</string>
     <string name="imgBtnChooseVideo">视频</string>
+    
+    <string name="materialUploadFileTypeTextPic">图片</string>
+    <string name="materialUploadFileTypeTextVideo">视频</string>
 
     <string name="channel_search_title_text">选择频道</string>
     <string name="channel_search_title_confirm">完成</string>

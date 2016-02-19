@@ -192,7 +192,7 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 			Toast.makeText(NewsSearchActivity.this, "在NewsSearchActivity进行返回时发生错误：【" + e.getMessage() + "】", Toast.LENGTH_SHORT).show();
 			e.printStackTrace();
 		}
-		ViewUtil.takeParamsBackToPrevActivity(this, values, ParamConst.NEWS_SEARCH_ACTIVITY_BACK_TO_NEWS_COMMON_ACTIVITY_RESULT_CODE);
+		ViewUtil.takeParamsBackToPrevActivity(this, values, ParamConst.NEWS_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE);
 	}
 	
 	private Bundle getValues() throws Exception {

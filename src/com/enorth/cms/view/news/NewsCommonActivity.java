@@ -23,6 +23,7 @@ import com.enorth.cms.fragment.NewsListFragment;
 import com.enorth.cms.handler.newslist.NewsListViewHandler;
 import com.enorth.cms.listener.CommonOnTouchListener;
 import com.enorth.cms.listener.imageview.ImageViewOnTouchListener;
+import com.enorth.cms.listener.menu.LeftMenuCommonOnClickListener;
 import com.enorth.cms.listener.newslist.ListViewItemOnTouchListener;
 import com.enorth.cms.listener.newslist.bottommenu.BottomMenuOnTouchListener;
 import com.enorth.cms.presenter.newslist.INewsListFragPresenter;
@@ -31,6 +32,7 @@ import com.enorth.cms.utils.ColorUtil;
 import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.utils.ViewUtil;
+import com.enorth.cms.view.LeftHorizontalScrollMenu;
 import com.enorth.cms.view.R;
 import com.enorth.cms.widget.listview.newslist.NewsListListView;
 
@@ -60,6 +62,10 @@ import android.widget.Toast;
 
 public abstract class NewsCommonActivity extends FragmentActivity implements INewsCommonView, OnPageChangeListener {
 	/**
+	 * 左侧菜单
+	 */
+//	protected LeftHorizontalScrollMenu menu;
+	/**
 	 * 底部的操作按钮布局
 	 */
 	protected LinearLayout newsOperateBtnLayout;
@@ -82,7 +88,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	/**
 	 * 将ViewPager中的ListView存入此集合中
 	 */
-	public List<NewsListFragment> views = new ArrayList<NewsListFragment>();
+	private List<NewsListFragment> views = new ArrayList<NewsListFragment>();
 //	public List<View> views = new ArrayList<View>();
 	/**
 	 * 屏幕认定滑动的最大位移
@@ -153,7 +159,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	/**
 	 * 当前activity（用于在匿名内部类中获取当前activity）
 	 */
-	protected Activity thisActivity;
+//	protected Activity thisActivity;
 	/**
 	 * 频道ID
 	 */
@@ -236,13 +242,13 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch(requestCode) {
 		// 从当前activity跳转到NewsSearchActivity并返回到当前activity时进入此条件
-		case ParamConst.NEWS_COMMON_ACTIVITY_TO_NEWS_SEARCH_ACTIVITY_REQUEST_CODE:
-			if (resultCode == ParamConst.NEWS_SEARCH_ACTIVITY_BACK_TO_NEWS_COMMON_ACTIVITY_RESULT_CODE) {
+		case ParamConst.NEWS_LIST_FRAG_ACTIVITY_TO_NEWS_SEARCH_ACTIVITY_REQUEST_CODE:
+			if (resultCode == ParamConst.NEWS_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE) {
 				Bundle extras = data.getExtras();
 				Set<String> keySet = extras.keySet();
 				for (String key : keySet) {
 					Log.e(key, extras.getString(key));
-					Toast.makeText(thisActivity, key + ":" + extras.getString(key), Toast.LENGTH_SHORT).show();
+					Toast.makeText(NewsCommonActivity.this, key + ":" + extras.getString(key), Toast.LENGTH_SHORT).show();
 				}
 				/*String curCrawlTypeId = extras.getString("curCrawlTypeId");
 				String curMergeTypeId = extras.getString("curMergeTypeId");
@@ -254,17 +260,17 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 				Log.e("keywordText", keywordText);*/
 			}
 			break;
-		case ParamConst.NEWS_COMMON_ACTIVITY_TO_CHANNEL_SEARCH_ACTIVITY_REQUEST_CODE:
-			if (resultCode == ParamConst.CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_COMMON_ACTIVITY_RESULT_CODE) {
+		case ParamConst.NEWS_LIST_FRAG_ACTIVITY_TO_CHANNEL_SEARCH_ACTIVITY_REQUEST_CODE:
+			if (resultCode == ParamConst.CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE) {
 				Bundle extras = data.getExtras();
 				if (extras.containsKey(ParamConst.CUR_CHANNEL_ID) && extras.containsKey(ParamConst.CUR_CHANNEL_ID_PARENT_ID) && extras.containsKey(ParamConst.CUR_CHANNEL_NAME)) {
 					channelId = extras.getLong(ParamConst.CUR_CHANNEL_ID);
 					Long parentId = extras.getLong(ParamConst.CUR_CHANNEL_ID_PARENT_ID);
 					newsSubTitleText = extras.getString(ParamConst.CUR_CHANNEL_NAME);
 					newsSubTitleTV.setText(newsSubTitleText);
-					SharedPreUtil.put(thisActivity, ParamConst.CUR_CHANNEL_ID, channelId);
-					SharedPreUtil.put(thisActivity, ParamConst.CUR_CHANNEL_ID_PARENT_ID, parentId);
-					SharedPreUtil.put(thisActivity, ParamConst.CUR_CHANNEL_NAME, newsSubTitleText);
+					SharedPreUtil.put(NewsCommonActivity.this, ParamConst.CUR_CHANNEL_ID, channelId);
+					SharedPreUtil.put(NewsCommonActivity.this, ParamConst.CUR_CHANNEL_ID_PARENT_ID, parentId);
+					SharedPreUtil.put(NewsCommonActivity.this, ParamConst.CUR_CHANNEL_NAME, newsSubTitleText);
 				}
 			}
 		default:
@@ -280,19 +286,19 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 		// 初始化认定滑动的最大位移
 		touchSlop = ViewConfiguration.get(this).getScaledTouchSlop();
 		// 将当前activity存入全局变量，用于匿名内部类中实现的方法的使用
-		this.thisActivity = getCurActivity();
+//		this.thisActivity = getCurActivity();
 		presenter = new NewsListFragPresenter(this);
-		newsOperateBtnBasicColor = ContextCompat.getColor(thisActivity, R.color.bottom_text_color_basic);
-		whiteColor = ColorUtil.getWhiteColor(thisActivity);
-		blueColor = ColorUtil.getCommonBlueColor(thisActivity);
+		newsOperateBtnBasicColor = ContextCompat.getColor(NewsCommonActivity.this, R.color.bottom_text_color_basic);
+		whiteColor = ColorUtil.getWhiteColor(NewsCommonActivity.this);
+		blueColor = ColorUtil.getCommonBlueColor(NewsCommonActivity.this);
 		// 获取屏幕的分辨率
 		
-		newsTitleAllowLength = ScreenTools.getPhoneWidth(thisActivity) / ParamConst.FONT_WIDTH;
+		newsTitleAllowLength = ScreenTools.getPhoneWidth(NewsCommonActivity.this) / ParamConst.FONT_WIDTH;
 		/*if (channelId == -1L) {
-			SharedPreUtil.resetChannelIdData(thisActivity);
+			SharedPreUtil.resetChannelIdData(NewsCommonActivity.this);
 			newsSubTitleText = ParamConst.DEFAULT_CHANNEL_NAME;
 		} else {
-			newsSubTitleText = SharedPreUtil.getString(thisActivity, ParamConst.CUR_CHANNEL_NAME);
+			newsSubTitleText = SharedPreUtil.getString(NewsCommonActivity.this, ParamConst.CUR_CHANNEL_NAME);
 		}*/
 	}
 	
@@ -316,7 +322,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	private void initNewsTypeBtnLayout() throws Exception {
 		RelativeLayout newsTypeBtnRelaLayout = (RelativeLayout) findViewById(R.id.newsTypeBtnRelaLayout);
 		newsTypeBtnLineLayout = (LinearLayout) newsTypeBtnRelaLayout.getChildAt(0);
-		newsTypeBtns = ViewUtil.initBtnGroupLayout(thisActivity, newsTypeBtnLineLayout, newsTypeBtnText, newsTypeBtnId, 0.9f);
+		newsTypeBtns = ViewUtil.initBtnGroupLayout(NewsCommonActivity.this, newsTypeBtnLineLayout, newsTypeBtnText, newsTypeBtnId, 0.9f);
 	}
 	
 	/**
@@ -324,15 +330,16 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	 * @throws Exception
 	 */
 	protected void initViewPager() throws Exception {
-		// AnimUtil.showRefreshFrame(thisActivity);
+		// AnimUtil.showRefreshFrame(NewsCommonActivity.this);
 		newsListViewPager = (ViewPager) findViewById(R.id.newsListViewPager);
 		for (int i = 0; i < 3; i++) {
 			NewsListFragment fragment = new NewsListFragment(this, i);
 			
 			views.add(fragment);
-			NewsListFragmentPagerAdapter adapter = new NewsListFragmentPagerAdapter(getSupportFragmentManager(), this);
-			newsListViewPager.setAdapter(adapter);
+			
 		}
+		NewsListFragmentPagerAdapter adapter = new NewsListFragmentPagerAdapter(getSupportFragmentManager(), views);
+		newsListViewPager.setAdapter(adapter);
 		newsListViewPager.addOnPageChangeListener(this);
 	}
 	
@@ -345,7 +352,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(thisActivity, "点击了“添加新闻”按钮", Toast.LENGTH_SHORT).show();
+				Toast.makeText(NewsCommonActivity.this, "点击了“添加新闻”按钮", Toast.LENGTH_SHORT).show();
 			}
 		};
 		addNewsBtn.setOnClickListener(listener);
@@ -380,12 +387,12 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 			float titleHeight = resources.getDimension(R.dimen.news_title_height);
 			float subTitleHeight = resources.getDimension(R.dimen.news_sub_title_height);
 			float operateBtnHeight = resources.getDimension(R.dimen.news_operate_btn_layout_height);
-			int height = (int) ((ScreenTools.getPhoneHeight(thisActivity) - titleHeight - subTitleHeight - operateBtnHeight) / 2 + titleHeight
+			int height = (int) ((ScreenTools.getPhoneHeight(NewsCommonActivity.this) - titleHeight - subTitleHeight - operateBtnHeight) / 2 + titleHeight
 					+ subTitleHeight);
 			List<View> items = initDefaultData(errorHint, height);
 			ListAdapter adapter = new NewsListViewAdapter(items);
 			newsListView.setAdapter(adapter);
-			// AnimUtil.hideRefreshFrame(thisActivity);
+			// AnimUtil.hideRefreshFrame(NewsCommonActivity.this);
 		}
 	}
 	
@@ -412,7 +419,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	public void initData(String result, Handler handler) throws Exception {
 		JSONArray jsonArray = new JSONArray(result);
 		List<View> resultView = new ArrayList<View>();
-		LayoutInflater inflater = LayoutInflater.from(thisActivity);
+		LayoutInflater inflater = LayoutInflater.from(NewsCommonActivity.this);
 		int length = jsonArray.length();
 		for (int i = 0; i < length; i++) {
 			JSONObject jo = jsonArray.getJSONObject(i);
@@ -541,7 +548,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 		CommonOnTouchListener listViewItemOnTouchListener = new ListViewItemOnTouchListener(touchSlop) {
 			@Override
 			public void onImgChangeDo() {
-				Toast.makeText(thisActivity, "点击的新闻ID为【" + bean.getId() + "】", Toast.LENGTH_SHORT).show();
+				Toast.makeText(NewsCommonActivity.this, "点击的新闻ID为【" + bean.getId() + "】", Toast.LENGTH_SHORT).show();
 			}
 
 			@Override
@@ -578,7 +585,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	 * @throws Exception
 	 */
 	public void changeNewsTypeBtnStyleByFocusedState(int position) throws Exception {
-		ViewUtil.changeBtnGroupStyleByFocusedState(thisActivity, newsTypeBtnLineLayout, position, ColorUtil.getCommonBlueColor(thisActivity), ColorUtil.getWhiteColor(thisActivity));
+		ViewUtil.changeBtnGroupStyleByFocusedState(NewsCommonActivity.this, newsTypeBtnLineLayout, position, ColorUtil.getCommonBlueColor(NewsCommonActivity.this), ColorUtil.getWhiteColor(NewsCommonActivity.this));
 		int childCount = newsTypeBtnLineLayout.getChildCount();
 		for (int i = 0; i < childCount; i++) {
 			if (Math.abs(position - i) > 1) {
@@ -641,28 +648,12 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 				public boolean onImgChangeBegin() {
 					// 如果当前点击的按钮处于disable状态，则不进行任何操作
 					if (iv.isEnabled()) {
-						Toast.makeText(thisActivity, bean.getTextContent(), Toast.LENGTH_SHORT).show();
+						Toast.makeText(NewsCommonActivity.this, bean.getTextContent(), Toast.LENGTH_SHORT).show();
 						return true;
 					} else {
-						Toast.makeText(thisActivity, hint, Toast.LENGTH_SHORT).show();
+						Toast.makeText(NewsCommonActivity.this, hint, Toast.LENGTH_SHORT).show();
 						return false;
 					}
-				}
-
-				@Override
-				public void onImgChangeEnd() {
-
-				}
-
-				@Override
-				public void onImgChangeDo() {
-
-				}
-
-				@Override
-				public void onTouchBegin() {
-					// TODO Auto-generated method stub
-					
 				}
 			};
 			layout.setOnTouchListener(listener);
@@ -727,7 +718,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 				iv.setSelected(true);
 				iv.setEnabled(true);
 				bean.setEnable(true);
-				int color = ContextCompat.getColor(thisActivity, bottomMenuOperateBean.getNewsOperateBtnColor()[i]);
+				int color = ContextCompat.getColor(NewsCommonActivity.this, bottomMenuOperateBean.getNewsOperateBtnColor()[i]);
 				tv.setTextColor(color);
 			} else {
 				iv.setImageResource(bean.getImageDisableResource());
@@ -762,7 +753,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	 */
 	@Override
 	public void onPageSelected(final int position) {
-		// AnimUtil.showRefreshFrame(thisActivity);
+		// AnimUtil.showRefreshFrame(NewsCommonActivity.this);
 		new Handler() {
 			@Override
 			public void handleMessage(Message msg) {
@@ -772,7 +763,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 
 					ButtonColorBasicBean colorBasicBean = null;
 					try {
-						colorBasicBean = new ButtonColorBasicBean(thisActivity);
+						colorBasicBean = new ButtonColorBasicBean(NewsCommonActivity.this);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -792,7 +783,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 				curPosition = position;
 				changeAddNewsBtnVisible();
 				initNewsOperateBtn();
-				// AnimUtil.hideRefreshFrame(thisActivity);
+				// AnimUtil.hideRefreshFrame(NewsCommonActivity.this);
 			}
 		}.sendEmptyMessage(0);
 	}
@@ -852,4 +843,11 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	public void setSubTitleInitFinish(boolean isSubTitleInitFinish) {
 		this.isSubTitleInitFinish = isSubTitleInitFinish;
 	}
+	public List<NewsListFragment> getViews() {
+		return views;
+	}
+	public void setViews(List<NewsListFragment> views) {
+		this.views = views;
+	}
+	
 }

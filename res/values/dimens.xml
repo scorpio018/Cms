@@ -106,5 +106,9 @@
     <dimen name="popup_window_channel_search_layout_padding_bottom">10dip</dimen>
     
     <dimen name="news_search_common_margin_top">30dip</dimen>
+    
+    <dimen name="material_upload_file_type_text_height">50dip</dimen>
+    <dimen name="material_upload_file_type_layout_margin_left">5dip</dimen>
+    <dimen name="material_upload_file_type_layout_margin_top">5dip</dimen>
 
 </resources>

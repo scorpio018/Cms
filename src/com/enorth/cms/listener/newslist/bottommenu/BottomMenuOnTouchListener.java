@@ -34,5 +34,20 @@ public abstract class BottomMenuOnTouchListener extends CommonOnTouchListener {
 	public void touchMove(View v) {
 		
 	}
+	
+	@Override
+	public void onImgChangeEnd() {
+
+	}
+
+	@Override
+	public void onImgChangeDo() {
+
+	}
+
+	@Override
+	public void onTouchBegin() {
+		
+	}
 
 }

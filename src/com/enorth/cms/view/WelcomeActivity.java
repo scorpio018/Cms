@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.enorth.cms.adapter.WelcomeViewPagerAdapter;
 import com.enorth.cms.consts.ParamConst;
+import com.enorth.cms.view.news.NewsListFragActivity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -210,7 +211,7 @@ public class WelcomeActivity extends BaseActivity implements OnPageChangeListene
 	}
 
 	private void toMainActivity() {
-		intent.setClass(WelcomeActivity.this, MainActivity.class);
+		intent.setClass(WelcomeActivity.this, NewsListFragActivity.class);
 		startActivity(intent);
 		// TODO 正式使用时要取消下面注解的方法（将ParamConst.ACTIVITY_IS_FIRST_ENTER的参数变为false，表示该APP已经看过一次引导图了，下次进入不需要再看）
 		saveTag();

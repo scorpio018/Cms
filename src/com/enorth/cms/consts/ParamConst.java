@@ -145,20 +145,28 @@ public class ParamConst {
 	/**
 	 * 从新闻列表跳转到搜索新闻页面的REQUEST_CODE值
 	 */
-	public static final int NEWS_COMMON_ACTIVITY_TO_NEWS_SEARCH_ACTIVITY_REQUEST_CODE = 1;
+	public static final int NEWS_LIST_FRAG_ACTIVITY_TO_NEWS_SEARCH_ACTIVITY_REQUEST_CODE = 1;
 	/**
 	 * 从新闻列表跳转到频道搜索页面的REQUEST_CODE值
 	 */
-	public static final int NEWS_COMMON_ACTIVITY_TO_CHANNEL_SEARCH_ACTIVITY_REQUEST_CODE = 2;
+	public static final int NEWS_LIST_FRAG_ACTIVITY_TO_CHANNEL_SEARCH_ACTIVITY_REQUEST_CODE = 2;
+	/**
+	 * 从图文直播列表跳转到搜索新闻页面的REQUEST_CODE值
+	 */
+	public static final int NEWS_LIVE_LIST_FRAG_ACTIVITY_TO_NEWS_SEARCH_ACTIVITY_REQUEST_CODE = 3;
+	/**
+	 * 从图文直播列表跳转到频道搜索页面的REQUEST_CODE值
+	 */
+	public static final int NEWS_LIVE_LIST_FRAG_ACTIVITY_TO_CHANNEL_SEARCH_ACTIVITY_REQUEST_CODE = 4;
 	
 	/**
 	 * 从搜索新闻页面返回到新闻列表的RESULT_CODE值
 	 */
-	public static final int NEWS_SEARCH_ACTIVITY_BACK_TO_NEWS_COMMON_ACTIVITY_RESULT_CODE = 1;
+	public static final int NEWS_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE = 1;
 	/**
 	 * 从频道搜索页面返回到新闻列表的RESULT_CODE值
 	 */
-	public static final int CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_COMMON_ACTIVITY_RESULT_CODE = 2;
+	public static final int CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE = 2;
 	
 	// ---------------------两个activity之间需要传值时定义的code值end-----------------------------//
 	
@@ -193,6 +201,10 @@ public class ParamConst {
 	 * 上次更新时间的字符串常量，用于作为SharedPreferences的键值
 	 */
 	public static final String UPDATED_AT = "updated_at";
+	/**
+	 * 当前用户最后进入的activity页
+	 */
+	public static final String CUR_ACTIVITY_RESOURCE_ID = "curActivityResourceId";
 	/**
 	 * 当前的频道ID
 	 */

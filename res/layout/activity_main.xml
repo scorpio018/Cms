@@ -1,52 +1,24 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.enorth.cms.view.LeftHorizontalScrollMenu
+    android:id="@+id/leftMenu" 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    style="?android:attr/buttonBarStyle">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/menu_bg"
+    android:scrollbars="none"
+    xmlns:leftmenu="http://schemas.android.com/apk/res/com.enorth.cms.view" 
+    leftmenu:rightPadding="100dp" 
+    >
     
-    <TextView 
-        android:id="@+id/curTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@color/light_blue"
-        android:textSize="24dip"/>
-
-    <Button 
-        android:id="@+id/btnToMaterialUploadActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/btnToMaterialUploadActivity"/>
+    <LinearLayout 
+        android:id="@+id/menuAndContentLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal">
+        
+        <include layout="@layout/left_menu"/>
+        
+    </LinearLayout>
     
-    <Button 
-        android:id="@+id/btnToMaterialBtnActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/btnToMaterialBtnActivity"/>
     
-    <Button 
-        android:id="@+id/btnToPullableWebViewActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/btnToPullableWebViewActivity"/>
-    
-    <Button 
-        android:id="@+id/btnToCrossWalkActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/btnToCrossWalkActivity"/>
-    
-    <Button 
-        android:id="@+id/btnToNewsListActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/btnToNewsListActivity"/>
-    
-
-</LinearLayout>
+</com.enorth.cms.view.LeftHorizontalScrollMenu>

@@ -23,6 +23,11 @@ public class LayoutParamsUtil {
 		return params;
 	}
 	
+	public static LinearLayout.LayoutParams initFillLayout() {
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+		return params;
+	}
+	
 	/**
 	 * 初始化按照百分比分配的params
 	 * @param weight

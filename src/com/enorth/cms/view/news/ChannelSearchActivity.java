@@ -401,7 +401,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 			SharedPreUtil.put(thisActivity, ParamConst.CUR_CHANNEL_NAME, curCheckChannelName);
 			SharedPreUtil.put(thisActivity, ParamConst.CUR_CHANNEL_ID_PARENT_ID, parentChannelId);*/
 			Bundle bundle = initChannelIdForPrevActivity();
-			ViewUtil.takeParamsBackToPrevActivity(thisActivity, bundle, ParamConst.CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_COMMON_ACTIVITY_RESULT_CODE);
+			ViewUtil.takeParamsBackToPrevActivity(thisActivity, bundle, ParamConst.CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE);
 		}
 	}
 	

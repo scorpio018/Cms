@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 新闻列表的主页面 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_gray_default">
     
     <!-- 标题、副标题、新闻列表 -->
     <LinearLayout 
@@ -13,7 +14,8 @@
         android:layout_alignParentTop="true">
         
         <!-- 标题 -->
-        <RelativeLayout 
+        <include layout="@layout/common_title_frag"/>
+        <!-- <RelativeLayout 
             android:id="@+id/newsTitle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/news_title_height"
@@ -53,7 +55,7 @@
                 android:layout_marginEnd="@dimen/news_title_right_icon_margin_right"
                 />
             
-        </RelativeLayout>
+        </RelativeLayout> -->
         
         <!-- 副标题 -->
         <RelativeLayout android:id="@+id/newsSubTitle"
@@ -135,7 +137,7 @@
         android:id="@+id/newsListViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bg_gray_default"/>
+        />
         
     </LinearLayout>
     
@@ -210,16 +212,23 @@
         
     </LinearLayout>
     
-    <ImageView 
-        android:id="@+id/addNewsBtn"
+    <LinearLayout 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/news_add"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="@dimen/news_add_margin_bottom"
+        android:paddingBottom="@dimen/news_add_margin_bottom">
+        
+        <ImageView 
+        android:id="@+id/addNewsBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/news_add"
         android:layout_marginRight="@dimen/news_add_margin_right"
         android:layout_marginEnd="@dimen/news_add_margin_right"/>
+        
+    </LinearLayout>
+    
     
 </RelativeLayout>

@@ -24,4 +24,5 @@
     <color name="bottom_text_color_yellow">#f4c600</color>
     <color name="bottom_text_color_red">#eb4f38</color>
     <color name="channel_popup_color">#5E5E5E</color>
+    <color name="menu_bg">#3A4149</color>
 </resources>
