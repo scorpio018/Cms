@@ -22,10 +22,15 @@
             android:textColor="@color/gray_lighter"/>
     </LinearLayout>
     
-    <LinearLayout 
+    <GridLayout 
+        android:id="@+id/fileGridLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"></LinearLayout>
+        android:columnCount="3"
+        android:orientation="horizontal"
+        >
+        
+    </GridLayout>
     
 
 </LinearLayout>

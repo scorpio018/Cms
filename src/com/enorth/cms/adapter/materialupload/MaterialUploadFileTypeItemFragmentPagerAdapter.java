@@ -2,14 +2,11 @@ package com.enorth.cms.adapter.materialupload;
 
 import java.util.List;
 
-import com.enorth.cms.fragment.NewsListFragment;
 import com.enorth.cms.fragment.materialupload.MaterialUploadFileTypeItemFrag;
-import com.enorth.cms.view.news.NewsCommonActivity;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.ListFragment;
 
 public class MaterialUploadFileTypeItemFragmentPagerAdapter extends FragmentPagerAdapter {
 	

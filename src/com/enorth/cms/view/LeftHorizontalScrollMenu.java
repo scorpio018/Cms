@@ -104,11 +104,12 @@ public class LeftHorizontalScrollMenu extends HorizontalScrollView {
 	private void initHorizontalScrollMenuView() {
 		wrapper = (LinearLayout) getChildAt(0);
 		initMenu();
+		SharedPreUtil.remove(context, ParamConst.CUR_ACTIVITY_RESOURCE_ID);
 		curActivityResourceId = SharedPreUtil.getInt(context, ParamConst.CUR_ACTIVITY_RESOURCE_ID);
 		
 		if (curActivityResourceId == -1) {
 			curActivityResourceId = R.layout.activity_news_list_frag;
-			SharedPreUtil.put(context, ParamConst.CUR_ACTIVITY_RESOURCE_ID, curActivityResourceId);
+//			SharedPreUtil.put(context, ParamConst.CUR_ACTIVITY_RESOURCE_ID, curActivityResourceId);
 		}
 //		createNewLayout(context, curActivityResourceId);
 	}
@@ -155,7 +156,7 @@ public class LeftHorizontalScrollMenu extends HorizontalScrollView {
 				Intent intent = new Intent();
 				intent.setClass(context, menuBean.getActivity().getClass());
 				context.startActivity(intent);
-				SharedPreUtil.put(context, ParamConst.CUR_ACTIVITY_RESOURCE_ID, menuBean.getMenuLayoutId());
+//				SharedPreUtil.put(context, ParamConst.CUR_ACTIVITY_RESOURCE_ID, menuBean.getMenuLayoutId());
 				((Activity)context).finish();
 			}
 		} else {

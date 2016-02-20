@@ -39,6 +39,17 @@ public class LayoutParamsUtil {
 	}
 	
 	/**
+	 * 初始化自定义的高度和按照百分比分配的params
+	 * @param height
+	 * @param weight
+	 * @return
+	 */
+	public static LinearLayout.LayoutParams initHeightAndPercentWeight(int height, float weight) {
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, height, weight);
+		return params;
+	}
+	
+	/**
 	 * 初始化自定义的宽和高
 	 * @param width
 	 * @param height
