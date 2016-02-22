@@ -4,17 +4,18 @@
     android:layout_height="fill_parent"
     android:background="@color/white">
     
-    <LinearLayout 
+    <com.enorth.cms.widget.linearlayout.MaterialUploadFragLinearLayout 
+        android:id="@+id/fragLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginBottom="@dimen/news_operate_btn_layout_height"
         android:layout_alignParentTop="true">
         
-	    <!-- 标题 -->
-	    <include layout="@layout/common_title_frag"/>
-	    
-	    <FrameLayout 
+        <!-- 标题 -->
+    	<include layout="@layout/common_title_frag"/>
+    	    
+   	    <FrameLayout 
 	        android:id="@+id/materialUploadBtnGroupFrag"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"/>
@@ -23,6 +24,7 @@
 	        android:id="@+id/materialUploadHistoryFrag"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"/>
+    	    
 	    
 	    <!-- <fragment 
 	        android:id="@+id/materialUploadBtnGroupFrag"
@@ -36,7 +38,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"/> -->
     
-    </LinearLayout>
+    </com.enorth.cms.widget.linearlayout.MaterialUploadFragLinearLayout>
     
 	<LinearLayout
 	    android:id="@+id/materialUploadBottomLayout"

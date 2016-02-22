@@ -168,7 +168,7 @@ public class PullToRefreshLayout extends FrameLayout {
 			// 回弹速度随下拉距离moveDeltaY增大而增大
 //			Log.e("updateHandler.handleMessage", "回弹速度随下拉距离moveDeltaY增大而增大");
 			// 获取当前view的高度(getHeight()在view的高度没有超过屏幕高度的时候与此参数的值相同，而如果view超出，则getHeight()的值就是屏幕的高度值)
-			int measuredHeight = getMeasuredHeight();
+//			int measuredHeight = getMeasuredHeight();
 //			Log.w("updateHandler.handleMessage", "getMeasuredHeight()【" + measuredHeight + "】");
 //			Log.w("updateHandler.handleMessage", "pullDownY【" + pullDownY + "】");
 //			Log.w("updateHandler.handleMessage", "pullUpY【" + pullUpY + "】");

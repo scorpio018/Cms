@@ -1,6 +1,7 @@
 package com.enorth.cms.fragment.materialupload;
 
 import com.enorth.cms.view.R;
+import com.enorth.cms.widget.linearlayout.MaterialUploadFragLinearLayout;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,10 @@ import android.widget.Toast;
  */
 public class MaterialUploadBtnGroupFrag extends Fragment {
 	private LinearLayout layout;
+	/**
+	 * 向上箭头
+	 */
+	private ImageView materialUploadBtnGroupScrollBtn;
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -32,13 +37,22 @@ public class MaterialUploadBtnGroupFrag extends Fragment {
 		initImgBtnAddPicEvent();
 		initImgBtnChoosePicEvent();
 		initImgBtnAddVideo();
+		initBottomImgEvent();
 	}
 	
 	/**
-	 * 初始化向下箭头的点击事件（第一次点击将当前activity向上移，第二次还原，如此往复）
+	 * 初始化向上箭头的点击事件（第一次点击将当前activity向上移，第二次还原，如此往复）
 	 */
 	private void initBottomImgEvent() {
-		
+		materialUploadBtnGroupScrollBtn = (ImageView) layout.findViewById(R.id.materialUploadBtnGroupScrollBtn);
+		materialUploadBtnGroupScrollBtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				MaterialUploadFragLinearLayout fragLayout = (MaterialUploadFragLinearLayout) getActivity().findViewById(R.id.fragLayout);
+				fragLayout.startMove();
+			}
+		});
 	}
 	
 	/**
@@ -82,4 +96,5 @@ public class MaterialUploadBtnGroupFrag extends Fragment {
 			}
 		});
 	}
+	
 }
