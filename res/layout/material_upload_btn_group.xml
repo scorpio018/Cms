@@ -8,12 +8,12 @@
     >
     
     <LinearLayout
+        android:id="@+id/materialUploadBtnGroupLayout"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:minHeight="150dip"
 	    android:orientation="vertical"
 	    android:gravity="center"
-	    android:layout_alignParentTop="true"
 	    >
 	    
 	    <TextView 
@@ -104,12 +104,11 @@
 	    </LinearLayout>
 	
 	</LinearLayout>
-	
+	<!-- android:layout_marginBottom="@dimen/margin_bottom_common" -->
     <LinearLayout 
         android:id="@+id/materialUploadBtnGroupScrollLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_bottom_common"
         android:gravity="center_horizontal">
         
         <ImageView 

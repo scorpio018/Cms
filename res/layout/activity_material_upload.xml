@@ -4,8 +4,7 @@
     android:layout_height="fill_parent"
     android:background="@color/white">
     
-    <com.enorth.cms.widget.linearlayout.MaterialUploadFragLinearLayout 
-        android:id="@+id/fragLayout"
+    <LinearLayout 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -14,31 +13,27 @@
         
         <!-- 标题 -->
     	<include layout="@layout/common_title_frag"/>
-    	    
-   	    <FrameLayout 
-	        android:id="@+id/materialUploadBtnGroupFrag"
+    	<!-- android:layout_marginBottom="@dimen/news_operate_btn_layout_height" -->
+    	<com.enorth.cms.widget.linearlayout.MaterialUploadFragLinearLayout 
+	        android:id="@+id/fragLayout"
 	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"/>
+	        android:layout_height="match_parent"
+	        android:orientation="vertical"
+	        >
+	        
+	   	    <FrameLayout 
+		        android:id="@+id/materialUploadBtnGroupFrag"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"/>
+		    
+		    <FrameLayout 
+		        android:id="@+id/materialUploadHistoryFrag"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"/>
 	    
-	    <FrameLayout 
-	        android:id="@+id/materialUploadHistoryFrag"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"/>
-    	    
-	    
-	    <!-- <fragment 
-	        android:id="@+id/materialUploadBtnGroupFrag"
-	        android:name="com.enorth.cms.fragment.materialupload.MaterialUploadBtnGroup"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"/>
-	    
-	    <fragment 
-	        android:id="@+id/materialUploadHistoryFrag"
-	        android:name="com.enorth.cms.fragment.materialupload.MaterialUploadHistoryFrag"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"/> -->
-    
-    </com.enorth.cms.widget.linearlayout.MaterialUploadFragLinearLayout>
+	    </com.enorth.cms.widget.linearlayout.MaterialUploadFragLinearLayout>
+        
+    </LinearLayout>
     
 	<LinearLayout
 	    android:id="@+id/materialUploadBottomLayout"

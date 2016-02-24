@@ -119,6 +119,23 @@ public class ParamConst {
 	public static final int MESSAGE_WHAT_SUCCESS = 0;
 	public static final int MESSAGE_WHAT_ERROR = 1;
 	public static final int MESSAGE_WHAT_NO_DATA = 2;
+	
+	/**
+	 * 素材上转中，两个fragment的状态之已经展开
+	 */
+	public static final int CUR_FRAG_LAYOUT_STATE_IS_OPENED = 0;
+	/**
+	 * 素材上转中，两个fragment的状态之正在收回
+	 */
+	public static final int CUR_FRAG_LAYOUT_STATE_CLOSING = 1;
+	/**
+	 * 素材上转中，两个fragment的状态之已经收回
+	 */
+	public static final int CUR_FRAG_LAYOUT_STATE_IS_CLOSED = 2;
+	/**
+	 * 素材上转中，两个fragment的状态之正在展开
+	 */
+	public static final int CUR_FRAG_LAYOUT_STATE_OPENING = 3;
 	/**
 	 * 文字宽度（此处是估算出来的，以后需要用算法计算）
 	 */

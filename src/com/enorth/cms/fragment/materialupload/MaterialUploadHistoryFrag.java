@@ -7,8 +7,10 @@ import com.enorth.cms.adapter.materialupload.MaterialUploadFileTypeItemFragmentP
 import com.enorth.cms.utils.ColorUtil;
 import com.enorth.cms.utils.LayoutParamsUtil;
 import com.enorth.cms.view.R;
+import com.enorth.cms.widget.linearlayout.MaterialUploadFragLinearLayout;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -40,6 +42,12 @@ public class MaterialUploadHistoryFrag extends Fragment {
 	
 	private ViewPager materialUploadFileViewPager;
 	
+	private MaterialUploadFragLinearLayout fragLayout;
+	
+	public MaterialUploadHistoryFrag(MaterialUploadFragLinearLayout fragLayout) {
+		this.fragLayout = fragLayout;
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		layout = (LinearLayout) inflater.inflate(R.layout.material_upload_history_frag, null);
@@ -70,7 +78,6 @@ public class MaterialUploadHistoryFrag extends Fragment {
 				return true;
 			}
 		});
-		
 		int height = (int) getResources().getDimension(R.dimen.material_upload_file_type_text_height);
 		int length = materialUploadFileTypeTexts.length;
 		for (int i = 0; i < length; i++) {
@@ -120,11 +127,15 @@ public class MaterialUploadHistoryFrag extends Fragment {
 		List<MaterialUploadFileTypeItemFrag> items = new ArrayList<MaterialUploadFileTypeItemFrag>();
 		int length = materialUploadFileTypeTexts.length;
 		for (int i = 0; i < length; i++) {
-			MaterialUploadFileTypeItemFrag frag = new MaterialUploadFileTypeItemFrag();
+			MaterialUploadFileTypeItemFrag frag = new MaterialUploadFileTypeItemFrag(fragLayout);
 			items.add(frag);
 		}
 		MaterialUploadFileTypeItemFragmentPagerAdapter adapter = new MaterialUploadFileTypeItemFragmentPagerAdapter(getFragmentManager(), items);
 		materialUploadFileViewPager.setAdapter(adapter);
+	}
+	
+	private void addCurViewTouchEvent() {
+		
 	}
 	
 }

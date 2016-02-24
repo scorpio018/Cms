@@ -27,6 +27,8 @@ public class MyTimer {
 			if (mTask != null) {
 				mTask.cancel();
 				mTask = null;
+				timer.cancel();
+				timer = null;
 			}
 		}
 	}

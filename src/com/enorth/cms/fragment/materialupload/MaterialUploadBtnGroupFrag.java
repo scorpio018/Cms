@@ -22,6 +22,14 @@ public class MaterialUploadBtnGroupFrag extends Fragment {
 	 * 向上箭头
 	 */
 	private ImageView materialUploadBtnGroupScrollBtn;
+	/**
+	 * 用作收回/展开的自定义的linearlayout
+	 */
+	private MaterialUploadFragLinearLayout fragLayout;
+	
+	public MaterialUploadBtnGroupFrag(MaterialUploadFragLinearLayout fragLayout) {
+		this.fragLayout = fragLayout;
+	}
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,7 +57,6 @@ public class MaterialUploadBtnGroupFrag extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				MaterialUploadFragLinearLayout fragLayout = (MaterialUploadFragLinearLayout) getActivity().findViewById(R.id.fragLayout);
 				fragLayout.startMove();
 			}
 		});

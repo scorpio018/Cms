@@ -22,15 +22,38 @@
             android:textColor="@color/gray_lighter"/>
     </LinearLayout>
     
-    <GridLayout 
+    <!-- <GridLayout 
         android:id="@+id/fileGridLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:columnCount="3"
         android:orientation="horizontal"
+        android:background="@color/common_blue"
         >
         
-    </GridLayout>
+    </GridLayout> -->
+    
+    <GridView 
+        android:id="@+id/photo_wall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnWidth="90dip"
+        android:stretchMode="columnWidth"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="10dip"
+        android:gravity="center"
+        ></GridView>
+    
+    <!-- <GridView 
+        android:id="@+id/fileGridView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="@dimen/material_upload_file_item_grid_view_vertical_spacing"
+        android:horizontalSpacing="@dimen/material_upload_file_item_grid_view_horizontal_spacing"
+        android:columnWidth="@dimen/material_upload_file_item_grid_view_column_width"
+        android:stretchMode="columnWidth"
+        android:gravity="center"></GridView> -->
     
 
 </LinearLayout>

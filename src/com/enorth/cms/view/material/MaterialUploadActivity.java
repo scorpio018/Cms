@@ -6,14 +6,11 @@ import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.R;
 import com.enorth.cms.widget.linearlayout.MaterialUploadFragLinearLayout;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MaterialUploadActivity extends FragmentActivity {
@@ -21,6 +18,10 @@ public class MaterialUploadActivity extends FragmentActivity {
 	private FragmentManager fragmentManager;
 	
 	private FragmentTransaction fragmentTransaction;
+	/**
+	 * 用作收回/展开的自定义的linearlayout
+	 */
+	private MaterialUploadFragLinearLayout fragLayout;
 	/**
 	 * 底部菜单（标识当前的附件内容来源类别）
 	 */
@@ -96,7 +97,7 @@ public class MaterialUploadActivity extends FragmentActivity {
 	}
 	
 	private void initFragLayout() {
-		MaterialUploadFragLinearLayout fragLayout = (MaterialUploadFragLinearLayout) findViewById(R.id.fragLayout);
+		fragLayout = (MaterialUploadFragLinearLayout) findViewById(R.id.fragLayout);
 	}
 	
 	/**
@@ -104,7 +105,7 @@ public class MaterialUploadActivity extends FragmentActivity {
 	 * @throws Exception
 	 */
 	private void initBtnGroupFrag() throws Exception {
-		MaterialUploadBtnGroupFrag frag = new MaterialUploadBtnGroupFrag();
+		MaterialUploadBtnGroupFrag frag = new MaterialUploadBtnGroupFrag(fragLayout);
 		fragmentTransaction.add(R.id.materialUploadBtnGroupFrag, frag);
 	}
 	
@@ -113,7 +114,7 @@ public class MaterialUploadActivity extends FragmentActivity {
 	 * @throws Exception
 	 */
 	private void initFileHistoryFrag() throws Exception {
-		MaterialUploadHistoryFrag frag = new MaterialUploadHistoryFrag();
+		MaterialUploadHistoryFrag frag = new MaterialUploadHistoryFrag(fragLayout);
 		fragmentTransaction.add(R.id.materialUploadHistoryFrag, frag);
 	}
 	

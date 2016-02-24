@@ -1,5 +1,6 @@
 package com.enorth.cms.handler.materialupload;
 
+import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.widget.linearlayout.MaterialUploadFragLinearLayout;
 
 import android.os.Handler;
@@ -13,6 +14,8 @@ public class MaterialUploadFragMoveHandler extends Handler {
 	private int moveSpeed = 8;
 	
 	private boolean isStartAnim = false;
+	
+	private boolean isFinished = false;
 	
 	public MaterialUploadFragMoveHandler(MaterialUploadFragLinearLayout layout) {
 		this.layout = layout;
@@ -28,29 +31,84 @@ public class MaterialUploadFragMoveHandler extends Handler {
 	 * 进行收回/展开操作
 	 * @param isOpen 当前按钮组的状态：true表示展开；false表示收回
 	 */
-	private void move() {
-		boolean isOpen = layout.isOpen();
-		if (!isStartAnim) {
-			layout.getMaterialUploadBtnGroupScrollBtn().startAnimation(layout.getRotateBackAnimation());
+	private synchronized void move() {
+		if (isFinished) {
+			return;
 		}
-		boolean isEnd = false;
+		int curFragLayoutState = layout.getCurFragLayoutState();
+		switch (curFragLayoutState) {
+		case ParamConst.CUR_FRAG_LAYOUT_STATE_IS_CLOSED:
+			layout.setCurFragLayoutState(ParamConst.CUR_FRAG_LAYOUT_STATE_OPENING);
+			break;
+		case ParamConst.CUR_FRAG_LAYOUT_STATE_IS_OPENED:
+			layout.setCurFragLayoutState(ParamConst.CUR_FRAG_LAYOUT_STATE_CLOSING);
+			break;
+		case ParamConst.CUR_FRAG_LAYOUT_STATE_CLOSING:
+		case ParamConst.CUR_FRAG_LAYOUT_STATE_OPENING:
+			break;
+		default:
+			break;
+		}
+		boolean isOpen = layout.isOpen();
+		boolean isEnd = layout.isEnd();
+		if (isEnd) {
+			switch (curFragLayoutState) {
+			case ParamConst.CUR_FRAG_LAYOUT_STATE_CLOSING:
+				layout.setCurFragLayoutState(ParamConst.CUR_FRAG_LAYOUT_STATE_IS_CLOSED);
+				isFinished = true;
+				break;
+			case ParamConst.CUR_FRAG_LAYOUT_STATE_OPENING:
+				layout.setCurFragLayoutState(ParamConst.CUR_FRAG_LAYOUT_STATE_IS_OPENED);
+				isFinished = true;
+				break;
+			case ParamConst.CUR_FRAG_LAYOUT_STATE_IS_CLOSED:
+			case ParamConst.CUR_FRAG_LAYOUT_STATE_IS_OPENED:
+				return;
+			default:
+				return;
+			}
+			layout.getTimer().cancel();
+			Log.e("layout.getCurBtnGroupHeight()", String.valueOf(layout.getCurMoveHeight()));
+			layout.requestLayout();
+			return;
+		}
 		// 如果当前状态是从展开到收回，则要将按钮组的layout的高度收回到layout.getBtnGroupEndHeight()的高度
 		if (isOpen) {
-			layout.setCurBtnGroupHeight(layout.getCurBtnGroupHeight() + moveSpeed);
-			isEnd = layout.getCurBtnGroupHeight() > layout.getBtnGroupMoveMaxHeight();
-			layout.setCurBtnGroupHeight(layout.getBtnGroupMoveMaxHeight());
+			if (!isStartAnim) {
+				layout.getMaterialUploadBtnGroupScrollBtn().startAnimation(layout.getRotateAnimation());
+			}
+			layout.setCurMoveHeight(layout.getCurMoveHeight() + moveSpeed);
+			if (layout.getCurMoveHeight() > layout.getBtnGroupEndHeight() - moveSpeed) {
+				isEnd(layout.getBtnGroupEndHeight(), !isOpen);
+			}
 		} else {
 			// 如果当前状态是从收回到展开，则要将按钮组的layou的高度展开到
-			layout.setCurBtnGroupHeight(layout.getCurBtnGroupHeight() - moveSpeed);
-			isEnd = layout.getCurBtnGroupHeight() < 0;
-			layout.setCurBtnGroupHeight(0);
+			if (!isStartAnim) {
+				layout.getMaterialUploadBtnGroupScrollBtn().startAnimation(layout.getRotateBackAnimation());
+			}
+			layout.setCurMoveHeight(layout.getCurMoveHeight() - moveSpeed);
+			if (layout.getCurMoveHeight() < moveSpeed) {
+				isEnd(0, !isOpen);
+			}
 		}
-		if (isEnd) {
-			layout.getTimer().cancel();
-			layout.setOpen(!isOpen);
-			layout.getMaterialUploadBtnGroupScrollBtn().clearAnimation();
-		}
-		Log.e("layout.getCurBtnGroupHeight()", String.valueOf(layout.getCurBtnGroupHeight()));
+		Log.e("layout.getCurBtnGroupHeight()", String.valueOf(layout.getCurMoveHeight()));
 		layout.requestLayout();
 	}
+	
+	private void isEnd(int curMoveHeight, boolean changeOpenState) {
+		layout.setEnd(true);
+		layout.setCurMoveHeight(curMoveHeight);
+		layout.setOpen(changeOpenState);
+//		layout.getMaterialUploadBtnGroupScrollBtn().clearAnimation();
+	}
+
+	public boolean isFinished() {
+		return isFinished;
+	}
+
+	public void setFinished(boolean isFinished) {
+		this.isFinished = isFinished;
+	}
+	
+	
 }
