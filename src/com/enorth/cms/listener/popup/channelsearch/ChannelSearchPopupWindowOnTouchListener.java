@@ -22,7 +22,7 @@ public abstract class ChannelSearchPopupWindowOnTouchListener extends PopupWindo
 		activity.getCurChooseChannelTV().setText(curCheckedText);
 		SharedPreUtil.put(activity, ParamConst.CUR_CHOOSE_CHANNEL_TYPE, curCheckedText);
 		activity.setCurChooseChannelType(curCheckedText);
-		AnimUtil.showRefreshFrame(activity);
+		AnimUtil.showRefreshFrame(activity, true);
 		if (curCheckedText.equals(ParamConst.MY_CHANNEL)) {
 			try {
 				activity.isFirstEnter = true;

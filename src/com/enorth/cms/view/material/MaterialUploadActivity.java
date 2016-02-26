@@ -209,7 +209,6 @@ public class MaterialUploadActivity extends FragmentActivity implements IMateria
 	private void initBtnGroupFrag() throws Exception {
 		btnGroupFrag = new MaterialUploadBtnGroupFrag(fragLayout);
 		fragmentTransaction.replace(R.id.materialUploadBtnGroupFrag, btnGroupFrag);
-//		fragmentTransaction.replace(arg0, arg1)
 	}
 	
 	/**

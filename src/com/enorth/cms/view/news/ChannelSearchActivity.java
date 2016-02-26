@@ -433,7 +433,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 * @throws Exception
 	 */
 	public void initChannelDefaultData() throws Exception {
-		AnimUtil.showRefreshFrame(this);
+		AnimUtil.showRefreshFrame(this, true);
 		String curChooseChannelType = SharedPreUtil.getString(this, ParamConst.CUR_CHOOSE_CHANNEL_TYPE);
 		if (curChooseChannelType.equals(ParamConst.ALL_CHANNEL)) {
 			getAllChannel();

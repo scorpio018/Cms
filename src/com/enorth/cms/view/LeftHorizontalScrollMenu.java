@@ -185,53 +185,6 @@ public class LeftHorizontalScrollMenu extends HorizontalScrollView {
 		userTypeTV.setText("程序猿");
 	}
 	
-	private List<MenuBean> getMenuData() {
-		if (!isInitMenuData) {
-			menuBeans = new ArrayList<MenuBean>();
-			MenuBean bean1 = new MenuBean();
-			bean1.setMenuIconResourceId(R.drawable.menu_news_edit);
-			bean1.setMenuName("普通新闻");
-			bean1.setActivity(new NewsListFragActivity());
-			bean1.setMenuLayoutId(R.layout.activity_news_list_frag);
-			menuBeans.add(bean1);
-			
-			MenuBean bean2 = new MenuBean();
-			bean2.setMenuIconResourceId(R.drawable.menu_news_live);
-			bean2.setMenuName("图文直播");
-			bean2.setActivity(new NewsLiveListFragActivity());
-			bean2.setMenuLayoutId(R.layout.activity_news_live_list_frag);
-			menuBeans.add(bean2);
-			
-			MenuBean bean3 = new MenuBean();
-			bean3.setMenuIconResourceId(R.drawable.menu_video_live);
-			bean3.setMenuName("视频直播");
-			menuBeans.add(bean3);
-			
-			MenuBean bean4 = new MenuBean();
-			bean4.setMenuIconResourceId(R.drawable.menu_material_upload);
-			bean4.setMenuName("素材上传");
-			bean4.setActivity(new MaterialUploadActivity());
-			bean4.setMenuLayoutId(R.layout.activity_material_upload);
-			menuBeans.add(bean4);
-			
-			MenuBean bean5 = new MenuBean();
-			bean5.setMenuIconResourceId(R.drawable.menu_safety_setting);
-			bean5.setMenuName("安全设置");
-			menuBeans.add(bean5);
-			
-			MenuBean bean6 = new MenuBean();
-			bean6.setMenuIconResourceId(R.drawable.menu_about);
-			bean6.setMenuName("关于");
-			menuBeans.add(bean6);
-			
-			MenuBean bean7 = new MenuBean();
-			bean7.setMenuIconResourceId(R.drawable.menu_exit);
-			bean7.setMenuName("退出");
-			menuBeans.add(bean7);
-		}
-		return menuBeans;
-	}
-	
 	/**
 	 * 新建一个内容并加到当前的layout中
 	 * @param context
@@ -338,22 +291,18 @@ public class LeftHorizontalScrollMenu extends HorizontalScrollView {
 	 * 打开菜单
 	 */
 	public void openMenu() {
-		if (!isOpen) {
-			AnimUtil.showRefreshFrame(getContext(), mContent, contentOnTouchListener);
-			this.smoothScrollTo(0, 0);
-			isOpen = true;
-		}
+		AnimUtil.showRefreshFrame(getContext(), mContent, contentOnTouchListener, false);
+		this.smoothScrollTo(0, 0);
+		isOpen = true;
 	}
 
 	/**
 	 * 关闭菜单
 	 */
 	public void closeMenu() {
-		if (isOpen) {
-			AnimUtil.hideRefreshFrame();
-			this.smoothScrollTo(mMenuWidth, 0);
-			isOpen = false;
-		}
+		AnimUtil.hideRefreshFrame();
+		this.smoothScrollTo(mMenuWidth, 0);
+		isOpen = false;
 	}
 
 	/**
@@ -361,11 +310,9 @@ public class LeftHorizontalScrollMenu extends HorizontalScrollView {
 	 */
 	public void toggle()
 	{
-		if (isOpen)
-		{
+		if (isOpen) {
 			closeMenu();
-		} else
-		{
+		} else {
 			openMenu();
 		}
 	}
@@ -388,6 +335,53 @@ public class LeftHorizontalScrollMenu extends HorizontalScrollView {
 //		ViewHelper.setScaleX(mContent, rightScale);
 //		ViewHelper.setScaleY(mContent, rightScale);
 
+	}
+	
+	private List<MenuBean> getMenuData() {
+		if (!isInitMenuData) {
+			menuBeans = new ArrayList<MenuBean>();
+			MenuBean bean1 = new MenuBean();
+			bean1.setMenuIconResourceId(R.drawable.menu_news_edit);
+			bean1.setMenuName("普通新闻");
+			bean1.setActivity(new NewsListFragActivity());
+			bean1.setMenuLayoutId(R.layout.activity_news_list_frag);
+			menuBeans.add(bean1);
+			
+			MenuBean bean2 = new MenuBean();
+			bean2.setMenuIconResourceId(R.drawable.menu_news_live);
+			bean2.setMenuName("图文直播");
+			bean2.setActivity(new NewsLiveListFragActivity());
+			bean2.setMenuLayoutId(R.layout.activity_news_live_list_frag);
+			menuBeans.add(bean2);
+			
+			MenuBean bean3 = new MenuBean();
+			bean3.setMenuIconResourceId(R.drawable.menu_video_live);
+			bean3.setMenuName("视频直播");
+			menuBeans.add(bean3);
+			
+			MenuBean bean4 = new MenuBean();
+			bean4.setMenuIconResourceId(R.drawable.menu_material_upload);
+			bean4.setMenuName("素材上传");
+			bean4.setActivity(new MaterialUploadActivity());
+			bean4.setMenuLayoutId(R.layout.activity_material_upload);
+			menuBeans.add(bean4);
+			
+			MenuBean bean5 = new MenuBean();
+			bean5.setMenuIconResourceId(R.drawable.menu_safety_setting);
+			bean5.setMenuName("安全设置");
+			menuBeans.add(bean5);
+			
+			MenuBean bean6 = new MenuBean();
+			bean6.setMenuIconResourceId(R.drawable.menu_about);
+			bean6.setMenuName("关于");
+			menuBeans.add(bean6);
+			
+			MenuBean bean7 = new MenuBean();
+			bean7.setMenuIconResourceId(R.drawable.menu_exit);
+			bean7.setMenuName("退出");
+			menuBeans.add(bean7);
+		}
+		return menuBeans;
 	}
 
 }

@@ -65,14 +65,14 @@ public class AnimUtil {
 	 * 将刷新页面加入当前activity中并覆盖
 	 * @param activity
 	 */
-	public static void showRefreshFrame(Activity activity) {
+	public static void showRefreshFrame(Activity activity, boolean needImage) {
 		// 初始化tanslate动画（画面转移位置移动动画效果）
 		initAmin(activity);
 		
 		View frameView = activity.findViewById(R.id.refreshLayoutCommon);
 		if (frameView == null) {
 			LayoutInflater inflater = LayoutInflater.from(activity);
-			initFrameItem(inflater, activity);
+			initFrameItem(inflater, activity, needImage);
 			// 此处为了防止在显示时点击事件穿透到浮层后方的控件
 			refreshLayout.setOnTouchListener(new View.OnTouchListener() {
 				
@@ -93,13 +93,13 @@ public class AnimUtil {
 	 * @param context
 	 * @param viewGroup
 	 */
-	public static void showRefreshFrame(Context context, ViewGroup viewGroup, CommonOnTouchListener listener) {
+	public static void showRefreshFrame(Context context, ViewGroup viewGroup, CommonOnTouchListener listener, boolean needImage) {
 		initAmin(context);
 		
 		View frameView = viewGroup.findViewById(R.id.refreshLayoutCommon);
 		if (frameView == null) {
 			LayoutInflater inflater = LayoutInflater.from(context);
-			initFrameItem(inflater, context);
+			initFrameItem(inflater, context, needImage);
 			refreshLayout.setOnTouchListener(listener);
 			viewGroup.addView(refreshLayout, initMatchLayout);
 		} else {
@@ -113,20 +113,24 @@ public class AnimUtil {
 	 * @param inflater
 	 * @param context
 	 */
-	private static void initFrameItem(LayoutInflater inflater, Context context) {
+	private static void initFrameItem(LayoutInflater inflater, Context context, boolean needImage) {
 		refreshLayout = (FrameLayout) inflater.inflate(R.layout.refresh_layout_common, null);
 		int color = ContextCompat.getColor(context, R.color.dark_gray);
 		refreshLayout.setBackgroundColor(color);
 		refreshLayout.getBackground().setAlpha(120);
 		final ImageView refreshIV = (ImageView) refreshLayout.getChildAt(0);
-		rotateAnimation.setInterpolator(lir);
-		new Handler() {
-			@Override
-			public void handleMessage(Message msg) {
-				super.handleMessage(msg);
-				refreshIV.startAnimation(rotateAnimation);
-			}
-		}.sendEmptyMessage(0);
+		if (needImage) {
+			rotateAnimation.setInterpolator(lir);
+			new Handler() {
+				@Override
+				public void handleMessage(Message msg) {
+					super.handleMessage(msg);
+					refreshIV.startAnimation(rotateAnimation);
+				}
+			}.sendEmptyMessage(0);
+		} else {
+			refreshIV.setVisibility(View.GONE);
+		}
 		initMatchLayout = LayoutParamsUtil.initMatchLayout();
 		refreshLayout.setVisibility(View.VISIBLE);
 	}

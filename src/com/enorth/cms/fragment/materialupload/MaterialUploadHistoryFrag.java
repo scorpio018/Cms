@@ -151,11 +151,6 @@ public class MaterialUploadHistoryFrag extends Fragment {
 	
 	private void initViewPager() {
 		materialUploadFileViewPager = (ViewPager) layout.findViewById(R.id.materialUploadFileViewPager);
-//		materialUploadFileViewPager = new MaterialUploadHistoryViewPager(getContext(), fragLayout);
-		/*ViewPager.LayoutParams layoutParams = new ViewPager.LayoutParams();
-		layoutParams.width = ViewPager.LayoutParams.MATCH_PARENT;
-		layoutParams.height = ViewPager.LayoutParams.MATCH_PARENT;
-		layout.addView(materialUploadFileViewPager, layoutParams);*/
 		List<MaterialUploadFileTypeItemFrag> items = new ArrayList<MaterialUploadFileTypeItemFrag>();
 		int length = materialUploadFileTypeTexts.size();
 		for (int i = 0; i < length; i++) {
