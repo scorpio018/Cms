@@ -4,13 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.enorth.cms.adapter.materialupload.MaterialUploadFileTypeItemFragmentPagerAdapter;
+import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.utils.ColorUtil;
 import com.enorth.cms.utils.LayoutParamsUtil;
 import com.enorth.cms.view.R;
+import com.enorth.cms.view.material.IMaterialUploadView;
 import com.enorth.cms.widget.linearlayout.MaterialUploadFragLinearLayout;
+import com.enorth.cms.widget.viewpager.materialupload.MaterialUploadHistoryViewPager;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -31,18 +36,19 @@ import android.widget.TextView;
  * @author yangyang
  *
  */
-@SuppressLint("InflateParams")
 public class MaterialUploadHistoryFrag extends Fragment {
 
 	private LinearLayout layout;
-	
-	private int[] materialUploadFileTypeTexts = {R.string.materialUploadFileTypeTextPic, R.string.materialUploadFileTypeTextVideo};
 	
 	private List<TextView> materialUploadFileTypeTVs = new ArrayList<TextView>();
 	
 	private ViewPager materialUploadFileViewPager;
 	
 	private MaterialUploadFragLinearLayout fragLayout;
+	
+	private List<String> materialUploadFileTypeTexts;
+	
+	private IMaterialUploadView view;
 	
 	public MaterialUploadHistoryFrag(MaterialUploadFragLinearLayout fragLayout) {
 		this.fragLayout = fragLayout;
@@ -51,9 +57,28 @@ public class MaterialUploadHistoryFrag extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		layout = (LinearLayout) inflater.inflate(R.layout.material_upload_history_frag, null);
+		initBasicData();
 		initFileTypeEvent();
 		initViewPager();
 		return layout;
+	}
+	
+	@Override
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		view = (IMaterialUploadView) getActivity();
+	}
+	
+	private void initBasicData() {
+		initAllMaterialUploadFileType();
+	}
+	/**
+	 * 初始化附件上传的文件类型
+	 */
+	private void initAllMaterialUploadFileType() {
+		materialUploadFileTypeTexts = new ArrayList<String>();
+		materialUploadFileTypeTexts.add(ParamConst.MATERIAL_UPLOAD_FILE_TYPE_TEXT_PIC);
+		materialUploadFileTypeTexts.add(ParamConst.MATERIAL_UPLOAD_FILE_TYPE_TEXT_VIDEO);
 	}
 	
 	private int offset;
@@ -67,7 +92,8 @@ public class MaterialUploadHistoryFrag extends Fragment {
 	 */
 	private void initFileTypeEvent() {
 		LinearLayout materialUploadFileTypeLayout = (LinearLayout) layout.findViewById(R.id.materialUploadFileTypeLayout);
-		
+		// 将activity中的文件类型进行初始化
+		view.changeFileType(materialUploadFileTypeTexts.get(0));
 		underLine = (ImageView) layout.findViewById(R.id.underline);
 		underLine.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
 			
@@ -79,10 +105,10 @@ public class MaterialUploadHistoryFrag extends Fragment {
 			}
 		});
 		int height = (int) getResources().getDimension(R.dimen.material_upload_file_type_text_height);
-		int length = materialUploadFileTypeTexts.length;
+		int length = materialUploadFileTypeTexts.size();
 		for (int i = 0; i < length; i++) {
 			final TextView tv = new TextView(this.getContext());
-			tv.setText(materialUploadFileTypeTexts[i]);
+			tv.setText(materialUploadFileTypeTexts.get(i));
 			LayoutParams layoutParams = LayoutParamsUtil.initHeightAndPercentWeight(height, 0.5f);
 			tv.setGravity(Gravity.CENTER);
 			final int position = i;
@@ -99,6 +125,7 @@ public class MaterialUploadHistoryFrag extends Fragment {
 					tv.setTextColor(ColorUtil.getCommonBlueColor(getActivity()));
 					moveCursorTo(position);
 					materialUploadFileViewPager.setCurrentItem(position, false);
+					view.changeFileType(materialUploadFileTypeTexts.get(position));
 				}
 			});
 			materialUploadFileTypeLayout.addView(tv, layoutParams);
@@ -124,8 +151,13 @@ public class MaterialUploadHistoryFrag extends Fragment {
 	
 	private void initViewPager() {
 		materialUploadFileViewPager = (ViewPager) layout.findViewById(R.id.materialUploadFileViewPager);
+//		materialUploadFileViewPager = new MaterialUploadHistoryViewPager(getContext(), fragLayout);
+		/*ViewPager.LayoutParams layoutParams = new ViewPager.LayoutParams();
+		layoutParams.width = ViewPager.LayoutParams.MATCH_PARENT;
+		layoutParams.height = ViewPager.LayoutParams.MATCH_PARENT;
+		layout.addView(materialUploadFileViewPager, layoutParams);*/
 		List<MaterialUploadFileTypeItemFrag> items = new ArrayList<MaterialUploadFileTypeItemFrag>();
-		int length = materialUploadFileTypeTexts.length;
+		int length = materialUploadFileTypeTexts.size();
 		for (int i = 0; i < length; i++) {
 			MaterialUploadFileTypeItemFrag frag = new MaterialUploadFileTypeItemFrag(fragLayout);
 			items.add(frag);

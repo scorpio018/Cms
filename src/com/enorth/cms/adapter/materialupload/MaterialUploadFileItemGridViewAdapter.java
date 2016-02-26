@@ -77,9 +77,6 @@ public class MaterialUploadFileItemGridViewAdapter extends ArrayAdapter<String> 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		final String url = getItem(position);
-		if (url == null) {
-			return null;
-		}
 		View view;
 		if (convertView == null) {
 			view = LayoutInflater.from(getContext()).inflate(R.layout.photo_layout, null);
@@ -108,9 +105,6 @@ public class MaterialUploadFileItemGridViewAdapter extends ArrayAdapter<String> 
 	 *            用于显示图片的控件。
 	 */
 	public void setImageView(String imageUrl, ImageView imageView) {
-		if (imageUrl == null) {
-			System.out.println(1);
-		}
 		Bitmap bitmap = getBitmapFromMemoryCache(imageUrl);
 		if (bitmap != null) {
 			imageView.setImageBitmap(bitmap);
@@ -128,9 +122,6 @@ public class MaterialUploadFileItemGridViewAdapter extends ArrayAdapter<String> 
 	 *            LruCache的键，这里传入从网络上下载的Bitmap对象。
 	 */
 	public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-		if (key == null) {
-			System.out.println(1);
-		}
 		if (getBitmapFromMemoryCache(key) == null) {
 			mMemoryCache.put(key, bitmap);
 		}

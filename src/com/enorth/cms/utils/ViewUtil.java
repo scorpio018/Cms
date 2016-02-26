@@ -5,12 +5,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.enorth.cms.adapter.materialupload.MaterialUploadFileItemGridViewAdapter;
 import com.enorth.cms.bean.ButtonColorBasicBean;
+import com.enorth.cms.bean.PopupWindowBean;
 import com.enorth.cms.bean.news_list.NewsListImageViewBasicBean;
 import com.enorth.cms.common.EnableSimpleChangeButton;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.listener.menu.LeftMenuCommonOnClickListener;
 import com.enorth.cms.listener.newslist.newstypebtn.NewsTypeBtnOnClickListener;
+import com.enorth.cms.listener.popup.PopupWindowOnTouchListener;
 import com.enorth.cms.view.LeftHorizontalScrollMenu;
 import com.enorth.cms.view.R;
 import com.enorth.cms.view.news.NewsSearchActivity;
@@ -20,16 +23,22 @@ import android.R.color;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -314,4 +323,89 @@ public class ViewUtil {
 		initInputMethodManager(context);
 		inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
 	}
+	
+	/**
+	 * Android动态设定GridView的高度，固定column，实现高度自适应
+	 * @param gridView
+	 */
+	public static void setGridViewHeightBasedOnChildren(GridView gridView, int column) {
+		// 获取listview的adapter
+		MaterialUploadFileItemGridViewAdapter adapter = (MaterialUploadFileItemGridViewAdapter) gridView.getAdapter();
+		if (adapter == null) {
+			return;
+		}
+		// 固定列宽，有多少列
+//		int col = 4;// listView.getNumColumns();
+		int totalHeight = 0;
+		// i每次加4，相当于listAdapter.getCount()小于等于4时 循环一次，计算一次item的高度，
+		// listAdapter.getCount()小于等于8时计算两次高度相加
+		int count = adapter.getCount();
+		for (int i = 0; i < count; i += column) {
+			// 获取listview的每一个item
+			View listItem = adapter.getView(i, null, gridView);
+			listItem.measure(0, 0);
+			// 获取item的高度和
+			totalHeight += listItem.getMeasuredHeight();
+		}
+
+		// 获取listview的布局参数
+		ViewGroup.LayoutParams params = gridView.getLayoutParams();
+		// 设置高度
+		params.height = totalHeight;
+		// 设置margin
+		((MarginLayoutParams) params).setMargins(10, 10, 10, 10);
+		// 设置参数
+		gridView.setLayoutParams(params);
+	}
+	
+	/**
+	 * 如果弹出框处于激活状态，则将弹出框销毁，反之则实例化弹出页面
+	 * @param curChooseChannelName
+	 */
+	/*public static void getChooseChannelPopupWindow(Activity activity, PopupWindow popupWindow, String curChooseChannelName) {
+		if (popupWindow != null && popupWindow.isShowing()) {
+			popupWindow.dismiss();
+			popupWindow = null;
+		} else {
+			initChooseChannelPopupWindow(curChooseChannelName);
+		}
+	}
+	
+	*//**
+	 * 实例化频道选择弹出页面
+	 * @param curChooseChannelName
+	 *//*
+	private static void initChooseChannelPopupWindow(Activity activity, PopupWindow popupWindow, PopupWindowBean bean, String curChooseChannelName) {
+		final LinearLayout layout = new LinearLayout(activity);
+		layout.setOrientation(LinearLayout.VERTICAL);
+		layout.setBackgroundColor(bean.getPopupColor());
+		// 设置半透明
+		layout.getBackground().setAlpha(200);
+//		LayoutInflater inflater = LayoutInflater.from(thisActivity);
+//		int size = allChooseChannelName.size();
+		int size = bean.getItems().size();
+		int touchSlop = ScreenTools.getTouchSlop(activity);
+		for (int i = 0; i < size; i++) {
+			new PopupWindowOnTouchListener(activity, curChooseChannelName, i, layout, ScreenTools.getTouchSlop(activity));
+		}
+		popupWindow = new PopupWindow(layout, ParamConst.POP_WINDOW_COMMON_WIDTH, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+		// 为了让popupWindow能够做到点击其他位置可以消失，需要加入如下代码
+		popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//		popupWindow.setFocusable(true);
+		popupWindow.setTouchable(true);
+		popupWindow.setOutsideTouchable(true);
+		
+		popupWindow.setAnimationStyle(R.style.AnimationFade);
+		int titleHeight = (int)Math.round(activity.getResources().getDimension(R.dimen.news_title_height));
+		int xoffInPixels = ParamConst.POP_WINDOW_COMMON_WIDTH / 2;
+	    // 将pixels转为dip
+		int xoffInDip = ScreenTools.px2dip(xoffInPixels, activity);
+		int sdk = android.os.Build.VERSION.SDK_INT;
+		if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+			popupWindow.showAtLocation(channelSearchTitleLayout, Gravity.TOP, 0, titleHeight);
+		} else {
+			popupWindow.showAsDropDown(channelSearchTitleLayout, -xoffInDip, 0);
+		}
+		popupWindow.update();
+	}*/
 }

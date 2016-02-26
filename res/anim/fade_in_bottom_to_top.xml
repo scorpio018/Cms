@@ -4,8 +4,8 @@
     <!-- 定义从左向右进入的动画 -->
     <translate
         android:duration="500"
-        android:fromYDelta="-50%"
-        android:toYDelta="0"/>
+        android:fromYDelta="0"
+        android:toYDelta="-50%"/>
 
     <alpha 
         android:duration="500"

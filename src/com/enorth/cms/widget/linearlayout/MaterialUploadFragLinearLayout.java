@@ -6,18 +6,29 @@ import com.enorth.cms.task.MyTimer;
 import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.view.R;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewParent;
 import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 public class MaterialUploadFragLinearLayout extends LinearLayout {
 	
 	private boolean once = true;
+	/**
+	 * 标头的高度
+	 */
+	private int titleViewHeight;
+	/**
+	 * 底部的高度
+	 */
+	private int bottomViewHeight;
 	/**
 	 * 按钮组的fragment
 	 */
@@ -118,32 +129,40 @@ public class MaterialUploadFragLinearLayout extends LinearLayout {
 	 * 两个fragment的状态之已经展开
 	 */
 	private int curFragLayoutState = ParamConst.CUR_FRAG_LAYOUT_STATE_IS_OPENED;
-
+	
+	private Context context;
+	
 	public MaterialUploadFragLinearLayout(Context context) {
 		super(context);
+		this.context = context;
 	}
 	
 	public MaterialUploadFragLinearLayout(Context context, AttributeSet attr) {
 		super(context, attr);
+		this.context = context;
 	}
 	
 	public MaterialUploadFragLinearLayout(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
+		this.context = context;
 	}
 	
 	public MaterialUploadFragLinearLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 		super(context, attrs, defStyleAttr, defStyleRes);
-	}
-	
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+		this.context = context;
 	}
 	
 	public void startMove() {
 		Log.e("startMove()", "调用了此方法");
 		if (once) {
 			// 获取标头，用于动画改变时，能不覆盖标头
+			LinearLayout parentLayout = (LinearLayout) getParent();
+			View titleView = parentLayout.getChildAt(0);
+//			titleViewHeight = titleView.getMeasuredHeight();
+			RelativeLayout allLayout = (RelativeLayout) parentLayout.getParent();
+			View bottomView = allLayout.getChildAt(1);
+			bottomViewHeight = bottomView.getMeasuredHeight();
+			// 获取按钮组fragment
 			btnGroupFrag = getChildAt(0);
 			btnGroupFragTop = btnGroupFrag.getTop();
 			btnGroupFragBottom = btnGroupFrag.getBottom();
@@ -158,6 +177,7 @@ public class MaterialUploadFragLinearLayout extends LinearLayout {
 			btnGroupScrollHeight = materialUploadBtnGroupScrollBtn.getMeasuredHeight();
 			btnGroupScrollWidth = materialUploadBtnGroupScrollBtn.getMeasuredWidth();
 			btnGroupEndHeight = btnGroupFragHeight - btnGroupScrollHeight;
+			// 获取附件历史fragment
 			historyFrag = getChildAt(1);
 			historyTop = historyFrag.getTop();
 			historyBottom = historyFrag.getBottom();
@@ -179,6 +199,14 @@ public class MaterialUploadFragLinearLayout extends LinearLayout {
 		default:
 			break;
 		}
+	}
+	
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+		/*if (!once) {
+			historyFrag.measure(widthMeasureSpec, historyHeight);
+		}*/
 	}
 	
 	@Override

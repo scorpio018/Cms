@@ -17,17 +17,22 @@ public abstract class ListViewItemOnTouchListener extends CommonOnTouchListener 
 	}
 
 	@Override
-	public boolean onImgChangeBegin() {
+	public boolean onImgChangeBegin(View v) {
 		return true;
 	}
 
 	@Override
-	public void onImgChangeEnd() {
+	public void onImgChangeEnd(View v) {
 
 	}
 	
 	@Override
 	public void touchMove(View v) {
 		
+	}
+	
+	@Override
+	public boolean isStopEventTransfer() {
+		return true;
 	}
 }

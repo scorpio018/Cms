@@ -25,11 +25,17 @@
 	    
 	</LinearLayout>
 	
-    <com.enorth.cms.widget.listview.CommonListView 
+    <!-- <com.enorth.cms.widget.listview.CommonListView 
         android:id="@+id/materialUploadFileItemListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         
-    </com.enorth.cms.widget.listview.CommonListView>
+    </com.enorth.cms.widget.listview.CommonListView> -->
+    <com.enorth.cms.widget.listview.materialupload.MaterialUploadHistoryItemListView 
+        android:id="@+id/materialUploadFileItemListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        
+    </com.enorth.cms.widget.listview.materialupload.MaterialUploadHistoryItemListView>
     
 </LinearLayout>

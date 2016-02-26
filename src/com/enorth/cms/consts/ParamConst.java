@@ -141,9 +141,13 @@ public class ParamConst {
 	 */
 	public static final int FONT_WIDTH = 46;
 	/**
-	 * 弹出浮层的默认宽度
+	 * 弹出浮层的默认宽度（）
 	 */
 	public static final int POP_WINDOW_COMMON_WIDTH = 200;
+	/**
+	 * 弹出浮层的默认高度
+	 */
+//	public static final int POP_WINDOW_COMMON_HEIGHT = 200;
 	/**
 	 * 测试使用：用户ID
 	 */
@@ -201,13 +205,29 @@ public class ParamConst {
 	 */
 	public static final String NEWS_FRAG_PAGE = "page_num";
 	/**
-	 * 全部频道
+	 * 频道搜索中的全部频道
 	 */
 	public static final String ALL_CHANNEL = "全部频道";
 	/**
-	 * 我的频道
+	 * 频道搜索中的我的频道
 	 */
 	public static final String MY_CHANNEL = "我的频道";
+	/**
+	 * 附件上传中的图片
+	 */
+	public static final String MATERIAL_UPLOAD_FILE_TYPE_TEXT_PIC = "图片";
+	/**
+	 * 附件上传中的视频
+	 */
+	public static final String MATERIAL_UPLOAD_FILE_TYPE_TEXT_VIDEO = "视频";
+	/**
+	 * 附件上传中的手机上传
+	 */
+	public static final String MATERIAL_UPLOAD_TYPE_FROM_PHONE = "手机上传";
+	/**
+	 * 附件上传中所有历史
+	 */
+	public static final String MATERIAL_UPLOAD_TYPE_FROM_ALL = "所有历史";
 	
 	/*---------------------SharedPreferences中的存值及其含义 start---------------------*/
 	/**
@@ -246,6 +266,10 @@ public class ParamConst {
 	 * 当前选择的频道类型（分为全部频道、我的频道两种）
 	 */
 	public static final String CUR_CHOOSE_CHANNEL_TYPE = "curChooseChannelType";
+	/**
+	 * 当前选择的附件上传类型
+	 */
+	public static final String CUR_MATERIAL_UPLOAD_TYPE = "curMaterialUploadType";
 	
 	/*---------------------SharedPreferences中的存值及其含义 end-----------------------*/
 }

@@ -67,7 +67,7 @@ public class NewsLiveListFragActivity extends NewsCommonActivity {
 		NewsSearchOnTouchListener listener = new NewsSearchOnTouchListener(touchSlop) {
 			
 			@Override
-			public void onImgChangeDo() {
+			public void onImgChangeDo(View v) {
 				intent.setClass(NewsLiveListFragActivity.this, NewsSearchActivity.class);
 //				startActivity(intent);
 				startActivityForResult(intent, ParamConst.NEWS_LIVE_LIST_FRAG_ACTIVITY_TO_NEWS_SEARCH_ACTIVITY_REQUEST_CODE);
@@ -89,7 +89,7 @@ public class NewsLiveListFragActivity extends NewsCommonActivity {
 		LinearLayout layout = (LinearLayout) findViewById(R.id.newsSubTitleLineLayout);
 		ChooseChannelOnTouchListener listener = new ChooseChannelOnTouchListener(touchSlop) {
 			@Override
-			public void onImgChangeDo() {
+			public void onImgChangeDo(View v) {
 				intent.setClass(NewsLiveListFragActivity.this, ChannelSearchActivity.class);
 				// 将当前用户的频道传到频道搜索中
 				Bundle bundle = initChannelId();

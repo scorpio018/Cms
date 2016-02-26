@@ -24,7 +24,7 @@ public abstract class ImageViewOnTouchListener extends CommonOnTouchListener {
 	 * 在已经确定当前操作为点击操作时所作的操作
 	 */
 	@Override
-	public void onImgChangeDo() {
+	public void onImgChangeDo(View v) {
 		if (bean.isSelected()) {
 			bean.getImageView().setImageResource(bean.getImageUncheckResource());
 			bean.getImageView().setSelected(false);
@@ -41,5 +41,10 @@ public abstract class ImageViewOnTouchListener extends CommonOnTouchListener {
 	@Override
 	public void touchMove(View v) {
 		
+	}
+	
+	@Override
+	public boolean isStopEventTransfer() {
+		return true;
 	}
 }

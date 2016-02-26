@@ -5,7 +5,11 @@ import com.enorth.cms.listener.CommonOnTouchListener;
 import android.view.View;
 
 public abstract class LeftMenuItemOnTouchListener extends CommonOnTouchListener {
-
+	
+	public LeftMenuItemOnTouchListener(int touchSlop) {
+		super.touchSlop = touchSlop;
+	}
+	
 	@Override
 	public void onTouchBegin() {
 		
@@ -22,13 +26,18 @@ public abstract class LeftMenuItemOnTouchListener extends CommonOnTouchListener 
 	}
 
 	@Override
-	public boolean onImgChangeBegin() {
+	public boolean onImgChangeBegin(View v) {
 		return true;
 	}
 
 	@Override
-	public void onImgChangeEnd() {
+	public void onImgChangeEnd(View v) {
 		
+	}
+	
+	@Override
+	public boolean isStopEventTransfer() {
+		return true;
 	}
 
 }

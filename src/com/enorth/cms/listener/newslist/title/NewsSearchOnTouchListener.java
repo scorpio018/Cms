@@ -26,13 +26,17 @@ public abstract class NewsSearchOnTouchListener extends CommonOnTouchListener {
 	}
 
 	@Override
-	public boolean onImgChangeBegin() {
+	public boolean onImgChangeBegin(View v) {
 		return true;
 	}
 
 	@Override
-	public void onImgChangeEnd() {
+	public void onImgChangeEnd(View v) {
 		
 	}
 
+	@Override
+	public boolean isStopEventTransfer() {
+		return true;
+	}
 }

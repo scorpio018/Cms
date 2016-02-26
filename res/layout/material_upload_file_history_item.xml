@@ -33,16 +33,17 @@
         
     </GridLayout> -->
     
-    <GridView 
+    <com.enorth.cms.widget.gridview.materialupload.MaterialUploadHistoryGridView 
         android:id="@+id/photo_wall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnWidth="90dip"
+        android:columnWidth="@dimen/material_upload_file_item_grid_view_column_width"
         android:stretchMode="columnWidth"
         android:numColumns="auto_fit"
-        android:verticalSpacing="10dip"
+        android:verticalSpacing="@dimen/material_upload_file_item_grid_view_vertical_spacing"
+        android:horizontalSpacing="@dimen/material_upload_file_item_grid_view_horizontal_spacing"
         android:gravity="center"
-        ></GridView>
+        ></com.enorth.cms.widget.gridview.materialupload.MaterialUploadHistoryGridView>
     
     <!-- <GridView 
         android:id="@+id/fileGridView"

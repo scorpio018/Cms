@@ -72,8 +72,8 @@ public class WelcomeActivity extends BaseActivity implements OnPageChangeListene
 	/**
 	 * 轮播的图片
 	 */
-	private int[] resources = { R.drawable.g1, R.drawable.g2, R.drawable.g3, R.drawable.g4, R.drawable.guide1,
-			R.drawable.guide2, R.drawable.guide3 };
+	private int[] resources = { R.drawable.g1, R.drawable.g2, R.drawable.g3, R.drawable.g4/*, R.drawable.guide1,
+			R.drawable.guide2, R.drawable.guide3*/ };
 
 	private List<View> viewList = new ArrayList<View>();
 

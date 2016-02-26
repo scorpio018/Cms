@@ -39,8 +39,10 @@
     <string name="imgBtnAddVideo">录像</string>
     <string name="imgBtnChooseVideo">视频</string>
     
-    <string name="materialUploadFileTypeTextPic">图片</string>
-    <string name="materialUploadFileTypeTextVideo">视频</string>
+    <!-- <string name="material_upload_file_type_text_pic">图片</string>
+    <string name="material_upload_file_type_text_video">视频</string>
+    <string name="material_upload_type_from_phone">手机上传</string>
+    <string name="material_upload_type_from_all">所有历史</string> -->
 
     <string name="channel_search_title_text">选择频道</string>
     <string name="channel_search_title_confirm">完成</string>

@@ -59,17 +59,22 @@ public abstract class CommonOnTouchListener implements OnTouchListener {
 	 * 当确定当前状态为点击事件时，在进行改变操作前进行的判断，如果返回false，则不继续进行onImgChangeDo方法的操作
 	 * @return
 	 */
-	public abstract boolean onImgChangeBegin();
+	public abstract boolean onImgChangeBegin(View v);
 
 	/**
 	 * 在手指抬起的最后进行的操作
 	 */
-	public abstract void onImgChangeEnd();
+	public abstract void onImgChangeEnd(View v);
 	
 	/**
 	 * 当onImgChangeBegin为true时执行的方法
 	 */
-	public abstract void onImgChangeDo();
+	public abstract void onImgChangeDo(View v);
+	/**
+	 * true表示事件不向下传递；false相反
+	 * @return
+	 */
+	public abstract boolean isStopEventTransfer();
 	
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
@@ -115,12 +120,12 @@ public abstract class CommonOnTouchListener implements OnTouchListener {
 				v.setBackgroundColor(color);
 			}
 			if (isClick) {
-				boolean isContinue = onImgChangeBegin();
+				boolean isContinue = onImgChangeBegin(v);
 				if (isContinue) {
-					onImgChangeDo();
+					onImgChangeDo(v);
 				}
 			}
-			onImgChangeEnd();
+			onImgChangeEnd(v);
 			break;
 		default:
 			if (isClickBackgroungColorChange()) {
@@ -130,6 +135,6 @@ public abstract class CommonOnTouchListener implements OnTouchListener {
 			Log.w("default", String.valueOf(event.getActionMasked()));
 			break;
 		}
-		return true;
+		return isStopEventTransfer();
 	}
 }

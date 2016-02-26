@@ -166,7 +166,7 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 		newsSearchSubmitBtn = (Button) findViewById(R.id.newsSearchSubmitBtn);
 		NewsChannelSubmitOnTouchListener listener = new NewsChannelSubmitOnTouchListener(ScreenTools.getTouchSlop(this)) {
 			@Override
-			public void onImgChangeDo() {
+			public void onImgChangeDo(View v) {
 				takeParamsBackToPrevActivity();
 			}
 		};

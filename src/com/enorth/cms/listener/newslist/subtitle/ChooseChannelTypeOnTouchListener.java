@@ -21,7 +21,12 @@ public abstract class ChooseChannelTypeOnTouchListener extends CommonOnTouchList
 	}
 
 	@Override
-	public boolean onImgChangeBegin() {
+	public boolean onImgChangeBegin(View v) {
+		return true;
+	}
+	
+	@Override
+	public boolean isStopEventTransfer() {
 		return true;
 	}
 }

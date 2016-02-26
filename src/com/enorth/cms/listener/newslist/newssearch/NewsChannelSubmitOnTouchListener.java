@@ -30,13 +30,18 @@ public abstract class NewsChannelSubmitOnTouchListener extends CommonOnTouchList
 	}
 
 	@Override
-	public boolean onImgChangeBegin() {
+	public boolean onImgChangeBegin(View v) {
 		return true;
 	}
 
 	@Override
-	public void onImgChangeEnd() {
+	public void onImgChangeEnd(View v) {
 		
+	}
+	
+	@Override
+	public boolean isStopEventTransfer() {
+		return true;
 	}
 
 }

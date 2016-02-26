@@ -110,8 +110,9 @@
     <dimen name="material_upload_file_type_text_height">50dip</dimen>
     <dimen name="material_upload_file_type_layout_margin_left">5dip</dimen>
     <dimen name="material_upload_file_type_layout_margin_top">5dip</dimen>
-    <dimen name="material_upload_file_item_grid_view_vertical_spacing">10dp</dimen>
-    <dimen name="material_upload_file_item_grid_view_horizontal_spacing">10dp</dimen>
-    <dimen name="material_upload_file_item_grid_view_column_width">200dp</dimen>
+    <dimen name="material_upload_file_item_grid_view_vertical_spacing">10dip</dimen>
+    <dimen name="material_upload_file_item_grid_view_horizontal_spacing">10dip</dimen>
+    <dimen name="material_upload_file_item_grid_view_column_width">120dip</dimen>
+    <dimen name="material_upload_bottom_layout_height">30dip</dimen>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.enorth.cms.utils;
 
+import com.enorth.cms.listener.CommonOnTouchListener;
 import com.enorth.cms.view.R;
 
 import android.annotation.SuppressLint;
@@ -11,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationUtils;
@@ -53,6 +55,8 @@ public class AnimUtil {
 	 */
 	private static FrameLayout refreshLayout;
 	
+	private static LayoutParams initMatchLayout;
+	
 	static {
 		initAnimInterpolator();
 	}
@@ -64,44 +68,72 @@ public class AnimUtil {
 	public static void showRefreshFrame(Activity activity) {
 		// 初始化tanslate动画（画面转移位置移动动画效果）
 		initAmin(activity);
+		
 		View frameView = activity.findViewById(R.id.refreshLayoutCommon);
 		if (frameView == null) {
 			LayoutInflater inflater = LayoutInflater.from(activity);
-			refreshLayout = (FrameLayout) inflater.inflate(R.layout.refresh_layout_common, null);
-			int color = ContextCompat.getColor(activity, R.color.dark_gray);
-			refreshLayout.setBackgroundColor(color);
-			refreshLayout.getBackground().setAlpha(120);
-			final ImageView refreshIV = (ImageView) refreshLayout.getChildAt(0);
-			rotateAnimation.setInterpolator(lir);
-			new Handler() {
+			initFrameItem(inflater, activity);
+			// 此处为了防止在显示时点击事件穿透到浮层后方的控件
+			refreshLayout.setOnTouchListener(new View.OnTouchListener() {
+				
 				@Override
-				public void handleMessage(Message msg) {
-					super.handleMessage(msg);
-					refreshIV.startAnimation(rotateAnimation);
+				public boolean onTouch(View v, MotionEvent event) {
+					return true;
 				}
-			}.sendEmptyMessage(0);
-			LayoutParams initMatchLayout = LayoutParamsUtil.initMatchLayout();
-			refreshLayout.setVisibility(View.VISIBLE);
+			});
 			activity.addContentView(refreshLayout, initMatchLayout);
 		} else {
 			refreshLayout = (FrameLayout) frameView;
 			refreshLayout.setVisibility(View.VISIBLE);
 		}
-		// 此处为了防止在显示时点击事件穿透到浮层后方的控件
-		refreshLayout.setOnTouchListener(new View.OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				return true;
-			}
-		});
 		
 	}
+	/**
+	 * 将浮层加到一个ViewGroup上并覆盖
+	 * @param context
+	 * @param viewGroup
+	 */
+	public static void showRefreshFrame(Context context, ViewGroup viewGroup, CommonOnTouchListener listener) {
+		initAmin(context);
+		
+		View frameView = viewGroup.findViewById(R.id.refreshLayoutCommon);
+		if (frameView == null) {
+			LayoutInflater inflater = LayoutInflater.from(context);
+			initFrameItem(inflater, context);
+			refreshLayout.setOnTouchListener(listener);
+			viewGroup.addView(refreshLayout, initMatchLayout);
+		} else {
+			refreshLayout = (FrameLayout) frameView;
+			refreshLayout.setVisibility(View.VISIBLE);
+		}
+	}
 	
-	public static void hideRefreshFrame(Activity activity) {
+	/**
+	 * 将浮层中的内容进行初始化
+	 * @param inflater
+	 * @param context
+	 */
+	private static void initFrameItem(LayoutInflater inflater, Context context) {
+		refreshLayout = (FrameLayout) inflater.inflate(R.layout.refresh_layout_common, null);
+		int color = ContextCompat.getColor(context, R.color.dark_gray);
+		refreshLayout.setBackgroundColor(color);
+		refreshLayout.getBackground().setAlpha(120);
+		final ImageView refreshIV = (ImageView) refreshLayout.getChildAt(0);
+		rotateAnimation.setInterpolator(lir);
+		new Handler() {
+			@Override
+			public void handleMessage(Message msg) {
+				super.handleMessage(msg);
+				refreshIV.startAnimation(rotateAnimation);
+			}
+		}.sendEmptyMessage(0);
+		initMatchLayout = LayoutParamsUtil.initMatchLayout();
+		refreshLayout.setVisibility(View.VISIBLE);
+	}
+	
+	public static void hideRefreshFrame() {
 		refreshLayout.clearAnimation();
 		refreshLayout.setVisibility(View.GONE);
-		
 	}
 	
 	private static void initAmin(Context context) {

@@ -10,9 +10,13 @@ import com.enorth.cms.adapter.materialupload.MaterialUploadFileItemGridViewAdapt
 import com.enorth.cms.adapter.materialupload.MaterialUploadFileTypeItemListViewAdapter;
 import com.enorth.cms.bean.materialupload.MaterialUploadFileItemBean;
 import com.enorth.cms.utils.ImgUtil;
+import com.enorth.cms.utils.LayoutParamsUtil;
+import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.R;
+import com.enorth.cms.widget.gridview.materialupload.MaterialUploadHistoryGridView;
 import com.enorth.cms.widget.linearlayout.MaterialUploadFragLinearLayout;
 import com.enorth.cms.widget.listview.CommonListView;
+import com.enorth.cms.widget.listview.materialupload.MaterialUploadHistoryItemListView;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -22,7 +26,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.AbsListView;
+import android.widget.AbsListView.LayoutParams;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.GridLayout;
 import android.widget.GridView;
@@ -36,7 +42,7 @@ public class MaterialUploadFileTypeItemFrag extends Fragment implements OnScroll
 	
 	private LayoutInflater inflater;
 	
-	private CommonListView listView;
+	private MaterialUploadHistoryItemListView listView;
 	
 	private List<View> items = new ArrayList<View>();
 	
@@ -174,16 +180,21 @@ public class MaterialUploadFileTypeItemFrag extends Fragment implements OnScroll
 		this.inflater = inflater;
 		initShowFileTime();
 //		initMaterialUploadDetail();
-		listView = (CommonListView) layout.findViewById(R.id.materialUploadFileItemListView);
-		for (int i = 0; i < 15; i++) {
+		listView = (MaterialUploadHistoryItemListView) layout.findViewById(R.id.materialUploadFileItemListView);
+//		listView = new MaterialUploadHistoryItemListView(getContext(), fragLayout);
+		for (int i = 0; i < 5; i++) {
 			if (isShowOff) {
 				break;
 			}
 			initMaterialUploadDetail();
 		}
-		MaterialUploadFileTypeItemListViewAdapter adapter = new MaterialUploadFileTypeItemListViewAdapter(items);
+		MaterialUploadFileTypeItemListViewAdapter adapter = new MaterialUploadFileTypeItemListViewAdapter(getContext(), 0, items);
 		listView.setAdapter(adapter);
+//		ViewUtil.setListViewHeightBasedOnChildren(listView);
+//		adapter.notifyDataSetChanged();
 		listView.setOnScrollListener(this);
+		/*LayoutParams initMatchLayout = LayoutParamsUtil.initMatchLayout();
+		layout.addView(listView, initMatchLayout);*/
 		return layout;
 	}
 	
@@ -224,9 +235,9 @@ public class MaterialUploadFileTypeItemFrag extends Fragment implements OnScroll
 		TextView uploadTitleTV = (TextView) layout.findViewById(R.id.uploadTitleTV);
 		uploadTitleTV.setText("我上传的标题");
 //		GridLayout fileGridLayout = (GridLayout) layout.findViewById(R.id.fileGridLayout);
-		GridView fileGridView = (GridView) layout.findViewById(R.id.photo_wall);
+		MaterialUploadHistoryGridView fileGridView = (MaterialUploadHistoryGridView) layout.findViewById(R.id.photo_wall);
 //		List<View> gridViews = new ArrayList<View>();
-		int n = rd.nextInt(3) + 2;
+		int n = rd.nextInt(2) + 9;
 		if (length - count == 0) {
 			return;
 		}
@@ -239,13 +250,14 @@ public class MaterialUploadFileTypeItemFrag extends Fragment implements OnScroll
 		}
 		MaterialUploadFileItemGridViewAdapter adapter = new MaterialUploadFileItemGridViewAdapter(getContext(), 0, imgUrl, fileGridView);
 		fileGridView.setAdapter(adapter);
-		
+//		ViewUtil.setGridViewHeightBasedOnChildren(fileGridView, 4);
+//		adapter.notifyDataSetChanged();
 		if (items.size() == 0) {
 			firstItem = layout;
 		}
 		items.add(layout);
 	}
-
+	
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
 		
@@ -253,7 +265,7 @@ public class MaterialUploadFileTypeItemFrag extends Fragment implements OnScroll
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-		int top = firstItem.getTop();
+		/*int top = firstItem.getTop();
 		if (top < 0) {
 			if (fragLayout.isOpen()) {
 				fragLayout.startMove();
@@ -262,7 +274,7 @@ public class MaterialUploadFileTypeItemFrag extends Fragment implements OnScroll
 			if (!fragLayout.isOpen()) {
 				fragLayout.startMove();
 			}
-		}
+		}*/
 	}
 	
 }

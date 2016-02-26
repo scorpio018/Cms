@@ -79,7 +79,7 @@ public abstract class ChannelSearchCommonHandler extends Handler {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			AnimUtil.hideRefreshFrame(activity);
+			AnimUtil.hideRefreshFrame();
 		}
 	}
 	

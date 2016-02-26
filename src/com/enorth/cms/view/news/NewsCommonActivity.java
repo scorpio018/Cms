@@ -516,12 +516,12 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 		bean.setImageUncheckResource(R.drawable.uncheck_btn);
 		OnTouchListener listViewCheckBtnOnTouchListener = new ImageViewOnTouchListener(bean, touchSlop) {
 			@Override
-			public boolean onImgChangeBegin() {
+			public boolean onImgChangeBegin(View v) {
 				return true;
 			}
 
 			@Override
-			public void onImgChangeEnd() {
+			public void onImgChangeEnd(View v) {
 				if (bean.getImageView().isSelected()) {
 					selectedNewsCount[curPosition]++;
 				} else {
@@ -547,7 +547,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	public void addListViewItemTouchEvent(final NewsListListViewItemBasicBean bean) {
 		CommonOnTouchListener listViewItemOnTouchListener = new ListViewItemOnTouchListener(touchSlop) {
 			@Override
-			public void onImgChangeDo() {
+			public void onImgChangeDo(View v) {
 				Toast.makeText(NewsCommonActivity.this, "点击的新闻ID为【" + bean.getId() + "】", Toast.LENGTH_SHORT).show();
 			}
 
@@ -645,7 +645,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 			BottomMenuOnTouchListener listener = new BottomMenuOnTouchListener(bean, touchSlop) {
 
 				@Override
-				public boolean onImgChangeBegin() {
+				public boolean onImgChangeBegin(View v) {
 					// 如果当前点击的按钮处于disable状态，则不进行任何操作
 					if (iv.isEnabled()) {
 						Toast.makeText(NewsCommonActivity.this, bean.getTextContent(), Toast.LENGTH_SHORT).show();

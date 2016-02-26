@@ -36,18 +36,23 @@ public abstract class BottomMenuOnTouchListener extends CommonOnTouchListener {
 	}
 	
 	@Override
-	public void onImgChangeEnd() {
+	public void onImgChangeEnd(View v) {
 
 	}
 
 	@Override
-	public void onImgChangeDo() {
+	public void onImgChangeDo(View v) {
 
 	}
 
 	@Override
 	public void onTouchBegin() {
 		
+	}
+	
+	@Override
+	public boolean isStopEventTransfer() {
+		return true;
 	}
 
 }
