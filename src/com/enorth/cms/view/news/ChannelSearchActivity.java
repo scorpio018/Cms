@@ -336,11 +336,12 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 					initPopupWindowItems(layout, listener, allChooseChannelName, curChooseChannelType);
 				}
 			};
-			popupWindowUtil.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL);
+			/*popupWindowUtil.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL);
 			int newsTitleHeightPx = ScreenTools.dimenDip2px(R.dimen.news_title_height, this);
-			popupWindowUtil.setY(newsTitleHeightPx);
+			popupWindowUtil.setY(newsTitleHeightPx);*/
+			popupWindowUtil.setXoffInPixels(-popupWindowUtil.getWidth() / 2);
 		}
-		popupWindow = popupWindowUtil.getChooseChannelPopupWindow();
+		popupWindow = popupWindowUtil.initPopupWindow();
 	}
 	
 	/**
@@ -439,6 +440,8 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 			getAllChannel();
 		} else if (curChooseChannelType.equals(ParamConst.MY_CHANNEL)) {
 			getMyChannel();
+		} else {
+			SharedPreUtil.remove(this, ParamConst.CUR_CHOOSE_CHANNEL_TYPE);
 		}
 	}
 	/**

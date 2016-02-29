@@ -1,30 +1,24 @@
 package com.enorth.cms.listener.popup;
 
-import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.listener.CommonOnTouchListener;
-import com.enorth.cms.utils.AnimUtil;
 import com.enorth.cms.utils.ScreenTools;
-import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.view.R;
-import com.enorth.cms.view.news.ChannelSearchActivity;
 
 import android.app.Activity;
-import android.view.LayoutInflater;
+import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public abstract class PopupWindowOnTouchListener extends CommonOnTouchListener {
 	
 	private LinearLayout layout;
+	
+	protected Context context;
 
-	private Activity activity;
-
-	public PopupWindowOnTouchListener(Activity activity, LinearLayout layout) {
-		super.touchSlop = ScreenTools.getTouchSlop(activity);
-		this.activity = activity;
+	public PopupWindowOnTouchListener(Context context, LinearLayout layout) {
+		super.touchSlop = ScreenTools.getTouchSlop(context);
 		this.layout = layout;
 	}
 

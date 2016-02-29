@@ -39,8 +39,10 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AbsListView.LayoutParams;
 
 public class ViewUtil {
 	
@@ -356,6 +358,20 @@ public class ViewUtil {
 		((MarginLayoutParams) params).setMargins(10, 10, 10, 10);
 		// 设置参数
 		gridView.setLayoutParams(params);
+	}
+	
+	public static List<View> initDefaultData(Context context, String text, int height) {
+		List<View> resultView = new ArrayList<View>();
+		LayoutInflater inflater = LayoutInflater.from(context);
+		RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.news_list_view_default_item, null);
+		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, height);
+		layout.setLayoutParams(params);
+		if (text != null) {
+			TextView textView = (TextView) layout.getChildAt(0);
+			textView.setText(text);
+		}
+		resultView.add(layout);
+		return resultView;
 	}
 	
 	/**

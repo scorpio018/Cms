@@ -164,10 +164,11 @@ public class MaterialUploadActivity extends FragmentActivity implements IMateria
 				}
 			};
 			int bottomHeightPx = ScreenTools.dimenDip2px(R.dimen.material_upload_bottom_layout_height, this);
-			popupWindowUtil.setY(bottomHeightPx);
-			popupWindowUtil.setGravity(Gravity.BOTTOM|Gravity.START);
+			/*popupWindowUtil.setY(bottomHeightPx);
+			popupWindowUtil.setGravity(Gravity.BOTTOM|Gravity.START);*/
+			popupWindowUtil.setYoffInPixels(bottomHeightPx);
 		}
-		popupWindow = popupWindowUtil.getChooseChannelPopupWindow();
+		popupWindow = popupWindowUtil.initPopupWindow();
 	}
 	
 	/**
@@ -195,7 +196,7 @@ public class MaterialUploadActivity extends FragmentActivity implements IMateria
 	 */
 	private void initTitleSearchBtn() throws Exception {
 		ImageView materialEditBtn = (ImageView) findViewById(R.id.titleRightBtn);
-		materialEditBtn.setBackgroundResource(R.drawable.news_search);
+//		materialEditBtn.setBackgroundResource(R.drawable.news_search);
 	}
 	
 	private void initFragLayout() {
@@ -226,6 +227,11 @@ public class MaterialUploadActivity extends FragmentActivity implements IMateria
 		msg.what = 0;
 		msg.obj = resultStr;
 		handler.sendMessage(msg);
+	}
+	
+	@Override
+	public String getCurCheckedFileType() {
+		return curFileType;
 	}
 
 	@Override

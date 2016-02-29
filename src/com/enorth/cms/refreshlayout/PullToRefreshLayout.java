@@ -165,22 +165,9 @@ public class PullToRefreshLayout extends FrameLayout {
 
 		@Override
 		public void handleMessage(Message msg) {
-			// 回弹速度随下拉距离moveDeltaY增大而增大
-//			Log.e("updateHandler.handleMessage", "回弹速度随下拉距离moveDeltaY增大而增大");
-			// 获取当前view的高度(getHeight()在view的高度没有超过屏幕高度的时候与此参数的值相同，而如果view超出，则getHeight()的值就是屏幕的高度值)
-//			int measuredHeight = getMeasuredHeight();
-//			Log.w("updateHandler.handleMessage", "getMeasuredHeight()【" + measuredHeight + "】");
-//			Log.w("updateHandler.handleMessage", "pullDownY【" + pullDownY + "】");
-//			Log.w("updateHandler.handleMessage", "pullUpY【" + pullUpY + "】");
 			double result = Math.PI / 2 / getMeasuredHeight() * (pullDownY + Math.abs(pullUpY));
-//			Log.w("updateHandler.handleMessage",
-//					"Math.PI / 2 / getMeasuredHeight() * (pullDownY + Math.abs(pullUpY))【" + result + "】");
 			MOVE_SPEED = (float) (8 + 5 * Math.tan(result));
-//			Log.w("updateHandler.handleMessage",
-//					"MOVE_SPEED = 8 * 5 * Math.tan(Math.PI / 2 / getMeasuredHeight() * (pullDownY + Math.abs(pullUpY))))【"
-//							+ MOVE_SPEED + "】");
 			if (!isTouch) {
-//				Log.w("updateHandler.handleMessage", "手已经离开屏幕");
 				// 正在刷新，且没有往上推的话则悬停，显示"正在刷新..."
 				if (state == ParamConst.REFRESHING && pullDownY <= refreshDist) {
 					Log.w("updateHandler.handleMessage", "state为【正在刷新】且下拉的距离≤释放刷新的距离，将释放刷新的距离赋值给下拉距离并取消timer");
@@ -214,7 +201,6 @@ public class PullToRefreshLayout extends FrameLayout {
 				requestLayout();
 			}
 			// 刷新布局,会自动调用onLayout
-//			Log.w("updateHandler.handleMessage", "刷新布局,会自动调用onLayout");
 			requestLayout();
 			// 没有拖拉或者回弹完成
 			if (pullDownY + Math.abs(pullUpY) == 0)

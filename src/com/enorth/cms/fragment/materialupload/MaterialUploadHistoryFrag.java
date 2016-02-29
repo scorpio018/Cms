@@ -50,6 +50,8 @@ public class MaterialUploadHistoryFrag extends Fragment {
 	
 	private IMaterialUploadView view;
 	
+	private List<MaterialUploadFileTypeItemFrag> items;
+	
 	public MaterialUploadHistoryFrag(MaterialUploadFragLinearLayout fragLayout) {
 		this.fragLayout = fragLayout;
 	}
@@ -124,6 +126,7 @@ public class MaterialUploadHistoryFrag extends Fragment {
 					}
 					tv.setTextColor(ColorUtil.getCommonBlueColor(getActivity()));
 					moveCursorTo(position);
+					items.get(position).initData();
 					materialUploadFileViewPager.setCurrentItem(position, false);
 					view.changeFileType(materialUploadFileTypeTexts.get(position));
 				}
@@ -151,10 +154,14 @@ public class MaterialUploadHistoryFrag extends Fragment {
 	
 	private void initViewPager() {
 		materialUploadFileViewPager = (ViewPager) layout.findViewById(R.id.materialUploadFileViewPager);
-		List<MaterialUploadFileTypeItemFrag> items = new ArrayList<MaterialUploadFileTypeItemFrag>();
+		items = new ArrayList<MaterialUploadFileTypeItemFrag>();
 		int length = materialUploadFileTypeTexts.size();
 		for (int i = 0; i < length; i++) {
 			MaterialUploadFileTypeItemFrag frag = new MaterialUploadFileTypeItemFrag(fragLayout);
+			// 将当前选中的文件的历史记录进行加载
+			if (view.getCurCheckedFileType().equals(materialUploadFileTypeTexts.get(i))) {
+				frag.initData();
+			}
 			items.add(frag);
 		}
 		MaterialUploadFileTypeItemFragmentPagerAdapter adapter = new MaterialUploadFileTypeItemFragmentPagerAdapter(getFragmentManager(), items);

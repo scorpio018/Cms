@@ -3,32 +3,34 @@ package com.enorth.cms.widget.linearlayout;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.handler.materialupload.MaterialUploadFragMoveHandler;
 import com.enorth.cms.task.MyTimer;
-import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.view.R;
 
-import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewParent;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.LinearLayout.LayoutParams;
 
 public class MaterialUploadFragLinearLayout extends LinearLayout {
 	
 	private boolean once = true;
+	
+	private LinearLayout parentLayout;
+	
+	private int parentLayoutHeight;
+	
+	private View titleView;
 	/**
 	 * 标头的高度
 	 */
 	private int titleViewHeight;
-	/**
-	 * 底部的高度
-	 */
-	private int bottomViewHeight;
 	/**
 	 * 按钮组的fragment
 	 */
@@ -156,12 +158,10 @@ public class MaterialUploadFragLinearLayout extends LinearLayout {
 		Log.e("startMove()", "调用了此方法");
 		if (once) {
 			// 获取标头，用于动画改变时，能不覆盖标头
-			LinearLayout parentLayout = (LinearLayout) getParent();
-			View titleView = parentLayout.getChildAt(0);
-//			titleViewHeight = titleView.getMeasuredHeight();
-			RelativeLayout allLayout = (RelativeLayout) parentLayout.getParent();
-			View bottomView = allLayout.getChildAt(1);
-			bottomViewHeight = bottomView.getMeasuredHeight();
+			parentLayout = (LinearLayout) getParent();
+			parentLayoutHeight = parentLayout.getMeasuredHeight();
+			titleView = parentLayout.getChildAt(0);
+			titleViewHeight = titleView.getMeasuredHeight();
 			// 获取按钮组fragment
 			btnGroupFrag = getChildAt(0);
 			btnGroupFragTop = btnGroupFrag.getTop();
@@ -220,7 +220,40 @@ public class MaterialUploadFragLinearLayout extends LinearLayout {
 //			materialUploadBtnGroupScrollBtn.layout(0, titleViewHeight + curMoveHeight, btnGroupScrollWidth, curMoveHeight + btnGroupScrollHeight + titleViewHeight);
 			btnGroupFrag.layout(0, btnGroupFragTop - curMoveHeight, btnGroupFragWidth, btnGroupFragBottom - curMoveHeight);
 			historyFrag.layout(0, historyTop - curMoveHeight, historyWidth, historyBottom);
+//			historyFrag.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		}
+	}
+
+	public LinearLayout getParentLayout() {
+		return parentLayout;
+	}
+
+	public void setParentLayout(LinearLayout parentLayout) {
+		this.parentLayout = parentLayout;
+	}
+
+	public int getParentLayoutHeight() {
+		return parentLayoutHeight;
+	}
+
+	public void setParentLayoutHeight(int parentLayoutHeight) {
+		this.parentLayoutHeight = parentLayoutHeight;
+	}
+
+	public View getTitleView() {
+		return titleView;
+	}
+
+	public void setTitleView(View titleView) {
+		this.titleView = titleView;
+	}
+
+	public int getTitleViewHeight() {
+		return titleViewHeight;
+	}
+
+	public void setTitleViewHeight(int titleViewHeight) {
+		this.titleViewHeight = titleViewHeight;
 	}
 
 	public View getBtnGroupFrag() {

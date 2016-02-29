@@ -11,12 +11,14 @@ import com.enorth.cms.widget.popupwindow.CommonPopupWindow;
 
 import android.R.anim;
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,9 +27,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public abstract class PopupWindowUtil {
+	
 	private CommonPopupWindow popupWindow;
 	
-	private Activity activity;
+	private Context context;
+	
+	private LinearLayout layout;
 	/**
 	 * 弹出框的背景颜色（初始化时赋值）
 	 */
@@ -36,6 +41,14 @@ public abstract class PopupWindowUtil {
 //	private int animationStyle;
 	
 	private int width;
+	/**
+	 * 使用showAsDropDown时的x坐标值
+	 */
+	private int xoffInPixels;
+	/**
+	 * 使用showAsDropDown时的x坐标值
+	 */
+	private int yoffInPixels;
 	
 	private int gravity;
 	
@@ -45,38 +58,43 @@ public abstract class PopupWindowUtil {
 	 */
 	private View view;
 	
+	private int popupWindowShowType = ParamConst.POPUP_WINDOW_SHOW_TYPE_AS_DROPDOWN;
+	
 	public abstract void initItems(LinearLayout layout);
 	
-	public PopupWindowUtil(Activity activity, View view) {
-		this.activity = activity;
+	public PopupWindowUtil(Context context, View view) {
+		this.context = context;
 		this.view = view;
 		init();
 	}
 	
 	private void init() {
-		popupBgColor = ContextCompat.getColor(activity, R.color.channel_popup_color);
+		popupBgColor = ContextCompat.getColor(context, R.color.channel_popup_color);
 //		animationStyle = R.style.AnimationFadeUpToBottom;
 		width = ParamConst.POP_WINDOW_COMMON_WIDTH;
 		gravity = Gravity.TOP|Gravity.CENTER_HORIZONTAL;
 		y = 0;
 	}
 	
-	public CommonPopupWindow getChooseChannelPopupWindow() {
+	public CommonPopupWindow initPopupWindow() {
 		if (popupWindow != null && popupWindow.isShowing()) {
 			popupWindow.dismiss();
 			popupWindow = null;
 		} else {
-			initChooseChannelPopupWindow();
+			switch(popupWindowShowType) {
+			case ParamConst.POPUP_WINDOW_SHOW_TYPE_AT_LOCATION:
+				initPopupWindowShowAtLocation();
+				break;
+			case ParamConst.POPUP_WINDOW_SHOW_TYPE_AS_DROPDOWN:
+				initPopupWindowShowAsDropDown();
+				break;
+			}
 		}
 		return popupWindow;
 	}
 	
-	/**
-	 * 实例化频道选择弹出页面
-	 * @param curChooseChannelName
-	 */
-	private void initChooseChannelPopupWindow() {
-		final LinearLayout layout = new LinearLayout(activity);
+	private void initPopupWindowCommon() {
+		layout = new LinearLayout(context);
 		layout.setOrientation(LinearLayout.VERTICAL);
 		layout.setBackgroundColor(popupBgColor);
 		// 设置半透明
@@ -88,6 +106,14 @@ public abstract class PopupWindowUtil {
 //		popupWindow.setFocusable(true);
 		popupWindow.setTouchable(true);
 		popupWindow.setOutsideTouchable(true);
+	}
+	
+	/**
+	 * 实例化频道选择弹出页面
+	 * @param curChooseChannelName
+	 */
+	private void initPopupWindowShowAtLocation() {
+		initPopupWindowCommon();
 		
 //		popupWindow.setAnimationStyle(animationStyle);
 //		int xoffInPixels = width / 2;
@@ -103,8 +129,26 @@ public abstract class PopupWindowUtil {
 		popupWindow.update();
 	}
 	
+	private void initPopupWindowShowAsDropDown() {
+		initPopupWindowCommon();
+	    // 将pixels转为dip
+		int xoffInDip = ScreenTools.px2dip(xoffInPixels, context);
+		int yoffInDip = 0;
+		if (yoffInPixels != 0) {
+			layout.measure(MeasureSpec.makeMeasureSpec(context.getResources()
+					.getDisplayMetrics().widthPixels, MeasureSpec.AT_MOST),
+					MeasureSpec.makeMeasureSpec(context.getResources()
+							.getDisplayMetrics().heightPixels,
+							MeasureSpec.AT_MOST));
+			int layoutHeight = layout.getMeasuredHeight();
+			yoffInDip = ScreenTools.px2dip(yoffInPixels, context) + layoutHeight;
+		}
+		popupWindow.showAsDropDown(view, xoffInDip, -yoffInDip);
+		popupWindow.update();
+	}
+	
 	public void initPopupWindowItems(LinearLayout layout, CommonOnTouchListener listener, List<String> allNames, String curName) {
-		LayoutInflater inflater = LayoutInflater.from(activity);
+		LayoutInflater inflater = LayoutInflater.from(context);
 		int size = allNames.size();
 		for (int i = 0; i < size; i++) {
 			RelativeLayout chooseChannelItem = (RelativeLayout) inflater.inflate(R.layout.choose_channel_popup, null);
@@ -144,6 +188,22 @@ public abstract class PopupWindowUtil {
 		this.width = width;
 	}
 
+	public int getXoffInPixels() {
+		return xoffInPixels;
+	}
+
+	public void setXoffInPixels(int xoffInPixels) {
+		this.xoffInPixels = xoffInPixels;
+	}
+
+	public int getYoffInPixels() {
+		return yoffInPixels;
+	}
+
+	public void setYoffInPixels(int yoffInPixels) {
+		this.yoffInPixels = yoffInPixels;
+	}
+
 	public int getGravity() {
 		return gravity;
 	}
@@ -158,6 +218,14 @@ public abstract class PopupWindowUtil {
 
 	public void setY(int y) {
 		this.y = y;
+	}
+
+	public int getPopupWindowShowType() {
+		return popupWindowShowType;
+	}
+
+	public void setPopupWindowShowType(int popupWindowShowType) {
+		this.popupWindowShowType = popupWindowShowType;
 	}
 	
 }

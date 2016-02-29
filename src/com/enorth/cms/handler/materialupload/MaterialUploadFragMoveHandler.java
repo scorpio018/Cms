@@ -6,6 +6,8 @@ import com.enorth.cms.widget.linearlayout.MaterialUploadFragLinearLayout;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 
 public class MaterialUploadFragMoveHandler extends Handler {
 	
@@ -68,7 +70,7 @@ public class MaterialUploadFragMoveHandler extends Handler {
 				return;
 			}
 			layout.getTimer().cancel();
-			Log.e("layout.getCurBtnGroupHeight()", String.valueOf(layout.getCurMoveHeight()));
+//			Log.e("layout.getCurBtnGroupHeight()", String.valueOf(layout.getCurMoveHeight()));
 			layout.requestLayout();
 			return;
 		}
@@ -78,6 +80,7 @@ public class MaterialUploadFragMoveHandler extends Handler {
 				layout.getMaterialUploadBtnGroupScrollBtn().startAnimation(layout.getRotateAnimation());
 			}
 			layout.setCurMoveHeight(layout.getCurMoveHeight() + moveSpeed);
+			layout.setHistoryBottom(layout.getHistoryBottom() + moveSpeed);
 			if (layout.getCurMoveHeight() > layout.getBtnGroupEndHeight() - moveSpeed) {
 				isEnd(layout.getBtnGroupEndHeight(), !isOpen);
 			}
@@ -87,11 +90,12 @@ public class MaterialUploadFragMoveHandler extends Handler {
 				layout.getMaterialUploadBtnGroupScrollBtn().startAnimation(layout.getRotateBackAnimation());
 			}
 			layout.setCurMoveHeight(layout.getCurMoveHeight() - moveSpeed);
+			layout.setHistoryBottom(layout.getHistoryBottom() - moveSpeed);
 			if (layout.getCurMoveHeight() < moveSpeed) {
 				isEnd(0, !isOpen);
 			}
 		}
-		Log.e("layout.getCurBtnGroupHeight()", String.valueOf(layout.getCurMoveHeight()));
+//		Log.e("layout.getCurBtnGroupHeight()", String.valueOf(layout.getCurMoveHeight()));
 		layout.requestLayout();
 	}
 	
@@ -99,6 +103,8 @@ public class MaterialUploadFragMoveHandler extends Handler {
 		layout.setEnd(true);
 		layout.setCurMoveHeight(curMoveHeight);
 		layout.setOpen(changeOpenState);
+		int height = layout.getParentLayoutHeight() - layout.getTitleViewHeight() - layout.getBtnGroupScrollHeight() - layout.getBtnGroupHeight() + layout.getCurMoveHeight();
+		layout.getHistoryFrag().setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, height));
 //		layout.getMaterialUploadBtnGroupScrollBtn().clearAnimation();
 	}
 

@@ -19,7 +19,7 @@ public abstract class MaterialUploadPopupWindowOnTouchListener extends PopupWind
 	@Override
 	public void checkItem(String curCheckedText) {
 		activity.getMaterialFromTypeTV().setText(curCheckedText);
-		SharedPreUtil.put(activity, ParamConst.CUR_CHOOSE_CHANNEL_TYPE, curCheckedText);
+		SharedPreUtil.put(activity, ParamConst.CUR_MATERIAL_UPLOAD_TYPE, curCheckedText);
 		activity.setCurMaterialUploadType(curCheckedText);
 		if (curCheckedText.equals(ParamConst.MATERIAL_UPLOAD_TYPE_FROM_PHONE)) {
 			activity.getPresenter().getItemsByFileTypeAndUploadType(activity.getCurFileType(), ParamConst.MATERIAL_UPLOAD_TYPE_FROM_PHONE, activity.getMaterialUploadTypeChangeHandler());

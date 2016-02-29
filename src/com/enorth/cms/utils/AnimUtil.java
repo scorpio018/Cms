@@ -136,8 +136,10 @@ public class AnimUtil {
 	}
 	
 	public static void hideRefreshFrame() {
-		refreshLayout.clearAnimation();
-		refreshLayout.setVisibility(View.GONE);
+		if (refreshLayout != null) {
+			refreshLayout.clearAnimation();
+			refreshLayout.setVisibility(View.GONE);
+		}
 	}
 	
 	private static void initAmin(Context context) {

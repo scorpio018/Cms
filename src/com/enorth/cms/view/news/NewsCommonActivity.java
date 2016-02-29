@@ -389,7 +389,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 			float operateBtnHeight = resources.getDimension(R.dimen.news_operate_btn_layout_height);
 			int height = (int) ((ScreenTools.getPhoneHeight(NewsCommonActivity.this) - titleHeight - subTitleHeight - operateBtnHeight) / 2 + titleHeight
 					+ subTitleHeight);
-			List<View> items = initDefaultData(errorHint, height);
+			List<View> items = ViewUtil.initDefaultData(this, errorHint, height);
 			ListAdapter adapter = new NewsListViewAdapter(items);
 			newsListView.setAdapter(adapter);
 			// AnimUtil.hideRefreshFrame(NewsCommonActivity.this);
@@ -491,7 +491,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	 * @param height
 	 * @return
 	 */
-	protected List<View> initDefaultData(String text, int height) {
+	/*protected List<View> initDefaultData(String text, int height) {
 		List<View> resultView = new ArrayList<View>();
 		LayoutInflater inflater = LayoutInflater.from(this);
 		RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.news_list_view_default_item, null);
@@ -503,7 +503,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 		}
 		resultView.add(layout);
 		return resultView;
-	}
+	}*/
 	
 	/**
 	 * 给每一个新闻左侧的选中图标添加点击事件

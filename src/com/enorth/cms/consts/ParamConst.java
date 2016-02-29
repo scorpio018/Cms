@@ -228,6 +228,23 @@ public class ParamConst {
 	 * 附件上传中所有历史
 	 */
 	public static final String MATERIAL_UPLOAD_TYPE_FROM_ALL = "所有历史";
+	/**
+	 * 通过最近日期进行数据查询
+	 */
+	public static final String MATERIAL_UPLOAD_TYPE_TEXT_1 = "最近一天";
+	
+	public static final String MATERIAL_UPLOAD_TYPE_TEXT_2 = "最近两天";
+	
+	public static final String MATERIAL_UPLOAD_TYPE_TEXT_3 = "最近三天";
+	
+	/**
+	 * PopupWindow显示时调用showAtLocation方法
+	 */
+	public static final int POPUP_WINDOW_SHOW_TYPE_AT_LOCATION = 1;
+	/**
+	 * PopupWindow显示时调用showAsDropDown方法
+	 */
+	public static final int POPUP_WINDOW_SHOW_TYPE_AS_DROPDOWN = 2;
 	
 	/*---------------------SharedPreferences中的存值及其含义 start---------------------*/
 	/**

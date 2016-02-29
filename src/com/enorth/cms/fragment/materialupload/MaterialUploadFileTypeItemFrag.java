@@ -8,31 +8,30 @@ import java.util.Random;
 
 import com.enorth.cms.adapter.materialupload.MaterialUploadFileItemGridViewAdapter;
 import com.enorth.cms.adapter.materialupload.MaterialUploadFileTypeItemListViewAdapter;
-import com.enorth.cms.bean.materialupload.MaterialUploadFileItemBean;
+import com.enorth.cms.consts.ParamConst;
+import com.enorth.cms.listener.popup.materialupload.MaterialUploadFileTypePopupWindowOnTouchListener;
 import com.enorth.cms.utils.ImgUtil;
-import com.enorth.cms.utils.LayoutParamsUtil;
-import com.enorth.cms.utils.ViewUtil;
+import com.enorth.cms.utils.PopupWindowUtil;
+import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.view.R;
+import com.enorth.cms.view.material.IMaterialUploadView;
 import com.enorth.cms.widget.gridview.materialupload.MaterialUploadHistoryGridView;
 import com.enorth.cms.widget.linearlayout.MaterialUploadFragLinearLayout;
-import com.enorth.cms.widget.listview.CommonListView;
 import com.enorth.cms.widget.listview.materialupload.MaterialUploadHistoryItemListView;
+import com.enorth.cms.widget.popupwindow.CommonPopupWindow;
 
-import android.graphics.Bitmap;
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.AbsListView;
-import android.widget.AbsListView.LayoutParams;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.GridLayout;
-import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +49,200 @@ public class MaterialUploadFileTypeItemFrag extends Fragment implements OnScroll
 	
 	private View firstItem;
 	
+	private IMaterialUploadView view;
+	
+	// 获取当前显示文件的时间的文字说明
+	private TextView materialUploadFileTypeText;
+	
+	// 获取当前显示文件的时间的layout
+	private LinearLayout materialUploadFileTypeLayout;
+	
+	private PopupWindowUtil popupWindowUtil;
+	
+	private CommonPopupWindow popupWindow;
+	
+	private List<String> allMaterialUploadFileTypeText;
+	
+	private String curMaterialUploadFileTypeText;
+	
+	public MaterialUploadFileTypeItemFrag(MaterialUploadFragLinearLayout fragLayout) {
+		this.fragLayout = fragLayout;
+	}
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		layout = (LinearLayout) inflater.inflate(R.layout.material_upload_file_type_item_frag, null);
+		this.inflater = inflater;
+		initMaterialUploadFileTypeText();
+		initShowFileTime();
+		listView = (MaterialUploadHistoryItemListView) layout.findViewById(R.id.materialUploadFileItemListView);
+		MaterialUploadFileTypeItemListViewAdapter adapter = new MaterialUploadFileTypeItemListViewAdapter(getContext(), 0, items);
+		listView.setAdapter(adapter);
+		listView.setOnScrollListener(this);
+		return layout;
+	}
+	
+	@Override
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		view = (IMaterialUploadView) context;
+	}
+	
+	private void initMaterialUploadFileTypeText() {
+		allMaterialUploadFileTypeText = new ArrayList<String>();
+		allMaterialUploadFileTypeText.add(ParamConst.MATERIAL_UPLOAD_TYPE_TEXT_1);
+		allMaterialUploadFileTypeText.add(ParamConst.MATERIAL_UPLOAD_TYPE_TEXT_2);
+		allMaterialUploadFileTypeText.add(ParamConst.MATERIAL_UPLOAD_TYPE_TEXT_3);
+		curMaterialUploadFileTypeText = ParamConst.MATERIAL_UPLOAD_TYPE_TEXT_1;
+	}
+	
+	/**
+	 * 延迟加载数据
+	 */
+	public void initData() {
+		new Handler() {
+			@Override
+			public void handleMessage(Message msg) {
+				super.handleMessage(msg);
+				for (int i = 0; i < 5; i++) {
+					initMaterialUploadDetail();
+				}
+				MaterialUploadFileTypeItemListViewAdapter adapter = new MaterialUploadFileTypeItemListViewAdapter(getContext(), 0, items);
+				listView.setAdapter(adapter);
+			}
+		}.sendMessageDelayed(new Message(), 2000);
+	}
+	
+	/**
+	 * 刷新数据
+	 */
+	public void refreshData() {
+		items.clear();
+		MaterialUploadFileTypeItemListViewAdapter adapter = new MaterialUploadFileTypeItemListViewAdapter(getContext(), 0, items);
+		listView.setAdapter(adapter);
+		initData();
+	}
+	
+	/**
+	 * 初始化文件显示的时间区间
+	 * @param view
+	 */
+	private void initShowFileTime() {
+		// 获取当前显示文件的时间的layout
+		materialUploadFileTypeLayout = (LinearLayout) layout.findViewById(R.id.materialUploadFileTypeLayout);
+		materialUploadFileTypeLayout.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+//				Toast.makeText(MaterialUploadFileTypeItemFrag.this.getContext(), "点击了最近一天", Toast.LENGTH_SHORT).show();;
+				initPopupWindow();
+			}
+		});
+		// 获取当前显示文件的时间的文字说明
+		materialUploadFileTypeText = (TextView) layout.findViewById(R.id.materialUploadFileTypeText);
+		materialUploadFileTypeText.setText("最近一天");
+	}
+	
+	private void initPopupWindow() {
+		if (popupWindowUtil == null) {
+			popupWindowUtil = new PopupWindowUtil(getContext(), materialUploadFileTypeLayout) {
+				
+				@Override
+				public void initItems(LinearLayout layout) {
+					MaterialUploadFileTypePopupWindowOnTouchListener listener = new MaterialUploadFileTypePopupWindowOnTouchListener(getContext(), MaterialUploadFileTypeItemFrag.this, layout) {
+						
+						@Override
+						public void onImgChangeEnd(View v) {
+							popupWindow.dismiss();
+							popupWindow = null;
+						}
+					};
+					initPopupWindowItems(layout, listener, allMaterialUploadFileTypeText, curMaterialUploadFileTypeText);
+				}
+			};
+			/*int materialUploadFileTypeLayoutTop = materialUploadFileTypeLayout.getTop();
+			int bottomHeightPx = ScreenTools.dip2px(materialUploadFileTypeLayoutTop, getContext());
+			popupWindowUtil.setY(materialUploadFileTypeLayoutTop);
+			popupWindowUtil.setGravity(Gravity.START);*/
+			popupWindowUtil.setPopupWindowShowType(ParamConst.POPUP_WINDOW_SHOW_TYPE_AS_DROPDOWN);
+		}
+		popupWindow = popupWindowUtil.initPopupWindow();
+	}
+	
+	private Date now = new Date();
+	
+	private Random rd = new Random();
+	
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	
+	private int count = 0;
+	
+	private void initMaterialUploadDetail() {
+		LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.material_upload_file_history_item, null);
+		TextView uploadTimeTV = (TextView) layout.findViewById(R.id.uploadTimeTV);
+		uploadTimeTV.setText(sdf.format(now));
+		now.setTime(now.getTime() - 60000);
+		TextView uploadTitleTV = (TextView) layout.findViewById(R.id.uploadTitleTV);
+		uploadTitleTV.setText("我上传的标题");
+//		GridLayout fileGridLayout = (GridLayout) layout.findViewById(R.id.fileGridLayout);
+		MaterialUploadHistoryGridView fileGridView = (MaterialUploadHistoryGridView) layout.findViewById(R.id.photo_wall);
+//		List<View> gridViews = new ArrayList<View>();
+		int n = rd.nextInt(2) + 9;
+		if (length - count == 0) {
+			return;
+		}
+		String[] imgUrl = new String[length - count > n ? n : length - count];
+		for (int i = 0; i < n; i++) {
+			if (length == (count + 1)) {
+				break;
+			}
+			imgUrl[i] = this.imgUrl[count++];
+		}
+		MaterialUploadFileItemGridViewAdapter adapter = new MaterialUploadFileItemGridViewAdapter(getContext(), 0, imgUrl, fileGridView);
+		fileGridView.setAdapter(adapter);
+//		ViewUtil.setGridViewHeightBasedOnChildren(fileGridView, 4);
+//		adapter.notifyDataSetChanged();
+		if (items.size() == 0) {
+			firstItem = layout;
+		}
+		items.add(layout);
+	}
+	
+	@Override
+	public void onScrollStateChanged(AbsListView view, int scrollState) {
+		
+	}
+
+	@Override
+	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+		/*int top = firstItem.getTop();
+		if (top < 0) {
+			if (fragLayout.isOpen()) {
+				fragLayout.startMove();
+			}
+		} else {
+			if (!fragLayout.isOpen()) {
+				fragLayout.startMove();
+			}
+		}*/
+	}
+	
+	public TextView getMaterialUploadFileTypeText() {
+		return materialUploadFileTypeText;
+	}
+
+	public void setMaterialUploadFileTypeText(TextView materialUploadFileTypeText) {
+		this.materialUploadFileTypeText = materialUploadFileTypeText;
+	}
+
+	public String getCurMaterialUploadFileTypeText() {
+		return curMaterialUploadFileTypeText;
+	}
+
+	public void setCurMaterialUploadFileTypeText(String curMaterialUploadFileTypeText) {
+		this.curMaterialUploadFileTypeText = curMaterialUploadFileTypeText;
+	}
+
 	private String[] imgUrl = {
 		/*"https://i.ytimg.com/vi/ksme1nbbTAc/maxresdefault.jpg",
 		"https://i.ytimg.com/vi/7E3wLAN3fQQ/maxresdefault.jpg",
@@ -165,116 +358,5 @@ public class MaterialUploadFileTypeItemFrag extends Fragment implements OnScroll
 		"https://lh5.googleusercontent.com/-kI_QdYx7VlU/URqvLXCB6gI/AAAAAAAAAbs/N31vlZ6u89o/s160-c/Yet%252520Another%252520Rockaway%252520Sunset.jpg",
 		"https://lh4.googleusercontent.com/-e9NHZ5k5MSs/URqvMIBZjtI/AAAAAAAAAbs/1fV810rDNfQ/s160-c/Yosemite%252520Tree.jpg"
 	};
-	
-	private boolean isShowOff = false;
-	
-	public MaterialUploadFileTypeItemFrag(MaterialUploadFragLinearLayout fragLayout) {
-		this.fragLayout = fragLayout;
-	}
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		layout = (LinearLayout) inflater.inflate(R.layout.material_upload_file_type_item_frag, null);
-		long maxMemory = ImgUtil.getMaxMemory();
-		Log.e("maxMemory", "【" + maxMemory + "】");
-		this.inflater = inflater;
-		initShowFileTime();
-//		initMaterialUploadDetail();
-		listView = (MaterialUploadHistoryItemListView) layout.findViewById(R.id.materialUploadFileItemListView);
-//		listView = new MaterialUploadHistoryItemListView(getContext(), fragLayout);
-		for (int i = 0; i < 5; i++) {
-			if (isShowOff) {
-				break;
-			}
-			initMaterialUploadDetail();
-		}
-		MaterialUploadFileTypeItemListViewAdapter adapter = new MaterialUploadFileTypeItemListViewAdapter(getContext(), 0, items);
-		listView.setAdapter(adapter);
-//		ViewUtil.setListViewHeightBasedOnChildren(listView);
-//		adapter.notifyDataSetChanged();
-		listView.setOnScrollListener(this);
-		/*LayoutParams initMatchLayout = LayoutParamsUtil.initMatchLayout();
-		layout.addView(listView, initMatchLayout);*/
-		return layout;
-	}
-	
-	/**
-	 * 初始化文件显示的时间区间
-	 * @param view
-	 */
-	private void initShowFileTime() {
-		// 获取当前显示文件的时间的layout
-		LinearLayout materialUploadFileTypeLayout = (LinearLayout) layout.findViewById(R.id.materialUploadFileTypeLayout);
-		materialUploadFileTypeLayout.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Toast.makeText(MaterialUploadFileTypeItemFrag.this.getContext(), "点击了最近一天", Toast.LENGTH_SHORT).show();;
-			}
-		});
-		// 获取当前显示文件的时间的文字说明
-		TextView materialUploadFileTypeText = (TextView) layout.findViewById(R.id.materialUploadFileTypeText);
-		materialUploadFileTypeText.setText("最近一天");
-	}
-	
-	private Date now = new Date();
-	
-	private Random rd = new Random();
-	
-	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	
-	private int count = 0;
-	
 	private int length = imgUrl.length;
-	
-	private void initMaterialUploadDetail() {
-		LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.material_upload_file_history_item, null);
-		TextView uploadTimeTV = (TextView) layout.findViewById(R.id.uploadTimeTV);
-		uploadTimeTV.setText(sdf.format(now));
-		now.setTime(now.getTime() - 60000);
-		TextView uploadTitleTV = (TextView) layout.findViewById(R.id.uploadTitleTV);
-		uploadTitleTV.setText("我上传的标题");
-//		GridLayout fileGridLayout = (GridLayout) layout.findViewById(R.id.fileGridLayout);
-		MaterialUploadHistoryGridView fileGridView = (MaterialUploadHistoryGridView) layout.findViewById(R.id.photo_wall);
-//		List<View> gridViews = new ArrayList<View>();
-		int n = rd.nextInt(2) + 9;
-		if (length - count == 0) {
-			return;
-		}
-		String[] imgUrl = new String[length - count > n ? n : length - count];
-		for (int i = 0; i < n; i++) {
-			if (length == (count + 1)) {
-				break;
-			}
-			imgUrl[i] = this.imgUrl[count++];
-		}
-		MaterialUploadFileItemGridViewAdapter adapter = new MaterialUploadFileItemGridViewAdapter(getContext(), 0, imgUrl, fileGridView);
-		fileGridView.setAdapter(adapter);
-//		ViewUtil.setGridViewHeightBasedOnChildren(fileGridView, 4);
-//		adapter.notifyDataSetChanged();
-		if (items.size() == 0) {
-			firstItem = layout;
-		}
-		items.add(layout);
-	}
-	
-	@Override
-	public void onScrollStateChanged(AbsListView view, int scrollState) {
-		
-	}
-
-	@Override
-	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-		/*int top = firstItem.getTop();
-		if (top < 0) {
-			if (fragLayout.isOpen()) {
-				fragLayout.startMove();
-			}
-		} else {
-			if (!fragLayout.isOpen()) {
-				fragLayout.startMove();
-			}
-		}*/
-	}
-	
 }

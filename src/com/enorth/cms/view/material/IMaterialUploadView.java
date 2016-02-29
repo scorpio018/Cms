@@ -7,4 +7,6 @@ public interface IMaterialUploadView {
 	public void getItemsByFileTypeAndUploadType(String resultStr, Handler handler);
 	
 	public void changeFileType(String fileType);
+	
+	public String getCurCheckedFileType();
 }
