@@ -9,4 +9,8 @@ public interface IMaterialUploadView {
 	public void changeFileType(String fileType);
 	
 	public String getCurCheckedFileType();
+	
+	public void takePhoto();
+	
+	public void takePhotoGallery();
 }

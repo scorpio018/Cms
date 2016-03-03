@@ -12,6 +12,7 @@ import com.enorth.cms.listener.popup.channelsearch.ChannelSearchPopupWindowOnTou
 import com.enorth.cms.listener.popup.materialupload.MaterialUploadPopupWindowOnTouchListener;
 import com.enorth.cms.presenter.materialupload.IMaterialUploadPresenter;
 import com.enorth.cms.presenter.materialupload.MaterialUploadPresenter;
+import com.enorth.cms.utils.CameraUtil;
 import com.enorth.cms.utils.PopupWindowUtil;
 import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.utils.SharedPreUtil;
@@ -163,9 +164,9 @@ public class MaterialUploadActivity extends FragmentActivity implements IMateria
 					initPopupWindowItems(layout, listener, allMaterialUploadType, curMaterialUploadType);
 				}
 			};
-			int bottomHeightPx = ScreenTools.dimenDip2px(R.dimen.material_upload_bottom_layout_height, this);
 			/*popupWindowUtil.setY(bottomHeightPx);
 			popupWindowUtil.setGravity(Gravity.BOTTOM|Gravity.START);*/
+			int bottomHeightPx = ScreenTools.dimenDip2px(R.dimen.material_upload_bottom_layout_height, this);
 			popupWindowUtil.setYoffInPixels(bottomHeightPx);
 		}
 		popupWindow = popupWindowUtil.initPopupWindow();
@@ -237,6 +238,16 @@ public class MaterialUploadActivity extends FragmentActivity implements IMateria
 	@Override
 	public void changeFileType(String fileType) {
 		curFileType = fileType;
+	}
+	
+	@Override
+	public void takePhoto() {
+		CameraUtil.takePhoto(this);
+	}
+	
+	@Override
+	public void takePhotoGallery() {
+		CameraUtil.takePhotoGallery(this);
 	}
 
 	public MaterialUploadBtnGroupFrag getBtnGroupFrag() {

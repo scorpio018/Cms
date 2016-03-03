@@ -1,8 +1,13 @@
 package com.enorth.cms.fragment.materialupload;
 
 import com.enorth.cms.view.R;
+import com.enorth.cms.view.material.IMaterialUploadView;
+import com.enorth.cms.view.upload.GalleryActivity;
+import com.enorth.cms.view.upload.UploadPicActivity;
 import com.enorth.cms.widget.linearlayout.MaterialUploadFragLinearLayout;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -27,6 +32,8 @@ public class MaterialUploadBtnGroupFrag extends Fragment {
 	 */
 	private MaterialUploadFragLinearLayout fragLayout;
 	
+	private IMaterialUploadView view;
+	
 	public MaterialUploadBtnGroupFrag(MaterialUploadFragLinearLayout fragLayout) {
 		this.fragLayout = fragLayout;
 	}
@@ -46,6 +53,12 @@ public class MaterialUploadBtnGroupFrag extends Fragment {
 		initImgBtnChoosePicEvent();
 		initImgBtnAddVideo();
 		initBottomImgEvent();
+	}
+	
+	@Override
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		view = (IMaterialUploadView) context;
 	}
 	
 	/**
@@ -71,7 +84,8 @@ public class MaterialUploadBtnGroupFrag extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(getContext(), "点击了拍照按钮", Toast.LENGTH_SHORT).show();
+//				Toast.makeText(getContext(), "点击了拍照按钮", Toast.LENGTH_SHORT).show();
+				view.takePhoto();
 			}
 		});
 	}
@@ -85,7 +99,10 @@ public class MaterialUploadBtnGroupFrag extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(getContext(), "点击了照片按钮", Toast.LENGTH_SHORT).show();
+//				Toast.makeText(getContext(), "点击了照片按钮", Toast.LENGTH_SHORT).show();
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), GalleryActivity.class);
+				startActivity(intent);
 			}
 		});
 	}
@@ -99,7 +116,9 @@ public class MaterialUploadBtnGroupFrag extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(getContext(), "点击了视频按钮", Toast.LENGTH_SHORT).show();
+//				Toast.makeText(getContext(), "点击了视频按钮", Toast.LENGTH_SHORT).show();
+				view.takePhotoGallery();
+				
 			}
 		});
 	}

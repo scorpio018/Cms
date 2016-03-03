@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.enorth.cms.listener.materialupload.MaterialUploadItemOnScrollListener;
 import com.enorth.cms.task.BitmapWorkerTask;
+import com.enorth.cms.utils.MemoryCacheUtil;
 import com.enorth.cms.view.R;
 
 import android.content.Context;
@@ -26,7 +27,8 @@ public class MaterialUploadFileItemGridViewAdapter extends ArrayAdapter<String> 
 	/**
 	 * 图片缓存技术的核心类，用于缓存所有下载好的图片，在程序内存达到设定值时会将最少最近使用的图片移除掉。
 	 */
-	private LruCache<String, Bitmap> mMemoryCache;
+//	private LruCache<String, Bitmap> mMemoryCache;
+	private MemoryCacheUtil memoryCacheUtil;
 	/**
 	 * GridView实例
 	 */
@@ -60,8 +62,9 @@ public class MaterialUploadFileItemGridViewAdapter extends ArrayAdapter<String> 
 		this.photoWall = photoWall;
 		this.imgUrl = objects;
 		taskCollection = new HashSet<BitmapWorkerTask>();
+		memoryCacheUtil = new MemoryCacheUtil();
 		// 获取应用程序最大可用内存
-		int maxMemory = (int) Runtime.getRuntime().maxMemory();
+		/*int maxMemory = (int) Runtime.getRuntime().maxMemory();
 		int cacheSize = maxMemory / 8;
 		// 设置图片缓存大小为程序最大可用内存的1/8
 		mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
@@ -69,7 +72,7 @@ public class MaterialUploadFileItemGridViewAdapter extends ArrayAdapter<String> 
 			protected int sizeOf(String key, Bitmap bitmap) {
 				return bitmap.getByteCount();
 			}
-		};
+		};*/
 		MaterialUploadItemOnScrollListener listener = new MaterialUploadItemOnScrollListener(this);
 		photoWall.setOnScrollListener(listener);
 	}
@@ -105,7 +108,8 @@ public class MaterialUploadFileItemGridViewAdapter extends ArrayAdapter<String> 
 	 *            用于显示图片的控件。
 	 */
 	public void setImageView(String imageUrl, ImageView imageView) {
-		Bitmap bitmap = getBitmapFromMemoryCache(imageUrl);
+//		Bitmap bitmap = getBitmapFromMemoryCache(imageUrl);
+		Bitmap bitmap = memoryCacheUtil.getBitmapFromMemoryCache(imageUrl);
 		if (bitmap != null) {
 			imageView.setImageBitmap(bitmap);
 		} else {
@@ -113,39 +117,11 @@ public class MaterialUploadFileItemGridViewAdapter extends ArrayAdapter<String> 
 		}
 	}
 
-	/**
-	 * 将一张图片存储到LruCache中。
-	 * 
-	 * @param key
-	 *            LruCache的键，这里传入图片的URL地址。
-	 * @param bitmap
-	 *            LruCache的键，这里传入从网络上下载的Bitmap对象。
-	 */
-	public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-		if (getBitmapFromMemoryCache(key) == null) {
-			mMemoryCache.put(key, bitmap);
-		}
-	}
-
-	/**
-	 * 从LruCache中获取一张图片，如果不存在就返回null。
-	 * 
-	 * @param key
-	 *            LruCache的键，这里传入图片的URL地址。
-	 * @return 对应传入键的Bitmap对象，或者null。
-	 */
-	public Bitmap getBitmapFromMemoryCache(String key) {
-		return mMemoryCache.get(key);
-	}
-	
 	public void loadBitmaps(int firstVisibleItem, int visibleItemCount) {
 		try {
 			for (int i = firstVisibleItem; i < firstVisibleItem + visibleItemCount; i++) {
 				String imageUrl = imgUrl[i];
-				if (imageUrl == null) {
-					System.out.println(1);
-				}
-				Bitmap bitmap = getBitmapFromMemoryCache(imageUrl);
+				Bitmap bitmap = memoryCacheUtil.getBitmapFromMemoryCache(imageUrl);
 				if (bitmap == null) {
 					BitmapWorkerTask task = new BitmapWorkerTask(this);
 					taskCollection.add(task);
@@ -181,12 +157,12 @@ public class MaterialUploadFileItemGridViewAdapter extends ArrayAdapter<String> 
 		this.taskCollection = taskCollection;
 	}
 
-	public LruCache<String, Bitmap> getmMemoryCache() {
-		return mMemoryCache;
+	public MemoryCacheUtil getMemoryCacheUtil() {
+		return memoryCacheUtil;
 	}
 
-	public void setmMemoryCache(LruCache<String, Bitmap> mMemoryCache) {
-		this.mMemoryCache = mMemoryCache;
+	public void setMemoryCacheUtil(MemoryCacheUtil memoryCacheUtil) {
+		this.memoryCacheUtil = memoryCacheUtil;
 	}
 
 	public GridView getPhotoWall() {

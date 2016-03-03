@@ -27,7 +27,7 @@ public class BitmapWorkerTask extends AsyncTask<String, Void, Bitmap> {
 		Bitmap bitmap = ImgUtil.downloadBitmap(params[0]);
 		if (bitmap != null) {
 			// 图片下载完成后缓存到LrcCache中
-			adapter.addBitmapToMemoryCache(params[0], bitmap);
+			adapter.getMemoryCacheUtil().addBitmapToMemoryCache(params[0], bitmap);
 		}
 		return bitmap;
 	}

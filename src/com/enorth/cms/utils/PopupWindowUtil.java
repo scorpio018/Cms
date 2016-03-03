@@ -1,7 +1,11 @@
 package com.enorth.cms.utils;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.util.Arrays;
 import java.util.List;
 
+import com.enorth.cms.adapter.upload.ImageFolderAdapter;
 import com.enorth.cms.bean.PopupWindowBean;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.listener.CommonOnTouchListener;
@@ -13,18 +17,23 @@ import android.R.anim;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.MeasureSpec;
+import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public abstract class PopupWindowUtil {
 	
@@ -167,7 +176,7 @@ public abstract class PopupWindowUtil {
 			layout.addView(chooseChannelItem);
 		}
 	}
-
+	
 	public PopupWindow getPopupWindow() {
 		return popupWindow;
 	}

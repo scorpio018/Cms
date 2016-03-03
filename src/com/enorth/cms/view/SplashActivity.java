@@ -51,8 +51,8 @@ public class SplashActivity extends Activity {
 	
 	private void toMainActivity() {
 //		intent.setClass(SplashActivity.this, MainActivity.class);
-		intent.setClass(SplashActivity.this, NewsListFragActivity.class);
-//		intent.setClass(SplashActivity.this, MaterialUploadActivity.class);
+//		intent.setClass(SplashActivity.this, NewsListFragActivity.class);
+		intent.setClass(SplashActivity.this, MaterialUploadActivity.class);
 		startActivity(intent);
 	}
 	

@@ -189,6 +189,12 @@ public class ParamConst {
 	 */
 	public static final int CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE = 2;
 	
+	/**
+	 * 调用系统相机拍照、系统相册选择照片并显示
+	 */
+    public static final int CAMERA_TAKE = 1;  
+    public static final int CAMERA_SELECT = 2;
+	
 	// ---------------------两个activity之间需要传值时定义的code值end-----------------------------//
 	
 	

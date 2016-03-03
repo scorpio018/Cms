@@ -53,4 +53,12 @@
     <string name="news_search_title_reset">重置</string>
     <string name="news_search_et_news_id_hint">新闻ID</string>
     <string name="news_search_et_keyword_hint">关键词</string>
+    
+    <string name="upload_pic_artwork_pic">原图</string>
+    <string name="upload_pic_middle_pic">中图</string>
+    <string name="upload_pic_small_pic">小图</string>
+    <string name="preview">预览</string>
+    <string name="back">返回</string>
+    <string name="complete">完成</string>
+    <string name="select">选择</string>
 </resources>

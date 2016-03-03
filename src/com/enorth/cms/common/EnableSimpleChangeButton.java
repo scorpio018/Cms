@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
+import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.Button;
 
@@ -80,12 +81,30 @@ public class EnableSimpleChangeButton extends Button {
 		initUI(context);
 	}
 	
-	public EnableSimpleChangeButton(Context context, ButtonColorBasicBean colorBasicBean) {
+	public EnableSimpleChangeButton(Context context, ButtonColorBasicBean colorBasicBean) throws Exception {
 		super(context);
 		this.colorBasicBean = colorBasicBean;
 		initUI(context);
 	}
-
+	
+	public EnableSimpleChangeButton(Context context, AttributeSet attrs) throws Exception {
+        super(context, attrs);
+        this.colorBasicBean = new ButtonColorBasicBean(context);
+		initUI(context);
+	}
+	
+	public EnableSimpleChangeButton(Context context, AttributeSet attrs, int defStyleAttr) throws Exception {
+		super(context, attrs, defStyleAttr);
+		this.colorBasicBean = new ButtonColorBasicBean(context);
+		initUI(context);
+	}
+	
+	public EnableSimpleChangeButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) throws Exception {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        this.colorBasicBean = new ButtonColorBasicBean(context);
+		initUI(context);
+	}
+	
 	/**
 	 * 初始化按钮UI
 	 * @param context
