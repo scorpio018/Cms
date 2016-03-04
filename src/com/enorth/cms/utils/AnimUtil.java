@@ -175,4 +175,5 @@ public class AnimUtil {
 		// 将动画位移效果设置成减速运动
 		scaleAnimation.setInterpolator(dir);*/
 	}
+	
 }

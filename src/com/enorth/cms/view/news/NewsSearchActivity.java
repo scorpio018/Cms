@@ -6,6 +6,7 @@ import com.enorth.cms.common.EnableSimpleChangeButton;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.listener.newslist.newssearch.NewsChannelSubmitOnTouchListener;
 import com.enorth.cms.listener.newslist.title.NewsSearchOnTouchListener;
+import com.enorth.cms.utils.ActivityJumpUtil;
 import com.enorth.cms.utils.ColorUtil;
 import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.utils.ViewUtil;
@@ -192,7 +193,7 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 			Toast.makeText(NewsSearchActivity.this, "在NewsSearchActivity进行返回时发生错误：【" + e.getMessage() + "】", Toast.LENGTH_SHORT).show();
 			e.printStackTrace();
 		}
-		ViewUtil.takeParamsBackToPrevActivity(this, values, ParamConst.NEWS_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE);
+		ActivityJumpUtil.takeParamsBackToPrevActivity(this, values, ParamConst.NEWS_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE);
 	}
 	
 	private Bundle getValues() throws Exception {

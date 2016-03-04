@@ -211,25 +211,6 @@ public class ViewUtil {
 	}
 	
 	/**
-	 * 将所需参数返回给上一个activity
-	 * @param activity
-	 * @param bundle
-	 */
-	public static void takeParamsBackToPrevActivity(Activity activity, Bundle bundle, int resultCode) {
-		Intent intent = new Intent();
-		/*Bundle values = null;
-		try {
-			values = getValues();
-		} catch (Exception e) {
-			Toast.makeText(NewsSearchActivity.this, "在NewsSearchActivity进行返回时发生错误：【" + e.getMessage() + "】", Toast.LENGTH_SHORT).show();
-			e.printStackTrace();
-		}*/
-		intent.putExtras(bundle);
-		activity.setResult(resultCode, intent);
-		activity.finish();
-	}
-	
-	/**
 	 * 将传入的控件的宽度按照百分比进行设置（没用上。。。）
 	 * @param view
 	 * @param percentWeight

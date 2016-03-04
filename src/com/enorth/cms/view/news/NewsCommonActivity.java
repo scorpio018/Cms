@@ -26,6 +26,7 @@ import com.enorth.cms.listener.imageview.ImageViewOnTouchListener;
 import com.enorth.cms.listener.menu.LeftMenuCommonOnClickListener;
 import com.enorth.cms.listener.newslist.ListViewItemOnTouchListener;
 import com.enorth.cms.listener.newslist.bottommenu.BottomMenuOnTouchListener;
+import com.enorth.cms.listener.newslist.viewpager.NewsCommonViewPagerOnPageChangeListener;
 import com.enorth.cms.presenter.newslist.INewsListFragPresenter;
 import com.enorth.cms.presenter.newslist.NewsListFragPresenter;
 import com.enorth.cms.utils.ColorUtil;
@@ -60,7 +61,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public abstract class NewsCommonActivity extends FragmentActivity implements INewsCommonView, OnPageChangeListener {
+public abstract class NewsCommonActivity extends FragmentActivity implements INewsCommonView {
 	/**
 	 * 左侧菜单
 	 */
@@ -72,7 +73,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	/**
 	 * 新闻操作类型的按钮布局（待编辑、待签发、已签发），外层需要套一个RelativeLayout以保证按钮能水平居中
 	 */
-	protected LinearLayout newsTypeBtnLineLayout;
+	private LinearLayout newsTypeBtnLineLayout;
 	/**
 	 * 副标题左侧的频道名称
 	 */
@@ -143,7 +144,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	/**
 	 * ViewPager当前页
 	 */
-	public int curPosition = 0;
+	private int curPosition = 0;
 	/**
 	 * 底部菜单的基本数据集合
 	 */
@@ -340,7 +341,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 		}
 		NewsListFragmentPagerAdapter adapter = new NewsListFragmentPagerAdapter(getSupportFragmentManager(), views);
 		newsListViewPager.setAdapter(adapter);
-		newsListViewPager.addOnPageChangeListener(this);
+		newsListViewPager.addOnPageChangeListener(new NewsCommonViewPagerOnPageChangeListener(this));
 	}
 	
 	/**
@@ -731,63 +732,6 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 		}
 	}
 	
-	/**
-	 * 在滑动状态改变的时候调用 有三种状态（0，1，2）。1表示正在滑动；2表示滑动完毕了；0表示什么都没做。
-	 */
-	@Override
-	public void onPageScrollStateChanged(int state) {
-
-	}
-
-	/**
-	 * 当页面在滑动的时候会调用此方法，在滑动被停止之前，此方法会一直得到调用。其中三个参数的含义分别为： arg0 :当前页面，及你点击滑动的页面
-	 * arg1:当前页面偏移的百分比 arg2:当前页面偏移的像素位置
-	 */
-	@Override
-	public void onPageScrolled(int arg0, float arg1, int arg2) {
-
-	}
-
-	/**
-	 * 此方法是页面跳转完后得到调用，position是你当前选中的页面对应的值（从0开始）
-	 */
-	@Override
-	public void onPageSelected(final int position) {
-		// AnimUtil.showRefreshFrame(NewsCommonActivity.this);
-		new Handler() {
-			@Override
-			public void handleMessage(Message msg) {
-				super.handleMessage(msg);
-				int childCount = newsTypeBtnLineLayout.getChildCount();
-				for (int i = 0; i < childCount; i++) {
-
-					ButtonColorBasicBean colorBasicBean = null;
-					try {
-						colorBasicBean = new ButtonColorBasicBean(NewsCommonActivity.this);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					NewsListListView listView = (NewsListListView) (views.get(i).getNewsListView());
-					EnableSimpleChangeButton btn = (EnableSimpleChangeButton) newsTypeBtnLineLayout.getChildAt(i);
-					try {
-						if (i == position) {
-							changeToCurPosition(colorBasicBean, btn, listView);
-						} else {
-//							changeToOtherPosition(colorBasicBean, listView, Math.abs(position - i) > 1, i);
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					btn.setColorBasicBean(colorBasicBean);
-				}
-				curPosition = position;
-				changeAddNewsBtnVisible();
-				initNewsOperateBtn();
-				// AnimUtil.hideRefreshFrame(NewsCommonActivity.this);
-			}
-		}.sendEmptyMessage(0);
-	}
-	
 	public void changeAddNewsBtnVisible() {
 		if (isShowAddNewsBtn[curPosition]) {
 			addNewsBtn.setVisibility(View.VISIBLE);
@@ -796,7 +740,7 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 		}
 	}
 
-	protected void changeToCurPosition(ButtonColorBasicBean colorBasicBean, EnableSimpleChangeButton btn, NewsListListView listView) throws Exception {
+	public void changeToCurPosition(ButtonColorBasicBean colorBasicBean, EnableSimpleChangeButton btn, NewsListListView listView) throws Exception {
 		ViewUtil.initBtnGroupStyleByFocusedState(colorBasicBean, btn, true, blueColor, whiteColor);
 		NewsListViewAdapter adapter = (NewsListViewAdapter) listView.getAdapter();
 		// ListAdapter adapter = listView.getAdapter();
@@ -848,6 +792,18 @@ public abstract class NewsCommonActivity extends FragmentActivity implements INe
 	}
 	public void setViews(List<NewsListFragment> views) {
 		this.views = views;
+	}
+	public LinearLayout getNewsTypeBtnLineLayout() {
+		return newsTypeBtnLineLayout;
+	}
+	public void setNewsTypeBtnLineLayout(LinearLayout newsTypeBtnLineLayout) {
+		this.newsTypeBtnLineLayout = newsTypeBtnLineLayout;
+	}
+	public int getCurPosition() {
+		return curPosition;
+	}
+	public void setCurPosition(int curPosition) {
+		this.curPosition = curPosition;
 	}
 	
 }

@@ -60,5 +60,6 @@
     <string name="preview">预览</string>
     <string name="back">返回</string>
     <string name="complete">完成</string>
+    <string name="checkPicComplete">0/9完成</string>
     <string name="select">选择</string>
 </resources>

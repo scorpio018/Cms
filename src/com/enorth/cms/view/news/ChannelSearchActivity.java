@@ -25,6 +25,7 @@ import com.enorth.cms.listener.newslist.subtitle.ChooseChannelTypeOnTouchListene
 import com.enorth.cms.listener.popup.channelsearch.ChannelSearchPopupWindowOnTouchListener;
 import com.enorth.cms.presenter.newslist.ChannelSearchPresenter;
 import com.enorth.cms.presenter.newslist.IChannelSearchPresenter;
+import com.enorth.cms.utils.ActivityJumpUtil;
 import com.enorth.cms.utils.AnimUtil;
 import com.enorth.cms.utils.ExceptionUtil;
 import com.enorth.cms.utils.PopupWindowUtil;
@@ -385,7 +386,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 			SharedPreUtil.put(thisActivity, ParamConst.CUR_CHANNEL_NAME, curCheckChannelName);
 			SharedPreUtil.put(thisActivity, ParamConst.CUR_CHANNEL_ID_PARENT_ID, parentChannelId);*/
 			Bundle bundle = initChannelIdForPrevActivity();
-			ViewUtil.takeParamsBackToPrevActivity(this, bundle, ParamConst.CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE);
+			ActivityJumpUtil.takeParamsBackToPrevActivity(this, bundle, ParamConst.CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE);
 		}
 	}
 	

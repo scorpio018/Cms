@@ -44,7 +44,7 @@ public class NewsTypeBtnOnClickListener extends CommonOnClickListener {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					newsCommonActivity.curPosition = position;
+					newsCommonActivity.setCurPosition(position);
 					newsCommonActivity.changeAddNewsBtnVisible();
 					newsCommonActivity.initNewsOperateBtn();
 				} else {

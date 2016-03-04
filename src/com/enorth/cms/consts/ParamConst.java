@@ -145,6 +145,10 @@ public class ParamConst {
 	 */
 	public static final int POP_WINDOW_COMMON_WIDTH = 200;
 	/**
+	 * 图片最多只能选9张
+	 */
+	public static final int MAX_SELECT_IMAGE_COUNT = 9;
+	/**
 	 * 弹出浮层的默认高度
 	 */
 //	public static final int POP_WINDOW_COMMON_HEIGHT = 200;
@@ -179,6 +183,10 @@ public class ParamConst {
 	 * 从图文直播列表跳转到频道搜索页面的REQUEST_CODE值
 	 */
 	public static final int NEWS_LIVE_LIST_FRAG_ACTIVITY_TO_CHANNEL_SEARCH_ACTIVITY_REQUEST_CODE = 4;
+	/**
+	 * 从相册页面跳转到图片预览页面的REQUEST_CODE值
+	 */
+	public static final int GALLERY_ACTIVITY_TO_UPLOAD_PIC_PREVIEW_ACTIVITY_REQUEST_CODE = 5;
 	
 	/**
 	 * 从搜索新闻页面返回到新闻列表的RESULT_CODE值
@@ -188,6 +196,10 @@ public class ParamConst {
 	 * 从频道搜索页面返回到新闻列表的RESULT_CODE值
 	 */
 	public static final int CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE = 2;
+	/**
+	 * 从预览页面返回到相册页面的RESULT_CODE值
+	 */
+	public static final int UPLOAD_PIC_PREVIEW_ACTIVITY_BACK_TO_GALLERY_ACTIVITY_RESULT_CODE = 3;
 	
 	/**
 	 * 调用系统相机拍照、系统相册选择照片并显示
@@ -295,4 +307,17 @@ public class ParamConst {
 	public static final String CUR_MATERIAL_UPLOAD_TYPE = "curMaterialUploadType";
 	
 	/*---------------------SharedPreferences中的存值及其含义 end-----------------------*/
+	
+	/**
+	 * 在n张图片传入另一个activity时，将这n张图片地址存入的List以该key名存入bundle中
+	 */
+	public static final String IMG_DATAS = "imgDatas";
+	/**
+	 * 在n张图片传入另一个activity时，可能会有一些图片已经选中了，所以讲选中的图片地址的List以该key名存入bundle中
+	 */
+	public static final String CHECKED_IMG_DATAS = "checkedImgDatas";
+	/**
+	 * 在点击相册中的某一张图片时，将点击的图片的position以该key名存入bundle中传入另一个activity
+	 */
+	public static final String CHECK_POSITION = "checkPosition";
 }
