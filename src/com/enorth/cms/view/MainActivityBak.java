@@ -114,9 +114,4 @@ public class MainActivityBak extends BaseActivity {
 			}
 		});
 	}
-	
-	@Override
-	public void exitClick() {
-		Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT);
-	}
 }

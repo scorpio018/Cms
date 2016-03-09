@@ -33,6 +33,7 @@ import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.utils.StringUtil;
 import com.enorth.cms.utils.ViewUtil;
+import com.enorth.cms.view.BaseActivity;
 import com.enorth.cms.view.R;
 import com.enorth.cms.widget.listview.newslist.NewsListListView;
 import com.enorth.cms.widget.popupwindow.CommonPopupWindow;

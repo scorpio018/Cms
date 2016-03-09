@@ -11,7 +11,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.WindowManager;
 
-public class SplashActivity extends Activity {
+public class SplashActivity extends BaseActivity {
 	
 	private Intent intent = new Intent();
 	

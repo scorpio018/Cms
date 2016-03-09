@@ -80,6 +80,9 @@
         <!-- <activity android:name=".upload.UploadPicActivity"></activity> -->
         <activity android:name=".upload.GalleryActivity"></activity>
         <activity android:name=".upload.UploadPicPreviewActivity"></activity>
+        <activity android:name=".upload.UploadPicFinishCheckActivity"
+            android:windowSoftInputMode="stateUnspecified|stateHidden"></activity>
+        <activity android:name=".upload.VideoActivity"></activity>
     </application>
 
 </manifest>

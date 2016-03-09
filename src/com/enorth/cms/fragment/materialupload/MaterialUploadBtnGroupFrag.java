@@ -1,5 +1,6 @@
 package com.enorth.cms.fragment.materialupload;
 
+import com.enorth.cms.utils.VideoActivity;
 import com.enorth.cms.view.R;
 import com.enorth.cms.view.material.IMaterialUploadView;
 import com.enorth.cms.view.upload.GalleryActivity;
@@ -111,13 +112,16 @@ public class MaterialUploadBtnGroupFrag extends Fragment {
 	 * 初始化视频按钮
 	 */
 	private void initImgBtnAddVideo() {
-		ImageView imgBtnAddVideo = (ImageView) layout.findViewById(R.id.imgBtnAddVideo);
+		ImageView imgBtnAddVideo = (ImageView) layout.findViewById(R.id.imgBtnChooseVideo);
 		imgBtnAddVideo.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 //				Toast.makeText(getContext(), "点击了视频按钮", Toast.LENGTH_SHORT).show();
-				view.takePhotoGallery();
+//				view.takePhotoGallery();
+				Intent intent = new Intent();
+				intent.setClass(getActivity(), VideoActivity.class);
+				startActivity(intent);
 				
 			}
 		});

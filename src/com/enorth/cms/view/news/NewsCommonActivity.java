@@ -33,6 +33,7 @@ import com.enorth.cms.utils.ColorUtil;
 import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.utils.ViewUtil;
+import com.enorth.cms.view.BaseFragmentActivity;
 import com.enorth.cms.view.LeftHorizontalScrollMenu;
 import com.enorth.cms.view.R;
 import com.enorth.cms.widget.listview.newslist.NewsListListView;
@@ -61,7 +62,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public abstract class NewsCommonActivity extends FragmentActivity implements INewsCommonView {
+public abstract class NewsCommonActivity extends BaseFragmentActivity implements INewsCommonView {
 	/**
 	 * 左侧菜单
 	 */

@@ -116,5 +116,6 @@
     <dimen name="material_upload_bottom_layout_height">30dip</dimen>
     
     <dimen name="upload_pic_bottom_radio_group_margin_right">10dip</dimen>
+    <dimen name="upload_pic_finish_add_pic_group_edittext_height">150dip</dimen>
 
 </resources>

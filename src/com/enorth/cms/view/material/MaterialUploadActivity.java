@@ -3,6 +3,7 @@ package com.enorth.cms.view.material;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.enorth.cms.adapter.upload.GridItemContainCheckAdapter;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.fragment.materialupload.MaterialUploadBtnGroupFrag;
 import com.enorth.cms.fragment.materialupload.MaterialUploadHistoryFrag;
@@ -12,16 +13,23 @@ import com.enorth.cms.listener.popup.channelsearch.ChannelSearchPopupWindowOnTou
 import com.enorth.cms.listener.popup.materialupload.MaterialUploadPopupWindowOnTouchListener;
 import com.enorth.cms.presenter.materialupload.IMaterialUploadPresenter;
 import com.enorth.cms.presenter.materialupload.MaterialUploadPresenter;
+import com.enorth.cms.utils.ActivityJumpUtil;
 import com.enorth.cms.utils.CameraUtil;
+import com.enorth.cms.utils.ImgUtil;
+import com.enorth.cms.utils.PhoneFileQueryUtil;
 import com.enorth.cms.utils.PopupWindowUtil;
 import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.utils.ViewUtil;
+import com.enorth.cms.view.BaseFragmentActivity;
 import com.enorth.cms.view.R;
 import com.enorth.cms.view.news.ChannelSearchActivity;
+import com.enorth.cms.view.upload.GalleryActivity;
+import com.enorth.cms.view.upload.UploadPicFinishCheckActivity;
 import com.enorth.cms.widget.linearlayout.MaterialUploadFragLinearLayout;
 import com.enorth.cms.widget.popupwindow.CommonPopupWindow;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -33,8 +41,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class MaterialUploadActivity extends FragmentActivity implements IMaterialUploadView {
+public class MaterialUploadActivity extends BaseFragmentActivity implements IMaterialUploadView {
 	
 	private FragmentManager fragmentManager;
 	
@@ -87,6 +96,23 @@ public class MaterialUploadActivity extends FragmentActivity implements IMateria
 			initBottom();
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch (requestCode) {
+		case ParamConst.TAKE_CAMERA_PICTURE:
+			Toast.makeText(this, PhoneFileQueryUtil.getTakePhotoPath(MaterialUploadActivity.this) + CameraUtil.getImagename(), 1).show();
+			if (CameraUtil.getNewTakePhotoFile() != null) {
+				ImgUtil.refreshGallery(CameraUtil.getNewTakePhotoFile(), this);
+			}
+			ArrayList<String> imgDatas = new ArrayList<String>();
+			imgDatas.add(CameraUtil.getNewTakePhotoFile().getAbsolutePath());
+//			ActivityJumpUtil.sendImgDatasToActivity(imgDatas, imgDatas, 0, MaterialUploadActivity.this, UploadPicFinishCheckActivity.class);
+			ActivityJumpUtil.sendTakePhotoToActivity(imgDatas, MaterialUploadActivity.this, UploadPicFinishCheckActivity.class, ParamConst.ADD_PIC_IS_JUMP_TO_PREV_ACTIVITY_NO);
+			break;
 		}
 	}
 	
@@ -242,7 +268,7 @@ public class MaterialUploadActivity extends FragmentActivity implements IMateria
 	
 	@Override
 	public void takePhoto() {
-		CameraUtil.takePhoto(this);
+		CameraUtil.takePhoto(MaterialUploadActivity.this);
 	}
 	
 	@Override

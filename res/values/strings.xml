@@ -58,8 +58,9 @@
     <string name="upload_pic_middle_pic">中图</string>
     <string name="upload_pic_small_pic">小图</string>
     <string name="preview">预览</string>
-    <string name="back">返回</string>
     <string name="complete">完成</string>
     <string name="checkPicComplete">0/9完成</string>
     <string name="select">选择</string>
+    <string name="upload_pic_add_pic_group_hint">请填写图片组名称</string>
+    <string name="upload_pic_explanation">说明：点击图片上的“红叉”按钮可删除图片</string>
 </resources>

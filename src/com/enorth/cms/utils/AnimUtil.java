@@ -92,6 +92,8 @@ public class AnimUtil {
 	 * 将浮层加到一个ViewGroup上并覆盖
 	 * @param context
 	 * @param viewGroup
+	 * @param listener
+	 * @param needImage
 	 */
 	public static void showRefreshFrame(Context context, ViewGroup viewGroup, CommonOnTouchListener listener, boolean needImage) {
 		initAmin(context);

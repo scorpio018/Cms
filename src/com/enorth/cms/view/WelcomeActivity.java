@@ -275,9 +275,4 @@ public class WelcomeActivity extends BaseActivity implements OnPageChangeListene
 			}
 		};
 	}
-	
-	@Override
-	public void exitClick() {
-		Toast.makeText(WelcomeActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT);
-	}
 }

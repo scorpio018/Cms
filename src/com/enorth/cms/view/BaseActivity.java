@@ -15,8 +15,6 @@ public abstract class BaseActivity extends Activity {
 	
 	protected Intent intent = new Intent();
 	
-	public abstract void exitClick();
-	
 	Handler mHandler = new Handler() {  
         @Override  
         public void handleMessage(Message msg) {  

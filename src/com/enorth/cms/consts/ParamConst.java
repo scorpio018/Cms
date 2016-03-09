@@ -187,7 +187,6 @@ public class ParamConst {
 	 * 从相册页面跳转到图片预览页面的REQUEST_CODE值
 	 */
 	public static final int GALLERY_ACTIVITY_TO_UPLOAD_PIC_PREVIEW_ACTIVITY_REQUEST_CODE = 5;
-	
 	/**
 	 * 从搜索新闻页面返回到新闻列表的RESULT_CODE值
 	 */
@@ -206,6 +205,11 @@ public class ParamConst {
 	 */
     public static final int CAMERA_TAKE = 1;  
     public static final int CAMERA_SELECT = 2;
+    
+    /**
+	 * 进入拍照模块的值
+	 */
+	public static final int TAKE_CAMERA_PICTURE = 1000;
 	
 	// ---------------------两个activity之间需要传值时定义的code值end-----------------------------//
 	
@@ -320,4 +324,23 @@ public class ParamConst {
 	 * 在点击相册中的某一张图片时，将点击的图片的position以该key名存入bundle中传入另一个activity
 	 */
 	public static final String CHECK_POSITION = "checkPosition";
+	/**
+	 * 点击添加图片时，是不是返回到上一个activity
+	 */
+	public static final String ADD_PIC_IS_JUMP_TO_PREV_ACTIVITY = "addPicIsJUmpToPrevActivity";
+	/**
+	 * 点击添加图片时，不是返回到上一个activity
+	 */
+	public static final Integer ADD_PIC_IS_JUMP_TO_PREV_ACTIVITY_NO = 1;
+	/**
+	 * 点击添加图片时，是返回到上一个activity
+	 */
+	public static final Integer ADD_PIC_IS_JUMP_TO_PREV_ACTIVITY_YES = 2;
+	
+	/*---------------------广播注册时的action及其对应的功能 start--------------------------------*/
+	/**
+	 * 关闭activity的广播标识
+	 */
+	public static final String CLOSE_ACTIVITY = "closeActivity";
+	/*---------------------广播注册时的action及其对应的功能 end--------------------------------*/
 }
