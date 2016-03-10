@@ -3,7 +3,7 @@ package com.enorth.cms.view.material;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.enorth.cms.adapter.upload.GridItemContainCheckAdapter;
+import com.enorth.cms.adapter.upload.ImageGridItemContainCheckAdapter;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.fragment.materialupload.MaterialUploadBtnGroupFrag;
 import com.enorth.cms.fragment.materialupload.MaterialUploadHistoryFrag;
@@ -20,6 +20,7 @@ import com.enorth.cms.utils.PhoneFileQueryUtil;
 import com.enorth.cms.utils.PopupWindowUtil;
 import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.utils.SharedPreUtil;
+import com.enorth.cms.utils.TimeUtil;
 import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.BaseFragmentActivity;
 import com.enorth.cms.view.R;
@@ -31,6 +32,7 @@ import com.enorth.cms.widget.popupwindow.CommonPopupWindow;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
@@ -104,7 +106,6 @@ public class MaterialUploadActivity extends BaseFragmentActivity implements IMat
 		super.onActivityResult(requestCode, resultCode, data);
 		switch (requestCode) {
 		case ParamConst.TAKE_CAMERA_PICTURE:
-			Toast.makeText(this, PhoneFileQueryUtil.getTakePhotoPath(MaterialUploadActivity.this) + CameraUtil.getImagename(), 1).show();
 			if (CameraUtil.getNewTakePhotoFile() != null) {
 				ImgUtil.refreshGallery(CameraUtil.getNewTakePhotoFile(), this);
 			}
@@ -268,7 +269,7 @@ public class MaterialUploadActivity extends BaseFragmentActivity implements IMat
 	
 	@Override
 	public void takePhoto() {
-		CameraUtil.takePhoto(MaterialUploadActivity.this);
+		CameraUtil.takePhoto(MaterialUploadActivity.this, Environment.getExternalStorageDirectory() + "/DCIM");
 	}
 	
 	@Override

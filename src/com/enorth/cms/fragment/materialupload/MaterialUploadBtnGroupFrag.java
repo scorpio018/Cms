@@ -1,10 +1,10 @@
 package com.enorth.cms.fragment.materialupload;
 
-import com.enorth.cms.utils.VideoActivity;
 import com.enorth.cms.view.R;
 import com.enorth.cms.view.material.IMaterialUploadView;
 import com.enorth.cms.view.upload.GalleryActivity;
 import com.enorth.cms.view.upload.UploadPicActivity;
+import com.enorth.cms.view.upload.VideoActivity;
 import com.enorth.cms.widget.linearlayout.MaterialUploadFragLinearLayout;
 
 import android.content.Context;

@@ -137,6 +137,15 @@ public class ParamConst {
 	 */
 	public static final int CUR_FRAG_LAYOUT_STATE_OPENING = 3;
 	/**
+	 * 读取文件类别为读取图片
+	 */
+	public static final int FILE_LOAD_TYPE_IMAGE = 1;
+	/**
+	 * 读取文件类别为读取视频缩略图
+	 */
+	public static final int FILE_LOAD_TYPE_VIDEO = 2;
+	
+	/**
 	 * 文字宽度（此处是估算出来的，以后需要用算法计算）
 	 */
 	public static final int FONT_WIDTH = 46;
@@ -148,6 +157,10 @@ public class ParamConst {
 	 * 图片最多只能选9张
 	 */
 	public static final int MAX_SELECT_IMAGE_COUNT = 9;
+	/**
+	 * 视频最多只能选一条
+	 */
+	public static final int MAX_SELECT_VIDEO_COUNT = 1;
 	/**
 	 * 弹出浮层的默认高度
 	 */
