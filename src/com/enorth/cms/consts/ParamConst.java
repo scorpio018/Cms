@@ -144,6 +144,14 @@ public class ParamConst {
 	 * 读取文件类别为读取视频缩略图
 	 */
 	public static final int FILE_LOAD_TYPE_VIDEO = 2;
+	/**
+	 * 加载本地资源
+	 */
+	public static final int FILE_LOAD_LOCATION_LOCAL = 1;
+	/**
+	 * 加载网络url资源
+	 */
+	public static final int FILE_LOAD_LOCATION_URL = 2;
 	
 	/**
 	 * 文字宽度（此处是估算出来的，以后需要用算法计算）
@@ -200,6 +208,11 @@ public class ParamConst {
 	 * 从相册页面跳转到图片预览页面的REQUEST_CODE值
 	 */
 	public static final int GALLERY_ACTIVITY_TO_UPLOAD_PIC_PREVIEW_ACTIVITY_REQUEST_CODE = 5;
+	/**
+	 * 从任意activity进入单纯的显示图片的MaterialUploadPicPreviewActivity页面的REQUEST_CODE值
+	 */
+	public static final int ACTIVITY_TO_MATERIAL_UPLOAD_PIC_PREVIEW_ACTIVITY_REQUEST_CODE = 6;
+	
 	/**
 	 * 从搜索新闻页面返回到新闻列表的RESULT_CODE值
 	 */

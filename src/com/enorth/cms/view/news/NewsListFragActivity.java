@@ -39,20 +39,8 @@ public class NewsListFragActivity extends NewsCommonActivity {
 
 	@Override
 	public void initNewsTitle() {
-		initMenuBtn();
-		initTitleText();
+		ViewUtil.initMenuTitle(this, R.string.news_title_text);
 		initTitleSearchBtn();
-	}
-	
-	private void initMenuBtn() {
-		ImageView menuBtn = (ImageView) findViewById(R.id.titleLeftBtn);
-		menuBtn.setBackgroundResource(R.drawable.news_menu);
-		ViewUtil.initMenuEvent(this, menuBtn);
-	}
-	
-	private void initTitleText() {
-		TextView newsTitleText = (TextView) findViewById(R.id.titleText);
-		newsTitleText.setText(R.string.news_title_text);
 	}
 	
 	private void initTitleSearchBtn() {

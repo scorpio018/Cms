@@ -3,6 +3,7 @@ package com.enorth.cms.view;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.view.material.MaterialUploadActivity;
 import com.enorth.cms.view.news.NewsListFragActivity;
+import com.enorth.cms.view.securitysetting.SecuritySettingActivity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -52,7 +53,8 @@ public class SplashActivity extends BaseActivity {
 	private void toMainActivity() {
 //		intent.setClass(SplashActivity.this, MainActivity.class);
 //		intent.setClass(SplashActivity.this, NewsListFragActivity.class);
-		intent.setClass(SplashActivity.this, MaterialUploadActivity.class);
+//		intent.setClass(SplashActivity.this, MaterialUploadActivity.class);
+		intent.setClass(SplashActivity.this, SecuritySettingActivity.class);
 		startActivity(intent);
 	}
 	

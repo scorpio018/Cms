@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Cms</string>
+    <string name="app_name">发新闻</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     
@@ -25,6 +25,7 @@
     <string name="news_title_text">普通新闻</string>
     <string name="news_live_title_text">图文直播</string>
     <string name="material_upload_title_text">素材上传</string>
+    <string name="security_setting_title_text">安全设置</string>
     <string name="news_sub_title_Text">新闻中心</string>
     <string name="news_list_view_default_text">北方网手机发布系统</string>
     
@@ -63,4 +64,8 @@
     <string name="select">选择</string>
     <string name="upload_pic_add_pic_group_hint">请填写图片组名称</string>
     <string name="upload_pic_explanation">说明：点击图片上的“红叉”按钮可删除图片</string>
+    
+    <string name="change_pwd_et_prev_pwd_hint">原密码</string>
+    <string name="change_pwd_et_new_pwd_hint">新密码</string>
+    <string name="change_pwd_et_new_pwd_comfirm">密码确认</string>
 </resources>

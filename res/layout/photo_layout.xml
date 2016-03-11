@@ -1,4 +1,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <ImageView
+        android:id="@+id/materialUploadFileItemImageView"
+        android:layout_width="fill_parent"
+        android:layout_height="120dp"
+        android:background="@drawable/pictures_no"
+        android:scaleType="centerCrop" />
+
+</RelativeLayout>
+<!-- <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" >
@@ -7,8 +19,8 @@
         android:id="@+id/photo"
         android:layout_width="@dimen/material_upload_file_item_grid_view_column_width"
         android:layout_height="wrap_content"
-        android:src="@drawable/empty_photo"
+        android:src="@drawable/pictures_no"
         android:layout_centerInParent="true"
         />
 
-</RelativeLayout>
+</RelativeLayout> -->

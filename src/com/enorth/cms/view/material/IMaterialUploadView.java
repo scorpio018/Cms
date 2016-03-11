@@ -1,5 +1,6 @@
 package com.enorth.cms.view.material;
 
+import android.app.Activity;
 import android.os.Handler;
 
 public interface IMaterialUploadView {
@@ -13,4 +14,6 @@ public interface IMaterialUploadView {
 	public void takePhoto();
 	
 	public void takePhotoGallery();
+	
+	public Activity getActivity();
 }

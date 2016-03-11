@@ -34,16 +34,29 @@
     </GridLayout> -->
     
     <com.enorth.cms.widget.gridview.materialupload.MaterialUploadHistoryGridView 
-        android:id="@+id/photo_wall"
+        android:id="@+id/historyGridView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:columnWidth="@dimen/material_upload_file_item_grid_view_column_width"
-        android:stretchMode="columnWidth"
         android:numColumns="4"
         android:verticalSpacing="@dimen/material_upload_file_item_grid_view_vertical_spacing"
         android:horizontalSpacing="@dimen/material_upload_file_item_grid_view_horizontal_spacing"
         android:gravity="center"
         ></com.enorth.cms.widget.gridview.materialupload.MaterialUploadHistoryGridView>
+    <!-- <LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="0dip"
+	    android:layout_weight="1"
+	    android:orientation="vertical" >
+	
+	    <GridView
+	        android:id="@+id/historyGridView"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:horizontalSpacing="5dp"
+	        android:numColumns="4"
+	        android:verticalSpacing="5dp" >
+	    </GridView>
+	</LinearLayout> -->
     
     <!-- <GridView 
         android:id="@+id/fileGridView"

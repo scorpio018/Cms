@@ -30,6 +30,7 @@ import com.enorth.cms.view.upload.UploadPicFinishCheckActivity;
 import com.enorth.cms.widget.linearlayout.MaterialUploadFragLinearLayout;
 import com.enorth.cms.widget.popupwindow.CommonPopupWindow;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -93,7 +94,8 @@ public class MaterialUploadActivity extends BaseFragmentActivity implements IMat
 		ViewUtil.setContentViewForMenu(this, R.layout.activity_material_upload);
 		try {
 			initBasicData();
-			initNewsTitle();
+//			initNewsTitle();
+			ViewUtil.initMenuTitle(this, R.string.material_upload_title_text);
 			initFrag();
 			initBottom();
 		} catch (Exception e) {
@@ -138,15 +140,6 @@ public class MaterialUploadActivity extends BaseFragmentActivity implements IMat
 		allMaterialUploadType = new ArrayList<String>();
 		allMaterialUploadType.add(ParamConst.MATERIAL_UPLOAD_TYPE_FROM_PHONE);
 		allMaterialUploadType.add(ParamConst.MATERIAL_UPLOAD_TYPE_FROM_ALL);
-	}
-	
-	/**
-	 * 初始化标头
-	 */
-	private void initNewsTitle() throws Exception {
-		initMenuBtn();
-		initTitleText();
-		initTitleSearchBtn();
 	}
 	
 	/**
@@ -199,34 +192,6 @@ public class MaterialUploadActivity extends BaseFragmentActivity implements IMat
 		popupWindow = popupWindowUtil.initPopupWindow();
 	}
 	
-	/**
-	 * 初始化左上角的菜单按钮
-	 * @throws Exception
-	 */
-	private void initMenuBtn() throws Exception {
-		ImageView menuBtn = (ImageView) findViewById(R.id.titleLeftBtn);
-		menuBtn.setBackgroundResource(R.drawable.news_menu);
-		ViewUtil.initMenuEvent(this, menuBtn);
-	}
-	
-	/**
-	 * 初始化标题
-	 * @throws Exception
-	 */
-	private void initTitleText() throws Exception {
-		TextView materialUploadTitleText = (TextView) findViewById(R.id.titleText);
-		materialUploadTitleText.setText(R.string.material_upload_title_text);
-	}
-	
-	/**
-	 * 初始化右上角的搜索按钮
-	 * @throws Exception
-	 */
-	private void initTitleSearchBtn() throws Exception {
-		ImageView materialEditBtn = (ImageView) findViewById(R.id.titleRightBtn);
-//		materialEditBtn.setBackgroundResource(R.drawable.news_search);
-	}
-	
 	private void initFragLayout() {
 		fragLayout = (MaterialUploadFragLinearLayout) findViewById(R.id.fragLayout);
 	}
@@ -275,6 +240,11 @@ public class MaterialUploadActivity extends BaseFragmentActivity implements IMat
 	@Override
 	public void takePhotoGallery() {
 		CameraUtil.takePhotoGallery(this);
+	}
+	
+	@Override
+	public Activity getActivity() {
+		return this;
 	}
 
 	public MaterialUploadBtnGroupFrag getBtnGroupFrag() {

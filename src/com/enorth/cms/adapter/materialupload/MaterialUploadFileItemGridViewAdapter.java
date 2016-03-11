@@ -10,7 +10,6 @@ import com.enorth.cms.view.R;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,14 +78,14 @@ public class MaterialUploadFileItemGridViewAdapter extends ArrayAdapter<String> 
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		final String url = getItem(position);
+		String url = getItem(position);
 		View view;
 		if (convertView == null) {
 			view = LayoutInflater.from(getContext()).inflate(R.layout.photo_layout, null);
 		} else {
 			view = convertView;
 		}
-		final ImageView photo = (ImageView) view.findViewById(R.id.photo);
+		ImageView photo = (ImageView) view.findViewById(R.id.materialUploadFileItemImageView);
 		// 给ImageView设置一个Tag，保证异步加载图片时不会乱序
 		photo.setTag(url);
 		setImageView(url, photo);
@@ -113,7 +112,7 @@ public class MaterialUploadFileItemGridViewAdapter extends ArrayAdapter<String> 
 		if (bitmap != null) {
 			imageView.setImageBitmap(bitmap);
 		} else {
-			imageView.setImageResource(R.drawable.empty_photo);
+			imageView.setImageResource(R.drawable.pictures_no);
 		}
 	}
 

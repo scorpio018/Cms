@@ -10,9 +10,7 @@ import com.enorth.cms.adapter.materialupload.MaterialUploadFileItemGridViewAdapt
 import com.enorth.cms.adapter.materialupload.MaterialUploadFileTypeItemListViewAdapter;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.listener.popup.materialupload.MaterialUploadFileTypePopupWindowOnTouchListener;
-import com.enorth.cms.utils.ImgUtil;
 import com.enorth.cms.utils.PopupWindowUtil;
-import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.view.R;
 import com.enorth.cms.view.material.IMaterialUploadView;
 import com.enorth.cms.widget.gridview.materialupload.MaterialUploadHistoryGridView;
@@ -25,16 +23,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MaterialUploadFileTypeItemFrag extends Fragment implements OnScrollListener {
 	private LinearLayout layout;
@@ -185,7 +181,7 @@ public class MaterialUploadFileTypeItemFrag extends Fragment implements OnScroll
 		TextView uploadTitleTV = (TextView) layout.findViewById(R.id.uploadTitleTV);
 		uploadTitleTV.setText("我上传的标题");
 //		GridLayout fileGridLayout = (GridLayout) layout.findViewById(R.id.fileGridLayout);
-		MaterialUploadHistoryGridView fileGridView = (MaterialUploadHistoryGridView) layout.findViewById(R.id.photo_wall);
+		MaterialUploadHistoryGridView fileGridView = (MaterialUploadHistoryGridView) layout.findViewById(R.id.historyGridView);
 //		List<View> gridViews = new ArrayList<View>();
 		int n = rd.nextInt(2) + 9;
 		if (length - count == 0) {
@@ -199,6 +195,7 @@ public class MaterialUploadFileTypeItemFrag extends Fragment implements OnScroll
 			imgUrl[i] = this.imgUrl[count++];
 		}
 		MaterialUploadFileItemGridViewAdapter adapter = new MaterialUploadFileItemGridViewAdapter(getContext(), 0, imgUrl, fileGridView);
+//		MaterialUploadFileItemSimpleGridViewAdapter adapter = new MaterialUploadFileItemSimpleGridViewAdapter(view.getActivity(), Arrays.asList(imgUrl));
 		fileGridView.setAdapter(adapter);
 //		ViewUtil.setGridViewHeightBasedOnChildren(fileGridView, 4);
 //		adapter.notifyDataSetChanged();

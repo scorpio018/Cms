@@ -83,6 +83,9 @@
         <activity android:name=".upload.UploadPicFinishCheckActivity"
             android:windowSoftInputMode="stateUnspecified|stateHidden"></activity>
         <activity android:name=".upload.VideoActivity"></activity>
+        <activity android:name=".securitysetting.SecuritySettingActivity"></activity>
+        <activity android:name=".securitysetting.ChangePwdActivity"
+            android:windowSoftInputMode="stateUnspecified|stateHidden"></activity>
     </application>
 
 </manifest>

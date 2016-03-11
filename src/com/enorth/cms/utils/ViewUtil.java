@@ -356,6 +356,32 @@ public class ViewUtil {
 	}
 	
 	/**
+	 * 初始化带有左侧菜单键的标头，titleName为标头的文字
+	 * @param activity
+	 * @param titleName
+	 */
+	public static void initMenuTitle(Activity activity, int titleName) {
+		// 初始化左侧菜单键
+		ImageView menuBtn = (ImageView) activity.findViewById(R.id.titleLeftBtn);
+		menuBtn.setBackgroundResource(R.drawable.news_menu);
+		initMenuEvent(activity, menuBtn);
+		//　初始化标头
+		if (titleName != 0) {
+			TextView materialUploadTitleText = (TextView) activity.findViewById(R.id.titleText);
+			materialUploadTitleText.setText(titleName);
+		}
+	}
+	
+	/**
+	 * 初始化标头，点击左侧按钮退回到上一页，titleName为标头的文字
+	 * @param activity
+	 * @param titleName
+	 */
+	public static void initSimpleTitle(Activity activity, String titleName) {
+		
+	}
+	
+	/**
 	 * 如果弹出框处于激活状态，则将弹出框销毁，反之则实例化弹出页面
 	 * @param curChooseChannelName
 	 */

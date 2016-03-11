@@ -14,6 +14,8 @@ import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.view.material.MaterialUploadActivity;
 import com.enorth.cms.view.news.NewsListFragActivity;
 import com.enorth.cms.view.news.NewsLiveListFragActivity;
+import com.enorth.cms.view.securitysetting.ChangePwdActivity;
+import com.enorth.cms.view.securitysetting.SecuritySettingActivity;
 import com.nineoldandroids.view.ViewHelper;
 
 import android.app.Activity;
@@ -371,6 +373,8 @@ public class LeftHorizontalScrollMenu extends HorizontalScrollView {
 			MenuBean bean5 = new MenuBean();
 			bean5.setMenuIconResourceId(R.drawable.menu_safety_setting);
 			bean5.setMenuName("安全设置");
+			bean5.setActivity(new SecuritySettingActivity());
+			bean5.setMenuLayoutId(R.layout.activity_security_setting);
 			menuBeans.add(bean5);
 			
 			MenuBean bean6 = new MenuBean();
