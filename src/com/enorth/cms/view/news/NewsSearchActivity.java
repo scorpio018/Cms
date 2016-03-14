@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class NewsSearchActivity extends Activity implements INewsSearchView {
@@ -54,6 +55,14 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 	 */
 	private ImageView back;
 	/**
+	 * 标题
+	 */
+	private TextView titleText;
+	/**
+	 * 重置按钮
+	 */
+	private TextView titleRightBtn;
+	/**
 	 * 新闻ID文本框
 	 */
 	private EditText newsSearchNewsIdET;
@@ -84,13 +93,15 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 	
 	private void initTitle() throws Exception {
 		initBackEvent();
+		initMiddelTitle();
+		initRightTitle();
 	}
 	
 	/**
 	 * 初始化返回键事件
 	 */
 	private void initBackEvent() throws Exception {
-		back = (ImageView) findViewById(R.id.channelSearchTitleBackBtn);
+		back = (ImageView) findViewById(R.id.titleLeftBtn);
 		back.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -98,6 +109,14 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 				NewsSearchActivity.this.onBackPressed();
 			}
 		});
+	}
+	
+	private void initMiddelTitle() throws Exception {
+		titleText = (TextView) findViewById(R.id.titleText);
+	}
+	
+	private void initRightTitle() throws Exception {
+		titleRightBtn = (TextView) findViewById(R.id.titleRightBtn);
 	}
 	
 	/**

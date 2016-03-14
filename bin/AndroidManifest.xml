@@ -25,7 +25,12 @@
 	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 	<!-- 加入对sd卡访问的权限 -->
 	<uses-permission android:name="android.permission.RESTART_PACKAGES" />  
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> 
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<!-- 使用震动得加权限 -->
+	<uses-permission android:name="android.permission.VIBRATE"></uses-permission>
+	
+	<uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
         android:allowBackup="true"
@@ -62,6 +67,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> -->
+        <activity android:name=".login.LoginActivity"
+            android:windowSoftInputMode="stateUnspecified|stateHidden"></activity>
+        <activity android:name=".login.MipcaActivityCapture"></activity>
+        <activity android:name=".login.VirtualKeycode"></activity>
         <activity android:name=".WelcomeActivity"></activity>
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".web.PullableWebViewActivity"></activity>
@@ -86,6 +95,7 @@
         <activity android:name=".securitysetting.SecuritySettingActivity"></activity>
         <activity android:name=".securitysetting.ChangePwdActivity"
             android:windowSoftInputMode="stateUnspecified|stateHidden"></activity>
+        <activity android:name=".about.AboutActivity"></activity>
     </application>
 
 </manifest>

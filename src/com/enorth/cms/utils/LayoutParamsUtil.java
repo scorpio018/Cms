@@ -1,7 +1,8 @@
 package com.enorth.cms.utils;
 
-import android.widget.AbsListView.LayoutParams;
+import android.widget.AbsListView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 public class LayoutParamsUtil {
 	/**
@@ -9,8 +10,17 @@ public class LayoutParamsUtil {
 	 * @param resources
 	 * @return
 	 */
-	public static LayoutParams initWrapLayout() {
-		LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+	public static AbsListView.LayoutParams initAbsListViewWrapLayout() {
+		AbsListView.LayoutParams params = new AbsListView.LayoutParams(AbsListView.LayoutParams.WRAP_CONTENT, AbsListView.LayoutParams.WRAP_CONTENT);
+		return params;
+	}
+	
+	/**
+	 * 初始化相对布局（RelativeLayout）的宽和高
+	 * @return
+	 */
+	public static RelativeLayout.LayoutParams initRelaWrapLayout() {
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 		return params;
 	}
 	
@@ -18,12 +28,17 @@ public class LayoutParamsUtil {
 	 * 初始化MATCH_CONTENT的宽和高
 	 * @return
 	 */
-	public static LayoutParams initMatchLayout() {
-		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+	public static AbsListView.LayoutParams initAbsListViewMatchLayout() {
+		AbsListView.LayoutParams params = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.MATCH_PARENT);
 		return params;
 	}
 	
-	public static LinearLayout.LayoutParams initFillLayout() {
+	public static RelativeLayout.LayoutParams initRelaMatchLayout() {
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+		return params;
+	}
+	
+	public static LinearLayout.LayoutParams initLineFillLayout() {
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 		return params;
 	}
@@ -33,8 +48,8 @@ public class LayoutParamsUtil {
 	 * @param weight
 	 * @return
 	 */
-	public static LinearLayout.LayoutParams initPercentWeight(float weight) {
-		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, weight);
+	public static LinearLayout.LayoutParams initLinePercentWeight(float weight) {
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, AbsListView.LayoutParams.MATCH_PARENT, weight);
 		return params;
 	}
 	
@@ -44,7 +59,7 @@ public class LayoutParamsUtil {
 	 * @param weight
 	 * @return
 	 */
-	public static LinearLayout.LayoutParams initHeightAndPercentWeight(int height, float weight) {
+	public static LinearLayout.LayoutParams initLineHeightAndPercentWeight(int height, float weight) {
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, height, weight);
 		return params;
 	}
@@ -55,8 +70,8 @@ public class LayoutParamsUtil {
 	 * @param height
 	 * @return
 	 */
-	public static LayoutParams initCustomLayout(int width, int height) {
-		LayoutParams params = new LayoutParams(width, height);
+	public static AbsListView.LayoutParams initAbsListViewCustomLayout(int width, int height) {
+		AbsListView.LayoutParams params = new AbsListView.LayoutParams(width, height);
 		return params;
 	}
 }

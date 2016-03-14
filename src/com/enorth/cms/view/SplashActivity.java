@@ -1,6 +1,9 @@
 package com.enorth.cms.view;
 
 import com.enorth.cms.consts.ParamConst;
+import com.enorth.cms.view.about.AboutActivity;
+import com.enorth.cms.view.login.LoginActivity;
+import com.enorth.cms.view.login.VirtualKeycode;
 import com.enorth.cms.view.material.MaterialUploadActivity;
 import com.enorth.cms.view.news.NewsListFragActivity;
 import com.enorth.cms.view.securitysetting.SecuritySettingActivity;
@@ -54,7 +57,10 @@ public class SplashActivity extends BaseActivity {
 //		intent.setClass(SplashActivity.this, MainActivity.class);
 //		intent.setClass(SplashActivity.this, NewsListFragActivity.class);
 //		intent.setClass(SplashActivity.this, MaterialUploadActivity.class);
-		intent.setClass(SplashActivity.this, SecuritySettingActivity.class);
+//		intent.setClass(SplashActivity.this, SecuritySettingActivity.class);
+//		intent.setClass(SplashActivity.this, AboutActivity.class);
+		intent.setClass(SplashActivity.this, LoginActivity.class);
+//		intent.setClass(SplashActivity.this, VirtualKeycode.class);
 		startActivity(intent);
 	}
 	

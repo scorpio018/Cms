@@ -125,7 +125,7 @@ public class ViewUtil {
 	public static List<EnableSimpleChangeButton> initBtnGroupLayout(Activity activity, LinearLayout layout, String[] btnText, String[] btnId, float percentWeight, int checkedColor, int unCheckedColor) throws Exception {
 		int length = btnText.length;
 		// 此处初始化按钮的基本样式
-		LinearLayout.LayoutParams params = LayoutParamsUtil.initPercentWeight(percentWeight);
+		LinearLayout.LayoutParams params = LayoutParamsUtil.initLinePercentWeight(percentWeight);
 		List<EnableSimpleChangeButton> btns = new ArrayList<EnableSimpleChangeButton>();
 		for (int i = 0; i < length; i++) {
 			EnableSimpleChangeButton btn = new EnableSimpleChangeButton(activity);
@@ -216,7 +216,7 @@ public class ViewUtil {
 	 * @param percentWeight
 	 */
 	public static void initViewByWeight(View view, float percentWeight) {
-		LinearLayout.LayoutParams params = LayoutParamsUtil.initPercentWeight(percentWeight);
+		LinearLayout.LayoutParams params = LayoutParamsUtil.initLinePercentWeight(percentWeight);
 		view.setLayoutParams(params);
 	}
 	

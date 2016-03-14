@@ -111,7 +111,7 @@ public class MaterialUploadHistoryFrag extends Fragment {
 		for (int i = 0; i < length; i++) {
 			final TextView tv = new TextView(this.getContext());
 			tv.setText(materialUploadFileTypeTexts.get(i));
-			LayoutParams layoutParams = LayoutParamsUtil.initHeightAndPercentWeight(height, 0.5f);
+			LayoutParams layoutParams = LayoutParamsUtil.initLineHeightAndPercentWeight(height, 0.5f);
 			tv.setGravity(Gravity.CENTER);
 			final int position = i;
 			if (i == 0) {

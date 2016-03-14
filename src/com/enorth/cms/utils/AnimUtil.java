@@ -133,7 +133,7 @@ public class AnimUtil {
 		} else {
 			refreshIV.setVisibility(View.GONE);
 		}
-		initMatchLayout = LayoutParamsUtil.initMatchLayout();
+		initMatchLayout = LayoutParamsUtil.initAbsListViewMatchLayout();
 		refreshLayout.setVisibility(View.VISIBLE);
 	}
 	

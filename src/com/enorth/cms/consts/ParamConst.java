@@ -212,6 +212,10 @@ public class ParamConst {
 	 * 从任意activity进入单纯的显示图片的MaterialUploadPicPreviewActivity页面的REQUEST_CODE值
 	 */
 	public static final int ACTIVITY_TO_MATERIAL_UPLOAD_PIC_PREVIEW_ACTIVITY_REQUEST_CODE = 6;
+	/**
+	 * 跳转到扫一扫页面的REQUEST_CODE值
+	 */
+	public static final int SCANNING_REQUEST_CODE = 1;
 	
 	/**
 	 * 从搜索新闻页面返回到新闻列表的RESULT_CODE值
