@@ -8,7 +8,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import com.enorth.cms.consts.ParamConst;
+import com.enorth.cms.consts.UrlCodeErrorConst;
+import com.enorth.cms.enums.HttpBuilderType;
 import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.MultipartBuilder;
 import com.squareup.okhttp.OkHttpClient;
@@ -19,6 +22,7 @@ import com.squareup.okhttp.Response;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import okio.BufferedSink;
 
 public class HttpUtil {
 	// OkHttpClient只需要保持一个对象即可，没必要多次实例化
@@ -40,9 +44,9 @@ public class HttpUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String okPost(String url) throws Exception {
+	public static String okPost(String url, HttpBuilderType type) throws Exception {
 //		RequestBody body = RequestBody.create(JSON, "");
-		RequestBody body = attachHttpPostParams(null);
+		RequestBody body = getRequestBodyByType(null, type);
 		Request request = new Request.Builder().url(url).post(body).build();
 		return executeHttp(request);
 	}
@@ -53,8 +57,8 @@ public class HttpUtil {
 	 * @param callback
 	 * @throws Exception
 	 */
-	public static void okPost(String url, Callback callback) throws Exception {
-		RequestBody body = attachHttpPostParams(null);
+	public static void okPost(String url, Callback callback, HttpBuilderType type) throws Exception {
+		RequestBody body = getRequestBodyByType(null, type);
 		Request request = new Request.Builder().url(url).post(body).build();
 		enqueue(request, callback);
 	}
@@ -66,9 +70,9 @@ public class HttpUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String okPost(String url, List<BasicNameValuePair> params) throws Exception {
+	public static String okPost(String url, List<BasicNameValuePair> params, HttpBuilderType type) throws Exception {
 //		RequestBody body = RequestBody.create(JSON, paramsJson);
-		RequestBody body = attachHttpPostParams(params);
+		RequestBody body = getRequestBodyByType(params, type);
 		Request request = new Request.Builder().url(url).post(body).build();
 		return executeHttp(request);
 	}
@@ -80,11 +84,29 @@ public class HttpUtil {
 	 * @param callback
 	 * @throws Exception
 	 */
-	public static void okPost(String url, List<BasicNameValuePair> params, Callback callback) throws Exception {
+	public static void okPost(String url, List<BasicNameValuePair> params, Callback callback, HttpBuilderType type) {
 //		RequestBody body = RequestBody.create(JSON, paramsJson);
-		RequestBody body = attachHttpPostParams(params);
+		RequestBody body = getRequestBodyByType(params, type);
 		Request request = new Request.Builder().url(url).post(body).build();
 		enqueue(request, callback);
+	}
+	
+	private static RequestBody getRequestBodyByType(List<BasicNameValuePair> params, HttpBuilderType type) {
+		if (type.equals(HttpBuilderType.REQUEST_FORM_ENCODE)) {
+			// 普通表单
+			return attachHttpPostParamsFormEncodingBuilder(params);
+		} else if (type.equals(HttpBuilderType.REQUEST_FILE)) {
+			// 文件表单
+			return attachHttpPostParamsMultipartBuilder(params);
+		} /*else if (type.equals(HttpBuilderType.REQUEST_STREAM)) {
+			// 文件流表单
+		} else if (type.equals(HttpBuilderType.REQUEST_STRING)) {
+			// String类型表单
+		} else if (type.equals(HttpBuilderType.REQUEST_MIX)) {
+			// 混合表单
+		}*/ else {
+			return null;
+		}
 	}
 	
 	/**
@@ -162,20 +184,39 @@ public class HttpUtil {
 		switch (code) {
 		case 200:
 			String result = response.body().string();
-			JSONObject jo = new JSONObject(result);
-			int errorCode = jo.getInt("errorCode");
-			if (errorCode != 0) {
-				throw new Exception(jo.getString("errorMsg"));
-			} else {
-				return jo.getString("result");
-			}
+			return checkResourseResult(result);
 		case 404:
 			throw new Exception("未找到对应页面");
 		default:
 			throw new Exception(response.message());
 		}
 	}
+	
+	public static String checkResponseIsSuccess(String result) throws Exception {
+		return checkResourseResult(result);
+	}
 
+	private static String checkResourseResult(String result) throws Exception {
+		JSONObject jo = new JSONObject(result);
+		int errorCode = jo.getInt("code");
+		switch (errorCode) {
+		case UrlCodeErrorConst.SUCCESS:
+			return jo.getString("result");
+		case UrlCodeErrorConst.CHECK_TOKEN_FAILED:
+			throw new Exception("用户验证失败，请重新登录[-1]");
+		case UrlCodeErrorConst.CHECK_CHECK_SUM_FAILED:
+			throw new Exception("用户验证失败，请重新登录[-2]");
+		case UrlCodeErrorConst.CHECK_LOGIN_FAILED:
+		case UrlCodeErrorConst.CUR_STATE_CANNOT_DEL_NEWS:
+		case UrlCodeErrorConst.CANNOT_OPER_MULTI_TAGS_NEWS:
+		case UrlCodeErrorConst.REQUEST_OBJECT_IS_NOT_EXISTS:
+		case UrlCodeErrorConst.CUR_USER_NO_FIRST_LEVEL_CHANNEL_PERMISSION:
+		case UrlCodeErrorConst.CREATE_LOGIN_TOKEN_FAILED:
+			throw new Exception("errorCode:【" + errorCode + "】" + jo.getString("result"));
+		default:
+			throw new Exception(UrlCodeErrorConst.UNKNOWN_ERROR_HINT);
+		}
+	}
 	/**
 	 * 开启异步线程访问网络
 	 * 
@@ -219,19 +260,58 @@ public class HttpUtil {
 	}
 	
 	/**
+	 * 根据传入的参数进行拆分，并存入FormEncodingBuilder中，最终build成RequestBody
+	 * @param params
+	 * @return
+	 */
+	public static RequestBody attachHttpPostParamsFormEncodingBuilder(List<BasicNameValuePair> params) {
+//		MultipartBuilder multipartBuilder = new MultipartBuilder();
+		FormEncodingBuilder builder = new FormEncodingBuilder();
+//		multipartBuilder.type(MultipartBuilder.FORM);
+//		multipartBuilder.type(MultipartBuilder.)
+		if (params != null) {
+			for (BasicNameValuePair param : params) {
+				builder.add(param.getName(), param.getValue());
+			}
+		} else {
+			builder.add("111", "111");
+		}
+		return builder.build();
+	}
+	/**
 	 * 根据传入的参数进行拆分，并存入MultipartBuilder中，最终build成RequestBody
 	 * @param params
 	 * @return
 	 */
-	public static RequestBody attachHttpPostParams(List<BasicNameValuePair> params) {
+	public static RequestBody attachHttpPostParamsMultipartBuilder(List<BasicNameValuePair> params) {
 		MultipartBuilder multipartBuilder = new MultipartBuilder();
+		multipartBuilder.type(MultipartBuilder.FORM);
 		if (params != null) {
 			for (BasicNameValuePair param : params) {
 				multipartBuilder.addFormDataPart(param.getName(), param.getValue());
 			}
+		} else {
+			multipartBuilder.addFormDataPart("111", "111");
 		}
 		return multipartBuilder.build();
 	}
+	
+	private static final MediaType MEDIA_TYPE_MARKDOWN = MediaType.parse("text/x-markdown; charset=utf-8");
+	
+	/*public static RequestBody attachHttpPostParamsStream(List<BasicNameValuePair> params) {
+		RequestBody requestBody = new RequestBody() {
+			
+			@Override
+			public void writeTo(BufferedSink arg0) throws IOException {
+				
+			}
+			
+			@Override
+			public MediaType contentType() {
+				return MEDIA_TYPE_MARKDOWN;
+			}
+		};
+	}*/
 
 	/**
 	 * 为HttpGet 的 url 方便的添加多个name value 参数。
@@ -266,11 +346,11 @@ public class HttpUtil {
 	
 	public static void commonOnFailure(Exception e, Handler handler) {
 		Message message = new Message();
-		String errorMsg = e.getMessage();
+		String errorMsg = e.toString();
 		if (errorMsg == null) {
 			errorMsg = "服务器异常";
 		}
-		Log.e("错误信息", errorMsg);
+		Log.e("HttpUtil", errorMsg);
 		message.what = ParamConst.MESSAGE_WHAT_ERROR;
 		message.obj = errorMsg;
 		handler.sendMessage(message);

@@ -55,7 +55,7 @@ public class ParamConst {
 	 * 当前手势是否为下拉刷新的参数的默认值
 	 */
 	public static final int IS_REFRESH_DEFAULT = 0;
-
+	
 	/**
 	 * 当前手势不是下拉刷新操作
 	 */
@@ -65,11 +65,28 @@ public class ParamConst {
 	 * 当前手势是下拉刷新操作
 	 */
 	public static final int IS_REFRESH_YES = 2;
+	
+	/**
+	 * 当前手势是否为左右滑动参数的默认值
+	 */
+	public static final int IS_HORIZONTAL_SCROLL_DEFAULT = 0;
+	/**
+	 * 当前手势是左右滑动参数的默认值
+	 */
+	public static final int IS_HORIZONTAL_SCROLL_NO = 1;
+	/**
+	 * 当前手势不是左右滑动参数的默认值
+	 */
+	public static final int IS_HORIZONTAL_SCROLL_YES = 2;
 
 	/**
 	 * 判断是刷新操作的最小角度值
 	 */
 	public static final double IS_REFRESH_ACTION_ANGLE = 30.0;
+	/**
+	 * 判断是横向滑动操作的最小角度值
+	 */
+	public static final double IS_HORIZONTAL_ACTION_ANGLE = 30.0;
 	/**
 	 * 初始状态
 	 */
@@ -103,6 +120,63 @@ public class ParamConst {
 	 */
 	public static final int FAIL = 1;
 	
+	/**
+	 * 编辑新闻
+	 */
+	public static final int STATE_EDIT = 0;
+	/**
+	 * 待(送)签发
+	 */
+	public static final int STATE_TO_PUB = 1000;
+	/**
+	 * 已签发新闻
+	 */
+	public static final int STATE_PUB = 2000;
+	/**
+	 * 已删除的新闻（逻辑删除）
+	 */
+	public static final int STATE_DELETE = -1;
+	/**
+	 * 自动签发
+	 */
+	public static final int STATE_AUTO_PUB = 1500;
+	/**
+	 * 内部留言
+	 */
+	public static final int STATE_REPLY = 400;
+	/**
+	 * 内部资料
+	 */
+	public static final int STATE_RESOURCE = 500;
+	
+	/**
+	 * 全部新闻
+	 */
+	public static final int TYPE_ALL = 0;
+	/**
+	 * 普通新闻
+	 */
+	public static final int TYPE_NORMAL = 10000;
+	/**
+	 * 专题新闻
+	 */
+	public static final int TYPE_TOPIC = 20000;
+	/**
+	 * 专题更多页
+	 */
+	public static final int TYPE_TOPIC_MORE = 30000;
+	/**
+	 * 多签新闻
+	 */
+	public static final int TYPE_LINK = 40000;
+	/**
+	 * 跳转新闻
+	 */
+	public static final int TYPE_REDIRECT = 50000;
+	/**
+	 * 高清图新闻
+	 */
+	public static final int TYPE_HD_PIC = 60000;
 	/**
 	 * 当前设置RadioButton的enabled状态的默认值
 	 */
@@ -169,6 +243,32 @@ public class ParamConst {
 	 * 视频最多只能选一条
 	 */
 	public static final int MAX_SELECT_VIDEO_COUNT = 1;
+	
+	/**
+	 * 不是融合新闻
+	 */
+	public static final int IS_CONV_NO = 0;
+	/**
+	 * 是融合新闻
+	 */
+	public static final int IS_CONV_YES = 1;
+	/**
+	 * 新闻处于断开状态
+	 */
+	public static final int LINK_NO = 0;
+	/**
+	 * 新闻处于连接状态
+	 */
+	public static final int LINK_YES = 1;
+	/**
+	 * 没有导读图
+	 */
+	public static final int HAS_GUIDE_IMAGE_NO = 0;
+	/**
+	 * 有导读图
+	 */
+	public static final int HAS_GUIDE_IMAGE_YES = 1;
+	
 	/**
 	 * 弹出浮层的默认高度
 	 */
@@ -257,6 +357,30 @@ public class ParamConst {
 	 */
 	public static final String NEWS_FRAG_PAGE = "page_num";
 	/**
+	 * 新闻排序中的“优先级”key值
+	 */
+	public static final String NEWS_SORT_BY_LIST_ORDER_KEY = "list_order";
+	/**
+	 * 新闻排序中的“优先级”value值
+	 */
+	public static final String NEWS_SORT_BY_LIST_ORDER_VALUE = "优先级";
+	/**
+	 * 新闻排序中的“发布时间”key值
+	 */
+	public static final String NEWS_SORT_BY_PUB_DATE_KEY = "pub_date";
+	/**
+	 * 新闻排序中的“发布时间”value值
+	 */
+	public static final String NEWS_SORT_BY_PUB_DATE_VALUE = "发布时间";
+	/**
+	 * 新闻排序中的“修改时间”key值
+	 */
+	public static final String NEWS_SORT_BY_MOD_DATE_KEY = "mod_date";
+	/**
+	 * 新闻排序中的“修改时间”value值
+	 */
+	public static final String NEWS_SORT_BY_MOD_DATE_VALUE = "修改时间";
+	/**
 	 * 频道搜索中的全部频道
 	 */
 	public static final String ALL_CHANNEL = "全部频道";
@@ -298,11 +422,71 @@ public class ParamConst {
 	 */
 	public static final int POPUP_WINDOW_SHOW_TYPE_AS_DROPDOWN = 2;
 	
+	/*---------------------接口中返回的key一览 start-----------------------------------*/
+	/**
+	 * 登录成功时获取到的用户对象
+	 */
+	public static String LOGIN_USER = "user";
+	/**
+	 * 登录成功时返回的频道对象
+	 */
+	public static String CHANNEL = "channel";
+	/**
+	 * 频道ID
+	 */
+	public static String CHANNEL_ID = "channelId";
+	/**
+	 * 频道名称
+	 */
+	public static String CHANNEL_NAME = "channelName";
+	/**
+	 * 频道等级
+	 */
+	public static String CHANNEL_LEVEL = "channelLevel";
+	/**
+	 * 按照频道名的层级存成一个数组
+	 */
+	public static String CHANNEL_NAME_CONTENT = "channelNameContent";
+	
+	/*---------------------接口中返回的key一览 end-------------------------------------*/
+	
 	/*---------------------SharedPreferences中的存值及其含义 start---------------------*/
+	/**
+	 * 用户ID
+	 */
+	public static String LOGIN_USER_ID = "userId";
+	/**
+	 * 真实姓名
+	 */
+	public static String LOGIN_TRUE_NAME = "trueName";
+	/**
+	 * 用户名
+	 */
+	public static String LOGIN_USER_NAME = "userName";
+	/**
+	 * 密码
+	 */
+	public static String LOGIN_PASSWORD = "password";
+	/**
+	 * 用户登录的token
+	 */
+	public static String LOGIN_TOKEN = "token";
+	/**
+	 * 用户登录之后从接口返回的种子（随机码）
+	 */
+	public static String USER_LOGIN_SEED = "seed";
+	/**
+	 * 标识是否已经登录
+	 */
+	public static String IS_LOGIN = "isLogin";
+	/**
+	 * 当前保存的登录过的用户
+	 */
+	public static String REMEMBERED_USER = "rememberedUser";
 	/**
 	 * 判断当前APK是否为第一次访问的key值（存入SharedPreference）
 	 */
-	public static String ACTIVITY_IS_FIRST_ENTER = "isFirst";
+	public static String ACTIVITY_IS_ENTERED = "isEntered";
 	/**
 	 * 上次更新时间的字符串常量，用于作为SharedPreferences的键值
 	 */
@@ -373,4 +557,5 @@ public class ParamConst {
 	 */
 	public static final String CLOSE_ACTIVITY = "closeActivity";
 	/*---------------------广播注册时的action及其对应的功能 end--------------------------------*/
+
 }

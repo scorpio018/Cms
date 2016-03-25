@@ -1,20 +1,22 @@
 package com.enorth.cms.common;
 
 import com.enorth.cms.bean.ButtonColorBasicBean;
+import com.enorth.cms.utils.ColorUtil;
 import com.enorth.cms.view.R;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
-import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
-import android.graphics.drawable.shapes.RoundRectShape;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.Button;
 
 public class EnableSimpleChangeButton extends Button {
+	
+	private Context context;
 	/**
 	 * 用于表示当前button在点击的时候所代表的id值
 	 */
@@ -75,7 +77,7 @@ public class EnableSimpleChangeButton extends Button {
 	 */
 	private ButtonColorBasicBean colorBasicBean;
 
-	public EnableSimpleChangeButton(Context context) throws Exception {
+	public EnableSimpleChangeButton(Context context) {
 		super(context);
 		this.colorBasicBean = new ButtonColorBasicBean(context);
 		initUI(context);
@@ -111,6 +113,7 @@ public class EnableSimpleChangeButton extends Button {
 	 */
 	private void initUI(Context context) {
 //		initPadding(context);
+		this.context = context;
 		initAllState();
 		setGravity(Gravity.CENTER);
 		buildDraweableState();
@@ -168,11 +171,7 @@ public class EnableSimpleChangeButton extends Button {
 	}
 	
 	/**
-	 * 按照左上-右上-右下-左下的顺序确定需要圆角的位置，默认都有圆角
-	 * 0、1：左上角
-	 * 2、3：右上角
-	 * 4、5：右下角
-	 * 6、7：左下角
+	 * 按照上-右-下-左来进行圆角的设置，true表示对应的方向有圆角，false表示没有
 	 * @param top
 	 * @param right
 	 * @param bottom
@@ -182,6 +181,7 @@ public class EnableSimpleChangeButton extends Button {
 		// 将outRectr归零，然后按照需要圆角的位置存入圆角
 		outRectr = new float[]{0, 0, 0, 0, 0, 0, 0, 0};
 		int length = outRectr.length;
+		// 按照左上-右上-右下-左下的顺序确定需要圆角的位置，默认都有圆角
 		for (int i = 0; i < length; i++) {
 			switch(i) {
 			case 0:
@@ -235,13 +235,21 @@ public class EnableSimpleChangeButton extends Button {
 		 * 是第一参数它是一个float的数组保存的是圆角的半径，它是按照top-left顺时针保存的八个值
 		 */
 		// 创建圆弧形状
-		RoundRectShape rectShape = new RoundRectShape(outRectr, null, null);
+//		RoundRectShape rectShape = new RoundRectShape(outRectr, null, null);
 		int length = allBgColor.length;
 		for (int i = 0; i < length; i++) {
-			// 创建drawable
+			/*// 创建drawable
 			ShapeDrawable shapeDrawable = new ShapeDrawable(rectShape);
 			// 设置我们按钮背景的颜色
 			shapeDrawable.getPaint().setColor(allBgColor[i]);
+			// 添加到状态管理里面
+			drawable.addState(allState[i], shapeDrawable);*/
+			// 创建drawable
+			GradientDrawable shapeDrawable = new GradientDrawable();
+			shapeDrawable.setCornerRadii(outRectr);
+			// 设置我们按钮背景的颜色
+			shapeDrawable.setColor(allBgColor[i]);
+			shapeDrawable.setStroke(1, ColorUtil.getCommonBlueColor(context));
 			// 添加到状态管理里面
 			drawable.addState(allState[i], shapeDrawable);
 		}

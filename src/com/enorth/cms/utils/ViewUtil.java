@@ -7,42 +7,31 @@ import java.util.Set;
 
 import com.enorth.cms.adapter.materialupload.MaterialUploadFileItemGridViewAdapter;
 import com.enorth.cms.bean.ButtonColorBasicBean;
-import com.enorth.cms.bean.PopupWindowBean;
 import com.enorth.cms.bean.news_list.NewsListImageViewBasicBean;
 import com.enorth.cms.common.EnableSimpleChangeButton;
-import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.listener.menu.LeftMenuCommonOnClickListener;
 import com.enorth.cms.listener.newslist.newstypebtn.NewsTypeBtnOnClickListener;
-import com.enorth.cms.listener.popup.PopupWindowOnTouchListener;
 import com.enorth.cms.view.LeftHorizontalScrollMenu;
 import com.enorth.cms.view.R;
-import com.enorth.cms.view.news.NewsSearchActivity;
-import com.enorth.cms.widget.listview.newslist.NewsListListView;
 
-import android.R.color;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.view.Gravity;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
+import android.widget.AbsListView.LayoutParams;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AbsListView.LayoutParams;
 
 public class ViewUtil {
 	
@@ -104,7 +93,7 @@ public class ViewUtil {
 	 * @param btnId
 	 * @throws Exception
 	 */
-	public static List<EnableSimpleChangeButton> initBtnGroupLayout(Activity activity, LinearLayout layout, String[] btnText, String[] btnId, float percentWeight) throws Exception {
+	public static List<EnableSimpleChangeButton> initBtnGroupLayout(Activity activity, LinearLayout layout, String[] btnText, String[] btnId, float percentWeight) {
 //		RelativeLayout newsTypeBtnRelaLayout = (RelativeLayout) activity.findViewById(R.id.newsTypeBtnRelaLayout);
 //		newsTypeBtnLineLayout = (LinearLayout) newsTypeBtnRelaLayout.getChildAt(0);
 		int checkedColor = ColorUtil.getCommonBlueColor(activity);
@@ -122,7 +111,7 @@ public class ViewUtil {
 	 * @param unCheckedColor
 	 * @throws Exception
 	 */
-	public static List<EnableSimpleChangeButton> initBtnGroupLayout(Activity activity, LinearLayout layout, String[] btnText, String[] btnId, float percentWeight, int checkedColor, int unCheckedColor) throws Exception {
+	public static List<EnableSimpleChangeButton> initBtnGroupLayout(Activity activity, LinearLayout layout, String[] btnText, String[] btnId, float percentWeight, int checkedColor, int unCheckedColor) {
 		int length = btnText.length;
 		// 此处初始化按钮的基本样式
 		LinearLayout.LayoutParams params = LayoutParamsUtil.initLinePercentWeight(percentWeight);
@@ -341,7 +330,7 @@ public class ViewUtil {
 		gridView.setLayoutParams(params);
 	}
 	
-	public static List<View> initDefaultData(Context context, String text, int height) {
+	/*public static List<View> initDefaultData(Context context, String text, int height) {
 		List<View> resultView = new ArrayList<View>();
 		LayoutInflater inflater = LayoutInflater.from(context);
 		RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.news_list_view_default_item, null);
@@ -353,7 +342,7 @@ public class ViewUtil {
 		}
 		resultView.add(layout);
 		return resultView;
-	}
+	}*/
 	
 	/**
 	 * 初始化带有左侧菜单键的标头，titleName为标头的文字
@@ -362,23 +351,33 @@ public class ViewUtil {
 	 */
 	public static void initMenuTitle(Activity activity, int titleName) {
 		// 初始化左侧菜单键
-		ImageView menuBtn = (ImageView) activity.findViewById(R.id.titleLeftBtn);
+		ImageView menuBtn = (ImageView) activity.findViewById(R.id.titleLeftIV);
 		menuBtn.setBackgroundResource(R.drawable.news_menu);
 		initMenuEvent(activity, menuBtn);
 		//　初始化标头
 		if (titleName != 0) {
-			TextView materialUploadTitleText = (TextView) activity.findViewById(R.id.titleText);
+			TextView materialUploadTitleText = (TextView) activity.findViewById(R.id.titleMiddleTV);
 			materialUploadTitleText.setText(titleName);
 		}
 	}
 	
 	/**
-	 * 初始化标头，点击左侧按钮退回到上一页，titleName为标头的文字
-	 * @param activity
-	 * @param titleName
+	 * 弹出错误信息并将要提示的信息加入此弹出框中
+	 * @param context
+	 * @param errorHint
 	 */
-	public static void initSimpleTitle(Activity activity, String titleName) {
-		
+	public static void showAlertDialog(Context context, String errorHint) {
+		LayoutInflater inflater = LayoutInflater.from(context);
+		View alertView = inflater.inflate(R.layout.common_alert_error_msg, null);
+		TextView errorHintTV = (TextView) alertView.findViewById(R.id.errorHint);
+		errorHintTV.setText(errorHint);
+		new AlertDialog.Builder(context).setTitle("提示").setView(alertView).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				
+			}
+		}).show();
 	}
 	
 	/**

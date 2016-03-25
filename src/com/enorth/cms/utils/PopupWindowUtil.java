@@ -1,39 +1,30 @@
 package com.enorth.cms.utils;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import com.enorth.cms.adapter.upload.ImageFolderAdapter;
-import com.enorth.cms.bean.PopupWindowBean;
+import com.enorth.cms.bean.newstitle.NewsTitleBean;
 import com.enorth.cms.consts.ParamConst;
+import com.enorth.cms.listener.CommonOnClickListener;
 import com.enorth.cms.listener.CommonOnTouchListener;
 import com.enorth.cms.view.R;
-import com.enorth.cms.view.news.ChannelSearchActivity;
 import com.enorth.cms.widget.popupwindow.CommonPopupWindow;
 
-import android.R.anim;
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.MeasureSpec;
-import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 
 public abstract class PopupWindowUtil {
 	
@@ -46,6 +37,14 @@ public abstract class PopupWindowUtil {
 	 * 弹出框的背景颜色（初始化时赋值）
 	 */
 	private int popupBgColor;
+	/**
+	 * 弹出框点击时的颜色
+	 */
+	private int popupBgTouchColor;
+	/**
+	 * 文字颜色
+	 */
+	private int textColor;
 	
 //	private int animationStyle;
 	
@@ -78,7 +77,12 @@ public abstract class PopupWindowUtil {
 	}
 	
 	private void init() {
-		popupBgColor = ContextCompat.getColor(context, R.color.channel_popup_color);
+//		popupBgColor = R.color.channel_popup_color;
+		popupBgColor = ColorUtil.getChannelPopupColor(context);
+//		popupBgTouchColor = R.color.bottom_text_color_green;
+		popupBgTouchColor = ColorUtil.getBottomTextColorGreen(context);
+		textColor = ColorUtil.getWhiteColor(context);
+//		popupBgColor = ContextCompat.getColor(context, R.color.channel_popup_color);
 //		animationStyle = R.style.AnimationFadeUpToBottom;
 		width = ParamConst.POP_WINDOW_COMMON_WIDTH;
 		gravity = Gravity.TOP|Gravity.CENTER_HORIZONTAL;
@@ -156,24 +160,110 @@ public abstract class PopupWindowUtil {
 		popupWindow.update();
 	}
 	
-	public void initPopupWindowItems(LinearLayout layout, CommonOnTouchListener listener, List<String> allNames, String curName) {
+	/**
+	 * 初始化弹出框里面的选项（以对勾+选项名为显示样式）
+	 * @param layout
+	 * @param listener
+	 * @param allNames
+	 * @param curName
+	 */
+	public void initPopupWindowItemsContainCheckMark(LinearLayout layout, CommonOnTouchListener listener, List<String> allNames, String curCheckedName) {
 		LayoutInflater inflater = LayoutInflater.from(context);
 		int size = allNames.size();
 		for (int i = 0; i < size; i++) {
-			RelativeLayout chooseChannelItem = (RelativeLayout) inflater.inflate(R.layout.choose_channel_popup, null);
-			TextView chooseChannelName = (TextView) chooseChannelItem.findViewById(R.id.chooseText);
-			String curChannelName = allNames.get(i);
-			chooseChannelName.setText(curChannelName);
-			ImageView checkedIV = (ImageView) chooseChannelItem.getChildAt(0);
-			if (curName.equals(curChannelName)) {
+			RelativeLayout chooseItem = (RelativeLayout) inflater.inflate(R.layout.popup_contain_check_mark, null);
+			TextView chooseName = (TextView) chooseItem.findViewById(R.id.chooseText);
+			chooseName.setTextColor(textColor);
+			String curName = allNames.get(i);
+			chooseName.setText(curName);
+			ImageView checkedIV = (ImageView) chooseItem.getChildAt(0);
+			if (curName.equals(curCheckedName)) {
 				checkedIV.setVisibility(View.VISIBLE);
 			} else {
 				checkedIV.setVisibility(View.GONE);
 			}
-			listener.changeColor(R.color.bottom_text_color_green, R.color.channel_popup_color);
-			chooseChannelItem.setOnTouchListener(listener);
-			chooseChannelItem.setTag(curChannelName);
-			layout.addView(chooseChannelItem);
+			
+			listener.changeColor(popupBgTouchColor, popupBgColor);
+			chooseItem.setOnTouchListener(listener);
+			chooseItem.setTag(curName);
+			layout.addView(chooseItem);
+		}
+	}
+	
+	public void initPopupWindowItemsContainCheckMark(LinearLayout layout, CommonOnTouchListener listener, int[] allNewsTitleNames, int curCheckedName) {
+		LayoutInflater inflater = LayoutInflater.from(context);
+		for (int allNewsTitleName : allNewsTitleNames) {
+			RelativeLayout chooseItem = (RelativeLayout) inflater.inflate(R.layout.popup_contain_check_mark, null);
+			TextView chooseName = (TextView) chooseItem.findViewById(R.id.chooseText);
+			chooseName.setTextColor(textColor);
+			int curName = allNewsTitleName;
+			chooseName.setText(curName);
+			ImageView checkedIV = (ImageView) chooseItem.getChildAt(0);
+			if (curName == curCheckedName) {
+				checkedIV.setVisibility(View.VISIBLE);
+			} else {
+				checkedIV.setVisibility(View.GONE);
+			}
+			
+			listener.changeColor(popupBgTouchColor, popupBgColor);
+			chooseItem.setOnTouchListener(listener);
+			chooseItem.setTag(curName);
+			layout.addView(chooseItem);
+		}
+	}
+	
+	/**
+	 * 将所有要在弹出框中加入的内容按照key/value存入Map中（key表示对应的ID值之类的，value为显示给用户的内容），再传入当前要选中的key值
+	 * @param layout
+	 * @param listener
+	 * @param allNames
+	 * @param curKey
+	 */
+	public void initPopupWindowItemsContainCheckMark(LinearLayout layout, CommonOnTouchListener listener, Map<String, String> allNames, String curKey) {
+		LayoutInflater inflater = LayoutInflater.from(context);
+		Set<String> keySet = allNames.keySet();
+		for (String key : keySet) {
+			RelativeLayout chooseItem = (RelativeLayout) inflater.inflate(R.layout.popup_contain_check_mark, null);
+			TextView chooseName = (TextView) chooseItem.findViewById(R.id.chooseText);
+			chooseName.setTextColor(textColor);
+			String curName = allNames.get(key);
+			chooseName.setText(curName);
+			ImageView checkedIV = (ImageView) chooseItem.getChildAt(0);
+			if (curKey == key) {
+				checkedIV.setVisibility(View.VISIBLE);
+			} else {
+				checkedIV.setVisibility(View.GONE);
+			}
+			
+			listener.changeColor(popupBgTouchColor, popupBgColor);
+			chooseItem.setOnTouchListener(listener);
+			chooseItem.setTag(key);
+			layout.addView(chooseItem);
+		}
+	}
+	
+	/**
+	 * 初始化弹出框里面的选项（以选项名+右侧删除图标为显示样式）
+	 * @param layout
+	 * @param listener
+	 * @param allNames
+	 * @param curName
+	 */
+	public void initPopupWindowItemsContainDelMark(LinearLayout layout, CommonOnTouchListener itemListener, CommonOnTouchListener delBtnListener, List<String> allNames) {
+		LayoutInflater inflater = LayoutInflater.from(context);
+		int size = allNames.size();
+		for (int i = 0; i < size; i++) {
+			RelativeLayout chooseItem = (RelativeLayout) inflater.inflate(R.layout.popup_contain_del_mark, null);
+			TextView chooseName = (TextView) chooseItem.findViewById(R.id.chooseText);
+			chooseName.setTextColor(textColor);
+			String curName = allNames.get(i);
+			chooseName.setText(curName);
+			ImageView checkedIV = (ImageView) chooseItem.findViewById(R.id.chooseDelIV);
+			itemListener.changeColor(popupBgTouchColor, popupBgColor);
+			chooseItem.setOnTouchListener(itemListener);
+			checkedIV.setOnTouchListener(delBtnListener);
+			chooseItem.setTag(curName);
+			layout.addView(chooseItem);
 		}
 	}
 	
@@ -187,6 +277,26 @@ public abstract class PopupWindowUtil {
 
 	public void setPopupBgColor(int popupBgColor) {
 		this.popupBgColor = popupBgColor;
+	}
+
+	public int getPopupBgTouchColor() {
+		return popupBgTouchColor;
+	}
+
+	public void setPopupBgTouchColor(int popupBgTouchColor) {
+		this.popupBgTouchColor = popupBgTouchColor;
+	}
+
+	public int getTextColor() {
+		return textColor;
+	}
+
+	public void setTextColor(int textColor) {
+		this.textColor = textColor;
+	}
+
+	public int getPopupBgColor() {
+		return popupBgColor;
 	}
 
 	public int getWidth() {

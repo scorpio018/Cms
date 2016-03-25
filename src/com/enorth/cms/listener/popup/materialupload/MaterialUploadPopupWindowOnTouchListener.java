@@ -1,13 +1,13 @@
 package com.enorth.cms.listener.popup.materialupload;
 
 import com.enorth.cms.consts.ParamConst;
-import com.enorth.cms.listener.popup.PopupWindowOnTouchListener;
+import com.enorth.cms.listener.popup.PopupWindowContainCheckMarkOnTouchListener;
 import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.view.material.MaterialUploadActivity;
 
 import android.widget.LinearLayout;
 
-public abstract class MaterialUploadPopupWindowOnTouchListener extends PopupWindowOnTouchListener {
+public abstract class MaterialUploadPopupWindowOnTouchListener extends PopupWindowContainCheckMarkOnTouchListener {
 	
 	private MaterialUploadActivity activity;
 
@@ -17,7 +17,7 @@ public abstract class MaterialUploadPopupWindowOnTouchListener extends PopupWind
 	}
 
 	@Override
-	public void checkItem(String curCheckedText) {
+	public void checkItem(String tag, String curCheckedText) {
 		activity.getMaterialFromTypeTV().setText(curCheckedText);
 		SharedPreUtil.put(activity, ParamConst.CUR_MATERIAL_UPLOAD_TYPE, curCheckedText);
 		activity.setCurMaterialUploadType(curCheckedText);

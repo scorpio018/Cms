@@ -12,7 +12,7 @@
         android:layout_alignParentTop="true">
         
         <!-- 标题 -->
-    	<include layout="@layout/common_title_frag"/>
+    	<include layout="@layout/common_title_iv_tv_iv"/>
     	<!-- android:layout_marginBottom="@dimen/news_operate_btn_layout_height" -->
     	<com.enorth.cms.widget.linearlayout.MaterialUploadFragLinearLayout 
 	        android:id="@+id/fragLayout"

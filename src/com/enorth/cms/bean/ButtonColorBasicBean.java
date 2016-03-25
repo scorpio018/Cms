@@ -4,6 +4,7 @@ import com.enorth.cms.view.R;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 public class ButtonColorBasicBean {
 	
@@ -25,9 +26,10 @@ public class ButtonColorBasicBean {
 	
 	private int mTextUnabledColor = 0;
 	
-	public ButtonColorBasicBean(Context context) throws Exception {
+	public ButtonColorBasicBean(Context context) {
 		if (context == null) {
-			throw new Exception("实例化此bean时需要传入一个非空的context");
+//			throw new Exception("实例化此bean时需要传入一个非空的context");
+			Log.e("ButtonColorBasicBean() error", "实例化此bean时需要传入一个非空的context");
 		}
 		this.context = context;
 	}

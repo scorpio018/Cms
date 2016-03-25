@@ -6,17 +6,13 @@ import com.enorth.cms.task.MyTimer;
 import com.enorth.cms.view.R;
 
 import android.content.Context;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.LinearLayout.LayoutParams;
 
 public class MaterialUploadFragLinearLayout extends LinearLayout {
 	
@@ -132,26 +128,20 @@ public class MaterialUploadFragLinearLayout extends LinearLayout {
 	 */
 	private int curFragLayoutState = ParamConst.CUR_FRAG_LAYOUT_STATE_IS_OPENED;
 	
-	private Context context;
-	
 	public MaterialUploadFragLinearLayout(Context context) {
 		super(context);
-		this.context = context;
 	}
 	
 	public MaterialUploadFragLinearLayout(Context context, AttributeSet attr) {
 		super(context, attr);
-		this.context = context;
 	}
 	
 	public MaterialUploadFragLinearLayout(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
-		this.context = context;
 	}
 	
 	public MaterialUploadFragLinearLayout(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 		super(context, attrs, defStyleAttr, defStyleRes);
-		this.context = context;
 	}
 	
 	public void startMove() {

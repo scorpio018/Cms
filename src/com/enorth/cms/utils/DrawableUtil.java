@@ -3,6 +3,8 @@ package com.enorth.cms.utils;
 import java.util.List;
 
 import com.enorth.cms.bean.ImageBasicBean;
+import com.enorth.cms.enums.DrawablePosition;
+import com.enorth.cms.view.R.id;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -26,4 +28,15 @@ public class DrawableUtil {
         stateList.addState(new int[] {}, unchecked);
         return stateList;
     }
+	
+	/**
+	 * 获取drawable
+	 * @param context
+	 * @param drawable
+	 * @return
+	 */
+	public static Drawable getDrawable(Context context, int drawable) {
+		return ContextCompat.getDrawable(context, drawable);
+	}
+	
 }

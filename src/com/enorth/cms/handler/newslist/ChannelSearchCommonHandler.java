@@ -11,6 +11,8 @@ import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.R;
 import com.enorth.cms.view.news.ChannelSearchActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -31,7 +33,7 @@ public abstract class ChannelSearchCommonHandler extends Handler {
 			case ParamConst.MESSAGE_WHAT_SUCCESS:
 				final List<View> items = (List<View>) msg.obj;
 				CommonListViewAdapter listViewAdapter = new CommonListViewAdapter(items);
-				activity.channelListView.setAdapter(listViewAdapter);
+				activity.getChannelListView().setAdapter(listViewAdapter);
 				// 将频道的拼音连同对应的bean存入自定义的adapter中，配合AutoCompleteTextView使用
 				SearchChannelFilterAdapter searchChannelFilterAdapter = new SearchChannelFilterAdapter(
 						activity, R.layout.channel_search_item/*channel_search_edit_item*/, activity.shortNames);
@@ -53,14 +55,17 @@ public abstract class ChannelSearchCommonHandler extends Handler {
 //				ViewUtil.setListViewHeightBasedOnChildren(newsListView);
 			break;
 			case ParamConst.MESSAGE_WHAT_NO_DATA:
-				activity.initDefaultData("没有数据");
+//				activity.initDefaultData("没有数据");
+				ViewUtil.showAlertDialog(activity, "没有数据");
 			break;
 			case ParamConst.MESSAGE_WHAT_ERROR:
 				String errorMsg = (String) msg.obj;
-				activity.initDefaultData(errorMsg);
+//				activity.initDefaultData(errorMsg);
+				ViewUtil.showAlertDialog(activity, errorMsg);
 			break;
 			default:
-				activity.initDefaultData("未知错误");
+//				activity.initDefaultData("未知错误");
+				ViewUtil.showAlertDialog(activity, "未知错误");
 			break;
 			}
 			if (needResetContent()) {
@@ -68,7 +73,7 @@ public abstract class ChannelSearchCommonHandler extends Handler {
 			}
 			// 每次重新选择一个频道后都要进行清空，除非是第一次进入（第一次进入，需要传入接口的是父ID，然后将当前频道进行选中。并将当前频道进行存入）
 			if (activity.isFirstEnter) {
-				String curChooseChannelType = SharedPreUtil.getString(activity, ParamConst.CUR_CHOOSE_CHANNEL_TYPE);
+				String curChooseChannelType = SharedPreUtil.getString(activity, ParamConst.CUR_CHOOSE_CHANNEL_TYPE, "");
 				if (curChooseChannelType.equals(ParamConst.ALL_CHANNEL)) {
 					activity.isFirstEnter = false;
 				}

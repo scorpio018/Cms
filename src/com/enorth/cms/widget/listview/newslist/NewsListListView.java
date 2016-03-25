@@ -1,5 +1,6 @@
 package com.enorth.cms.widget.listview.newslist;
 
+import com.enorth.cms.listener.newslist.news.NewsListListViewOnScrollListener;
 import com.enorth.cms.widget.listview.CommonListView;
 
 import android.content.Context;
@@ -7,7 +8,6 @@ import android.util.AttributeSet;
 import android.view.View;
 
 public class NewsListListView extends CommonListView {
-	private View view;
 
 	public NewsListListView(Context context) {
 		super(context);
@@ -23,7 +23,6 @@ public class NewsListListView extends CommonListView {
 	
 	public NewsListListView(Context context, View view) {
 		super(context);
-		this.view = view;
 	}
 	
 	/*@Override

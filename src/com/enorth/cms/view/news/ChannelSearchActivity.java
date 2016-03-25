@@ -10,14 +10,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.enorth.cms.adapter.CommonListViewAdapter;
+import com.enorth.cms.adapter.news.ChannelSearchListViewAdapter;
 import com.enorth.cms.adapter.news.NewsListViewAdapter;
 import com.enorth.cms.adapter.news.SearchChannelFilterAdapter;
+import com.enorth.cms.bean.channel_search.RequestChannelSearchUrlBean;
+import com.enorth.cms.bean.login.ChannelBean;
+import com.enorth.cms.bean.news_list.NewsListBean;
 import com.enorth.cms.bean.news_list.NewsListImageViewBasicBean;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.handler.newslist.AllChannelSearchHandler;
 import com.enorth.cms.handler.newslist.MyChannelSearchHandler;
 import com.enorth.cms.listener.CommonOnClickListener;
 import com.enorth.cms.listener.CommonOnTouchListener;
+import com.enorth.cms.listener.EditTextDrawableOnTouchListener;
 import com.enorth.cms.listener.imageview.ImageViewOnTouchListener;
 import com.enorth.cms.listener.newslist.ListViewItemOnTouchListener;
 import com.enorth.cms.listener.newslist.channelsearch.ChannelSearchEditOnTouchListener;
@@ -27,6 +32,10 @@ import com.enorth.cms.presenter.newslist.ChannelSearchPresenter;
 import com.enorth.cms.presenter.newslist.IChannelSearchPresenter;
 import com.enorth.cms.utils.ActivityJumpUtil;
 import com.enorth.cms.utils.AnimUtil;
+import com.enorth.cms.utils.BeanParamsUtil;
+import com.enorth.cms.utils.ColorUtil;
+import com.enorth.cms.utils.DimenUtil;
+import com.enorth.cms.utils.DrawableUtil;
 import com.enorth.cms.utils.ExceptionUtil;
 import com.enorth.cms.utils.PopupWindowUtil;
 import com.enorth.cms.utils.ScreenTools;
@@ -56,6 +65,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -66,7 +76,9 @@ import android.widget.Toast;
 @SuppressLint("NewApi")
 public class ChannelSearchActivity extends Activity implements IChannelSearchView {
 	
-	public NewsListListView channelListView;
+	private NewsListListView channelListView;
+	
+	private ChannelSearchListViewAdapter adapter;
 	
 //	private ChannelSearchActivity thisActivity;
 	
@@ -109,6 +121,10 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 */
 	private RelativeLayout channelSearchEditLayout;
 	/**
+	 * “上一级”按钮外面包裹的LinearLayout
+	 */
+	private LinearLayout channelBackToPrevSearchLayout;
+	/**
 	 * 搜索框
 	 */
 	public AutoCompleteTextView searchChannelET;
@@ -125,19 +141,19 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	/**
 	 * 包裹当前频道的目录和返回上一级按钮的layout
 	 */
-	private RelativeLayout ContentAndBackToPrevLayout;
+	private RelativeLayout contentAndBackToPrevLayout;
 	/**
-	 * “返回上一级”按钮
+	 * 左上角的返回按钮
 	 */
 	private ImageView back;
 	/**
-	 * 标题中间的频道类型layout
-	 */
-	private LinearLayout channelSearchTitleLayout;
-	/**
-	 * 频道目录
+	 * “全部频道”标题
 	 */
 	private TextView curChooseChannelTV;
+	/**
+	 * 标题右上角的“完成”按钮
+	 */
+	private TextView confirm;
 	/**
 	 * 挡圈选择的标题频道类别
 	 */
@@ -179,6 +195,14 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 */
 	private PopupWindowUtil popupWindowUtil;
 	/**
+	 * 用于请求接口的bean
+	 */
+	private RequestChannelSearchUrlBean requestChannelSearchUrlBean;
+	/**
+	 * 当前选中的频道bean
+	 */
+	private ChannelBean channelBean;
+	/**
 	 * 弹出框所需的数据
 	 */
 //	private PopupWindowBean bean;
@@ -187,6 +211,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_channel_search);
+		initView();
 		initBaseData();
 		initTitleEvent();
 		try {
@@ -196,21 +221,59 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 		}
 	}
 	
-	private void initBaseData() {
-		presenter = new ChannelSearchPresenter(this);
-		channelSearchEditLayout = (RelativeLayout) findViewById(R.id.channelSearchEditLayout);
-		back = (ImageView) findViewById(R.id.channelSearchTitleBackBtn);
-		channelListView = (NewsListListView) findViewById(R.id.childChannelListView);
-		channelSearchCheckedText = (TextView) findViewById(R.id.channelSearchCheckedText);
-		ContentAndBackToPrevLayout = (RelativeLayout) findViewById(R.id.ContentAndBackToPrevLayout);
+	private void initView() {
+		// 标题左侧的返回按钮
+		back = (ImageView) findViewById(R.id.titleLeftIV);
+		// 标题
+		curChooseChannelTV = (TextView) findViewById(R.id.titleMiddleTV);
 		
-		View backView = findViewById(R.id.channelSearchTitle);
+		confirm = (TextView) findViewById(R.id.titleRightTV);
+		
+		// 搜索框包裹的Layout
+		channelSearchEditLayout = (RelativeLayout) findViewById(R.id.channelSearchEditLayout);
+		// 显示当前频道目录
+		channelSearchCheckedText = (TextView) findViewById(R.id.channelSearchCheckedText);
+		// 返回上一级频道
+		channelBackToPrevSearchLayout = (LinearLayout) findViewById(R.id.channelBackToPrevSearchLayout);
+		// 频道ListView
+		channelListView = (NewsListListView) findViewById(R.id.childChannelListView);
+		// 包裹当前频道目录和返回上一级频道的Layout
+		contentAndBackToPrevLayout = (RelativeLayout) findViewById(R.id.contentAndBackToPrevLayout);
+		initViewBaseData();
+	}
+	/**
+	 * 初始化控件的基本数据
+	 */
+	private void initViewBaseData() {
+		// 添加返回图标
+		back.setBackgroundResource(R.drawable.common_back);
+		// 给标题的右侧添加一个向下的箭头
+		curChooseChannelTV.setCompoundDrawablesWithIntrinsicBounds(null, null, DrawableUtil.getDrawable(this, R.drawable.news_sub_title_channel_iv), null);
+		// 完成
+		confirm.setText(R.string.channel_search_title_confirm);
+		
+	}
+	
+	private void initBaseData() {
+		// 获取当前选中的频道bean
+		channelBean = (ChannelBean) BeanParamsUtil.getObject(ChannelBean.class, this);
+		// 将当前的频道ID进行储存
+		initRequestChannelSearchUrlBean();
+		
+		presenter = new ChannelSearchPresenter(this);
 		// 此处要减去该按钮的宽度，防止频道覆盖按钮
-		newsTitleAllowLength = (ScreenTools.getPhoneWidth(this) - backView.getMeasuredWidth()) / ParamConst.FONT_WIDTH;
+		newsTitleAllowLength = (ScreenTools.getPhoneWidth(this) - channelBackToPrevSearchLayout.getMeasuredWidth()) / ParamConst.FONT_WIDTH;
 		initChooseChannelName();
 		channelPopupColor = ContextCompat.getColor(this, R.color.channel_popup_color);
 		initHandler();
 		getCurCheckedChannelId();
+		initListViewAdapter();
+	}
+	
+	private void initRequestChannelSearchUrlBean() {
+		requestChannelSearchUrlBean = new RequestChannelSearchUrlBean();
+		requestChannelSearchUrlBean.setChannelId(channelBean.getChannelId());
+		
 	}
 	
 	/**
@@ -227,40 +290,20 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 		myChannelHandler = new MyChannelSearchHandler(this);
 	}
 	
-	/**
-	 * 加载默认页面
-	 * @param errorHint
-	 */
-	public void initDefaultData(String errorHint) {
-		Resources resources = getResources();
-		float titleHeight = resources.getDimension(R.dimen.news_title_height);
-		float subTitleHeight = resources.getDimension(R.dimen.news_sub_title_height);
-		float operateBtnHeight = resources.getDimension(R.dimen.news_operate_btn_layout_height);
-		int height = (int) ((ScreenTools.getPhoneHeight(this) - titleHeight - subTitleHeight - operateBtnHeight) / 2 + titleHeight + subTitleHeight);
-		List<View> items = initDefaultData(errorHint, height);
-		ListAdapter adapter = new NewsListViewAdapter(items);
+	private void initListViewAdapter() {
+		adapter = new ChannelSearchListViewAdapter(new ArrayList<NewsListBean>(), this);
 		channelListView.setAdapter(adapter);
 	}
 	
 	/**
-	 * 加载默认页面到固定位置上
-	 * @param text
-	 * @param height
-	 * @return
+	 * 加载默认页面
+	 * @param errorHint
 	 */
-	private List<View> initDefaultData(String text, int height) {
-		List<View> resultView = new ArrayList<View>();
-		LayoutInflater inflater = LayoutInflater.from(this);
-		RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.news_list_view_default_item, null);
-		LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, height);
-		layout.setLayoutParams(params);
-		if (text != null) {
-			TextView textView = (TextView) layout.getChildAt(0);
-			textView.setText(text);
-		}
-		resultView.add(layout);
-		return resultView;
-	}
+	/*public void initDefaultData(String errorHint) {
+		List<View> items = ViewUtil.initDefaultData(this, errorHint, defaultListViewHeight);
+		adapter.setItems(items);
+		channelListView.setAdapter(adapter);
+	}*/
 	
 	/**
 	 * 初始化头部的事件
@@ -289,9 +332,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 * 初始化频道类型选择事件
 	 */
 	private void initChooseChannelEvent() {
-		channelSearchTitleLayout = (LinearLayout) findViewById(R.id.channelSearchTitleLayout);
-		curChooseChannelTV = (TextView) findViewById(R.id.channelSearchTitleText);
-		curChooseChannelType = SharedPreUtil.getString(this, ParamConst.CUR_CHOOSE_CHANNEL_TYPE);
+		curChooseChannelType = SharedPreUtil.getString(this, ParamConst.CUR_CHOOSE_CHANNEL_TYPE, "");
 		if (StringUtil.isEmpty(curChooseChannelType)) {
 			SharedPreUtil.put(this, ParamConst.CUR_CHOOSE_CHANNEL_TYPE, ParamConst.ALL_CHANNEL);
 			curChooseChannelType = ParamConst.ALL_CHANNEL;
@@ -314,8 +355,8 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 				curChannelListEnableView = ParamConst.CUR_CHANNEL_LIST_ENABLE_VIEW_CHANNEL_SEARCH_ACTIVITY;
 			}
 		};
-		listener.changeColor(R.color.bottom_text_color_green, R.color.common_blue);
-		channelSearchTitleLayout.setOnTouchListener(listener);
+		listener.changeColor(ColorUtil.getBottomTextColorGreen(this), ColorUtil.getCommonBlueColor(this));
+		curChooseChannelTV.setOnTouchListener(listener);
 	}
 	
 	/**
@@ -324,7 +365,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 */
 	private void initPopupWindow() {
 		if (popupWindowUtil == null) {
-			popupWindowUtil = new PopupWindowUtil(this, channelSearchTitleLayout) {
+			popupWindowUtil = new PopupWindowUtil(this, curChooseChannelTV) {
 				
 				@Override
 				public void initItems(LinearLayout layout) {
@@ -335,7 +376,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 							popupWindow = null;
 						}
 					};
-					initPopupWindowItems(layout, listener, allChooseChannelName, curChooseChannelType);
+					initPopupWindowItemsContainCheckMark(layout, listener, allChooseChannelName, curChooseChannelType);
 				}
 			};
 			/*popupWindowUtil.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL);
@@ -350,7 +391,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 * 点击右上角的“完成”，即将当前选中的频道存入SharedPreferences并返回新闻列表页
 	 */
 	private void initConfirmEvent() {
-		TextView confirm = (TextView) findViewById(R.id.channelTitleMenuConfirm);
+		
 		confirm.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -397,13 +438,26 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 		bundle.putString(ParamConst.CUR_CHANNEL_NAME, curCheckChannelName);
 		bundle.putLong(ParamConst.CUR_CHANNEL_ID_PARENT_ID, parentChannelId);
 		String channelContent = getChannelContent(true);
+//		String channelContent = SharedPreUtil.getString(this, ParamConst.CHANNEL, ParamConst.CHANNEL_NAME_CONTENT, "");
 		bundle.putString(ParamConst.CUR_CHANNEL_CONTENT, channelContent);
 		return bundle;
 	}
 	
 	private void initEditTextEvent() {
 		searchChannelET = (AutoCompleteTextView) findViewById(R.id.channelSearchEdit);
-		searchChannelET.setOnTouchListener(new ChannelSearchEditOnTouchListener(this));
+//		searchChannelET.setOnTouchListener(new ChannelSearchEditOnTouchListener(this));
+		searchChannelET.setOnTouchListener(new EditTextDrawableOnTouchListener() {
+			
+			@Override
+			public EditText getEditText() {
+				return searchChannelET;
+			}
+			
+			@Override
+			public void evenDo() {
+				searchChannelET.setText("");
+			}
+		});
 	}
 	
 	/**
@@ -436,8 +490,8 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 * @throws Exception
 	 */
 	public void initChannelDefaultData() throws Exception {
-		AnimUtil.showRefreshFrame(this, true);
-		String curChooseChannelType = SharedPreUtil.getString(this, ParamConst.CUR_CHOOSE_CHANNEL_TYPE);
+		AnimUtil.showRefreshFrame(this, true, "正在加载，请稍后");
+		String curChooseChannelType = SharedPreUtil.getString(this, ParamConst.CUR_CHOOSE_CHANNEL_TYPE, "");
 		if (curChooseChannelType.equals(ParamConst.ALL_CHANNEL)) {
 			getAllChannel();
 		} else if (curChooseChannelType.equals(ParamConst.MY_CHANNEL)) {
@@ -452,7 +506,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 */
 	public void getAllChannel() throws Exception {
 		channelSearchEditLayout.setVisibility(View.VISIBLE);
-		ContentAndBackToPrevLayout.setVisibility(View.VISIBLE);
+		contentAndBackToPrevLayout.setVisibility(View.VISIBLE);
 		removeAllListData();
 		channelSearchCheckedText.setText("");
 		if (isFirstEnter) {
@@ -468,7 +522,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 */
 	public void getMyChannel() throws Exception {
 		channelSearchEditLayout.setVisibility(View.GONE);
-		ContentAndBackToPrevLayout.setVisibility(View.GONE);
+		contentAndBackToPrevLayout.setVisibility(View.GONE);
 		removeAllListData();
 		presenter.getMyChannel(ParamConst.USER_ID, myChannelHandler);
 	}
@@ -476,8 +530,9 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 * 将ListView中的数据全部删除
 	 */
 	private void removeAllListData() {
-		List<View> items = new ArrayList<View>();
-		CommonListViewAdapter adapter = new CommonListViewAdapter(items);
+		List<NewsListBean> items = new ArrayList<NewsListBean>();
+//		CommonListViewAdapter adapter = new CommonListViewAdapter(items);
+		adapter.setItems(items);
 		channelListView.setAdapter(adapter);
 	}
 	
@@ -495,7 +550,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	
 	@Override
 	public void error(Exception e) {
-		Log.e("进入error()方法", e.getMessage());
+		Log.e("进入error()方法", e.toString());
 		e.printStackTrace();
 	}
 	
@@ -512,9 +567,9 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	
 	@Override
 	public void onFailure(Exception e) {
-		Log.e("服务器异常", e.getMessage());
+		Log.e("服务器异常", e.toString());
 		Message message = new Message();
-		String errorMsg = e.getMessage();
+		String errorMsg = e.toString();
 		if (errorMsg == null) {
 			errorMsg = "服务器异常";
 		}
@@ -647,7 +702,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 */
 	private void addCheckBtnClickEvent(final NewsListImageViewBasicBean bean) {
 		
-		OnTouchListener listViewCheckBtnOnTouchListener = new ImageViewOnTouchListener(bean, ScreenTools.getTouchSlop(this)) {
+		OnTouchListener listViewCheckBtnOnTouchListener = new ImageViewOnTouchListener(bean, this) {
 			@Override
 			public boolean onImgChangeBegin(View v) {
 				checkChannel(bean);
@@ -693,7 +748,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 * @param bean
 	 */
 	private void addListViewItemClickEvent(final NewsListImageViewBasicBean bean) {
-		CommonOnTouchListener listViewItemOnTouchListener = new ListViewItemOnTouchListener(ScreenTools.getTouchSlop(this)) {
+		CommonOnTouchListener listViewItemOnTouchListener = new ListViewItemOnTouchListener(this) {
 			@Override
 			public void onImgChangeDo(View v) {
 				try {
@@ -856,6 +911,14 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 		resultBean.setHasChild(bean.isHasChild());
 		resultBean.setCanClick(bean.isCanClick());
 		return resultBean;
+	}
+
+	public NewsListListView getChannelListView() {
+		return channelListView;
+	}
+
+	public void setChannelListView(NewsListListView channelListView) {
+		this.channelListView = channelListView;
 	}
 
 	public List<String> getAllChooseChannelName() {

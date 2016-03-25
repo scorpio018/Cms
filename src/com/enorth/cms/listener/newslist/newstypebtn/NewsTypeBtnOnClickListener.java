@@ -51,7 +51,7 @@ public class NewsTypeBtnOnClickListener extends CommonOnClickListener {
 					try {
 						ViewUtil.changeBtnGroupStyleByFocusedState(activity, layout, position, ColorUtil.getCommonBlueColor(activity), ColorUtil.getWhiteColor(activity));
 					} catch (Exception e) {
-						Toast.makeText(activity, "按钮组状态切换时出现错误:【" + e.getMessage() + "】", Toast.LENGTH_SHORT).show();
+						Toast.makeText(activity, "按钮组状态切换时出现错误:【" + e.toString() + "】", Toast.LENGTH_SHORT).show();
 						e.printStackTrace();
 					}
 				}

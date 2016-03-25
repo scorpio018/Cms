@@ -5,6 +5,7 @@ import com.enorth.cms.listener.OnRefreshListener;
 import com.enorth.cms.pullableview.Pullable;
 import com.enorth.cms.task.AutoRefreshAndLoadTask;
 import com.enorth.cms.task.MyTimer;
+import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.view.R;
 
 import android.content.Context;
@@ -19,6 +20,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 /**
@@ -27,7 +29,7 @@ import android.widget.TextView;
  * 
  * @author yangyang
  */
-public class PullToRefreshLayout extends FrameLayout {
+public class PullToRefreshLayout extends RelativeLayout {
 //	public static final String TAG = "PullToRefreshLayout";
 	/**
 	 * 当前状态
@@ -228,11 +230,14 @@ public class PullToRefreshLayout extends FrameLayout {
 		initView(context);
 	}
 
+	/**
+	 * 初始化view
+	 * @param context
+	 */
 	private void initView(Context context) {
-		Log.e("initView", "初始化view");
-		Log.w("initView", "将handler传入到MyTimer的构造方法中");
+		// 将handler传入到MyTimer的构造方法中
 		timer = new MyTimer(updateHandler);
-		Log.w("initView", "给当前传入的view添加动画");
+		// 给当前传入的view添加动画5
 		rotateAnimation = (RotateAnimation) AnimationUtils.loadAnimation(context, R.anim.reverse_anim);
 		rotateBackAnimation = (RotateAnimation) AnimationUtils.loadAnimation(context, R.anim.reverse_back_anim);
 		refreshingAnimation = (RotateAnimation) AnimationUtils.loadAnimation(context, R.anim.rotating);
@@ -243,9 +248,14 @@ public class PullToRefreshLayout extends FrameLayout {
 		refreshingAnimation.setInterpolator(lir);
 	}
 
+	/**
+	 * 将回弹timer进行执行
+	 */
 	public void hide() {
 		Log.e("hide", "调用hide方法");
-		timer.schedule(5);
+		if (timer != null) {
+			timer.schedule(5);
+		}
 	}
 
 	/**
@@ -431,8 +441,12 @@ public class PullToRefreshLayout extends FrameLayout {
 					moveY = ev.getY();
 					moveX = ev.getX();
 					if (isFresh == ParamConst.IS_REFRESH_DEFAULT) {
-						if (!isRefreshAction(moveX, moveY)) {
+						boolean refreshAction = ScreenTools.isVerticalAction(downX, downY, moveX, moveY);
+						if (!refreshAction) {
+							isFresh = ParamConst.IS_REFRESH_NO;
 							break;
+						} else {
+							isFresh = ParamConst.IS_REFRESH_YES;
 						}
 					}
 					if (isFresh == ParamConst.IS_REFRESH_NO) {
@@ -553,7 +567,7 @@ public class PullToRefreshLayout extends FrameLayout {
 	 * @param y
 	 * @return
 	 */
-	private boolean isRefreshAction(float xMove, float yMove) {
+	/*private boolean isRefreshAction(float xMove, float yMove) {
 		double tanValue = getTanValue(xMove, yMove);
 		double tan = Math.tan(ParamConst.IS_REFRESH_ACTION_ANGLE * Math.PI / 180);
 		Log.i("isRefreshAction", "通过两点组成的直角三角形计算以x作为对边、y作为临边算出的tan值【" + tanValue + "】，再与tan(30°)的值【" + tan + "】进行对比");
@@ -567,19 +581,19 @@ public class PullToRefreshLayout extends FrameLayout {
 			return true;
 		}
 
-	}
+	}*/
 
 	/**
 	 * 根据Xs、Ys的每一个点之间的计算，最终算出tan（贪帧特）的平均值
 	 * 
 	 * @return
 	 */
-	private double getTanValue(float xMove, float yMove) {
+	/*private double getTanValue(float xMove, float yMove) {
 		// 获取两点，然后根据计算出两点的角度的平均值计算是否为向下拖动的动作
 		double tmpX = Math.abs(downX - xMove);
 		double tmpY = Math.abs(downY - yMove);
 		return tmpX / tmpY;
-	}
+	}*/
 
 	/**
 	 * 自动刷新

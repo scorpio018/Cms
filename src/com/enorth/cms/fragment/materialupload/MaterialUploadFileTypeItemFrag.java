@@ -153,7 +153,7 @@ public class MaterialUploadFileTypeItemFrag extends Fragment implements OnScroll
 							popupWindow = null;
 						}
 					};
-					initPopupWindowItems(layout, listener, allMaterialUploadFileTypeText, curMaterialUploadFileTypeText);
+					initPopupWindowItemsContainCheckMark(layout, listener, allMaterialUploadFileTypeText, curMaterialUploadFileTypeText);
 				}
 			};
 			/*int materialUploadFileTypeLayoutTop = materialUploadFileTypeLayout.getTop();

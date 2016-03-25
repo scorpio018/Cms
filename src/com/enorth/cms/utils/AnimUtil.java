@@ -24,7 +24,12 @@ import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-
+import android.widget.TextView;
+/**
+ * 在加载过程中调用加载动画的工具类
+ * @author yangyang
+ *
+ */
 @SuppressLint("InflateParams")
 public class AnimUtil {
 	
@@ -65,14 +70,14 @@ public class AnimUtil {
 	 * 将刷新页面加入当前activity中并覆盖
 	 * @param activity
 	 */
-	public static void showRefreshFrame(Activity activity, boolean needImage) {
+	public static void showRefreshFrame(Activity activity, boolean needImage, String text) {
 		// 初始化tanslate动画（画面转移位置移动动画效果）
 		initAmin(activity);
 		
 		View frameView = activity.findViewById(R.id.refreshLayoutCommon);
 		if (frameView == null) {
 			LayoutInflater inflater = LayoutInflater.from(activity);
-			initFrameItem(inflater, activity, needImage);
+			initFrameItem(inflater, activity, needImage, text);
 			// 此处为了防止在显示时点击事件穿透到浮层后方的控件
 			refreshLayout.setOnTouchListener(new View.OnTouchListener() {
 				
@@ -95,13 +100,13 @@ public class AnimUtil {
 	 * @param listener
 	 * @param needImage
 	 */
-	public static void showRefreshFrame(Context context, ViewGroup viewGroup, CommonOnTouchListener listener, boolean needImage) {
+	public static void showRefreshFrame(Context context, ViewGroup viewGroup, CommonOnTouchListener listener, boolean needImage, String text) {
 		initAmin(context);
 		
 		View frameView = viewGroup.findViewById(R.id.refreshLayoutCommon);
 		if (frameView == null) {
 			LayoutInflater inflater = LayoutInflater.from(context);
-			initFrameItem(inflater, context, needImage);
+			initFrameItem(inflater, context, needImage, text);
 			refreshLayout.setOnTouchListener(listener);
 			viewGroup.addView(refreshLayout, initMatchLayout);
 		} else {
@@ -115,12 +120,12 @@ public class AnimUtil {
 	 * @param inflater
 	 * @param context
 	 */
-	private static void initFrameItem(LayoutInflater inflater, Context context, boolean needImage) {
+	private static void initFrameItem(LayoutInflater inflater, Context context, boolean needImage, String text) {
 		refreshLayout = (FrameLayout) inflater.inflate(R.layout.refresh_layout_common, null);
 		int color = ContextCompat.getColor(context, R.color.dark_gray);
 		refreshLayout.setBackgroundColor(color);
 		refreshLayout.getBackground().setAlpha(120);
-		final ImageView refreshIV = (ImageView) refreshLayout.getChildAt(0);
+		final ImageView refreshIV = (ImageView) refreshLayout.findViewById(R.id.loadIV);
 		if (needImage) {
 			rotateAnimation.setInterpolator(lir);
 			new Handler() {
@@ -133,6 +138,8 @@ public class AnimUtil {
 		} else {
 			refreshIV.setVisibility(View.GONE);
 		}
+		TextView loadTV = (TextView) refreshLayout.findViewById(R.id.loadTV);
+		loadTV.setText(text);
 		initMatchLayout = LayoutParamsUtil.initAbsListViewMatchLayout();
 		refreshLayout.setVisibility(View.VISIBLE);
 	}

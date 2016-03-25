@@ -28,6 +28,7 @@
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<!-- 使用震动得加权限 -->
 	<uses-permission android:name="android.permission.VIBRATE"></uses-permission>
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 	
 	<uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -96,6 +97,7 @@
         <activity android:name=".securitysetting.ChangePwdActivity"
             android:windowSoftInputMode="stateUnspecified|stateHidden"></activity>
         <activity android:name=".about.AboutActivity"></activity>
+        <activity android:name=".pulltorefreshlistview.PullToRefreshListActivity"></activity>
     </application>
 
 </manifest>

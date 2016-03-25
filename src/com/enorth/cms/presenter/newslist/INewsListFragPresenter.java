@@ -12,7 +12,6 @@ public interface INewsListFragPresenter {
 	 * @param handler
 	 * @throws Exception
 	 */
-	public void requestListViewData(Handler handler, List<BasicNameValuePair> params) throws Exception;
+	public void requestListViewData(String url, Handler handler, List<BasicNameValuePair> params);
 	
-	public void requestCurChannelData(Long channelId, int userId, Handler handler) throws Exception;
 }

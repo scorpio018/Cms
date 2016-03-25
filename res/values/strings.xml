@@ -26,7 +26,8 @@
     <string name="load_fail">加载失败</string>
     <string name="submit_btn_common">确定</string>
     
-    <string name="news_title_text">普通新闻</string>
+    <string name="normal_news_title_text">普通新闻</string>
+    <string name="my_news_title_text">我的新闻</string>
     <string name="news_live_title_text">图文直播</string>
     <string name="material_upload_title_text">素材上传</string>
     <string name="security_setting_title_text">安全设置</string>

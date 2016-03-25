@@ -3,116 +3,145 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:minHeight="@dimen/news_item_height"
+    android:gravity="center_vertical"
     android:orientation="horizontal" >
-    
-	<ImageView 
+
+    <!-- <ImageView
         android:id="@+id/iv_check_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:paddingLeft="@dimen/news_item_check_btn_padding_left"
-        android:paddingStart="@dimen/news_item_check_btn_padding_left"
-        android:paddingRight="@dimen/news_item_check_btn_padding_right"
-        android:paddingEnd="@dimen/news_item_check_btn_padding_right"
-        android:paddingTop="@dimen/news_item_check_btn_padding_top"
+        android:layout_gravity="top"
+        android:clickable="true"
         android:paddingBottom="@dimen/news_item_check_btn_padding_bottom"
-        android:clickable="true"/>
-	
-	<RelativeLayout 
-	    android:id="@+id/newsTextLayout"
-	    android:layout_width="match_parent"
-	    android:layout_height="match_parent"
-	    >
-	    <LinearLayout 
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:gravity="start|top"
-	        android:layout_alignParentTop="true">
-	    <TextView 
-	        android:id="@+id/tv_news_title"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="@dimen/news_item_news_title_margin_top"
-	        android:layout_marginLeft="@dimen/news_item_news_title_margin_left"
-	        android:layout_marginStart="@dimen/news_item_news_title_margin_left"
-	        android:layout_marginRight="@dimen/news_item_news_title_margin_right"
-	        android:layout_marginEnd="@dimen/news_item_news_title_margin_right"
-	        android:textSize="@dimen/news_title_text_size"/>
-	    </LinearLayout>
-	    <RelativeLayout 
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:gravity="bottom"
-	        android:minHeight="?android:attr/listPreferredItemHeight"
-	        android:layout_alignParentBottom="true">
-	        
-	        <LinearLayout 
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_alignParentLeft="true"
-		        android:layout_alignParentStart="true"
-		        android:layout_marginLeft="@dimen/news_item_news_title_margin_left"
-		        android:layout_marginStart="@dimen/news_item_news_title_margin_left"
-		        android:layout_marginBottom="@dimen/news_item_news_title_margin_bottom">
-		        <TextView 
-		        	android:id="@+id/tv_news_time"
-		        	android:layout_width="wrap_content"
-		        	android:layout_height="wrap_content"
-		        	android:textColor="@color/gray"/>
-		        <TextView 
-		            android:id="@+id/tv_news_author_name"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:layout_marginLeft="@dimen/news_item_news_title_margin_left"
-		        	android:layout_marginStart="@dimen/news_item_news_title_margin_left"
-		            android:textColor="@color/gray"/>
-		    </LinearLayout>
-	    </RelativeLayout>
-	    
-	    <ImageView 
-	        android:id="@+id/iv_news_xinxi"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentBottom="true"
-	        android:layout_alignParentRight="true"
-	        android:layout_alignParentEnd="true"
-	        android:paddingTop="@dimen/news_item_news_xinxi_padding_top"
-	        android:paddingRight="@dimen/news_item_news_xinxi_padding_right"
-	        android:paddingEnd="@dimen/news_item_news_xinxi_padding_right"
-	        android:paddingBottom="@dimen/news_item_news_xinxi_padding_bottom"
-	        android:paddingLeft="@dimen/news_item_news_xinxi_padding_left"
-	        android:paddingStart="@dimen/news_item_news_xinxi_padding_left"
-	        android:layout_marginRight="@dimen/news_item_news_xinxi_margin_right"
-	        android:layout_marginEnd="@dimen/news_item_news_xinxi_margin_right"
-	        android:layout_marginBottom="@dimen/news_item_news_xinxi_margin_bottom"
-	        android:background="@drawable/news_list_xinxi"
-	        android:clickable="true"
-	        android:visibility="gone"/>
-	    
-	    <!-- 此处为右侧“送签”按钮由一个LinearLayout包裹起来，然后设置固定宽度和满高，只要点击右侧区域，就能出发“送签”操作 -->
-	    <!-- <LinearLayout 
-	        android:id="@+id/iv_news_xinxi_layout"
-	        android:layout_width="@dimen/news_item_news_xinxi_layout_width"
-	        android:layout_height="match_parent"
-	        android:orientation="horizontal"
-	        android:layout_alignParentBottom="true"
-	        android:layout_alignParentRight="true"
-	        android:layout_alignParentEnd="true"
-	        android:gravity="bottom">
-	        
-	        <ImageView 
-		        android:id="@+id/iv_news_xinxi"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginRight="@dimen/news_item_news_xinxi_margin_right"
-		        android:layout_marginEnd="@dimen/news_item_news_xinxi_margin_right"
-		        android:layout_marginBottom="@dimen/news_item_news_xinxi_margin_bottom"
-		        android:background="@drawable/news_list_xinxi"
-		        android:clickable="true"
-		        android:visibility="gone"/>
-	        
-	    </LinearLayout> -->
-	    
-	</RelativeLayout>
-	
+        android:paddingEnd="@dimen/news_item_check_btn_padding_right"
+        android:paddingLeft="@dimen/news_item_check_btn_padding_left"
+        android:paddingRight="@dimen/news_item_check_btn_padding_right"
+        android:paddingStart="@dimen/news_item_check_btn_padding_left"
+        android:paddingTop="@dimen/news_item_check_btn_padding_top"
+        android:layout_marginTop="@dimen/news_item_news_title_margin_top" /> -->
+    <CheckBox 
+        android:id="@+id/iv_check_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:clickable="true"
+        android:paddingBottom="@dimen/news_item_check_btn_padding_bottom"
+        android:paddingEnd="@dimen/news_item_check_btn_padding_right"
+        android:paddingLeft="@dimen/news_item_check_btn_padding_left"
+        android:paddingRight="@dimen/news_item_check_btn_padding_right"
+        android:paddingStart="@dimen/news_item_check_btn_padding_left"
+        android:paddingTop="@dimen/news_item_check_btn_padding_top"
+        android:layout_marginTop="@dimen/news_item_news_title_margin_top"
+        style="@style/CustomCheckboxTheme"/>
+
+    <RelativeLayout
+        android:id="@+id/newsTextLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:gravity="start|top" >
+
+            <TextView
+                android:id="@+id/tv_news_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/news_item_news_title_margin_right"
+                android:layout_marginLeft="@dimen/news_item_news_title_margin_left"
+                android:layout_marginRight="@dimen/news_item_news_title_margin_right"
+                android:layout_marginStart="@dimen/news_item_news_title_margin_left"
+                android:layout_marginTop="@dimen/news_item_news_title_margin_top"
+                android:textSize="@dimen/news_title_text_size" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="bottom"
+            android:paddingBottom="@dimen/news_item_news_title_padding_bottom"
+            android:minHeight="?android:attr/listPreferredItemHeight" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="@dimen/news_item_news_title_margin_left"
+                android:layout_marginStart="@dimen/news_item_news_title_margin_left" >
+
+                <TextView
+                    android:id="@+id/tv_news_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/gray" />
+
+                <TextView
+                    android:id="@+id/tv_news_author_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/news_item_news_title_margin_left"
+                    android:layout_marginStart="@dimen/news_item_news_title_margin_left"
+                    android:textColor="@color/gray" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:gravity="end"
+                android:paddingBottom="@dimen/news_item_icon_padding_bottom"
+                android:layout_marginEnd="@dimen/news_item_news_title_margin_right"
+                android:layout_marginRight="@dimen/news_item_news_title_margin_right" >
+
+                <ImageView
+                    android:id="@+id/iv_link"
+                    android:layout_width="@dimen/news_item_icon_align_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/news_item_icon_margin_right"
+                    android:layout_marginRight="@dimen/news_item_icon_margin_right"
+                    android:background="@drawable/icon_link"
+                    android:paddingBottom="@dimen/news_item_icon_padding_bottom"
+                    android:paddingEnd="@dimen/news_item_icon_padding_right"
+                    android:paddingLeft="@dimen/news_item_icon_padding_left"
+                    android:paddingRight="@dimen/news_item_icon_padding_right"
+                    android:paddingStart="@dimen/news_item_icon_padding_left"
+                    android:paddingTop="@dimen/news_item_icon_padding_top"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/iv_guide_image"
+                    android:layout_width="@dimen/news_item_icon_align_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/news_item_icon_margin_right"
+                    android:layout_marginRight="@dimen/news_item_icon_margin_right"
+                    android:background="@drawable/icon_pic"
+                    android:paddingBottom="@dimen/news_item_icon_padding_bottom"
+                    android:paddingEnd="@dimen/news_item_icon_padding_right"
+                    android:paddingLeft="@dimen/news_item_icon_padding_left"
+                    android:paddingRight="@dimen/news_item_icon_padding_right"
+                    android:paddingStart="@dimen/news_item_icon_padding_left"
+                    android:paddingTop="@dimen/news_item_icon_padding_top"
+                    android:visibility="gone" />
+
+                <com.enorth.cms.common.EnableSimpleChangeTextView
+                    android:id="@+id/iv_news_review_count"
+                    android:layout_width="@dimen/news_item_icon_align_width"
+                    android:layout_height="@dimen/news_item_icon_align_height"
+                    android:layout_marginEnd="@dimen/news_item_icon_margin_right"
+                    android:layout_marginRight="@dimen/news_item_icon_margin_right"
+                    android:gravity="center"
+                    android:paddingEnd="@dimen/news_item_icon_padding_right"
+                    android:paddingLeft="@dimen/news_item_icon_padding_left"
+                    android:paddingRight="@dimen/news_item_icon_padding_right"
+                    android:paddingStart="@dimen/news_item_icon_padding_left"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
 </LinearLayout>

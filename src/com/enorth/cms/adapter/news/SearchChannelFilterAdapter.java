@@ -114,7 +114,7 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Map<Ne
 	}
 
 	private void addCheckBtnClickEvent(final NewsListImageViewBasicBean bean) {
-		OnTouchListener listViewCheckBtnOnTouchListener = new ImageViewOnTouchListener(bean, ScreenTools.getTouchSlop(activity)) {
+		OnTouchListener listViewCheckBtnOnTouchListener = new ImageViewOnTouchListener(bean, activity) {
 			@Override
 			public boolean onImgChangeBegin(View v) {
 				checkChannel(bean);
@@ -148,7 +148,7 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Map<Ne
 	 * @param bean
 	 */
 	private void addListViewItemClickEvent(final NewsListImageViewBasicBean bean) {
-		CommonOnTouchListener listViewItemOnTouchListener = new ListViewItemOnTouchListener(ScreenTools.getTouchSlop(activity)) {
+		CommonOnTouchListener listViewItemOnTouchListener = new ListViewItemOnTouchListener(activity) {
 			@Override
 			public void onImgChangeDo(View v) {
 				try {

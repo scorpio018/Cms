@@ -8,6 +8,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.consts.UrlConst;
+import com.enorth.cms.enums.HttpBuilderType;
 import com.enorth.cms.utils.HttpUtil;
 import com.enorth.cms.view.news.IChannelSearchView;
 import com.squareup.okhttp.Callback;
@@ -41,7 +42,7 @@ public class ChannelSearchPresenter implements IChannelSearchPresenter {
 					resultString = HttpUtil.checkResponseIsSuccess(r);
 					view.initChannelData(resultString, handler);
 				} catch (Exception e) {
-					Log.e("error", e.getMessage());
+					Log.e("error", e.toString());
 					HttpUtil.responseOnFailure(r, e, handler);
 					e.printStackTrace();
 				}
@@ -53,7 +54,7 @@ public class ChannelSearchPresenter implements IChannelSearchPresenter {
 				HttpUtil.requestOnFailure(r, e, handler);
 			}
 		};
-		HttpUtil.okPost(UrlConst.CHANNEL_SEARCH_POST_URL, params, callback);
+		HttpUtil.okPost(UrlConst.CHANNEL_SEARCH_POST_URL, params, callback, HttpBuilderType.REQUEST_FORM_ENCODE);
 	}
 
 
@@ -80,7 +81,7 @@ public class ChannelSearchPresenter implements IChannelSearchPresenter {
 		};
 		List<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
 		params.add(new BasicNameValuePair("userId", String.valueOf(userId)));
-		HttpUtil.okPost(UrlConst.MY_CHANNEL, params, callback);
+		HttpUtil.okPost(UrlConst.MY_CHANNEL, params, callback, HttpBuilderType.REQUEST_FORM_ENCODE);
 	}
 
 }

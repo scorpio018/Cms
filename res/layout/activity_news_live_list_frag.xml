@@ -14,7 +14,7 @@
         android:layout_alignParentTop="true">
         
         <!-- 标题 -->
-        <include layout="@layout/common_title_frag"/>
+        <include layout="@layout/common_title_iv_tv_iv"/>
         <!-- <RelativeLayout 
             android:id="@+id/newsTitle"
             android:layout_width="match_parent"

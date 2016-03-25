@@ -5,7 +5,6 @@ import java.util.List;
 import com.enorth.cms.common.EnableSimpleChangeButton;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.listener.newslist.newssearch.NewsChannelSubmitOnTouchListener;
-import com.enorth.cms.listener.newslist.title.NewsSearchOnTouchListener;
 import com.enorth.cms.utils.ActivityJumpUtil;
 import com.enorth.cms.utils.ColorUtil;
 import com.enorth.cms.utils.ScreenTools;
@@ -13,7 +12,6 @@ import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.R;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -86,7 +84,7 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 			initEditText();
 			initSubmmitBtn();
 		} catch (Exception e) {
-			Log.e("error", e.getMessage());
+			Log.e("error", e.toString());
 			e.printStackTrace();
 		}
 	}
@@ -101,7 +99,7 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 	 * 初始化返回键事件
 	 */
 	private void initBackEvent() throws Exception {
-		back = (ImageView) findViewById(R.id.titleLeftBtn);
+		back = (ImageView) findViewById(R.id.titleLeftIV);
 		back.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -112,11 +110,11 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 	}
 	
 	private void initMiddelTitle() throws Exception {
-		titleText = (TextView) findViewById(R.id.titleText);
+		titleText = (TextView) findViewById(R.id.titleMiddleTV);
 	}
 	
 	private void initRightTitle() throws Exception {
-		titleRightBtn = (TextView) findViewById(R.id.titleRightBtn);
+		titleRightBtn = (TextView) findViewById(R.id.titleRightTV);
 	}
 	
 	/**
@@ -190,7 +188,7 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 				takeParamsBackToPrevActivity();
 			}
 		};
-		listener.changeColor(R.color.gray_lighter, R.color.common_blue);
+		listener.changeColor(ColorUtil.getGrayLighter(this), ColorUtil.getCommonBlueColor(this));
 		newsSearchSubmitBtn.setOnTouchListener(listener);
 		/*newsSearchSubmitBtn = new Button(this);
 		ViewUtil.initViewByWeight(newsSearchSubmitBtn, 2.7f);
@@ -209,7 +207,7 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 		try {
 			values = getValues();
 		} catch (Exception e) {
-			Toast.makeText(NewsSearchActivity.this, "在NewsSearchActivity进行返回时发生错误：【" + e.getMessage() + "】", Toast.LENGTH_SHORT).show();
+			Toast.makeText(NewsSearchActivity.this, "在NewsSearchActivity进行返回时发生错误：【" + e.toString() + "】", Toast.LENGTH_SHORT).show();
 			e.printStackTrace();
 		}
 		ActivityJumpUtil.takeParamsBackToPrevActivity(this, values, ParamConst.NEWS_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE);

@@ -9,21 +9,21 @@ import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.listener.menu.ContentOnTouchListener;
 import com.enorth.cms.listener.menu.LeftMenuItemOnTouchListener;
 import com.enorth.cms.utils.AnimUtil;
+import com.enorth.cms.utils.ColorUtil;
 import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.utils.SharedPreUtil;
+import com.enorth.cms.view.login.LoginActivity;
 import com.enorth.cms.view.material.MaterialUploadActivity;
 import com.enorth.cms.view.news.NewsListFragActivity;
 import com.enorth.cms.view.news.NewsLiveListFragActivity;
-import com.enorth.cms.view.securitysetting.ChangePwdActivity;
 import com.enorth.cms.view.securitysetting.SecuritySettingActivity;
 import com.nineoldandroids.view.ViewHelper;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,7 +34,6 @@ import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class LeftHorizontalScrollMenu extends HorizontalScrollView {
 	/**
@@ -51,7 +50,7 @@ public class LeftHorizontalScrollMenu extends HorizontalScrollView {
 	private int mMenuWidth;
 	
 	private int mHalfMenuWidth;
-
+	
 	private boolean isOpen;
 
 	private boolean once;
@@ -65,8 +64,6 @@ public class LeftHorizontalScrollMenu extends HorizontalScrollView {
 	private LinearLayout wrapper;
 	private ViewGroup mMenu;
 	private ViewGroup mContent;
-	
-//	private int contentBgColor;
 	
 	private Context context;
 	
@@ -86,29 +83,8 @@ public class LeftHorizontalScrollMenu extends HorizontalScrollView {
 		super(context, attrs, defStyle);
 		this.context = context;
 		inflater = LayoutInflater.from(context);
-//		createNewLayout(context);
-//		initHorizontalScrollMenuView();
 		mScreenWidth = ScreenTools.getPhoneWidth(context);
-//		mMenuRightPadding = 150;
 		mMenuRightPadding = mScreenWidth / 3;
-		/*TypedArray a = context.getTheme().obtainStyledAttributes(attrs,
-				R.styleable.SlidingMenu, defStyle, 0);
-		int n = a.getIndexCount();
-		for (int i = 0; i < n; i++)
-		{
-			int attr = a.getIndex(i);
-			switch (attr)
-			{
-			case R.styleable.SlidingMenu_rightPadding:
-				// 默认50
-				mMenuRightPadding = a.getDimensionPixelSize(attr,
-						(int) TypedValue.applyDimension(
-								TypedValue.COMPLEX_UNIT_DIP, 50f,
-								getResources().getDisplayMetrics()));// 默认为10DP
-				break;
-			}
-		}
-		a.recycle();*/
 	}
 	
 	/**
@@ -117,14 +93,7 @@ public class LeftHorizontalScrollMenu extends HorizontalScrollView {
 	private void initHorizontalScrollMenuView() {
 		wrapper = (LinearLayout) getChildAt(0);
 		initMenu();
-//		contentBgColor = ContextCompat.getColor(getContext(), R.color.dark_gray);
 		curActivityResourceId = SharedPreUtil.getInt(context, ParamConst.CUR_ACTIVITY_RESOURCE_ID);
-		
-		/*if (curActivityResourceId == -1) {
-			curActivityResourceId = R.layout.activity_news_list_frag;
-//			SharedPreUtil.put(context, ParamConst.CUR_ACTIVITY_RESOURCE_ID, curActivityResourceId);
-		}*/
-//		createNewLayout(context, curActivityResourceId);
 	}
 	
 	private void initMenu() {
@@ -139,15 +108,6 @@ public class LeftHorizontalScrollMenu extends HorizontalScrollView {
 			menuIcon.setImageResource(menuBean.getMenuIconResourceId());
 			TextView menuNameTV = (TextView) layout.getChildAt(1);
 			menuNameTV.setText(menuBean.getMenuName());
-			/*layout.setOnClickListener(new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					if (isOpen) {
-						menuClick(menuBean);
-					}
-				}
-			});*/
 			LeftMenuItemOnTouchListener listener = new LeftMenuItemOnTouchListener(ScreenTools.getTouchSlop(context)) {
 				
 				@Override
@@ -155,29 +115,12 @@ public class LeftHorizontalScrollMenu extends HorizontalScrollView {
 					menuClick(menuBean);
 				}
 			};
-			listener.changeColor(R.color.light_blue, R.color.menu_bg);
+			listener.changeColor(ColorUtil.getLightBlue(context), ColorUtil.getMenuBg(context));
 			layout.setOnTouchListener(listener);
 			items.add(layout);
 		}
 		ListAdapter adapter = new CommonListViewAdapter(items);
 		menuListView.setAdapter(adapter);
-	}
-	
-	private void menuClick(MenuBean menuBean) {
-		if (menuBean.getMenuLayoutId() != curActivityResourceId) {
-			if (menuBean.getActivity() == null) {
-				toggle();
-			} else {
-				curActivityResourceId = menuBean.getMenuLayoutId();
-				Intent intent = new Intent();
-				intent.setClass(context, menuBean.getActivity().getClass());
-				context.startActivity(intent);
-//				SharedPreUtil.put(context, ParamConst.CUR_ACTIVITY_RESOURCE_ID, menuBean.getMenuLayoutId());
-				((Activity)context).finish();
-			}
-		} else {
-			toggle();
-		}
 	}
 	
 	private void initUserInfo() {
@@ -189,113 +132,63 @@ public class LeftHorizontalScrollMenu extends HorizontalScrollView {
 		userTypeTV.setText("程序猿");
 	}
 	
-	/**
-	 * 新建一个内容并加到当前的layout中
-	 * @param context
-	 * @param layout
-	 * @return
-	 */
-	/*private void createNewLayout(Context context, int layoutResourceId) {
-		
-		mContent = (ViewGroup) wrapper.getChildAt(1);
-		if (mContent != null) {
-			wrapper.removeViewAt(1);
-		}
-		
-		mContent = (ViewGroup) inflater.inflate(layoutResourceId, null);
-		LinearLayout.LayoutParams initFillLayout = LayoutParamsUtil.initFillLayout();
-		wrapper.addView(mContent, initFillLayout);
-	}*/
-	
 	private void getContent(Context context) {
-		mContent = (ViewGroup) wrapper.getChildAt(1);
-		contentOnTouchListener = new ContentOnTouchListener(ScreenTools.getTouchSlop(getContext())) {
-			
-			@Override
-			public void onImgChangeDo(View v) {
-				if (isOpen) {
-					closeMenu();
+		if (mContent == null) {
+			mContent = (ViewGroup) wrapper.getChildAt(1);
+			contentOnTouchListener = new ContentOnTouchListener(ScreenTools.getTouchSlop(getContext())) {
+				
+				@Override
+				public void onImgChangeDo(View v) {
+					if (isOpen) {
+						closeMenu();
+					}
 				}
-			}
-			
-			@Override
-			public boolean isStopEventTransfer() {
-				if (isOpen) {
-					return true;
-				} else {
-					return false;
+				
+				@Override
+				public boolean isStopEventTransfer() {
+					if (isOpen) {
+						return true;
+					} else {
+						return false;
+					}
 				}
-			}
 
-		};
-	}
-	
-	private Activity getActivityByLayoutId(int layoutId) {
-		List<MenuBean> menuData = getMenuData();
-		for (MenuBean menuBean : menuData) {
-			if (menuBean.getMenuLayoutId() == layoutId) {
-				return menuBean.getActivity();
-			}
-		}
-		return null;
-	}
-	
-	
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		/**
-		 * 显示的设置一个宽度
-		 */
-		if (!once)
-		{
-			initHorizontalScrollMenuView();
-			mMenuWidth = mScreenWidth - mMenuRightPadding;
-			mHalfMenuWidth = mMenuWidth / 2;
-			mMenu.getLayoutParams().width = mMenuWidth;
-			getContent(context);
-			mContent.getLayoutParams().width = mScreenWidth;
-
-		}
-		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-	}
-	
-	@Override
-	protected void onLayout(boolean changed, int l, int t, int r, int b)
-	{
-		super.onLayout(changed, l, t, r, b);
-		if (changed)
-		{
-			// 将菜单隐藏
-			this.scrollTo(mMenuWidth, 0);
-			once = true;
+			};
 		}
 	}
 	
-	@Override
-	public boolean onTouchEvent(MotionEvent ev)
-	{
-		int action = ev.getAction();
-		switch (action)
-		{
-		// Up时，进行判断，如果显示区域大于菜单宽度一半则完全显示，否则隐藏
-		case MotionEvent.ACTION_UP:
-			int scrollX = getScrollX();
-			if (scrollX > mHalfMenuWidth) {
-				closeMenu();
+	private void menuClick(MenuBean menuBean) {
+		if (menuBean.getMenuLayoutId() != curActivityResourceId) {
+			if (menuBean.getActivity() == null) {
+				toggle();
 			} else {
-				openMenu();
+				curActivityResourceId = menuBean.getMenuLayoutId();
+				Intent intent = new Intent();
+				intent.setClass(context, menuBean.getActivity().getClass());
+				context.startActivity(intent);
+				((Activity)context).finish();
 			}
-			return false;
+		} else {
+			toggle();
 		}
-		return super.onTouchEvent(ev);
 	}
-
+	
+	/**
+	 * 切换菜单状态
+	 */
+	public void toggle() {
+		if (isOpen) {
+			closeMenu();
+		} else {
+			openMenu();
+		}
+	}
+	
 	/**
 	 * 打开菜单
 	 */
 	public void openMenu() {
-		AnimUtil.showRefreshFrame(getContext(), mContent, contentOnTouchListener, false);
+		AnimUtil.showRefreshFrame(getContext(), mContent, contentOnTouchListener, false, "");
 		this.smoothScrollTo(0, 0);
 		isOpen = true;
 	}
@@ -309,18 +202,72 @@ public class LeftHorizontalScrollMenu extends HorizontalScrollView {
 		isOpen = false;
 	}
 
-	/**
-	 * 切换菜单状态
-	 */
-	public void toggle()
-	{
-		if (isOpen) {
-			closeMenu();
-		} else {
-			openMenu();
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		/**
+		 * 显示的设置一个宽度
+		 */
+		if (!once) {
+			initHorizontalScrollMenuView();
+			mMenuWidth = mScreenWidth - mMenuRightPadding;
+			mHalfMenuWidth = mMenuWidth / 2;
+			mMenu.getLayoutParams().width = mMenuWidth;
+			getContent(context);
+			mContent.getLayoutParams().width = mScreenWidth;
+
+		}
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+	}
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent ev) {
+		int action = ev.getAction();
+		switch (action) {
+		/*case MotionEvent.ACTION_DOWN:
+			Log.w("dispatchTouchEvent", "手已经摁下屏幕了");
+			downY = ev.getY();
+			downX = ev.getX();
+			break;
+		case MotionEvent.ACTION_MOVE:
+			moveY = ev.getY();
+			moveX = ev.getX();
+			if (isHorizontalScroll == ParamConst.IS_HORIZONTAL_SCROLL_DEFAULT) {
+				boolean refreshAction = ScreenTools.isVerticalAction(downX, downY, moveX, moveY);
+				if (!refreshAction) {
+					isHorizontalScroll = ParamConst.IS_HORIZONTAL_SCROLL_NO;
+					break;
+				} else {
+					isHorizontalScroll = ParamConst.IS_HORIZONTAL_SCROLL_YES;
+				}
+			}
+			if (isHorizontalScroll == ParamConst.IS_HORIZONTAL_SCROLL_NO) {
+				break;
+			}
+			break;*/
+		// Up时，进行判断，如果显示区域大于菜单宽度一半则完全显示，否则隐藏
+		case MotionEvent.ACTION_UP:
+			int scrollX = getScrollX();
+			if (scrollX > mHalfMenuWidth) {
+				closeMenu();
+			} else {
+				openMenu();
+			}
+			return false;
+		}
+		return super.onTouchEvent(ev);
+	}
+	
+	@Override
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		super.onLayout(changed, l, t, r, b);
+		if (changed) {
+			// 将菜单隐藏
+			this.scrollTo(mMenuWidth, 0);
+			once = true;
 		}
 	}
-
+	
 	@Override
 	protected void onScrollChanged(int l, int t, int oldl, int oldt)
 	{
@@ -385,6 +332,8 @@ public class LeftHorizontalScrollMenu extends HorizontalScrollView {
 			MenuBean bean7 = new MenuBean();
 			bean7.setMenuIconResourceId(R.drawable.menu_exit);
 			bean7.setMenuName("退出");
+			bean7.setActivity(new LoginActivity());
+			bean7.setMenuLayoutId(R.layout.activity_login);
 			menuBeans.add(bean7);
 		}
 		return menuBeans;

@@ -1,13 +1,15 @@
 package com.enorth.cms.listener.newslist.subtitle;
 
 import com.enorth.cms.listener.CommonOnTouchListener;
+import com.enorth.cms.utils.ScreenTools;
 
+import android.content.Context;
 import android.view.View;
 
 public abstract class ChooseChannelOnTouchListener extends CommonOnTouchListener {
 	
-	public ChooseChannelOnTouchListener(int touchSlop) {
-		super.touchSlop = touchSlop;
+	public ChooseChannelOnTouchListener(Context context) {
+		super.touchSlop = ScreenTools.getTouchSlop(context);
 	}
 
 	@Override

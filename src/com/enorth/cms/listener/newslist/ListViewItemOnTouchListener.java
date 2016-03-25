@@ -1,14 +1,16 @@
 package com.enorth.cms.listener.newslist;
 
 import com.enorth.cms.listener.CommonOnTouchListener;
+import com.enorth.cms.utils.ScreenTools;
 
-import android.view.MotionEvent;
+import android.app.Activity;
+import android.content.Context;
 import android.view.View;
 
 public abstract class ListViewItemOnTouchListener extends CommonOnTouchListener {
 
-	public ListViewItemOnTouchListener(int touchSlop) {
-		super.touchSlop = touchSlop;
+	public ListViewItemOnTouchListener(Context context) {
+		super.touchSlop = ScreenTools.getTouchSlop(context);
 	}
 	
 	@Override

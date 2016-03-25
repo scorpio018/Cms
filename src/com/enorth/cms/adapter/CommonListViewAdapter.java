@@ -2,17 +2,22 @@ package com.enorth.cms.adapter;
 
 import java.util.List;
 
+import android.content.Context;
 import android.database.DataSetObserver;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 
-public class CommonListViewAdapter implements ListAdapter {
+public class CommonListViewAdapter extends BaseAdapter {
+
 	private List<View> items;
 	
 	public CommonListViewAdapter(List<View> items) {
 		this.items = items;
 	}
+	
 
 	@Override
 	public void registerDataSetObserver(DataSetObserver observer) {
@@ -26,12 +31,11 @@ public class CommonListViewAdapter implements ListAdapter {
 
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return items.size();
 	}
 
 	@Override
-	public Object getItem(int position) {
+	public View getItem(int position) {
 		return items.get(position);
 	}
 
@@ -80,4 +84,14 @@ public class CommonListViewAdapter implements ListAdapter {
 	public boolean isEnabled(int position) {
 		return items.get(position).isEnabled();
 	}
+
+	public List<View> getItems() {
+		return items;
+	}
+
+	public void setItems(List<View> items) {
+		this.items = items;
+	}
+	
+	
 }

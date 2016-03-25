@@ -5,7 +5,7 @@ import android.view.View;
 public class ListViewItemBasicBean {
 	private View view;
 	
-	private String id;
+	private Long id;
 
 	public View getView() {
 		return view;
@@ -15,11 +15,11 @@ public class ListViewItemBasicBean {
 		this.view = view;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	

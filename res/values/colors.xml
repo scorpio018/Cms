@@ -25,6 +25,7 @@
     <color name="bottom_text_color_red">#eb4f38</color>
     <color name="channel_popup_color">#5E5E5E</color>
     <color name="menu_bg">#3A4149</color>
+    <color name="orange">#FF7A18</color>
     
     <color name="result_view">#b0000000</color>
     <color name="viewfinder_mask">#60000000</color>

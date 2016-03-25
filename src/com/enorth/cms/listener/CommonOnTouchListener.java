@@ -88,8 +88,8 @@ public abstract class CommonOnTouchListener implements OnTouchListener {
 			startX = event.getX();
 			startY = event.getY();
 			if (isClickBackgroungColorChange()) {
-				int color = ContextCompat.getColor(v.getContext(), pressColor);
-				v.setBackgroundColor(color);
+//				int color = ContextCompat.getColor(v.getContext(), pressColor);
+				v.setBackgroundColor(pressColor);
 			}
 //			Log.w("MotionEvent.ACTION_DOWN", "【x:" + downX + "、y:" + downY + "】");
 			isClick = true;
@@ -116,8 +116,8 @@ public abstract class CommonOnTouchListener implements OnTouchListener {
 			break;
 		case MotionEvent.ACTION_UP:
 			if (isClickBackgroungColorChange()) {
-				int color = ContextCompat.getColor(v.getContext(), normalColor);
-				v.setBackgroundColor(color);
+//				int color = ContextCompat.getColor(v.getContext(), normalColor);
+				v.setBackgroundColor(normalColor);
 			}
 			if (isClick) {
 				boolean isContinue = onImgChangeBegin(v);
@@ -129,8 +129,8 @@ public abstract class CommonOnTouchListener implements OnTouchListener {
 			break;
 		default:
 			if (isClickBackgroungColorChange()) {
-				int color = ContextCompat.getColor(v.getContext(), normalColor);
-				v.setBackgroundColor(color);
+//				int color = ContextCompat.getColor(v.getContext(), normalColor);
+				v.setBackgroundColor(normalColor);
 			}
 			Log.w("default", String.valueOf(event.getActionMasked()));
 			break;

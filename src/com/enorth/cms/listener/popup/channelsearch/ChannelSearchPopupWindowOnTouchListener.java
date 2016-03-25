@@ -1,14 +1,14 @@
 package com.enorth.cms.listener.popup.channelsearch;
 
 import com.enorth.cms.consts.ParamConst;
-import com.enorth.cms.listener.popup.PopupWindowOnTouchListener;
+import com.enorth.cms.listener.popup.PopupWindowContainCheckMarkOnTouchListener;
 import com.enorth.cms.utils.AnimUtil;
 import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.view.news.ChannelSearchActivity;
 
 import android.widget.LinearLayout;
 
-public abstract class ChannelSearchPopupWindowOnTouchListener extends PopupWindowOnTouchListener {
+public abstract class ChannelSearchPopupWindowOnTouchListener extends PopupWindowContainCheckMarkOnTouchListener {
 
 	private ChannelSearchActivity activity;
 
@@ -18,11 +18,11 @@ public abstract class ChannelSearchPopupWindowOnTouchListener extends PopupWindo
 	}
 
 	@Override
-	public void checkItem(String curCheckedText) {
+	public void checkItem(String tag, String curCheckedText) {
 		activity.getCurChooseChannelTV().setText(curCheckedText);
 		SharedPreUtil.put(activity, ParamConst.CUR_CHOOSE_CHANNEL_TYPE, curCheckedText);
 		activity.setCurChooseChannelType(curCheckedText);
-		AnimUtil.showRefreshFrame(activity, true);
+		AnimUtil.showRefreshFrame(activity, true, "正在切换到" + curCheckedText + "，请稍后");
 		if (curCheckedText.equals(ParamConst.MY_CHANNEL)) {
 			try {
 				activity.isFirstEnter = true;

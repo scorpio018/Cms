@@ -11,13 +11,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public abstract class PopupWindowOnTouchListener extends CommonOnTouchListener {
+public abstract class PopupWindowContainCheckMarkOnTouchListener extends CommonOnTouchListener {
 	
 	private LinearLayout layout;
 	
 	protected Context context;
 
-	public PopupWindowOnTouchListener(Context context, LinearLayout layout) {
+	public PopupWindowContainCheckMarkOnTouchListener(Context context, LinearLayout layout) {
 		super.touchSlop = ScreenTools.getTouchSlop(context);
 		this.layout = layout;
 	}
@@ -37,21 +37,22 @@ public abstract class PopupWindowOnTouchListener extends CommonOnTouchListener {
 		return true;
 	}
 	
-	public abstract void checkItem(String curCheckedText);
+	public abstract void checkItem(String tag, String curCheckedText);
 
 	@Override
 	public void onImgChangeDo(View v) {
 		int childCount = layout.getChildCount();
+		Object curTag = v.getTag();
 		for (int j = 0; j < childCount; j++) {
 			View view = layout.getChildAt(j);
 			ImageView chooseCheckStateIV = (ImageView) view.findViewById(R.id.chooseCheckStateIV);
-
-			if (view.getTag().equals(v.getTag())) {
+			Object tag = view.getTag();
+			if (tag.equals(curTag)) {
 				if (chooseCheckStateIV.getVisibility() == View.GONE) {
 					TextView chooseTV = (TextView) view.findViewById(R.id.chooseText);
 					String chooseText = (String) chooseTV.getText();
 					chooseCheckStateIV.setVisibility(View.VISIBLE);
-					checkItem(chooseText);
+					checkItem(curTag.toString(), chooseText);
 				}
 			} else {
 				if (chooseCheckStateIV.getVisibility() == View.VISIBLE) {

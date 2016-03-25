@@ -3,7 +3,9 @@ package com.enorth.cms.listener.newslist.bottommenu;
 import com.enorth.cms.bean.news_list.BottomMenuBasicBean;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.listener.CommonOnTouchListener;
+import com.enorth.cms.utils.ScreenTools;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,9 +16,9 @@ public abstract class BottomMenuOnTouchListener extends CommonOnTouchListener {
 	
 	private BottomMenuBasicBean bean;
 	
-	public BottomMenuOnTouchListener(BottomMenuBasicBean bean, int touchSlop) {
+	public BottomMenuOnTouchListener(BottomMenuBasicBean bean, Context context) {
 		this.bean = bean;
-		this.touchSlop = touchSlop;
+		this.touchSlop = ScreenTools.getTouchSlop(context);
 	}
 	
 	public BottomMenuOnTouchListener(BottomMenuBasicBean bean, int touchSlop, int canEnableState) {

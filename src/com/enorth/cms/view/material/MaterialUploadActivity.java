@@ -123,7 +123,7 @@ public class MaterialUploadActivity extends BaseFragmentActivity implements IMat
 		presenter = new MaterialUploadPresenter(this);
 		initHandler();
 		initAllMaterialUploadType();
-		curMaterialUploadType = SharedPreUtil.getString(this, ParamConst.CUR_MATERIAL_UPLOAD_TYPE);
+		curMaterialUploadType = SharedPreUtil.getString(this, ParamConst.CUR_MATERIAL_UPLOAD_TYPE, "");
 		if (curMaterialUploadType.equals("")) {
 			curMaterialUploadType = ParamConst.MATERIAL_UPLOAD_TYPE_FROM_PHONE;
 		}
@@ -181,7 +181,7 @@ public class MaterialUploadActivity extends BaseFragmentActivity implements IMat
 							popupWindow = null;
 						}
 					};
-					initPopupWindowItems(layout, listener, allMaterialUploadType, curMaterialUploadType);
+					initPopupWindowItemsContainCheckMark(layout, listener, allMaterialUploadType, curMaterialUploadType);
 				}
 			};
 			/*popupWindowUtil.setY(bottomHeightPx);

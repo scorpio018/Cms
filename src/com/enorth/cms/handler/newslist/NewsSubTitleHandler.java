@@ -2,8 +2,10 @@ package com.enorth.cms.handler.newslist;
 
 import org.json.JSONObject;
 
+import com.enorth.cms.bean.login.ChannelBean;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.handler.UrlRequestCommonHandler;
+import com.enorth.cms.utils.BeanParamsUtil;
 import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.view.R;
 import com.enorth.cms.view.news.NewsCommonActivity;
@@ -27,7 +29,12 @@ public class NewsSubTitleHandler extends UrlRequestCommonHandler {
 
 	@Override
 	public void success(Message msg) throws Exception {
-		JSONObject jo = (JSONObject) msg.obj;
+		ChannelBean bean = (ChannelBean) msg.obj;
+		activity.setNewsSubTitleText(bean.getChannelName());
+		LinearLayout layout = (LinearLayout) activity.findViewById(R.id.newsSubTitleLineLayout);
+		activity.setNewsSubTitleTV((TextView) layout.findViewById(R.id.newsSubTitleText));
+		activity.getNewsSubTitleTV().setText(activity.getNewsSubTitleText());
+		/*JSONObject jo = (JSONObject) msg.obj;
 		long channelId = jo.getLong("deptId");
 		SharedPreUtil.put(activity, ParamConst.CUR_CHANNEL_ID, channelId);
 		SharedPreUtil.put(activity, ParamConst.CUR_CHANNEL_ID_PARENT_ID, jo.getLong("parentId"));
@@ -36,7 +43,7 @@ public class NewsSubTitleHandler extends UrlRequestCommonHandler {
 		activity.setNewsSubTitleTV((TextView) layout.findViewById(R.id.newsSubTitleText));
 		activity.getNewsSubTitleTV().setText(activity.getNewsSubTitleText());
 		SharedPreUtil.put(activity, ParamConst.CUR_CHANNEL_NAME, activity.getNewsSubTitleText());
-		activity.setSubTitleInitFinish(true);
+		activity.setSubTitleInitFinish(true);*/
 	}
 
 	@Override

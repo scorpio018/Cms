@@ -2,7 +2,9 @@ package com.enorth.cms.listener.imageview;
 
 import com.enorth.cms.bean.news_list.NewsListImageViewBasicBean;
 import com.enorth.cms.listener.CommonOnTouchListener;
+import com.enorth.cms.utils.ScreenTools;
 
+import android.content.Context;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -10,9 +12,9 @@ public abstract class ImageViewOnTouchListener extends CommonOnTouchListener {
 	
 	private NewsListImageViewBasicBean bean;
 	
-	public ImageViewOnTouchListener(NewsListImageViewBasicBean bean, int touchSlop) {
+	public ImageViewOnTouchListener(NewsListImageViewBasicBean bean, Context context) {
 		this.bean = bean;
-		super.touchSlop = touchSlop;
+		super.touchSlop = ScreenTools.getTouchSlop(context);
 	}
 	
 	@Override

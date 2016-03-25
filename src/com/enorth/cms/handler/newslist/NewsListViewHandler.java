@@ -3,15 +3,15 @@ package com.enorth.cms.handler.newslist;
 import java.util.List;
 
 import com.enorth.cms.adapter.news.NewsListViewAdapter;
+import com.enorth.cms.bean.news_list.NewsListBean;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.handler.UrlRequestCommonHandler;
+import com.enorth.cms.utils.AnimUtil;
 import com.enorth.cms.view.news.NewsCommonActivity;
-import com.enorth.cms.widget.listview.newslist.NewsListListView;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
-import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.widget.ListAdapter;
 /**
  * 将接口中返回并组装好的List<View>加载到ListView中
  * @author yangyang
@@ -21,58 +21,53 @@ public class NewsListViewHandler extends UrlRequestCommonHandler {
 
 	private NewsCommonActivity activity;
 	
-	private NewsListListView newsListView;
+	private PullToRefreshListView newsListView;
 	
 	private String errorHint;
 	
-	public NewsListViewHandler(NewsCommonActivity activity, NewsListListView newsListView, String errorHint) {
+	public NewsListViewHandler(NewsCommonActivity activity, PullToRefreshListView newsListView, String errorHint) {
 		 this.activity = activity;
 		 this.newsListView = newsListView;
 		 this.errorHint = errorHint;
 	}
-	/*@Override
-	public void handleMessage(Message msg) {
-		super.handleMessage(msg);
-		try {
-			switch (msg.what) {
-			case ParamConst.MESSAGE_WHAT_SUCCESS:
-				final List<View> items = (List<View>) msg.obj;
-				ListAdapter adapter = new NewsListViewAdapter(items);
-				newsListView.setAdapter(adapter);
-				// ViewUtil.setListViewHeightBasedOnChildren(newsListView);
-				break;
-			case ParamConst.MESSAGE_WHAT_NO_DATA:
-				activity.initNewsListData(newsListView, false, errorHint);
-				break;
-			case ParamConst.MESSAGE_WHAT_ERROR:
-				String errorMsg = (String) msg.obj;
-				activity.initNewsListData(newsListView, false, errorMsg);
-				break;
-			default:
-				activity.initNewsListData(newsListView, false, "未知错误");
-				break;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}*/
+	
 	@Override
 	public void success(Message msg) {
-		final List<View> items = (List<View>) msg.obj;
-		ListAdapter adapter = new NewsListViewAdapter(items);
-		newsListView.setAdapter(adapter);
+		final List<NewsListBean> items = (List<NewsListBean>) msg.obj;
+//		ListAdapter adapter = new NewsListViewAdapter(activity, 0, items);
+		NewsListViewAdapter adapter = activity.getListViewAdapter().get(activity.getCurPosition());
+		if (activity.getCurRefreshState() == ParamConst.REFRESHING) {
+			adapter.setItems(items);
+		} else if (activity.getCurRefreshState() == ParamConst.LOADING) {
+			adapter.getItems().addAll(items);
+		} else {
+			
+		}
+		activity.setCurRefreshState(ParamConst.INIT);
+		newsListView.onRefreshComplete();
+		newsListView.getRefreshableView().setSelection(newsListView.getCurFirstShowItemPosition());
+		adapter.notifyDataSetChanged();
+		if (adapter.getItems().size() == 0) {
+			activity.getHintRelative().setVisibility(View.VISIBLE);
+		} else {
+			activity.getHintRelative().setVisibility(View.GONE);
+		}
+//		AnimUtil.hideRefreshFrame();
 	}
 	@Override
 	public void noData(Message msg) throws Exception {
 		activity.initNewsListData(newsListView, false, errorHint);
+		AnimUtil.hideRefreshFrame();
 	}
 	@Override
 	public void error(Message msg) throws Exception {
 		String errorMsg = (String) msg.obj;
 		activity.initNewsListData(newsListView, false, errorMsg);
+		AnimUtil.hideRefreshFrame();
 	}
 	@Override
 	public void resultDefault(Message msg) throws Exception {
 		activity.initNewsListData(newsListView, false, "未知错误");
+		AnimUtil.hideRefreshFrame();
 	}
 }

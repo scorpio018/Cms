@@ -1,9 +1,12 @@
 package com.enorth.cms.utils;
 
+import com.enorth.cms.consts.ParamConst;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.View.MeasureSpec;
 import android.view.ViewConfiguration;
@@ -94,6 +97,15 @@ public class ScreenTools {
 		}
 		return touchSlop;
 	}
+	
+	public static float getDesity(Context context) {
+		if (densityDpi == -1) {
+			// 获取屏幕密度Dpi
+			DisplayMetrics dm = context.getResources().getDisplayMetrics();
+			densityDpi = dm.density;
+		}
+		return densityDpi;
+	}
 	/**
 	 * 将px转换成dip
 	 * @param pixs
@@ -101,11 +113,7 @@ public class ScreenTools {
 	 * @return
 	 */
 	public static int px2dip(int pixs, Context context) {
-		if (densityDpi == -1) {
-			// 获取屏幕密度Dpi
-			DisplayMetrics dm = context.getResources().getDisplayMetrics();
-			densityDpi = dm.density;
-		}
+		getDesity(context);
 		int dip = (int) ((pixs / densityDpi) + 0.5f);
 		return dip;
 	}
@@ -127,11 +135,12 @@ public class ScreenTools {
 	 * @return
 	 */
 	public static int dip2px(int dip, Context context) {
-		if (densityDpi == -1) {
+		/*if (densityDpi == -1) {
 			// 获取屏幕密度Dpi
 			DisplayMetrics dm = context.getResources().getDisplayMetrics();
 			densityDpi = dm.density;
-		}
+		}*/
+		getDesity(context);
 		int pixs = (int) (dip * densityDpi + 0.5f);
 		return pixs;
 	}
@@ -172,5 +181,77 @@ public class ScreenTools {
 			result = specSize;
 		}
 		return result;
+	}
+	
+	/**
+	 * 判断是否为上下滑动操作
+	 * @param downX
+	 * @param downY
+	 * @param xMove
+	 * @param yMove
+	 * @return
+	 */
+	public static boolean isVerticalAction(float downX, float downY, float xMove, float yMove) {
+		double tanValue = getAngleYTanValue(downX, downY, xMove, yMove);
+		double tan = Math.tan(ParamConst.IS_REFRESH_ACTION_ANGLE * Math.PI / 180);
+		Log.i("isRefreshAction", "通过两点组成的直角三角形计算以x作为对边、y作为临边算出的tan值【" + tanValue + "】，再与tan(30°)的值【" + tan + "】进行对比");
+		if (tan <= tanValue) {
+			Log.i("isRefreshAction", "大于tan值，说明不是下拉刷新操作");
+			return false;
+		} else {
+			Log.i("isRefreshAction", "小于tan值，说明是下拉刷新操作");
+			return true;
+		}
+	}
+	
+	/**
+	 * 判断是否为左右滑动操作
+	 * @param downX
+	 * @param downY
+	 * @param xMove
+	 * @param yMove
+	 * @return
+	 */
+	public static boolean isHorizontalScrollAction(float downX, float downY, float xMove, float yMove) {
+		double tanValue = getAngleXTanValue(downX, downY, xMove, yMove);
+		double tan = Math.tan(ParamConst.IS_REFRESH_ACTION_ANGLE * Math.PI / 180);
+		Log.i("isRefreshAction", "通过两点组成的直角三角形计算以x作为对边、y作为临边算出的tan值【" + tanValue + "】，再与tan(30°)的值【" + tan + "】进行对比");
+		if (tan <= tanValue) {
+			Log.i("isRefreshAction", "大于tan值，说明不是左右滑动操作");
+			return false;
+		} else {
+			Log.i("isRefreshAction", "小于tan值，说明是左右滑动操作");
+			return true;
+		}
+	}
+	
+	/**
+	 * 根据Xs、Ys的每一个点之间的计算，最终算出Y轴和斜边夹角的tan（贪帧特）的平均值
+	 * @param downX
+	 * @param downY
+	 * @param xMove
+	 * @param yMove
+	 * @return
+	 */
+	private static double getAngleYTanValue(float downX, float downY, float xMove, float yMove) {
+		// 获取两点，然后根据计算出两点的角度的平均值计算是否为向下拖动的动作
+		double tmpX = Math.abs(downX - xMove);
+		double tmpY = Math.abs(downY - yMove);
+		return tmpX / tmpY;
+	}
+	
+	/**
+	 * 根据Xs、Ys的每一个点之间的计算，最终算出X轴和斜边夹角的tan（贪帧特）的平均值
+	 * @param downX
+	 * @param downY
+	 * @param xMove
+	 * @param yMove
+	 * @return
+	 */
+	private static double getAngleXTanValue(float downX, float downY, float xMove, float yMove) {
+		// 获取两点，然后根据计算出两点的角度的平均值计算是否为向左右滑动的动作
+		double tmpX = Math.abs(downX - xMove);
+		double tmpY = Math.abs(downY - yMove);
+		return tmpY / tmpX;
 	}
 }

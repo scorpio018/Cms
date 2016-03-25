@@ -4,8 +4,9 @@ import com.enorth.cms.bean.BottomMenuOperateDataBasicBean;
 import com.enorth.cms.bean.news_list.NewsLiveListBottomMenuOperateDataBean;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.handler.newslist.NewsSubTitleHandler;
+import com.enorth.cms.listener.color.UnChangeBGColorOnTouchListener;
 import com.enorth.cms.listener.newslist.subtitle.ChooseChannelOnTouchListener;
-import com.enorth.cms.listener.newslist.title.NewsSearchOnTouchListener;
+import com.enorth.cms.utils.ColorUtil;
 import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.R;
@@ -15,7 +16,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 public class NewsLiveListFragActivity extends NewsCommonActivity {
 
@@ -45,14 +45,14 @@ public class NewsLiveListFragActivity extends NewsCommonActivity {
 
 	@Override
 	public void initNewsTitle() {
-		ViewUtil.initMenuTitle(this, R.string.news_live_title_text);
+		ViewUtil.initMenuTitle(this, getCurNewsTitleName());
 		initTitleSearchBtn();
 	}
 	
 	private void initTitleSearchBtn() {
-		ImageView newsTitleNewsSearch = (ImageView) findViewById(R.id.titleRightBtn);
+		ImageView newsTitleNewsSearch = (ImageView) findViewById(R.id.titleRightIV);
 		newsTitleNewsSearch.setBackgroundResource(R.drawable.news_search);
-		NewsSearchOnTouchListener listener = new NewsSearchOnTouchListener(touchSlop) {
+		UnChangeBGColorOnTouchListener listener = new UnChangeBGColorOnTouchListener(this) {
 			
 			@Override
 			public void onImgChangeDo(View v) {
@@ -70,12 +70,12 @@ public class NewsLiveListFragActivity extends NewsCommonActivity {
 		channelId = SharedPreUtil.getLong(this, ParamConst.CUR_CHANNEL_ID);
 		newsSubTitleHandler = new NewsSubTitleHandler(this);
 		try {
-			presenter.requestCurChannelData(channelId, ParamConst.USER_ID, newsSubTitleHandler);
+//			presenter.requestCurChannelData(channelId, ParamConst.USER_ID, newsSubTitleHandler);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		LinearLayout layout = (LinearLayout) findViewById(R.id.newsSubTitleLineLayout);
-		ChooseChannelOnTouchListener listener = new ChooseChannelOnTouchListener(touchSlop) {
+		ChooseChannelOnTouchListener listener = new ChooseChannelOnTouchListener(this) {
 			@Override
 			public void onImgChangeDo(View v) {
 				intent.setClass(NewsLiveListFragActivity.this, ChannelSearchActivity.class);
@@ -92,7 +92,7 @@ public class NewsLiveListFragActivity extends NewsCommonActivity {
 				
 			}
 		};
-		listener.changeColor(R.color.white, R.color.news_sub_title_color_basic);
+		listener.changeColor(ColorUtil.getWhiteColor(this), ColorUtil.getNewsSubTitleColorBasic(this));
 		layout.setOnTouchListener(listener);
 //		OnClickListener listener = new ChooseChannelOnClickListener(this);
 //		layout.setOnClickListener(listener);
@@ -109,4 +109,19 @@ public class NewsLiveListFragActivity extends NewsCommonActivity {
 		return bundle;
 	}
 
+	@Override
+	public int[] setAllNewsTitleText() {
+		// TODO Auto-generated method stub
+		return new int[]{R.string.news_live_title_text, R.string.my_news_title_text};
+	}
+
+	@Override
+	public int initCurNewsType() {
+		return ParamConst.TYPE_NORMAL;
+	}
+
+	@Override
+	public NewsCommonActivity getActivity() {
+		return this;
+	}
 }
