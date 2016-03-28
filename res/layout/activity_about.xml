@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white" >
+
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true">
+        
+        <include layout="@layout/common_title_iv_tv_iv"/>
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/about_margin_top"
+            android:text="@string/about_project_name"
+            android:textSize="24sp"
+            android:textColor="@color/white"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:background="@drawable/project_about"/>
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_margin"
+            android:text="@string/about_version"
+            android:layout_gravity="center_horizontal"/>
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/common_margin"
+            android:layout_marginStart="@dimen/common_margin"
+            android:text="@string/about_add_projects"/>
+        
+        <ImageView 
+	        android:id="@+id/underline"
+	        android:layout_width="match_parent"
+	        android:layout_height="@dimen/common_line_height"
+	        android:background="@color/gray"
+	        />
+        
+        <ListView 
+            android:id="@+id/aboutAddProjectListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></ListView>
+        
+    </LinearLayout>
+    
+</RelativeLayout>

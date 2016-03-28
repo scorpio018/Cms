@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 频道搜索中的频道列表 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:minHeight="@dimen/channel_search_item_height"
+    android:layout_gravity="center_vertical"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    >
+    
+	<RelativeLayout 
+	    android:id="@+id/securitySettingTagItemLayout"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_gravity="center_vertical"
+	    >
+	    <TextView 
+	        android:id="@+id/securitySettingTagItemText"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="@dimen/news_item_news_title_margin_top"
+	        android:layout_marginLeft="@dimen/news_item_news_title_margin_left"
+	        android:layout_marginStart="@dimen/news_item_news_title_margin_left"
+	        android:layout_marginRight="@dimen/news_item_news_title_margin_right"
+	        android:layout_marginEnd="@dimen/news_item_news_title_margin_right"
+	        android:layout_alignParentStart="true"
+	        android:layout_alignParentLeft="true"
+	        android:gravity="center_vertical"
+	        android:textSize="@dimen/news_title_text_size"/>
+	    <!-- </LinearLayout> -->
+	    
+	    <ImageView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentBottom="true"
+	        android:layout_alignParentRight="true"
+	        android:layout_alignParentEnd="true"
+	        android:layout_centerVertical="true"
+	        android:gravity="center_vertical"
+	        android:layout_marginRight="@dimen/news_item_icon_margin_right"
+	        android:layout_marginEnd="@dimen/news_item_icon_margin_right"
+	        android:background="@drawable/common_next"
+	        />
+	    
+	</RelativeLayout>
+	
+</LinearLayout>

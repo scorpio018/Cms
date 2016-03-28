@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle" >
+
+    <!-- android:radius 弧形的半径 -->
+    <corners android:radius="5dip" />
+    
+    <gradient 
+        android:startColor="@color/gray"
+        android:endColor="@color/gray"/>
+    
+    <stroke 
+        android:width="1dip"
+        android:color="@color/gray"/>
+    
+    <!-- padding：Button里面的文字与Button边界的间隔 -->
+    <padding
+        android:bottom="@dimen/common_radius_and_stroke_padding_bottom"
+        android:left="@dimen/common_radius_and_stroke_padding_left"
+        android:right="@dimen/common_radius_and_stroke_padding_right"
+        android:top="@dimen/common_radius_and_stroke_padding_top" />
+    
+</shape>

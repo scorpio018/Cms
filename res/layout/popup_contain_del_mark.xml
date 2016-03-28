@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/popup_window_channel_search_layout_padding_top"
+    android:paddingBottom="@dimen/popup_window_channel_search_layout_padding_bottom"
+    android:layout_margin="@dimen/common_margin">
+    
+    <TextView 
+        android:id="@+id/chooseText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/common_popup_text_size"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="@dimen/common_margin"
+        android:layout_marginLeft="@dimen/common_margin"
+        />
+    
+    <ImageView 
+        android:id="@+id/chooseDelIV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/common_del"
+        android:paddingLeft="@dimen/common_padding"
+        android:paddingStart="@dimen/common_padding"
+        android:paddingRight="@dimen/common_padding"
+        android:paddingEnd="@dimen/common_padding"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"/>
+        
+</RelativeLayout>

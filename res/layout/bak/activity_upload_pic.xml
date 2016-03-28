@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="@dimen/material_upload_bottom_layout_height"
+        android:orientation="vertical">
+        
+        <include layout="@layout/common_title_frag"/>
+        
+        <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" >
+	
+	        <GridView
+	            android:id="@+id/gird_photo_list"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:horizontalSpacing="5dp"
+	            android:verticalSpacing="5dp"
+	            android:numColumns="3" >
+	        </GridView>
+	    </LinearLayout>
+        
+    </LinearLayout>
+    
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/material_upload_bottom_layout_height"
+        android:background="@color/common_blue"
+        android:layout_alignParentBottom="true">
+        
+        <TextView 
+	        android:id="@+id/materialFromTypeTV"
+	        android:layout_width="wrap_content"
+	        android:layout_height="@dimen/material_upload_bottom_layout_height"
+	        android:drawableRight="@drawable/right_bottom"
+	        android:drawableEnd="@drawable/right_bottom"
+	        android:gravity="center_vertical"
+	        android:layout_alignParentLeft="true"
+	        android:layout_alignParentStart="true"
+	        android:textColor="@color/white"/>
+        
+        <LinearLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/material_upload_bottom_layout_height"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            
+            <RadioGroup 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginRight="@dimen/upload_pic_bottom_radio_group_margin_right"
+	        android:layout_marginEnd="@dimen/upload_pic_bottom_radio_group_margin_right"
+	        android:orientation="horizontal">
+	        
+	        <RadioButton 
+	            android:id="@+id/artworkPicRB"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/upload_pic_artwork_pic"/>
+	        
+	        <RadioButton 
+	            android:id="@+id/middlePicRB"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/upload_pic_middle_pic"/>
+	        
+	        <RadioButton 
+	            android:id="@+id/smallPicRB"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="@string/upload_pic_small_pic"
+	            android:checked="true"/>
+	    </RadioGroup>
+	    
+        <!-- <com.enorth.cms.common.EnableSimpleChangeButton
+            android:id="@+id/selected_photo_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="35dip"
+            android:textSize="12dip"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="10dip"
+            android:text="@string/preview"
+            ></com.enorth.cms.common.EnableSimpleChangeButton> -->
+        
+        <TextView
+            android:id="@+id/preview"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textSize="12sp"
+            android:gravity="center_vertical"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/white"
+            android:text="@string/preview" />
+            
+        </LinearLayout>
+        
+    </RelativeLayout>
+    
+
+</RelativeLayout>

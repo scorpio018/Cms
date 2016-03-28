@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black" >
+    
+    <include layout="@layout/common_title_tv_tv_tv"/>
+    
+    <android.support.v4.view.ViewPager
+        android:id="@+id/uploadPicPreviewViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/news_title_height"
+        android:layout_marginBottom="@dimen/material_upload_bottom_layout_height"
+        />
+    
+    <RelativeLayout
+        android:id="@+id/uploadPicPreviewBottomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/material_upload_bottom_layout_height"
+        android:layout_alignParentBottom="true"
+        >
+        
+        <CheckBox 
+            android:id="@+id/determineCB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="@dimen/common_margin"
+            android:layout_marginEnd="@dimen/common_margin"
+            android:textColor="@color/white"
+            android:text="@string/select"/>
+        
+    </RelativeLayout>
+
+</RelativeLayout>

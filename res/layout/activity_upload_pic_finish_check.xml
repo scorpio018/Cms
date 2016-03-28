@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:orientation="vertical">
+    
+    <include layout="@layout/common_title_tv_tv_tv"/>
+    
+    <EditText 
+		android:id="@+id/uploadPicNameTV"
+		android:layout_width="match_parent"
+		android:layout_height="@dimen/upload_pic_finish_add_pic_group_edittext_height"
+		android:inputType="textMultiLine"
+		android:gravity="top|start"
+		android:hint="@string/upload_pic_add_pic_group_hint"
+		android:background="@null"
+		android:lines="6"
+		android:singleLine="false"
+		android:scrollbars="vertical"
+		/>
+	
+	<include layout="@layout/common_grid_view"/>
+    
+	<TextView 
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:textColor="@color/common_blue"
+	    android:text="@string/upload_pic_explanation"/>
+</LinearLayout>
