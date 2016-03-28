@@ -1,5 +1,6 @@
 package com.enorth.cms.view.news;
 
+import android.app.Activity;
 import android.os.Handler;
 
 public interface IChannelSearchView {
@@ -17,6 +18,8 @@ public interface IChannelSearchView {
 	 * @throws Exception
 	 */
 	public void getMyChannel(String result, Handler handler) throws Exception;
+	
+	public ChannelSearchActivity getActivity();
 	
 	public void error(Exception e);
 	

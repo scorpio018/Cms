@@ -41,6 +41,7 @@ import com.enorth.cms.utils.DrawableUtil;
 import com.enorth.cms.utils.PopupWindowUtil;
 import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.utils.SharedPreUtil;
+import com.enorth.cms.utils.StaticUtil;
 import com.enorth.cms.utils.StringUtil;
 import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.BaseFragmentActivity;
@@ -365,8 +366,8 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 		// 获取屏幕的分辨率
 
 		newsTitleAllowLength = ScreenTools.getPhoneWidth(NewsCommonActivity.this) / ParamConst.FONT_WIDTH;
-		channelBean = (ChannelBean) BeanParamsUtil.getObject(ChannelBean.class, this);
-		loginBean = (LoginBean) BeanParamsUtil.getObject(LoginBean.class, this);
+		channelBean = StaticUtil.getCurChannelBean(this);
+		loginBean = StaticUtil.getCurLoginBean(this);
 
 		initNewsListBean();
 		// 将所有的新闻标题进行初始化

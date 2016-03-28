@@ -96,5 +96,6 @@
     <style name="CustomCheckboxTheme" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/news_item_checkbox_selector</item>
     </style>
+    
 
 </resources>

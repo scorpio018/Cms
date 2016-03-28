@@ -268,16 +268,19 @@ public class ParamConst {
 	 * 有导读图
 	 */
 	public static final int HAS_GUIDE_IMAGE_YES = 1;
+	/**
+	 * 没有子频道
+	 */
+	public static final int HAS_CHILDREN_NO = 0;
+	/**
+	 * 有子频道
+	 */
+	public static final int HAS_CHILDREN_YES = 1;
 	
 	/**
 	 * 弹出浮层的默认高度
 	 */
 //	public static final int POP_WINDOW_COMMON_HEIGHT = 200;
-	/**
-	 * 测试使用：用户ID
-	 */
-	@Deprecated
-	public static final int USER_ID = 1;
 	// 由于频道搜索页中有频道列表的ListView和搜索频道的ListView，所以需要考虑到用户是选择哪个上面的频道后进行跳转到下一级或选择频道返回新闻列表中
 	/**
 	 * 当前用户点击的频道item是在ChannelSearchActivity中

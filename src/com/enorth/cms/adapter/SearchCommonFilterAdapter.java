@@ -1,25 +1,17 @@
 package com.enorth.cms.adapter;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.enorth.cms.filter.SearchCommonFilter;
-import com.enorth.cms.filter.news.SearchChannelFilter;
-import com.enorth.cms.view.R;
 
 import android.content.Context;
-import android.os.Handler;
-import android.provider.Contacts.Intents.Insert;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.TextView;
 
 public abstract class SearchCommonFilterAdapter<T> extends BaseAdapter implements Filterable {
 	

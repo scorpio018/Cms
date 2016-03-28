@@ -7,8 +7,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="@dimen/news_operate_btn_layout_height"
         android:orientation="vertical" >
+        <!-- android:layout_marginBottom="@dimen/news_operate_btn_layout_height" -->
 
         <!-- 标题 -->
 
@@ -62,6 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/light_blue"
+                    android:text="@string/company"
                     android:textSize="@dimen/channel_search_common_text_size" />
             </LinearLayout>
 

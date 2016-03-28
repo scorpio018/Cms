@@ -25,9 +25,9 @@ public abstract class ChannelSearchPopupWindowOnTouchListener extends PopupWindo
 		AnimUtil.showRefreshFrame(activity, true, "正在切换到" + curCheckedText + "，请稍后");
 		if (curCheckedText.equals(ParamConst.MY_CHANNEL)) {
 			try {
-				activity.isFirstEnter = true;
+				activity.setFirstEnter(true);
 				activity.getMyChannel();
-				activity.presenter.getMyChannel(ParamConst.USER_ID, activity.myChannelHandler);
+//				activity.presenter.getMyChannel(ParamConst.USER_ID, activity.myChannelHandler);
 			} catch (Exception e) {
 				activity.error(e);
 			}

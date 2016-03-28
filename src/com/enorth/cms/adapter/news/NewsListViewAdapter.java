@@ -2,8 +2,6 @@ package com.enorth.cms.adapter.news;
 
 import java.util.List;
 
-import org.json.JSONException;
-
 import com.enorth.cms.bean.news_list.NewsListBean;
 import com.enorth.cms.common.EnableSimpleChangeTextView;
 import com.enorth.cms.consts.ParamConst;
@@ -150,33 +148,6 @@ public class NewsListViewAdapter extends BaseAdapter {
 	public void setItems(List<NewsListBean> items) {
 		this.items = items;
 	}
-	
-	/**
-	 * 将接口中获取的json数据进行拆解，存入新闻列表UI中
-	 * 
-	 * @param jo
-	 * @param inflater
-	 * @return
-	 * @throws JSONException
-	 */
-	/*private View packageNewsData(JSONObject jo) {
-		
-		// 使用news_item.xml中的布局，存入ListView中
-		ivBean.setView(view);
-		ivBean.setImageView(checkBtn);
-		// 默认左侧不选中
-		addCheckBtnClickEvent(ivBean);
-
-		// 将新闻列表中的每一个item进行封装，并将传入的参数存入到itemBean中
-		NewsListListViewItemBasicBean itemBean = new NewsListListViewItemBasicBean();
-		itemBean.setView(view);
-		itemBean.setId(newsListBean.getNewsId());
-		addListViewItemTouchEvent(itemBean);
-
-		return view;
-	}*/
-	
-	
 
 	class Holder {
 		/**

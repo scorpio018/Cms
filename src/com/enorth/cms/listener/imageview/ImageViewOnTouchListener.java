@@ -10,10 +10,10 @@ import android.view.View;
 
 public abstract class ImageViewOnTouchListener extends CommonOnTouchListener {
 	
-	private NewsListImageViewBasicBean bean;
+//	private NewsListImageViewBasicBean bean;
 	
-	public ImageViewOnTouchListener(NewsListImageViewBasicBean bean, Context context) {
-		this.bean = bean;
+	public ImageViewOnTouchListener(/*NewsListImageViewBasicBean bean, */Context context) {
+//		this.bean = bean;
 		super.touchSlop = ScreenTools.getTouchSlop(context);
 	}
 	
@@ -27,7 +27,7 @@ public abstract class ImageViewOnTouchListener extends CommonOnTouchListener {
 	 */
 	@Override
 	public void onImgChangeDo(View v) {
-		if (bean.isSelected()) {
+		/*if (bean.isSelected()) {
 			bean.getImageView().setImageResource(bean.getImageUncheckResource());
 			bean.getImageView().setSelected(false);
 			bean.setSelected(false);
@@ -37,7 +37,7 @@ public abstract class ImageViewOnTouchListener extends CommonOnTouchListener {
 			bean.getImageView().setImageResource(bean.getImageCheckedResource());
 			bean.getImageView().setSelected(true);
 			bean.setSelected(true);
-		}
+		}*/
 	}
 	
 	@Override

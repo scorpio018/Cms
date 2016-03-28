@@ -4,11 +4,11 @@ import com.enorth.cms.bean.BottomMenuOperateDataBasicBean;
 import com.enorth.cms.bean.news_list.NewsListBottomMenuOperateDataBean;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.handler.newslist.NewsSubTitleHandler;
-import com.enorth.cms.listener.color.ChangeBGColorOnTouchListener;
 import com.enorth.cms.listener.color.UnChangeBGColorOnTouchListener;
 import com.enorth.cms.listener.newslist.subtitle.ChooseChannelOnTouchListener;
 import com.enorth.cms.utils.ColorUtil;
 import com.enorth.cms.utils.SharedPreUtil;
+import com.enorth.cms.utils.StaticUtil;
 import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.R;
 
@@ -42,10 +42,6 @@ public class NewsListFragActivity extends NewsCommonActivity {
 		return new int[]{R.string.normal_news_title_text, R.string.my_news_title_text};
 	}
 	
-	/*@Override
-	public String initCurUrl() {
-		return UrlConst.NEWS_LIST_POST_URL;
-	}*/
 	@Override
 	public int initCurNewsType() {
 		return ParamConst.TYPE_NORMAL;
@@ -75,7 +71,8 @@ public class NewsListFragActivity extends NewsCommonActivity {
 	@Override
 	public void initNewsSubTitle() {
 		// 如果没有频道ID，则存入默认的频道ID
-		channelId = SharedPreUtil.getLong(this, ParamConst.CUR_CHANNEL_ID);
+//		channelId = SharedPreUtil.getLong(this, ParamConst.CUR_CHANNEL_ID);
+		channelId = StaticUtil.getCurChannelBean(this).getChannelId();
 		newsSubTitleHandler = new NewsSubTitleHandler(this);
 		try {
 //			presenter.requestCurChannelData(channelId, ParamConst.USER_ID, newsSubTitleHandler);
@@ -92,25 +89,20 @@ public class NewsListFragActivity extends NewsCommonActivity {
 			@Override
 			public void onImgChangeDo(View v) {
 				intent.setClass(NewsListFragActivity.this, ChannelSearchActivity.class);
-				// 将当前用户的频道传到频道搜索中
-				Bundle bundle = initChannelId();
-				intent.putExtras(bundle);
+				// 将当前用户的频道传到频道搜索中(由于使用了全局静态变量，所以不需要这样传值了)
+//				Bundle bundle = initChannelId();
+//				intent.putExtras(bundle);
 //				thisActivity.startActivity(intent);
 				startActivityForResult(intent, ParamConst.NEWS_LIST_FRAG_ACTIVITY_TO_CHANNEL_SEARCH_ACTIVITY_REQUEST_CODE);
 			}
 
 			@Override
 			public void onTouchBegin() {
-				// TODO Auto-generated method stub
 				
 			}
 		};
 		listener.changeColor(ColorUtil.getWhiteColor(this), ColorUtil.getNewsSubTitleColorBasic(this));
 		layout.setOnTouchListener(listener);
-//		OnClickListener listener = new ChooseChannelOnClickListener(thisActivity);
-//		layout.setOnClickListener(listener);
-		/*newsSubTitleTV = (TextView) layout.findViewById(R.id.newsSubTitleText);
-		newsSubTitleTV.setText(newsSubTitleText);*/
 	}
 	
 	private Bundle initChannelId() {

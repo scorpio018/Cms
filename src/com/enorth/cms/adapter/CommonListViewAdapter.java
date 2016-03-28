@@ -2,13 +2,10 @@ package com.enorth.cms.adapter;
 
 import java.util.List;
 
-import android.content.Context;
 import android.database.DataSetObserver;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 
 public class CommonListViewAdapter extends BaseAdapter {
 

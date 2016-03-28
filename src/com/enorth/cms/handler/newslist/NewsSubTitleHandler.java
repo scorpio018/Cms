@@ -34,16 +34,6 @@ public class NewsSubTitleHandler extends UrlRequestCommonHandler {
 		LinearLayout layout = (LinearLayout) activity.findViewById(R.id.newsSubTitleLineLayout);
 		activity.setNewsSubTitleTV((TextView) layout.findViewById(R.id.newsSubTitleText));
 		activity.getNewsSubTitleTV().setText(activity.getNewsSubTitleText());
-		/*JSONObject jo = (JSONObject) msg.obj;
-		long channelId = jo.getLong("deptId");
-		SharedPreUtil.put(activity, ParamConst.CUR_CHANNEL_ID, channelId);
-		SharedPreUtil.put(activity, ParamConst.CUR_CHANNEL_ID_PARENT_ID, jo.getLong("parentId"));
-		activity.setNewsSubTitleText(jo.getString("deptName"));
-		LinearLayout layout = (LinearLayout) activity.findViewById(R.id.newsSubTitleLineLayout);
-		activity.setNewsSubTitleTV((TextView) layout.findViewById(R.id.newsSubTitleText));
-		activity.getNewsSubTitleTV().setText(activity.getNewsSubTitleText());
-		SharedPreUtil.put(activity, ParamConst.CUR_CHANNEL_NAME, activity.getNewsSubTitleText());
-		activity.setSubTitleInitFinish(true);*/
 	}
 
 	@Override

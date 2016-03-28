@@ -1,22 +1,20 @@
 package com.enorth.cms.presenter.newslist;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.message.BasicNameValuePair;
 
-import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.consts.UrlConst;
 import com.enorth.cms.enums.HttpBuilderType;
 import com.enorth.cms.utils.HttpUtil;
+import com.enorth.cms.utils.LogUtil;
 import com.enorth.cms.view.news.IChannelSearchView;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 
 public class ChannelSearchPresenter implements IChannelSearchPresenter {
@@ -30,9 +28,7 @@ public class ChannelSearchPresenter implements IChannelSearchPresenter {
 	
 
 	@Override
-	public void initChannelData(Long channelId, final Handler handler) throws Exception {
-		List<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
-		params.add(new BasicNameValuePair("channelId", String.valueOf(channelId)));
+	public void initChannelData(List<BasicNameValuePair> params, final Handler handler) throws Exception {
 		Callback callback = new Callback() {
 			
 			@Override
@@ -40,6 +36,7 @@ public class ChannelSearchPresenter implements IChannelSearchPresenter {
 				String resultString = null;
 				try {
 					resultString = HttpUtil.checkResponseIsSuccess(r);
+//					LogUtil.printLog(resultString, view.getActivity());
 					view.initChannelData(resultString, handler);
 				} catch (Exception e) {
 					Log.e("error", e.toString());
@@ -60,7 +57,7 @@ public class ChannelSearchPresenter implements IChannelSearchPresenter {
 
 
 	@Override
-	public void getMyChannel(Integer userId, final Handler handler) throws Exception {
+	public void getMyChannel(List<BasicNameValuePair> params, final Handler handler) throws Exception {
 		Callback callback = new Callback() {
 			
 			@Override
@@ -79,8 +76,6 @@ public class ChannelSearchPresenter implements IChannelSearchPresenter {
 				HttpUtil.requestOnFailure(r, e, handler);
 			}
 		};
-		List<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
-		params.add(new BasicNameValuePair("userId", String.valueOf(userId)));
 		HttpUtil.okPost(UrlConst.MY_CHANNEL, params, callback, HttpBuilderType.REQUEST_FORM_ENCODE);
 	}
 
