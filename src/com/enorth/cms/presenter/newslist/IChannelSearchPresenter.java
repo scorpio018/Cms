@@ -13,13 +13,13 @@ public interface IChannelSearchPresenter {
 	 * @param handler
 	 * @throws Exception
 	 */
-	public void initChannelData(List<BasicNameValuePair> params, Handler handler) throws Exception;
+	public void initChannelData(List<BasicNameValuePair> params, Handler handler);
 	/**
 	 * 切换到我的频道
 	 * @param userId
 	 * @param url
 	 * @throws Exception
 	 */
-	public void getMyChannel(List<BasicNameValuePair> params, Handler handler) throws Exception;
+	public void getMyChannel(List<BasicNameValuePair> params, Handler handler);
 	
 }

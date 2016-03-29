@@ -36,7 +36,7 @@ public class LoginActivity extends BaseFragmentActivity implements ILoginView {
 	/**
 	 * 登录activity的总layout
 	 */
-	private LinearLayout loginLayout;
+//	private LinearLayout loginLayout;
 	
 	private FragmentManager fragmentManager;
 	
@@ -81,7 +81,7 @@ public class LoginActivity extends BaseFragmentActivity implements ILoginView {
     }
 	
 	private void initView() {
-		loginLayout = (LinearLayout) findViewById(R.id.loginLayout);
+//		loginLayout = (LinearLayout) findViewById(R.id.loginLayout);
 	}
 	
 	private void initData() {

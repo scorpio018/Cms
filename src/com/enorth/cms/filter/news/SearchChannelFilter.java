@@ -1,13 +1,11 @@
 package com.enorth.cms.filter.news;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
 
 import com.enorth.cms.adapter.SearchCommonFilterAdapter;
 import com.enorth.cms.bean.login.ChannelBean;
-import com.enorth.cms.bean.news_list.NewsListImageViewBasicBean;
 import com.enorth.cms.filter.SearchCommonFilter;
-import com.enorth.cms.utils.ViewUtil;
 
 import android.content.Context;
 
@@ -23,7 +21,7 @@ public class SearchChannelFilter extends SearchCommonFilter<ChannelBean> {
 		if (constraint == null) {
 			return;
 		}
-		if (value.getChannelName().contains(constraint) || value.getSimpleName().contains(constraint)) {
+		if (value.getChannelName().contains(constraint) || value.getSimpleName().toUpperCase(Locale.CHINA).contains(constraint.toString().toUpperCase(Locale.CHINA))) {
 			values.add(value);
 		}
 		/*NewsListImageViewBasicBean bean = ViewUtil.getNewsListImageViewBasicBean(value, context);

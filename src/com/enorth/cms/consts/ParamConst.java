@@ -447,9 +447,25 @@ public class ParamConst {
 	 */
 	public static String CHANNEL_LEVEL = "channelLevel";
 	/**
+	 * 父频道ID
+	 */
+	public static String CHANNEL_PARENT_ID = "parentId";
+	/**
 	 * 按照频道名的层级存成一个数组
 	 */
 	public static String CHANNEL_NAME_CONTENT = "channelNameContent";
+	/**
+	 * 当前频道的所有父频道数组
+	 */
+	public static String CHANNEL_PARENTS = "parents";
+	/**
+	 * 当前频道
+	 */
+	public static String CHANNEL_SELF = "self";
+	/**
+	 * 当前频道对应的所有子频道
+	 */
+	public static String CHANNEL_CHILDREN = "children";
 	
 	/*---------------------接口中返回的key一览 end-------------------------------------*/
 	

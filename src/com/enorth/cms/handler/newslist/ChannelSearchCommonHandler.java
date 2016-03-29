@@ -16,6 +16,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 
 public abstract class ChannelSearchCommonHandler extends Handler {
@@ -39,7 +40,7 @@ public abstract class ChannelSearchCommonHandler extends Handler {
 //				activity.getChannelListView().setAdapter(listViewAdapter);
 				// 将频道的拼音连同对应的bean存入自定义的adapter中，配合AutoCompleteTextView使用
 				SearchChannelFilterAdapter searchChannelFilterAdapter = new SearchChannelFilterAdapter(
-						activity, R.layout.channel_search_item/*channel_search_edit_item*/, items/*activity.shortNames*/);
+						activity, R.layout.channel_search_item, items);
 				activity.searchChannelET.setAdapter(searchChannelFilterAdapter);
 				activity.searchChannelET.setText("");
 				ViewUtil.keyboardHidden(activity, activity.searchChannelET);
@@ -48,7 +49,7 @@ public abstract class ChannelSearchCommonHandler extends Handler {
 				// 给搜索框弹出的ListView添加点击事件（注释原因：不满足需求，当前需求为：点击左侧勾选图标则进行勾选操作，点击非左侧则判断是否有下一级，如果有，则进入下一级频道；没有则将左侧勾选图标进行选中）
 //				activity.searchChannelET.setOnItemClickListener(new ChannelSearchOnItemClickListener(activity, searchChannelFilterAdapter));
 				activity.setSearchChannelFilterAdapter(searchChannelFilterAdapter);
-				activity.getHintRelative().setVisibility(View.GONE);
+//				activity.getHintRelative().setVisibility(View.GONE);
 			break;
 			case ParamConst.MESSAGE_WHAT_NO_DATA:
 //				activity.initDefaultData("没有数据");
@@ -78,7 +79,8 @@ public abstract class ChannelSearchCommonHandler extends Handler {
 				activity.setCurCheckChannelName("");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			Log.e("ChannelSearchCommonHandler", e.toString());
+			
 		} finally {
 			AnimUtil.hideRefreshFrame();
 		}

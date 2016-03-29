@@ -59,7 +59,7 @@ public abstract class SearchCommonFilter<T> extends Filter {
 	protected void publishResults(CharSequence constraint, FilterResults results) {
 //		adapter.objects.clear();
 		adapter.objects = (List<T>) results.values;
-		adapter.doAfterFilterNewValues(adapter.objects);
+//		adapter.doAfterFilterNewValues(adapter.objects);
 		if (results.count > 0) {
 			adapter.notifyDataSetChanged();
 		} else {

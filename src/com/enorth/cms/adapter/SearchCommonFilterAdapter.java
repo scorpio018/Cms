@@ -56,7 +56,7 @@ public abstract class SearchCommonFilterAdapter<T> extends BaseAdapter implement
 	
 	public abstract void initFilter(Context context, List<T> objects, Object lock, List<T> originalValues);
 	
-	public abstract void doAfterFilterNewValues(List<T> values);
+//	public abstract void doAfterFilterNewValues(List<T> values);
 
 	public void add(T object) {
 		if (originalValues != null) {

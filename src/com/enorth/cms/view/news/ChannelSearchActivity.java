@@ -1,6 +1,7 @@
 package com.enorth.cms.view.news;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ import com.enorth.cms.utils.BeanParamsUtil;
 import com.enorth.cms.utils.ColorUtil;
 import com.enorth.cms.utils.DrawableUtil;
 import com.enorth.cms.utils.ExceptionUtil;
+import com.enorth.cms.utils.JsonUtil;
 import com.enorth.cms.utils.PopupWindowUtil;
 import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.utils.SharedPreUtil;
@@ -145,7 +147,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	/**
 	 * 背景提示信息
 	 */
-	private RelativeLayout hintRelative;
+//	private RelativeLayout hintRelative;
 	/**
 	 * 挡圈选择的标题频道类别
 	 */
@@ -167,21 +169,24 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 */
 	private JSONObject jsonObject;
 	/**
+	 * 接口返回的当前频道
+	 */
+	private JSONObject self;
+	/**
 	 * 频道名称的缩写集合
 	 */
 //	public List<Map<NewsListImageViewBasicBean, List<String>>> shortNames;
 	/**
 	 * 正在加载时的浮层的颜色
 	 */
-	private int channelPopupColor;
+//	private int channelPopupColor;
 	/**
 	 * 判断是否为第一次进入页面（如果是第一次进入页面，需要传入接口的不是频道ID，而是父ID，然后将当前传入的频道进行勾选）
 	 */
 	private boolean isFirstEnter = true;
 	
-	public IChannelSearchPresenter presenter;
+	private IChannelSearchPresenter presenter;
 	
-	public List<NewsListImageViewBasicBean> listViewItem = new ArrayList<NewsListImageViewBasicBean>();
 	/**
 	 * 弹出框工具
 	 */
@@ -198,6 +203,14 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 * 表示是否可以通过点击查询子频道（全部频道为true,我的频道为false）
 	 */
 	private boolean canClickToChild = true;
+	/**
+	 * 点击的事件是否为返回上一级频道（true表示是返回上一级频道，false表示是点击频道进入子频道）
+	 */
+	private boolean isBackToParent;
+	/**
+	 * 按照树形结构排列的频道名称
+	 */
+	private List<String> channelNamesTree;
 	/**
 	 * 弹出框所需的数据
 	 */
@@ -236,7 +249,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 		// 包裹当前频道目录和返回上一级频道的Layout
 		contentAndBackToPrevLayout = (RelativeLayout) findViewById(R.id.contentAndBackToPrevLayout);
 		// 背景提示信息
-		hintRelative = (RelativeLayout) findViewById(R.id.hintRelative);
+//		hintRelative = (RelativeLayout) findViewById(R.id.hintRelative);
 		initViewBaseData();
 	}
 	/**
@@ -271,7 +284,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 		int measuredWidth = channelBackToPrevSearchLayout.getMeasuredWidth();
 		newsTitleAllowLength = (phoneWidth - measuredWidth) / fontWidth;
 		initChooseChannelName();
-		channelPopupColor = ContextCompat.getColor(this, R.color.channel_popup_color);
+//		channelPopupColor = ContextCompat.getColor(this, R.color.channel_popup_color);
 		initHandler();
 		getCurCheckedChannelId();
 		initListViewAdapter();
@@ -407,12 +420,12 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 				try {
 					switch (curChannelListEnableView) {
 					case ParamConst.CUR_CHANNEL_LIST_ENABLE_VIEW_CHANNEL_SEARCH_ACTIVITY:
-						isNotSelectChannel = curCheckChannelId == -1L;
+						isNotSelectChannel = (curCheckChannelId == -1L);
 						confirmClickCommonEvent(isNotSelectChannel, curCheckChannelId, curCheckChannelName, parentChannelId);
 						break;
 					case ParamConst.CUR_CHANNEL_LIST_ENABLE_VIEW_AUTO_COMPLETE_TEXT_VIEW:
-						isNotSelectChannel = searchChannelFilterAdapter != null && searchChannelFilterAdapter.curCheckChannelId == -1L;
-						confirmClickCommonEvent(isNotSelectChannel, searchChannelFilterAdapter.curCheckChannelId, searchChannelFilterAdapter.curCheckChannelName, searchChannelFilterAdapter.parentChannelId);
+						isNotSelectChannel = (searchChannelFilterAdapter != null && searchChannelFilterAdapter.getCurCheckChannelId() == -1L);
+						confirmClickCommonEvent(isNotSelectChannel, searchChannelFilterAdapter.getCurCheckChannelId(), searchChannelFilterAdapter.getCurCheckChannelName(), searchChannelFilterAdapter.getParentChannelId());
 						break;
 					default:
 						ExceptionUtil.simpleExceptionCatch("点击完成时发生错误", new Exception("curChannelListEnableView【" + curChannelListEnableView + "】未知"));
@@ -427,7 +440,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	}
 	
 	private void confirmClickCommonEvent(boolean isNotSelectChannel, long curCheckChannelId, String curCheckChannelName, long parentChannelId) throws JSONException {
-		if (curCheckChannelId == -1L) {
+		if (isNotSelectChannel || curCheckChannelId == -1L) {
 			Toast.makeText(this, "请先选择一个频道", Toast.LENGTH_SHORT).show();
 			return;
 		} else {
@@ -440,13 +453,33 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	}
 	
 	private Bundle initChannelIdForPrevActivity() throws JSONException {
+//		ChannelBean channelBean2 = adapter.getChannelBean();
+//		BeanParamsUtil.saveObject(channelBean2, this);
+//		StaticUtil.saveCurChannelBean(channelBean2);
+		JSONArray jsonArray = JsonUtil.getJSONArray(jsonObject, ParamConst.CHANNEL_PARENTS);
+		ChannelBean cb = null;
+		switch (curChannelListEnableView) {
+		case ParamConst.CUR_CHANNEL_LIST_ENABLE_VIEW_CHANNEL_SEARCH_ACTIVITY:
+			cb = adapter.getChannelBean();
+			break;
+		case ParamConst.CUR_CHANNEL_LIST_ENABLE_VIEW_AUTO_COMPLETE_TEXT_VIEW:
+			cb = searchChannelFilterAdapter.getChannelBean();
+			break;
+		default:
+			ExceptionUtil.simpleExceptionCatch("点击完成时发生错误", new Exception("curChannelListEnableView【" + curChannelListEnableView + "】未知"));
+			break;
+		}
+		JSONObject channelSelf = BeanParamsUtil.saveObjectToJson(cb, this);
+		jsonArray.put(channelSelf);
+		StaticUtil.saveChannel(jsonArray, this);
 		Bundle bundle = new Bundle();
-		bundle.putLong(ParamConst.CUR_CHANNEL_ID, curCheckChannelId);
-		bundle.putString(ParamConst.CUR_CHANNEL_NAME, curCheckChannelName);
-		bundle.putLong(ParamConst.CUR_CHANNEL_ID_PARENT_ID, parentChannelId);
-		String channelContent = getChannelContent(true);
+//		Bundle bundle = new Bundle();
+//		bundle.putLong(ParamConst.CUR_CHANNEL_ID, curCheckChannelId);
+//		bundle.putString(ParamConst.CUR_CHANNEL_NAME, curCheckChannelName);
+//		bundle.putLong(ParamConst.CUR_CHANNEL_ID_PARENT_ID, parentChannelId);
+//		String channelContent = getChannelContent(true);
 //		String channelContent = SharedPreUtil.getString(this, ParamConst.CHANNEL, ParamConst.CHANNEL_NAME_CONTENT, "");
-		bundle.putString(ParamConst.CUR_CHANNEL_CONTENT, channelContent);
+//		bundle.putString(ParamConst.CUR_CHANNEL_CONTENT, channelContent);
 		return bundle;
 	}
 	
@@ -477,13 +510,17 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 			@Override
 			public void onClick(View v) {
 				try {
-					JSONObject curChannel = jsonObject.getJSONObject("curChannel");
-					int channelLevel = curChannel.getInt("deptLevel");
+//					JSONObject curChannel = jsonObject.getJSONObject("self");
+					JSONObject curChannel = JsonUtil.getJSONObject(jsonObject, ParamConst.CHANNEL_SELF);
+//					int channelLevel = curChannel.getInt("channelLevel");
+					int channelLevel = JsonUtil.getInt(curChannel, ParamConst.CHANNEL_LEVEL);
 					if (channelLevel == 0) {
 						Toast.makeText(ChannelSearchActivity.this, "当前已经是最上级", Toast.LENGTH_SHORT).show();
 						return;
 					}
-					channelId = curChannel.getLong("parentId");
+//					channelId = curChannel.getLong("parentId");
+					channelId = JsonUtil.getLong(curChannel, ParamConst.CHANNEL_PARENT_ID);
+					isBackToParent = true;
 					initChannelDefaultData();
 				} catch (Exception e) {
 					onFailure(e);
@@ -496,7 +533,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 * 将刚刚进入页面需要加载的频道列表和当前的频道的数据进行加载
 	 * @throws Exception
 	 */
-	public void initChannelDefaultData() throws Exception {
+	public void initChannelDefaultData() {
 		AnimUtil.showRefreshFrame(this, true, "正在加载，请稍后");
 		String curChooseChannelType = SharedPreUtil.getString(this, ParamConst.CUR_CHOOSE_CHANNEL_TYPE, "");
 		if (curChooseChannelType.equals(ParamConst.ALL_CHANNEL)) {
@@ -511,26 +548,32 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 * 先将搜索框、目录和返回上一级进行显示，再获取所有频道的数据
 	 * @throws Exception
 	 */
-	public void getAllChannel() throws Exception {
+	public void getAllChannel() {
 		channelSearchEditLayout.setVisibility(View.VISIBLE);
 		contentAndBackToPrevLayout.setVisibility(View.VISIBLE);
 		removeAllListData();
 		channelSearchCheckedText.setText("");
 		if (isFirstEnter) {
 			requestChannelSearchUrlBean.setChannelId(parentChannelId);
+		} else {
+			requestChannelSearchUrlBean.setChannelId(channelId);
+		}
+		List<BasicNameValuePair> params = BeanParamsUtil.initData(requestChannelSearchUrlBean, this);
+		presenter.initChannelData(params, allChannelHandler);
+		/*if (isFirstEnter) {
 			List<BasicNameValuePair> params = BeanParamsUtil.initData(requestChannelSearchUrlBean, this);
 			presenter.initChannelData(params, allChannelHandler);
 		} else {
-			List<BasicNameValuePair> params = BeanParamsUtil.initData(null, this);
+			List<BasicNameValuePair> params = BeanParamsUtil.initData(requestChannelSearchUrlBean, this);
 			presenter.initChannelData(params, allChannelHandler);
-		}
+		}*/
 		
 	}
 	/**
 	 * 先将搜索框、目录和返回上一级进行隐藏，再获得我的频道的数据
 	 * @throws Exception
 	 */
-	public void getMyChannel() throws Exception {
+	public void getMyChannel() {
 		channelSearchEditLayout.setVisibility(View.GONE);
 		contentAndBackToPrevLayout.setVisibility(View.GONE);
 		removeAllListData();
@@ -551,8 +594,8 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	
 	@Override
 	public void initChannelData(String result, Handler handler) throws Exception {
-		// TODO 由于正式接口返回的数据和测试接口的数据不同，所以需要进行修改
-		jsonObject = new JSONObject(result);
+//		jsonObject = new JSONObject(result);
+		jsonObject = JsonUtil.initJsonObject(result);
 		initChannelDataListView(jsonObject, handler);
 	}
 	
@@ -567,8 +610,9 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 * @param jsonObject
 	 * @throws JSONException
 	 */
-	private void initChannelDataListView(JSONObject jsonObject, Handler handler) throws JSONException {
-		JSONArray jsonArray = jsonObject.getJSONArray("children");
+	private void initChannelDataListView(JSONObject jsonObject, Handler handler) {
+//		JSONArray jsonArray = jsonObject.getJSONArray("children");
+		JSONArray jsonArray = JsonUtil.getJSONArray(jsonObject, ParamConst.CHANNEL_CHILDREN);
 		canClickToChild = true;
 		initDataListView(jsonArray, handler);
 	}
@@ -578,7 +622,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 		initDataListView(jsonArray, handler);
 	}
 	
-	private void initDataListView(JSONArray jsonArray, Handler handler) throws JSONException {
+	private void initDataListView(JSONArray jsonArray, Handler handler) {
 		List<ChannelBean> items = setDataToItems(jsonArray);
 		if (items.size() == 0) {
 			handler.sendEmptyMessage(ParamConst.MESSAGE_WHAT_NO_DATA);
@@ -612,157 +656,11 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	}
 	
 	/**
-	 * 向ListView中的每一个item存值
-	 * @param jsonArray
-	 * @param canClick 判断是否可以显示可点击进入下一级频道的标识
-	 * @return
-	 * @throws JSONException
-	 */
-	/*private synchronized List<View> setDataToItems(JSONArray jsonArray, boolean canClick) throws JSONException {
-		List<View> views = new ArrayList<View>();
-		listViewItem = new ArrayList<NewsListImageViewBasicBean>();
-		shortNames = new ArrayList<Map<NewsListImageViewBasicBean,List<String>>>();
- 		LayoutInflater inflater = LayoutInflater.from(this);
-		int length = jsonArray.length();
-		for (int i = 0; i < length; i++) {
-			// 将重要数据封装到bean中
-			NewsListImageViewBasicBean ivBean = new NewsListImageViewBasicBean();
-			LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.channel_search_item, null);
-			JSONObject jo = jsonArray.getJSONObject(i);
-			Long channelId = jo.getLong("deptId");
-			String channelName = jo.getString("deptName");
-			ivBean.setId(String.valueOf(channelId));
-			ivBean.setName(channelName);
-			ivBean.setParentId(jo.getSting("parentId"));
-			boolean isHasChild = jo.getBoolean("hasChild");
-			ivBean = initChannelBeanCommon(ivBean, layout, canClick, isHasChild);
-
-			initCheckBtnState(ivBean);
-			addCheckBtnClickEvent(ivBean);
-			addListViewItemClickEvent(ivBean);
-			saveShortNames(jo.getString("pinyin"), ivBean);
-			listViewItem.add(ivBean);
-			views.add(layout);
-		}
-		return views;
-	}*/
-	
-	/**
-	 * 在频道显示和频道搜索时可以共用的bean中参数存入的方法
-	 * @param bean
-	 * @param view 每一个item对应的view
-	 * @param canClick 判断是否可以进入下一级频道的标识，在“我的频道”中，不允许进入下级频道；在频道搜索中，允许进入下级频道
-	 * @param isHasChild 当前频道是否有子频道
-	 * @return
-	 */
-	/*public NewsListImageViewBasicBean initChannelBeanCommon(NewsListImageViewBasicBean bean, View view, boolean canClick, boolean isHasChild) {
-		TextView channelNameTv = (TextView) view.findViewById(R.id.tv_news_title);
-		channelNameTv.setText(bean.getName());
-		bean.setView(view);
-		ImageView imageView = (ImageView) view.findViewById(R.id.iv_check_btn);
-		bean.setImageView(imageView);
-		// 判断是否可以进入下一级频道的标识，在“我的频道”中，不允许进入下级频道；在频道搜索中，允许进入下级频道
-		if (canClick) {
-			ImageView next = (ImageView) view.findViewById(R.id.iv_news_next);
-			bean.setHasChild(isHasChild);
-			if (isHasChild) {
-				next.setVisibility(View.VISIBLE);
-				bean.setCanClick(true);
-			} else {
-				next.setVisibility(View.GONE);
-				bean.setCanClick(false);
-			}
-		}
-		bean.setImageCheckedResource(R.drawable.check_btn);
-		bean.setImageUncheckResource(R.drawable.uncheck_btn);
-//		addCheckBtnClickEvent(bean);
-//		addListViewItemClickEvent(bean);
-		return bean;
-	}*/
-	
-	/**
-	 * 给ListView中的item添加点击事件（点击搜索下一级）
-	 * @param bean
-	 */
-	/*private void addListViewItemClickEvent(final NewsListImageViewBasicBean bean) {
-		CommonOnTouchListener listViewItemOnTouchListener = new ListViewItemOnTouchListener(this) {
-			@Override
-			public void onImgChangeDo(View v) {
-				try {
-					channelClick(bean);
-				} catch (Exception e) {
-					error(e);
-				}
-			}
-			
-			@Override
-			public boolean isClickBackgroungColorChange() {
-				return false;
-			}
-
-			@Override
-			public void onTouchBegin() {
-				// 将焦点定位到搜索栏中
-				curChannelListEnableView = ParamConst.CUR_CHANNEL_LIST_ENABLE_VIEW_CHANNEL_SEARCH_ACTIVITY;
-				
-			}
-		};
-//		listViewItemOnTouchListener.changeColor(R.color.bg_gray_press, R.color.bg_gray_default);
-		bean.getView().setOnTouchListener(listViewItemOnTouchListener);
-		CommonOnClickListener listViewItemOnClickListener = new CommonOnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				try {
-					channelClick(bean);
-				} catch (Exception e) {
-					error(e);
-				}
-			}
-		};
-		bean.getView().setOnClickListener(listViewItemOnClickListener);
-	}*/
-	
-	/*private void saveShortNames(String shortName, NewsListImageViewBasicBean bean) {
-		Map<NewsListImageViewBasicBean, List<String>> resultMap = new HashMap<NewsListImageViewBasicBean, List<String>>();
-		String[] splitShortNames = shortName.split(",");
-		List<String> resultNames = new ArrayList<String>();
-		for (String str : splitShortNames) {
-			resultNames.add(str);
-		}
-		NewsListImageViewBasicBean resultBean = copyBeanSimple(bean);
-		resultMap.put(resultBean, resultNames);
-		shortNames.add(resultMap);
-	}*/
-	
-	/*private void channelClick(NewsListImageViewBasicBean bean) throws Exception {
-		if (bean.isCanClick()) {
-			channelId = Long.parseLong(bean.getId());
-			channelName = bean.getName();
-			initChannelDefaultData();
-		} else {
-			curCheckChannelId = Long.parseLong(bean.getId());
-			curCheckChannelName = bean.getName();
-			checkChannel(bean);
-			if (bean.isSelected()) {
-				bean.getImageView().setImageResource(bean.getImageUncheckResource());
-				bean.getImageView().setSelected(false);
-				bean.setSelected(false);
-			} else {
-//				checkBtn.setImageResource(R.drawable.check_btn);
-//				checkBtn.setSelected(true);
-				bean.getImageView().setImageResource(bean.getImageCheckedResource());
-				bean.getImageView().setSelected(true);
-				bean.setSelected(true);
-			}
-		}
-	}*/
-	
-	/**
 	 * 获取当前登录用户对应的频道值（原逻辑为：获取传入该activity的新闻ID和对应的父ID）
 	 */
 	private void getCurCheckedChannelId() {
 		channelId = channelBean.getChannelId();
+		channelName = channelBean.getChannelName();
 		parentChannelId = channelBean.getParentId();
 		/*Intent intent = getIntent();
 		Bundle extras = intent.getExtras();
@@ -773,30 +671,15 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	}
 	
 	/**
-	 * 获取存入SharedPreferences中的当前选中的频道信息(注解原因：由于有很多activity都会进入这个搜索频道页，为了适配，此方法不适用)
-	 */
-	/*private void getCurCheckedChannelId() {
-		channelId = SharedPreUtil.getLong(thisActivity, ParamConst.CUR_CHANNEL_ID);
-		if (channelId == -1L) {
-			SharedPreUtil.resetChannelIdData(thisActivity);
-			channelName = ParamConst.DEFAULT_CHANNEL_NAME;
-		} else {
-			channelName = SharedPreUtil.getString(thisActivity, ParamConst.CUR_CHANNEL_NAME);
-			parentChannelId = SharedPreUtil.getLong(thisActivity, ParamConst.CUR_CHANNEL_ID_PARENT_ID);
-		}
-	}*/
-	
-	/**
 	 * 重置频道目录
 	 * @param useCurChannelName 判断是否在目录的最后用的当前频道的频道名
 	 * @throws JSONException
 	 */
 	public void resetCurChannelSearchCheckedText(boolean useCurChannelName) throws JSONException {
-		channelName = getChannelContent(useCurChannelName);
+		self = JsonUtil.getJSONObject(jsonObject, ParamConst.CHANNEL_SELF);
+		channelName = getChannelContent();
 		channelSearchCheckedText.setText(channelName);
-		JSONObject jo = jsonObject.getJSONObject("curChannel");
-		parentChannelId = jo.getLong("deptId");
-		AnimUtil.hideRefreshFrame();
+		parentChannelId = JsonUtil.getLong(self, ParamConst.CHANNEL_PARENT_ID);
 	}
 	
 	/**
@@ -806,27 +689,32 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 * @return
 	 * @throws JSONException
 	 */
-	private String getChannelContent(boolean useCurChannelName) throws JSONException {
-		String[] channelNamesTree = StaticUtil.getChannelNamesTree(this);
-		int length = channelNamesTree.length;
-//		JSONArray ja = jsonObject.getJSONArray("channelContent");
-//		JSONObject jo = jsonObject.getJSONObject("curChannel");
-//		int length = ja.length();
-		
-//		JSONObject firstDept = ja.getJSONObject(0);
-//		JSONObject lastDept = ja.getJSONObject(length - 1);
-		String lastDeptName = null;
-		if (useCurChannelName) {
-			lastDeptName = channelName;
+	private String getChannelContent() {
+		if (channelNamesTree == null) {
+//			channelNamesTree = Arrays.asList(StaticUtil.getChannelNamesTree(this));
+			String[] names = StaticUtil.getChannelNamesTree(this);
+			int length = names.length - 1;
+			
+			channelNamesTree = new ArrayList<String>();
+			for (int i = 0; i < length; i++) {
+				channelNamesTree.add(names[i]);
+			}
+//			channelNamesTree.remove(channelNamesTree.size() - 1);
 		} else {
-			lastDeptName = channelNamesTree[length - 1];/*jo.getString("deptName");;*/
+			if (isBackToParent) {
+				channelNamesTree.remove(channelNamesTree.size() - 1);
+			} else {
+				channelNamesTree.add(JsonUtil.getString(self, ParamConst.CHANNEL_NAME));
+			}
 		}
+		int length = channelNamesTree.size();
+		String lastDeptName = channelNamesTree.get(length - 1);
 		if (length == 1) {
-			channelName = substrText(channelName, newsTitleAllowLength);
+			channelName = substrText(channelNamesTree.get(0), newsTitleAllowLength);
 		} else if (length == 2) {
-			channelName = substrText(channelNamesTree[0], newsTitleAllowLength / 2 - 1) + "/" + substrText(lastDeptName, newsTitleAllowLength / 2 - 1);
+			channelName = substrText(channelNamesTree.get(0), newsTitleAllowLength / 2 - 1) + "/" + substrText(lastDeptName, newsTitleAllowLength / 2 - 1);
 		} else {
-			channelName = substrText(channelNamesTree[0], newsTitleAllowLength / 2 - 3) + "/../" + substrText(lastDeptName, newsTitleAllowLength / 2 - 3);
+			channelName = substrText(channelNamesTree.get(0), newsTitleAllowLength / 2 - 3) + "/../" + substrText(lastDeptName, newsTitleAllowLength / 2 - 3);
 		}
 		return channelName;
 	}
@@ -839,21 +727,6 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 		}
 	}
 	
-	/**
-	 * 用于在搜索频道时需要通过当前显示的频道进行搜索，所以需要重新实例化一个新的bean，并将基本信息存入新的bean中，用于adapter存入新的控件
-	 * @param bean
-	 * @return
-	 */
-	private NewsListImageViewBasicBean copyBeanSimple(NewsListImageViewBasicBean bean) {
-		NewsListImageViewBasicBean resultBean = new NewsListImageViewBasicBean();
-		resultBean.setId(bean.getId());
-		resultBean.setName(bean.getName());
-		resultBean.setParentId(bean.getParentId());
-		resultBean.setHasChild(bean.isHasChild());
-		resultBean.setCanClick(bean.isCanClick());
-		return resultBean;
-	}
-
 	@Override
 	public ChannelSearchActivity getActivity() {
 		return this;
@@ -878,7 +751,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	
 	@Override
 	public void onFailure(Exception e) {
-		Log.e("服务器异常", e.toString());
+		Log.e("ChannelSearchActivity onFailure", "服务器异常:" + e.toString());
 		Message message = new Message();
 		String errorMsg = e.toString();
 		if (errorMsg == null) {
@@ -1009,12 +882,21 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 		this.searchChannelFilterAdapter = searchChannelFilterAdapter;
 	}
 
-	public RelativeLayout getHintRelative() {
-		return hintRelative;
+	public List<String> getChannelNamesTree() {
+		return channelNamesTree;
 	}
 
-	public void setHintRelative(RelativeLayout hintRelative) {
-		this.hintRelative = hintRelative;
+	public void setChannelNamesTree(List<String> channelNamesTree) {
+		this.channelNamesTree = channelNamesTree;
 	}
 
+	public boolean isBackToParent() {
+		return isBackToParent;
+	}
+
+	public void setBackToParent(boolean isBackToParent) {
+		this.isBackToParent = isBackToParent;
+	}
+	
+	
 }

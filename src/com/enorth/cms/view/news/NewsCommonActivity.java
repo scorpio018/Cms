@@ -334,7 +334,20 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 			break;
 		case ParamConst.NEWS_LIST_FRAG_ACTIVITY_TO_CHANNEL_SEARCH_ACTIVITY_REQUEST_CODE:
 			if (resultCode == ParamConst.CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE) {
-				Bundle extras = data.getExtras();
+				channelBean = StaticUtil.getCurChannelBean(this);
+				newsListBean.setChannelId(channelBean.getChannelId());
+				newsSubTitleTV.setText(channelBean.getChannelName());
+				NewsListViewAdapter newsListViewAdapter = listViewAdapter.get(curPosition);
+				newsListViewAdapter.getItems().clear();
+				newsListViewAdapter.notifyDataSetChanged();
+				listViews.get(curPosition).postDelayed(new Runnable() {
+					
+					@Override
+					public void run() {
+						listViews.get(curPosition).setRefreshing();
+					}
+				}, 100);
+				/*Bundle extras = data.getExtras();
 				if (extras.containsKey(ParamConst.CUR_CHANNEL_ID)
 						&& extras.containsKey(ParamConst.CUR_CHANNEL_ID_PARENT_ID)
 						&& extras.containsKey(ParamConst.CUR_CHANNEL_NAME)) {
@@ -345,7 +358,7 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 					SharedPreUtil.put(NewsCommonActivity.this, ParamConst.CUR_CHANNEL_ID, channelId);
 					SharedPreUtil.put(NewsCommonActivity.this, ParamConst.CUR_CHANNEL_ID_PARENT_ID, parentId);
 					SharedPreUtil.put(NewsCommonActivity.this, ParamConst.CUR_CHANNEL_NAME, newsSubTitleText);
-				}
+				}*/
 			}
 		default:
 			super.onActivityResult(requestCode, resultCode, data);
@@ -593,12 +606,17 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 			initData(newsListViewHandler, curUrl);
 		} else {
 			NewsListViewAdapter adapter = listViewAdapter.get(curPosition);
-			adapter.setItems(new ArrayList<NewsListBean>());
-			adapter.notifyDataSetChanged();
+//			adapter.setItems(new ArrayList<NewsListBean>());
+//			adapter.notifyDataSetChanged();
 			if (StringUtil.isNotEmpty(errorHint)) {
-				hintRelative.setVisibility(View.VISIBLE);
+				if (adapter.getItems().size() == 0) {
+					hintRelative.setVisibility(View.VISIBLE);
+				} else {
+					hintRelative.setVisibility(View.GONE);
+				}
 				ViewUtil.showAlertDialog(this, errorHint);
 			}
+			listViews.get(curPosition).onRefreshComplete();
 		}
 	}
 	
@@ -621,17 +639,20 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	public void initReturnJsonData(String result, Handler handler) {
 		List<NewsListBean> resultView = new ArrayList<NewsListBean>();
 		try {
-			JSONArray jsonArray = new JSONArray(result);
-			int length = jsonArray.length();
-			for (int i = 0; i < length; i++) {
-				JSONObject jo = jsonArray.getJSONObject(i);
-//				View view = packageNewsData(jo);
-				NewsListBean bean = packageNewsData(jo);
-				if (bean == null) {
-					throw new JSONException("数据错误");
+			if (StringUtil.isNotEmpty(result)) {
+				JSONArray jsonArray = new JSONArray(result);
+				int length = jsonArray.length();
+				for (int i = 0; i < length; i++) {
+					JSONObject jo = jsonArray.getJSONObject(i);
+//					View view = packageNewsData(jo);
+					NewsListBean bean = packageNewsData(jo);
+					if (bean == null) {
+						throw new JSONException("数据错误");
+					}
+					resultView.add(bean);
 				}
-				resultView.add(bean);
 			}
+			
 		} catch (JSONException e) {
 			Log.e("NewsCommonActivity.initData()Json转换成view时发生错误", e.toString());
 			e.printStackTrace();
@@ -661,27 +682,6 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 		}
 		changeCanEnableState();
 	}
-	
-	/**
-	 * 给新闻列表的每一条新闻添加点击事件
-	 * 
-	 * @param bean
-	 */
-	/*public CommonOnTouchListener initListViewItemTouchEvent(final NewsListListViewItemBasicBean bean) {
-		CommonOnTouchListener listViewItemOnTouchListener = new ListViewItemOnTouchListener(this) {
-			@Override
-			public void onImgChangeDo(View v) {
-				Toast.makeText(NewsCommonActivity.this, "点击的新闻ID为【" + bean.getId() + "】", Toast.LENGTH_SHORT).show();
-			}
-
-			@Override
-			public void onTouchBegin() {
-
-			}
-		};
-		listViewItemOnTouchListener.changeColor(ColorUtil.getBgGrayPress(this), ColorUtil.getBgGrayDefault(this));
-		bean.getView().findViewById(R.id.newsTextLayout).setOnTouchListener(listViewItemOnTouchListener);
-	}*/
 
 	/**
 	 * 根据当前选中的标头按钮的位置改变需要改变样式的按钮，并清除需要清除的ListView中的数据（只要在当前ListView前后超过一个间隔，则清空）

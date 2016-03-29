@@ -28,7 +28,7 @@ public class ChannelSearchPresenter implements IChannelSearchPresenter {
 	
 
 	@Override
-	public void initChannelData(List<BasicNameValuePair> params, final Handler handler) throws Exception {
+	public void initChannelData(List<BasicNameValuePair> params, final Handler handler) {
 		Callback callback = new Callback() {
 			
 			@Override
@@ -57,7 +57,7 @@ public class ChannelSearchPresenter implements IChannelSearchPresenter {
 
 
 	@Override
-	public void getMyChannel(List<BasicNameValuePair> params, final Handler handler) throws Exception {
+	public void getMyChannel(List<BasicNameValuePair> params, final Handler handler) {
 		Callback callback = new Callback() {
 			
 			@Override

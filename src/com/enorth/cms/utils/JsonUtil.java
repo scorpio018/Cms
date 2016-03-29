@@ -15,13 +15,13 @@ public class JsonUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static JSONArray initJsonArray(String str) throws Exception {
+	public static JSONArray initJsonArray(String str) {
 		try {
 			JSONArray jsonArray = new JSONArray(str);
 			return jsonArray;
 		} catch (Exception e) {
 			Log.e("初始化JsonArray时发生异常", "【" + str + "】无法转换成JsonArray");
-			interException();
+//			interException();
 			return null;
 		}
 	}
@@ -32,13 +32,13 @@ public class JsonUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static JSONObject initJsonObject(String str) throws Exception {
+	public static JSONObject initJsonObject(String str) {
 		try {
 			JSONObject jsonObject = new JSONObject(str);
 			return jsonObject;
 		} catch (Exception e) {
 			Log.e("初始化JsonObject时发生异常", "【" + str + "】无法转换成JsonObject");
-			interException();
+//			interException();
 			return null;
 		}
 	}
@@ -50,12 +50,12 @@ public class JsonUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static int getInt(JSONObject jsonObject, String key) throws Exception {
+	public static int getInt(JSONObject jsonObject, String key) {
 		try {
 			return jsonObject.getInt(key);
 		} catch (Exception e) {
 			Log.e("从JsonObject中获取int值时发生异常", "【" + jsonObject + "】中没有key为【" + key + "】的值");
-			interException();
+//			interException();
 			return -1;
 		}
 	}
@@ -67,12 +67,12 @@ public class JsonUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static long getLong(JSONObject jsonObject, String key) throws Exception {
+	public static long getLong(JSONObject jsonObject, String key) {
 		try {
 			return jsonObject.getLong(key);
 		} catch (Exception e) {
 			Log.e("从JsonObject中获取long值时发生异常", "【" + jsonObject + "】中没有key为【" + key + "】的值");
-			interException();
+//			interException();
 			return -1;
 		}
 	}
@@ -84,12 +84,12 @@ public class JsonUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static boolean getBoolean(JSONObject jsonObject, String key) throws Exception {
+	public static boolean getBoolean(JSONObject jsonObject, String key) {
 		try {
 			return jsonObject.getBoolean(key);
 		} catch (Exception e) {
 			Log.e("从JsonObject中获取boolean值时发生异常", "【" + jsonObject + "】中没有key为【" + key + "】的值");
-			interException();
+//			interException();
 			return false;
 		}
 	}
@@ -101,12 +101,12 @@ public class JsonUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static double getDouble(JSONObject jsonObject, String key) throws Exception {
+	public static double getDouble(JSONObject jsonObject, String key) {
 		try {
 			return jsonObject.getDouble(key);
 		} catch (Exception e) {
 			Log.e("从JsonObject中获取double值时发生异常", "【" + jsonObject + "】中没有key为【" + key + "】的值");
-			interException();
+//			interException();
 			return -1;
 		}
 	}
@@ -118,12 +118,12 @@ public class JsonUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String getString(JSONObject jsonObject, String key) throws Exception {
+	public static String getString(JSONObject jsonObject, String key) {
 		try {
 			return jsonObject.getString(key);
 		} catch (Exception e) {
 			Log.e("从JsonObject中获取String值时发生异常", "【" + jsonObject + "】中没有key为【" + key + "】的值");
-			interException();
+//			interException();
 			return null;
 		}
 	}
@@ -135,12 +135,12 @@ public class JsonUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static JSONObject getJSONObject(JSONObject jsonObject, String key) throws Exception {
+	public static JSONObject getJSONObject(JSONObject jsonObject, String key) {
 		try {
 			return jsonObject.getJSONObject(key);
 		} catch (Exception e) {
 			Log.e("从JsonObject中获取JSONObject值时发生异常", "【" + jsonObject + "】中没有key为【" + key + "】的值");
-			interException();
+//			interException();
 			return null;
 		}
 	}
@@ -152,12 +152,12 @@ public class JsonUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static JSONArray getJSONArray(JSONObject jsonObject, String key) throws Exception {
+	public static JSONArray getJSONArray(JSONObject jsonObject, String key) {
 		try {
 			return jsonObject.getJSONArray(key);
 		} catch (Exception e) {
 			Log.e("从JsonObject中获取JSONArray值时发生异常", "【" + jsonObject + "】中没有key为【" + key + "】的值");
-			interException();
+//			interException();
 			return null;
 		}
 	}
@@ -169,12 +169,12 @@ public class JsonUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static int getInt(JSONArray jsonArray, int position) throws Exception {
+	public static int getInt(JSONArray jsonArray, int position) {
 		try {
 			return jsonArray.getInt(position);
 		} catch (Exception e) {
 			Log.e("从JSONArray中获取int值时发生异常", "【" + jsonArray + "】中的第【" + position + "】个对象不是int类型");
-			interException();
+//			interException();
 			return -1;
 		}
 	}
@@ -186,12 +186,12 @@ public class JsonUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static long getLong(JSONArray jsonArray, int position) throws Exception {
+	public static long getLong(JSONArray jsonArray, int position) {
 		try {
 			return jsonArray.getLong(position);
 		} catch (Exception e) {
 			Log.e("从JSONArray中获取long值时发生异常", "【" + jsonArray + "】中的第【" + position + "】个对象不是long类型");
-			interException();
+//			interException();
 			return -1;
 		}
 	}
@@ -203,12 +203,12 @@ public class JsonUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static boolean getBoolean(JSONArray jsonArray, int position) throws Exception {
+	public static boolean getBoolean(JSONArray jsonArray, int position) {
 		try {
 			return jsonArray.getBoolean(position);
 		} catch (Exception e) {
 			Log.e("从JSONArray中获取boolean值时发生异常", "【" + jsonArray + "】中的第【" + position + "】个对象不是boolean类型");
-			interException();
+//			interException();
 			return false;
 		}
 	}
@@ -220,12 +220,12 @@ public class JsonUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static double getDouble(JSONArray jsonArray, int position) throws Exception {
+	public static double getDouble(JSONArray jsonArray, int position) {
 		try {
 			return jsonArray.getDouble(position);
 		} catch (Exception e) {
 			Log.e("从JSONArray中获取double值时发生异常", "【" + jsonArray + "】中的第【" + position + "】个对象不是double类型");
-			interException();
+//			interException();
 			return -1;
 		}
 	}
@@ -237,12 +237,12 @@ public class JsonUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String getString(JSONArray jsonArray, int position) throws Exception {
+	public static String getString(JSONArray jsonArray, int position) {
 		try {
 			return jsonArray.getString(position);
 		} catch (Exception e) {
 			Log.e("从JSONArray中获取String值时发生异常", "【" + jsonArray + "】中的第【" + position + "】个对象不是String类型");
-			interException();
+//			interException();
 			return null;
 		}
 	}
@@ -254,12 +254,12 @@ public class JsonUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static JSONObject getJSONObject(JSONArray jsonArray, int position) throws Exception {
+	public static JSONObject getJSONObject(JSONArray jsonArray, int position) {
 		try {
 			return jsonArray.getJSONObject(position);
 		} catch (Exception e) {
 			Log.e("从JSONArray中获取JSONObject值时发生异常", "【" + jsonArray + "】中的第【" + position + "】个对象不是JSONObject类型");
-			interException();
+//			interException();
 			return null;
 		}
 	}
@@ -271,12 +271,12 @@ public class JsonUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static JSONArray getJSONArray(JSONArray jsonArray, int position) throws Exception {
+	public static JSONArray getJSONArray(JSONArray jsonArray, int position) {
 		try {
 			return jsonArray.getJSONArray(position);
 		} catch (Exception e) {
 			Log.e("从JSONArray中获取JSONArray值时发生异常", "【" + jsonArray + "】中的第【" + position + "】个对象不是JSONArray类型");
-			interException();
+//			interException();
 			return null;
 		}
 	}
@@ -285,7 +285,7 @@ public class JsonUtil {
 	 * 接口返回的数据进行处理时出现的错误处理
 	 * @throws Exception
 	 */
-	public static void interException() throws Exception {
+	/*public static void interException() throws Exception {
 		throw new Exception(ExceptionConst.INTER_ERROR_EXCEPTION);
-	}
+	}*/
 }

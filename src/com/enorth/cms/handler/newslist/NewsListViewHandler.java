@@ -11,6 +11,7 @@ import com.enorth.cms.view.news.NewsCommonActivity;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 /**
  * 将接口中返回并组装好的List<View>加载到ListView中
@@ -39,9 +40,14 @@ public class NewsListViewHandler extends UrlRequestCommonHandler {
 		if (activity.getCurRefreshState() == ParamConst.REFRESHING) {
 			adapter.setItems(items);
 		} else if (activity.getCurRefreshState() == ParamConst.LOADING) {
-			adapter.getItems().addAll(items);
+			if (items.size() != 0) {
+				adapter.getItems().addAll(items);
+			} else {
+				// 由于这一页没有数据，因此将当前页退回到上一页
+				activity.getNewsListBean().getPage().setPageNo(activity.getNewsListBean().getPage().getPageNo() - 1);
+			}
 		} else {
-			
+			Log.e("NewsListViewHandler success", "activity.getCurRefreshState()【" + activity.getCurRefreshState() + "】");
 		}
 		activity.setCurRefreshState(ParamConst.INIT);
 		newsListView.onRefreshComplete();
@@ -56,7 +62,7 @@ public class NewsListViewHandler extends UrlRequestCommonHandler {
 	}
 	@Override
 	public void noData(Message msg) throws Exception {
-		activity.initNewsListData(newsListView, false, errorHint);
+		activity.initNewsListData(newsListView, false, "没有找到数据 ");
 		AnimUtil.hideRefreshFrame();
 	}
 	@Override

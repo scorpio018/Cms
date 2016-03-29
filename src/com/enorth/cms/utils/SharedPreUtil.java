@@ -169,14 +169,20 @@ public class SharedPreUtil {
 	 * @return
 	 * @throws IOException
 	 */
-	public static String serializeObject(Object object) throws IOException {
-		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-		objectOutputStream.writeObject(object);
-		String serStr = byteArrayOutputStream.toString("ISO-8859-1");
-		serStr = java.net.URLEncoder.encode(serStr, "UTF-8");
-		objectOutputStream.close();
-		byteArrayOutputStream.close();
+	public static String serializeObject(Object object) {
+		String serStr = null;
+		try {
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+			objectOutputStream.writeObject(object);
+			serStr = byteArrayOutputStream.toString("ISO-8859-1");
+			serStr = java.net.URLEncoder.encode(serStr, "UTF-8");
+			objectOutputStream.close();
+			byteArrayOutputStream.close();
+		} catch (IOException e) {
+			Log.e("SharedPreUtil.serializeObject IOException", e.toString());
+		}
+		
 		return serStr;
 	}
 	

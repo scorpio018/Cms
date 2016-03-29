@@ -153,13 +153,13 @@ public class BeanParamsUtil {
 					params.add(new BasicNameValuePair(key, value.toString()));
 				} else {
 					if (checkIsList(type)) {
-						Log.e("BeanParamsUtil.getObject error", "目前尚未支持Map方法~");
+						Log.e("BeanParamsUtil.initData error", "目前尚未支持Map方法~");
 					} else if (checkIsMap(type)) {
-						Log.e("BeanParamsUtil.getObject error", "目前尚未支持Map方法~");
+						Log.e("BeanParamsUtil.initData error", "目前尚未支持Map方法~");
 					} else if (checkIsSet(type)) {
-						Log.e("BeanParamsUtil.getObject error", "目前尚未支持Set方法~");
+						Log.e("BeanParamsUtil.initData error", "目前尚未支持Set方法~");
 					} else if (type.isArray()) {
-						Log.e("BeanParamsUtil.getObject error", "目前尚未支持数组方法~");
+						Log.e("BeanParamsUtil.initData error", "目前尚未支持数组方法~");
 					} else {
 						initData(value, params, isCheckObMap);
 					}
@@ -180,10 +180,10 @@ public class BeanParamsUtil {
 		try {
 			ob = c.newInstance();
 		} catch (InstantiationException e) {
-			Log.e("BeanParamsUtil.getObject error", e.toString());
+			Log.e("BeanParamsUtil.saveJsonToObject error", e.toString());
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			Log.e("BeanParamsUtil.getObject error", e.toString());
+			Log.e("BeanParamsUtil.saveJsonToObject error", e.toString());
 			e.printStackTrace();
 		}
 		Field[] fields = c.getDeclaredFields();
@@ -204,14 +204,18 @@ public class BeanParamsUtil {
 			try {
 				method = ob.getClass().getMethod(setterName, type);
 			} catch (NoSuchMethodException e) {
-				Log.e("BeanParamsUtil.getObject error", e.toString());
+				Log.e("BeanParamsUtil.saveJsonToObject error", e.toString());
 				e.printStackTrace();
 			}
 			Object object = null;
 			try {
-				object = jo.get(name);
+				if (jo.has(name)) {
+					object = jo.get(name);
+				} else {
+					continue;
+				}
 			} catch (JSONException e) {
-				Log.e("BeanParamsUtil.getObject error", e.toString());
+				Log.e("BeanParamsUtil.saveJsonToObject error", e.toString());
 				e.printStackTrace();
 			}
 			if (object == null) {
@@ -248,7 +252,7 @@ public class BeanParamsUtil {
 						}
 						method.invoke(ob, list);
 					} else if (checkIsMap(type)) {
-						Log.e("BeanParamsUtil.getObject error", "目前尚未支持Map方法~");
+						Log.e("BeanParamsUtil.saveJsonToObject error", "目前尚未支持Map方法~");
 						/*Type genericType = field.getGenericType();
 						if (genericType instanceof ParameterizedType) {
 							ParameterizedType pt = (ParameterizedType) genericType;
@@ -258,9 +262,9 @@ public class BeanParamsUtil {
 							System.out.println(genericClazzValue);
 						}*/
 					} else if (checkIsSet(type)) {
-						Log.e("BeanParamsUtil.getObject error", "目前尚未支持Set方法~");
+						Log.e("BeanParamsUtil.saveJsonToObject error", "目前尚未支持Set方法~");
 					} else if (type.isArray()) {
-						Log.e("BeanParamsUtil.getObject error", "目前尚未支持数组方法~");
+						Log.e("BeanParamsUtil.saveJsonToObject error", "目前尚未支持数组方法~");
 					} else {
 						Object subOb = saveJsonToObject(jo.getJSONObject(name), type);
 						method.invoke(ob, subOb);
@@ -269,23 +273,24 @@ public class BeanParamsUtil {
 					throw new JSONException("未知的Class类型");
 				}
 			} catch (IllegalAccessException e) {
-				Log.e("BeanParamsUtil.getObject error", e.toString());
+				Log.e("BeanParamsUtil.saveJsonToObject error", e.toString());
 				e.printStackTrace();
 			} catch (IllegalArgumentException e) {
-				Log.e("BeanParamsUtil.getObject error", e.toString());
+				Log.e("BeanParamsUtil.saveJsonToObject error", e.toString());
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				Log.e("BeanParamsUtil.getObject error", e.toString());
+				Log.e("BeanParamsUtil.saveJsonToObject error", e.toString());
 				e.printStackTrace();
 			} catch (JSONException e) {
-				Log.e("BeanParamsUtil.getObject error", e.toString());
+				Log.e("BeanParamsUtil.saveJsonToObject error", e.toString());
 				e.printStackTrace();
 			}
 		}
 		return ob;
 	}
 	
-	public static void saveObject(Object ob, Context context) throws Exception {
+	public static JSONObject saveObjectToJson(Object ob, Context context) {
+		JSONObject jo = new JSONObject();
 		Class<?> c = ob.getClass();
 		String clazzName = c.getName();
 		Field[] fields = c.getDeclaredFields();
@@ -313,8 +318,110 @@ public class BeanParamsUtil {
 				if (!methodNames.contains(getterName)) {
 					continue;
 				}
-				Method method = ob.getClass().getMethod(getterName);
-				Object value = method.invoke(ob);
+				Method method = null;
+				Object value = null;
+				try {
+					method = ob.getClass().getMethod(getterName);
+					value = method.invoke(ob);
+				} catch (NoSuchMethodException e) {
+					Log.e("BeanParamsUtil.saveObject error", e.toString());
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					Log.e("BeanParamsUtil.saveObject error", e.toString());
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					Log.e("BeanParamsUtil.saveObject error", e.toString());
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					Log.e("BeanParamsUtil.saveObject error", e.toString());
+					e.printStackTrace();
+				}
+				
+				if (checkIsString(type) || checkIsInteger(type) || checkIsLong(type) || checkIsDouble(type) || checkIsBoolean(type)) {
+//					SharedPreUtil.put(context, name, key, value);
+					try {
+						jo.put(key, value);
+					} catch (JSONException e) {
+						Log.e("BeanParamsUtil.saveObject error", "json存值时出现错误");
+						e.printStackTrace();
+					}
+				} else {
+					if (checkIsList(type)) {
+						Log.e("BeanParamsUtil.saveObject error", "目前尚未支持List方法~");
+						/*List list = (List) value;
+						int length = list.size();
+						// 获得List集合中泛型的对象
+						for (int i = 0; i < length; i++) {
+							saveObject(list.get(i), context);
+						}*/
+					} else if (checkIsMap(type)) {
+						Log.e("BeanParamsUtil.saveObject error", "目前尚未支持Map方法~");
+					} else if (checkIsSet(type)) {
+						Log.e("BeanParamsUtil.saveObject error", "目前尚未支持Set方法~");
+					} else if (type.isArray()) {
+						Log.e("BeanParamsUtil.saveObject error", "目前尚未支持数组方法~");
+					} else {
+						JSONObject subJo = saveObjectToJson(value, context);
+						try {
+							jo.put(key, subJo);
+						} catch (JSONException e) {
+							Log.e("BeanParamsUtil.saveObject error", "子对象进行json存值时出现错误");
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+		return jo;
+	}
+	
+	public static void saveObject(Object ob, Context context) {
+		Class<?> c = ob.getClass();
+		String clazzName = c.getName();
+		Field[] fields = c.getDeclaredFields();
+		Method[] declaredMethods = c.getDeclaredMethods();
+		int methodLength = declaredMethods.length;
+		List<String> methodNames = new ArrayList<String>();
+		for (int i = 0; i < methodLength; i++) {
+			methodNames.add(declaredMethods[i].getName());
+		}
+		for (Field field : fields) {
+			if (field.isAnnotationPresent(SharedPreSaveAnnotation.class)) {
+				SharedPreSaveAnnotation annotation = field.getAnnotation(SharedPreSaveAnnotation.class);
+				String name = annotation.name();
+				if (name.equals("")) {
+					name = clazzName;
+				}
+				String fieldName = field.getName();
+				String key = annotation.key();
+				if (key.equals("")) {
+					key = fieldName;
+				}
+				
+				Class<?> type = field.getType();
+				String getterName = "get" + fieldName.substring(0, 1).toUpperCase(Locale.CHINA) + fieldName.substring(1);
+				if (!methodNames.contains(getterName)) {
+					continue;
+				}
+				Method method = null;
+				Object value = null;
+				try {
+					method = ob.getClass().getMethod(getterName);
+					value = method.invoke(ob);
+				} catch (NoSuchMethodException e) {
+					Log.e("BeanParamsUtil.saveObject error", e.toString());
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					Log.e("BeanParamsUtil.saveObject error", e.toString());
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					Log.e("BeanParamsUtil.saveObject error", e.toString());
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					Log.e("BeanParamsUtil.saveObject error", e.toString());
+					e.printStackTrace();
+				}
+				
 				if (checkIsString(type)) {
 					SharedPreUtil.put(context, name, key, value);
 				} else if (checkIsInteger(type)) {
@@ -327,7 +434,7 @@ public class BeanParamsUtil {
 					SharedPreUtil.put(context, name, key, value);
 				} else {
 					if (checkIsList(type)) {
-						Log.e("BeanParamsUtil.getObject error", "目前尚未支持List方法~");
+						Log.e("BeanParamsUtil.saveObject error", "目前尚未支持List方法~");
 						/*List list = (List) value;
 						int length = list.size();
 						// 获得List集合中泛型的对象
@@ -335,11 +442,11 @@ public class BeanParamsUtil {
 							saveObject(list.get(i), context);
 						}*/
 					} else if (checkIsMap(type)) {
-						Log.e("BeanParamsUtil.getObject error", "目前尚未支持Map方法~");
+						Log.e("BeanParamsUtil.saveObject error", "目前尚未支持Map方法~");
 					} else if (checkIsSet(type)) {
-						Log.e("BeanParamsUtil.getObject error", "目前尚未支持Set方法~");
+						Log.e("BeanParamsUtil.saveObject error", "目前尚未支持Set方法~");
 					} else if (type.isArray()) {
-						Log.e("BeanParamsUtil.getObject error", "目前尚未支持数组方法~");
+						Log.e("BeanParamsUtil.saveObject error", "目前尚未支持数组方法~");
 					} else {
 						saveObject(value, context);
 //						Object subOb = saveJsonToObject(jo.getJSONObject(name), type);

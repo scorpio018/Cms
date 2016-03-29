@@ -49,6 +49,7 @@ public class ChannelBean implements Serializable {
 	/**
 	 * 规定对应频道能够上传的图片的最大/最小像素
 	 */
+	@SharedPreSaveAnnotation
 	private SeniorBean senior;
 
 	public Long getChannelId() {

@@ -53,7 +53,6 @@ public class NewsListFragment extends ListFragment {
 			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
 				/*String label = DateUtils.formatDateTime(activity.getApplicationContext(), System.currentTimeMillis(),
 						DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
-
 				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);*/
 				if (curPageNum == 2) {
 					activity.getNewsListBean().getPage().setOrderBy(activity.getCurSubNewsTitleSortColumn());
