@@ -3,6 +3,7 @@ package com.enorth.cms.utils;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class LayoutParamsUtil {
 	/**
@@ -21,6 +22,15 @@ public class LayoutParamsUtil {
 	 */
 	public static RelativeLayout.LayoutParams initRelaWrapLayout() {
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		return params;
+	}
+	
+	/**
+	 * 初始化线性布局(LinearLayout)的宽和高
+	 * @return
+	 */
+	public static LinearLayout.LayoutParams initLineWrapLayout() {
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		return params;
 	}
 	

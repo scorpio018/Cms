@@ -1,6 +1,6 @@
 package com.enorth.cms.common;
 
-import com.enorth.cms.bean.ButtonColorBasicBean;
+import com.enorth.cms.bean.ViewColorBasicBean;
 import com.enorth.cms.utils.ColorUtil;
 import com.enorth.cms.view.R;
 
@@ -20,7 +20,7 @@ public class EnableSimpleChangeButton extends Button {
 	/**
 	 * 用于表示当前button在点击的时候所代表的id值
 	 */
-	private String buttonId;
+	private int buttonId;
 	/**
 	 * 是否被选中（用于获取对应的ID）
 	 */
@@ -75,15 +75,15 @@ public class EnableSimpleChangeButton extends Button {
 	/**
 	 * 默认文字和背景颜色bean
 	 */
-	private ButtonColorBasicBean colorBasicBean;
+	private ViewColorBasicBean colorBasicBean;
 
 	public EnableSimpleChangeButton(Context context) {
 		super(context);
-		this.colorBasicBean = new ButtonColorBasicBean(context);
+		this.colorBasicBean = new ViewColorBasicBean(context);
 		initUI(context);
 	}
 	
-	public EnableSimpleChangeButton(Context context, ButtonColorBasicBean colorBasicBean) throws Exception {
+	public EnableSimpleChangeButton(Context context, ViewColorBasicBean colorBasicBean) throws Exception {
 		super(context);
 		this.colorBasicBean = colorBasicBean;
 		initUI(context);
@@ -91,19 +91,19 @@ public class EnableSimpleChangeButton extends Button {
 	
 	public EnableSimpleChangeButton(Context context, AttributeSet attrs) throws Exception {
         super(context, attrs);
-        this.colorBasicBean = new ButtonColorBasicBean(context);
+        this.colorBasicBean = new ViewColorBasicBean(context);
 		initUI(context);
 	}
 	
 	public EnableSimpleChangeButton(Context context, AttributeSet attrs, int defStyleAttr) throws Exception {
 		super(context, attrs, defStyleAttr);
-		this.colorBasicBean = new ButtonColorBasicBean(context);
+		this.colorBasicBean = new ViewColorBasicBean(context);
 		initUI(context);
 	}
 	
 	public EnableSimpleChangeButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) throws Exception {
         super(context, attrs, defStyleAttr, defStyleRes);
-        this.colorBasicBean = new ButtonColorBasicBean(context);
+        this.colorBasicBean = new ViewColorBasicBean(context);
 		initUI(context);
 	}
 	
@@ -344,7 +344,7 @@ public class EnableSimpleChangeButton extends Button {
 		buildDraweableState();
 	}
 	
-	public void setColorBasicBean(ButtonColorBasicBean colorBasicBean) {
+	public void setColorBasicBean(ViewColorBasicBean colorBasicBean) {
 		this.colorBasicBean = colorBasicBean;
 		buildDraweableState();
 	}
@@ -398,11 +398,11 @@ public class EnableSimpleChangeButton extends Button {
 		buildColorDrawableState();
 	}
 
-	public String getButtonId() {
+	public int getButtonId() {
 		return buttonId;
 	}
 
-	public void setButtonId(String buttonId) {
+	public void setButtonId(int buttonId) {
 		this.buttonId = buttonId;
 	}
 

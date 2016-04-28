@@ -9,10 +9,12 @@ import com.enorth.cms.filter.news.SearchChannelFilter;
 import com.enorth.cms.listener.CommonOnTouchListener;
 import com.enorth.cms.listener.imageview.ImageViewOnTouchListener;
 import com.enorth.cms.listener.newslist.ListViewItemOnTouchListener;
+import com.enorth.cms.utils.DrawableUtil;
 import com.enorth.cms.view.R;
 import com.enorth.cms.view.news.ChannelSearchActivity;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
@@ -23,10 +25,6 @@ import android.widget.TextView;
 public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<ChannelBean> {
 	
 	private ChannelSearchActivity activity;
-	
-//	private SearchChannelFilterAdapter thisAdapter;
-	
-//	private List<NewsListImageViewBasicBean> listViewItem;
 	
 	private long curCheckChannelId = -1L;
 	
@@ -40,21 +38,26 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Channe
 	
 	private int checkedPosition = -1;
 	
+	private Drawable left;
+	
+	private Drawable right;
+	
 	public SearchChannelFilterAdapter(ChannelSearchActivity activity, int textViewResourceId, List<ChannelBean> objects) {
 		super(activity, textViewResourceId, objects);
 		this.activity = activity;
-//		this.thisAdapter = this;
+		/*for (ChannelBean item : objects) {
+			if (item.getChannelId().equals(activity.getCurCheckChannelId())) {
+				this.channelBean = item;
+				break;
+			}
+		}*/
+		init();
 	}
 	
-	/*@Override
-	public void doAfterFilterNewValues(List<ChannelBean> values) {
-		listViewItem = new ArrayList<NewsListImageViewBasicBean>();
-		for (ChannelBean value : values) {
-			listViewItem.add(bean);
-		}
-		// 每次刷新数据时将items清空
-//		items = new ArrayList<View>();
-	}*/
+	private void init() {
+		left = DrawableUtil.getDrawable(activity, R.drawable.edit_text_search);
+		right = DrawableUtil.getDrawable(activity, R.drawable.edit_text_cross);
+	}
 
 	@Override
 	public void initFilter(Context context, List<ChannelBean> objects, Object lock, List<ChannelBean> originalValues) {
@@ -66,7 +69,6 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Channe
 		Holder holder;
 		if (convertView == null) {
 			holder = new Holder();
-//			convertView = LayoutInflater.from(activity).inflate(this.resource, null);
 			convertView = inflater.inflate(resource, null);
 			holder.checkBtn = (CheckBox) convertView.findViewById(R.id.iv_check_btn);
 			holder.channelNameTV = (TextView) convertView.findViewById(R.id.tv_news_title);
@@ -76,8 +78,8 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Channe
 			holder = (Holder) convertView.getTag();
 		}
 		
-		ChannelBean channelBean = super.objects.get(position);
-		if (channelBean.getChannelId().equals(activity.getChannelId()) || channelBean.getChannelId().equals(activity.getCurCheckChannelId())) {
+		ChannelBean channelBean = super.getItems().get(position);
+		if (channelBean.getChannelId().equals(activity.getCurCheckChannelId())) {
 			holder.checkBtn.setChecked(true);
 			holder.checkBtn.setTag(true);
 			this.view = convertView;
@@ -86,6 +88,8 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Channe
 			curCheckChannelId = channelBean.getChannelId();
 			curCheckChannelName = channelBean.getChannelName();
 			parentChannelId = channelBean.getParentId();
+		} else {
+			holder.checkBtn.setChecked(false);
 		}
 		
 		holder.channelNameTV.setText(channelBean.getChannelName());
@@ -97,7 +101,7 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Channe
 		}
 		
 		// 将CheckBox的状态进行初始化
-		initCheckBtnState(channelBean, holder, convertView, position);
+//		initCheckBtnState(channelBean, holder, convertView, position);
 		// 初始化CheckBox的点击事件
 		addCheckBtnClickEvent(channelBean, holder, convertView, position);
 		// 添加ListView的item的点击事件
@@ -107,7 +111,7 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Channe
 	
 	@Override
 	public Object getItem(int position) {
-		return objects.get(position);
+		return super.getItems().get(position);
 	}
 	
 	/**
@@ -115,7 +119,7 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Channe
 	 * @param bean
 	 */
 	private void initCheckBtnState(ChannelBean channelBean, Holder holder, View view, int position) {
-		if ((channelBean.getChannelId().equals(activity.getChannelId()) && this.view == null) || (checkedPosition == position)) {
+		if (channelBean.getChannelId().equals(activity.getChannelId()) || (checkedPosition == position)) {
 			holder.checkBtn.setChecked(true);
 			holder.checkBtn.setTag(true);
 			this.view = view;
@@ -144,11 +148,15 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Channe
 			@Override
 			public void onImgChangeEnd(View v) {
 				if (!holder.checkBtn.isChecked()) {
-					activity.setCurCheckChannelId(-1L);
-					activity.setCurCheckChannelName("");
+					curCheckChannelId = -1L;
+					curCheckChannelName = "";
+//					activity.setCurCheckChannelId(-1L);
+//					activity.setCurCheckChannelName("");
 				} else {
-					activity.setCurCheckChannelId(channelBean.getChannelId());
-					activity.setCurCheckChannelName(channelBean.getChannelName());
+					curCheckChannelId = channelBean.getChannelId();
+					curCheckChannelName = channelBean.getChannelName();
+//					activity.setCurCheckChannelId(channelBean.getChannelId());
+//					activity.setCurCheckChannelName(channelBean.getChannelName());
 				}
 			}
 
@@ -169,11 +177,7 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Channe
 		CommonOnTouchListener listViewItemOnTouchListener = new ListViewItemOnTouchListener(activity) {
 			@Override
 			public void onImgChangeDo(View v) {
-				try {
-					channelClick(channelBean, holder, view, position);
-				} catch (Exception e) {
-					activity.error(e);
-				}
+				channelClick(channelBean, holder, view, position);
 			}
 			
 			@Override
@@ -190,18 +194,6 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Channe
 		};
 		listViewItemOnTouchListener.changeColor(R.color.bg_gray_press, R.color.bg_gray_default);
 		view.setOnTouchListener(listViewItemOnTouchListener);
-		/*CommonOnClickListener listViewItemOnClickListener = new CommonOnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				try {
-					channelClick(bean);
-				} catch (Exception e) {
-					error(e);
-				}
-			}
-		};
-		bean.getView().setOnClickListener(listViewItemOnClickListener);*/
 	}
 	
 	private void channelClick(ChannelBean channelBean, Holder holder, View view, int position) {
@@ -241,6 +233,16 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Channe
 			this.channelBean = channelBean;
 			this.checkedPosition = position;
 		}
+	}
+	
+	@Override
+	public void initDrawable() {
+		activity.getSearchChannelET().setCompoundDrawablesWithIntrinsicBounds(left, null, right, null);
+	}
+	
+	@Override
+	public void removeDrawable() {
+		activity.getSearchChannelET().setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
 	}
 	
 	public long getCurCheckChannelId() {

@@ -28,7 +28,7 @@ public class RequestNewsListUrlBean implements Serializable {
 	private Page page;
 	
 	@UrlParamAnnotation
-	private int newsType = ParamConst.TYPE_ALL;
+	private int newsType = ParamConst.NEWS_TYPE_ALL;
 	/**
 	 * 当前用户
 	 */

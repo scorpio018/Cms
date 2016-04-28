@@ -8,6 +8,7 @@ import com.enorth.cms.view.news.NewsCommonActivity;
 import android.app.Activity;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -38,24 +39,16 @@ public class NewsTypeBtnOnClickListener extends CommonOnClickListener {
 				// 如果是NewsCommonActivity，则会有后续的ViewPager操作
 				if (activity instanceof NewsCommonActivity) {
 					NewsCommonActivity newsCommonActivity = (NewsCommonActivity) activity;
+					// 切换到对应的页
 					newsCommonActivity.getNewsListViewPager().setCurrentItem(position, false);
-					try {
-						newsCommonActivity.changeNewsTypeBtnStyleByFocusedState(position);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+					// 调用此方法进行按钮组的选中状态切换
+					newsCommonActivity.changeNewsTypeBtnStyleByFocusedState(position);
 					newsCommonActivity.setCurPosition(position);
 					newsCommonActivity.changeAddNewsBtnVisible();
 					newsCommonActivity.initNewsOperateBtn();
 				} else {
-					try {
-						ViewUtil.changeBtnGroupStyleByFocusedState(activity, layout, position, ColorUtil.getCommonBlueColor(activity), ColorUtil.getWhiteColor(activity));
-					} catch (Exception e) {
-						Toast.makeText(activity, "按钮组状态切换时出现错误:【" + e.toString() + "】", Toast.LENGTH_SHORT).show();
-						e.printStackTrace();
-					}
+					ViewUtil.changeBtnGroupStyleByFocusedState(activity, layout, position, ColorUtil.getCommonBlueColor(activity), ColorUtil.getWhiteColor(activity));
 				}
-				
 			}
 		}.sendEmptyMessage(0);
 	}

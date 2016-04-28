@@ -1,19 +1,13 @@
 package com.enorth.cms.presenter.newslist;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.http.message.BasicNameValuePair;
 
 import com.enorth.cms.consts.ParamConst;
-import com.enorth.cms.consts.UrlConst;
 import com.enorth.cms.enums.HttpBuilderType;
-import com.enorth.cms.utils.AnimUtil;
 import com.enorth.cms.utils.HttpUtil;
-import com.enorth.cms.utils.HttpXmlClient;
 import com.enorth.cms.view.news.INewsCommonView;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
@@ -62,6 +56,7 @@ public class NewsListFragPresenter implements INewsListFragPresenter {
 				HttpUtil.requestOnFailure(r, e, handler);
 			}
 		};
+		Log.e("newsListFragPresenter", "curUrl:" + url);
 		HttpUtil.okPost(url, params, callback, HttpBuilderType.REQUEST_FORM_ENCODE);
 	}
 

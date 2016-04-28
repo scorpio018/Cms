@@ -30,15 +30,9 @@ public class SecuritySettingActivity extends BaseActivity implements ISecuritySe
 		super.onCreate(savedInstanceState);
 		ViewUtil.setContentViewForMenu(this, R.layout.activity_security_setting);
 		initView();
-		ViewUtil.initMenuTitle(this, R.string.security_setting_title_text);
+		ViewUtil.initMenuTitle(this, getResources().getString(R.string.security_setting_title_text));
 		initItem();
 		initListView();
-		/*try {
-			
-		} catch (Exception e) {
-			Log.e("SecuritySettingActivity.oncreate() error", e.toString());
-			e.printStackTrace();
-		}*/
 	}
 	
 	private void initView() {

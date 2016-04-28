@@ -1,13 +1,15 @@
 package com.enorth.cms.listener.newslist.viewpager;
 
-import com.enorth.cms.bean.ButtonColorBasicBean;
+import com.enorth.cms.bean.ViewColorBasicBean;
 import com.enorth.cms.common.EnableSimpleChangeButton;
+import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.news.NewsCommonActivity;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.View;
 
 public class NewsCommonViewPagerOnPageChangeListener implements OnPageChangeListener {
@@ -31,7 +33,7 @@ public class NewsCommonViewPagerOnPageChangeListener implements OnPageChangeList
 	 */
 	@Override
 	public void onPageScrolled(int arg0, float arg1, int arg2) {
-		
+		Log.e("NewsCommonViewPagerOnPageChangeListener", "position【" + arg0 + "】");
 	}
 
 	/**
@@ -56,18 +58,18 @@ public class NewsCommonViewPagerOnPageChangeListener implements OnPageChangeList
 					activity.getNewsSubTitleSort().setVisibility(View.GONE);
 				}
 				for (int i = 0; i < childCount; i++) {
-
-					ButtonColorBasicBean colorBasicBean = null;
-					try {
-						colorBasicBean = new ButtonColorBasicBean(activity);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+					// 初始化新的按钮组的颜色
+					ViewColorBasicBean colorBasicBean = new ViewColorBasicBean(activity);
+					// 获取可下拉的ListView
 					PullToRefreshListView listView = (PullToRefreshListView) (activity.getViews().get(i).getNewsListView());
+					// 获取按钮组的每一个按钮
 					EnableSimpleChangeButton btn = (EnableSimpleChangeButton) activity.getNewsTypeBtnLineLayout().getChildAt(i);
 					if (i == position) {
-						// 将当前选择的新闻类型对应的state存入newsListBean中
-						activity.getNewsListBean().setState(activity.getNewsTypeBtnState()[position]);
+						// 将当前选择的新闻类型对应的newsType存入newsListBean中
+						int newsState = ViewUtil.getCurCheckedBtnGroupId(activity.getNewsStateBtns());
+						activity.getNewsListBean().setState(newsState);
+						// 此处获取新闻类型的方式也可，不过推荐上面的获取方式
+//						activity.getNewsListBean().setNewsType(activity.getNewsTypeBtnState()[position]);
 						activity.changeToCurPosition(colorBasicBean, btn, listView, position);
 					} else {
 //						changeToOtherPosition(colorBasicBean, listView, Math.abs(position - i) > 1, i);

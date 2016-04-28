@@ -1,5 +1,7 @@
 package com.enorth.cms.utils;
 
+import java.util.UUID;
+
 import android.content.Context;
 import android.telephony.TelephonyManager;
 
@@ -20,6 +22,9 @@ public class ParamsUtil {
 		if (DEVICE_ID == null) {
 			TelephonyManager tm = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE); 
 			DEVICE_ID = tm.getDeviceId();
+			if (StringUtil.isEmpty(DEVICE_ID)) {
+				DEVICE_ID = UUID.randomUUID().toString();
+			}
 		}
 		return DEVICE_ID;
 	}

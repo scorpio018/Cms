@@ -45,10 +45,13 @@ public abstract class SearchCommonFilter<T> extends Filter {
 		}
 		int count = originalValues.size();
 		List<T> values = new ArrayList<T>();
-		for (int i = 0; i < count; i++) {
-			T value = originalValues.get(i);
-			filterTest(value, values, constraint);
+		if (constraint != null) {
+			for (int i = 0; i < count; i++) {
+				T value = originalValues.get(i);
+				filterTest(value, values, constraint);
+			}
 		}
+		
 		results.values = values;
 		results.count = count;
 		return results;
@@ -58,7 +61,12 @@ public abstract class SearchCommonFilter<T> extends Filter {
 	@Override
 	protected void publishResults(CharSequence constraint, FilterResults results) {
 //		adapter.objects.clear();
-		adapter.objects = (List<T>) results.values;
+		if (constraint == null || constraint.length() == 0) {
+			adapter.removeDrawable();
+		} else {
+			adapter.initDrawable();
+		}
+		adapter.setItems(((List<T>) results.values));
 //		adapter.doAfterFilterNewValues(adapter.objects);
 		if (results.count > 0) {
 			adapter.notifyDataSetChanged();

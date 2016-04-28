@@ -7,7 +7,7 @@
     android:orientation="horizontal"
     android:gravity="center_vertical"
     android:layout_alignParentTop="true"
-    android:background="@color/common_blue">
+    android:background="@drawable/news_title_bg">
     
     <TextView 
         android:id="@+id/titleLeftTV"

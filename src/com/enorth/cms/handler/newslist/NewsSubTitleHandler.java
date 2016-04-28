@@ -28,26 +28,26 @@ public class NewsSubTitleHandler extends UrlRequestCommonHandler {
 	}
 
 	@Override
-	public void success(Message msg) throws Exception {
+	public void success(Message msg) {
 		ChannelBean bean = (ChannelBean) msg.obj;
 		activity.setNewsSubTitleText(bean.getChannelName());
 		LinearLayout layout = (LinearLayout) activity.findViewById(R.id.newsSubTitleLineLayout);
 		activity.setNewsSubTitleTV((TextView) layout.findViewById(R.id.newsSubTitleText));
-		activity.getNewsSubTitleTV().setText(activity.getNewsSubTitleText());
+		activity.getNewsSubTitleTV().setText(activity.getNewsSubTitleText() + " ");
 	}
 
 	@Override
-	public void noData(Message msg) throws Exception {
+	public void noData(Message msg) {
 		
 	}
 
 	@Override
-	public void error(Message msg) throws Exception {
+	public void error(Message msg) {
 		
 	}
 
 	@Override
-	public void resultDefault(Message msg) throws Exception {
+	public void resultDefault(Message msg) {
 		
 	}
 	

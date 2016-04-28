@@ -12,6 +12,7 @@ import com.enorth.cms.utils.AnimUtil;
 import com.enorth.cms.utils.ColorUtil;
 import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.utils.SharedPreUtil;
+import com.enorth.cms.view.about.AboutActivity;
 import com.enorth.cms.view.login.LoginActivity;
 import com.enorth.cms.view.material.MaterialUploadActivity;
 import com.enorth.cms.view.news.NewsListFragActivity;
@@ -327,6 +328,8 @@ public class LeftHorizontalScrollMenu extends HorizontalScrollView {
 			MenuBean bean6 = new MenuBean();
 			bean6.setMenuIconResourceId(R.drawable.menu_about);
 			bean6.setMenuName("关于");
+			bean6.setActivity(new AboutActivity());
+			bean6.setMenuLayoutId(R.layout.activity_about);
 			menuBeans.add(bean6);
 			
 			MenuBean bean7 = new MenuBean();

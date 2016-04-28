@@ -3,29 +3,23 @@ package com.enorth.cms.view.material;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.enorth.cms.adapter.upload.ImageGridItemContainCheckAdapter;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.fragment.materialupload.MaterialUploadBtnGroupFrag;
 import com.enorth.cms.fragment.materialupload.MaterialUploadHistoryFrag;
 import com.enorth.cms.handler.materialupload.MaterialUploadTypeChangeHandler;
 import com.enorth.cms.listener.materialupload.MaterialUploadBottomOnClickListener;
-import com.enorth.cms.listener.popup.channelsearch.ChannelSearchPopupWindowOnTouchListener;
 import com.enorth.cms.listener.popup.materialupload.MaterialUploadPopupWindowOnTouchListener;
 import com.enorth.cms.presenter.materialupload.IMaterialUploadPresenter;
 import com.enorth.cms.presenter.materialupload.MaterialUploadPresenter;
 import com.enorth.cms.utils.ActivityJumpUtil;
 import com.enorth.cms.utils.CameraUtil;
 import com.enorth.cms.utils.ImgUtil;
-import com.enorth.cms.utils.PhoneFileQueryUtil;
 import com.enorth.cms.utils.PopupWindowUtil;
 import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.utils.SharedPreUtil;
-import com.enorth.cms.utils.TimeUtil;
 import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.BaseFragmentActivity;
 import com.enorth.cms.view.R;
-import com.enorth.cms.view.news.ChannelSearchActivity;
-import com.enorth.cms.view.upload.GalleryActivity;
 import com.enorth.cms.view.upload.UploadPicFinishCheckActivity;
 import com.enorth.cms.widget.linearlayout.MaterialUploadFragLinearLayout;
 import com.enorth.cms.widget.popupwindow.CommonPopupWindow;
@@ -36,15 +30,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class MaterialUploadActivity extends BaseFragmentActivity implements IMaterialUploadView {
 	
@@ -92,15 +82,11 @@ public class MaterialUploadActivity extends BaseFragmentActivity implements IMat
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ViewUtil.setContentViewForMenu(this, R.layout.activity_material_upload);
-		try {
-			initBasicData();
-//			initNewsTitle();
-			ViewUtil.initMenuTitle(this, R.string.material_upload_title_text);
-			initFrag();
-			initBottom();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		initBasicData();
+//		initNewsTitle();
+		ViewUtil.initMenuTitle(this, getResources().getString(R.string.material_upload_title_text));
+		initFrag();
+		initBottom();
 	}
 	
 	@Override
@@ -146,7 +132,7 @@ public class MaterialUploadActivity extends BaseFragmentActivity implements IMat
 	 * 初始化按钮组和附件内容
 	 * @throws Exception
 	 */
-	private void initFrag() throws Exception {
+	private void initFrag() {
 		initFragLayout();
 		fragmentManager = getSupportFragmentManager();
 		fragmentTransaction = fragmentManager.beginTransaction();
@@ -156,7 +142,7 @@ public class MaterialUploadActivity extends BaseFragmentActivity implements IMat
 		
 	}
 	
-	private void initBottom() throws Exception {
+	private void initBottom() {
 		materialFromTypeTV = (TextView) findViewById(R.id.materialFromTypeTV);
 		materialFromTypeTV.setText(curMaterialUploadType);
 //		LinearLayout materialUploadBottomLayout = (LinearLayout) findViewById(R.id.materialUploadBottomLayout);
@@ -200,7 +186,7 @@ public class MaterialUploadActivity extends BaseFragmentActivity implements IMat
 	 * 初始化初始化按钮组fragment
 	 * @throws Exception
 	 */
-	private void initBtnGroupFrag() throws Exception {
+	private void initBtnGroupFrag() {
 		btnGroupFrag = new MaterialUploadBtnGroupFrag(fragLayout);
 		fragmentTransaction.replace(R.id.materialUploadBtnGroupFrag, btnGroupFrag);
 	}
@@ -209,7 +195,7 @@ public class MaterialUploadActivity extends BaseFragmentActivity implements IMat
 	 * 初始化附件内容fragment
 	 * @throws Exception
 	 */
-	private void initFileHistoryFrag() throws Exception {
+	private void initFileHistoryFrag() {
 		historyFrag = new MaterialUploadHistoryFrag(fragLayout);
 		fragmentTransaction.replace(R.id.materialUploadHistoryFrag, historyFrag);
 	}

@@ -29,7 +29,7 @@ public class AboutActivity extends BaseActivity implements IAboutView {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ViewUtil.setContentViewForMenu(this, R.layout.activity_about);
-		ViewUtil.initMenuTitle(this, R.string.about_title_text);
+		ViewUtil.initMenuTitle(this, getResources().getString(R.string.about_title_text));
 		initView();
 		initListView();
 	}

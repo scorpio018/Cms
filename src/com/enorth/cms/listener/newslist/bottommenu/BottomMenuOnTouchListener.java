@@ -6,30 +6,25 @@ import com.enorth.cms.listener.CommonOnTouchListener;
 import com.enorth.cms.utils.ScreenTools;
 
 import android.content.Context;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 
 public abstract class BottomMenuOnTouchListener extends CommonOnTouchListener {
 	
 	public int canEnableState = ParamConst.CAN_ENABLE_STATE_DEFAULT;
 	
-	private BottomMenuBasicBean bean;
 	
-	public BottomMenuOnTouchListener(BottomMenuBasicBean bean, Context context) {
-		this.bean = bean;
+	public BottomMenuOnTouchListener(Context context) {
 		this.touchSlop = ScreenTools.getTouchSlop(context);
 	}
 	
 	public BottomMenuOnTouchListener(BottomMenuBasicBean bean, int touchSlop, int canEnableState) {
-		this.bean = bean;
 		this.touchSlop = touchSlop;
 		this.canEnableState = canEnableState;
 	}
 	
 	@Override
 	public boolean isClickBackgroungColorChange() {
-		return true;
+		return false;
 	}
 
 	@Override

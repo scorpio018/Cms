@@ -36,10 +36,21 @@ public class ChannelSearchListViewAdapter extends BaseAdapter {
 	private ChannelBean channelBean;
 	
 	private int checkedPosition = -1;
+	/**
+	 * 在点击搜索框时会出现ListView中的item找不到父类的情况，所以当needRefresh为true是，要调用notifyDataSetChanged()方法
+	 */
+//	private boolean needRefresh = false;
 	
 	public ChannelSearchListViewAdapter(List<ChannelBean> items, ChannelSearchActivity activity) {
 		this.items = items;
 		this.activity = activity;
+		/*for (ChannelBean item : items) {
+			if (item.getChannelId().equals(activity.getCurCheckChannelId())) {
+				this.channelBean = item;
+				break;
+			}
+		}*/
+		
 	}
 
 	@Override
@@ -94,15 +105,15 @@ public class ChannelSearchListViewAdapter extends BaseAdapter {
 	 * @param bean
 	 */
 	private void initCheckBtnState(ChannelBean channelBean, Holder holder, View view, int position) {
-		if ((channelBean.getChannelId().equals(activity.getChannelId()) && this.view == null) || (checkedPosition == position)) {
+		if (channelBean.getChannelId().equals(activity.getCurCheckChannelId()) || (checkedPosition == position)) {
 			holder.checkBtn.setChecked(true);
 			holder.checkBtn.setTag(true);
 			this.view = view;
 			this.channelBean = channelBean;
 			this.checkedPosition = position;
-			activity.setCurCheckChannelId(channelBean.getChannelId());
-			activity.setCurCheckChannelName(channelBean.getChannelName());				
-			activity.setParentChannelId(channelBean.getParentId());
+//			activity.setCurCheckChannelId(channelBean.getChannelId());
+//			activity.setCurCheckChannelName(channelBean.getChannelName());				
+//			activity.setParentChannelId(channelBean.getParentId());
 		} else {
 			holder.checkBtn.setChecked(false);
 		}
@@ -149,11 +160,7 @@ public class ChannelSearchListViewAdapter extends BaseAdapter {
 		CommonOnTouchListener listViewItemOnTouchListener = new ListViewItemOnTouchListener(activity) {
 			@Override
 			public void onImgChangeDo(View v) {
-				try {
-					channelClick(channelBean, holder, view, position);
-				} catch (Exception e) {
-					activity.error(e);
-				}
+				channelClick(channelBean, holder, view, position);
 			}
 			
 			@Override
@@ -168,20 +175,7 @@ public class ChannelSearchListViewAdapter extends BaseAdapter {
 				
 			}
 		};
-//		listViewItemOnTouchListener.changeColor(R.color.bg_gray_press, R.color.bg_gray_default);
 		view.setOnTouchListener(listViewItemOnTouchListener);
-		/*CommonOnClickListener listViewItemOnClickListener = new CommonOnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				try {
-					channelClick(bean);
-				} catch (Exception e) {
-					error(e);
-				}
-			}
-		};
-		bean.getView().setOnClickListener(listViewItemOnClickListener);*/
 	}
 	
 	private void channelClick(ChannelBean channelBean, Holder holder, View view, int position) {
@@ -207,8 +201,6 @@ public class ChannelSearchListViewAdapter extends BaseAdapter {
 			this.view = null;
 			holder.checkBtn.setChecked(false);
 		} else {
-			holder.checkBtn.setChecked(true);
-			holder.checkBtn.setTag(true);
 			if (this.view != null) {
 				View checkedView = this.view.findViewWithTag(true);
 				if (checkedView != null) {
@@ -216,9 +208,15 @@ public class ChannelSearchListViewAdapter extends BaseAdapter {
 					checkBtn.setChecked(false);
 				}
 			}
+			holder.checkBtn.setChecked(true);
+			holder.checkBtn.setTag(true);
 			this.view = view;
 			this.channelBean = channelBean;
 			this.checkedPosition = position;
+			if (activity.isClickET()) {
+				notifyDataSetChanged();
+				activity.setClickET(false);
+			}
 		}
 	}
 	

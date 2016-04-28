@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import com.enorth.cms.bean.login.ChannelBean;
 import com.enorth.cms.bean.login.LoginBean;
+import com.enorth.cms.bean.login.ScanBean;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.fragment.login.LoginFrag;
 import com.enorth.cms.fragment.login.ScanFrag;
@@ -19,6 +20,7 @@ import com.enorth.cms.utils.JsonUtil;
 import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.utils.StaticUtil;
 import com.enorth.cms.utils.StringUtil;
+import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.BaseFragmentActivity;
 import com.enorth.cms.view.R;
 
@@ -29,6 +31,7 @@ import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -73,12 +76,44 @@ public class LoginActivity extends BaseFragmentActivity implements ILoginView {
 //				mTextView.setText(bundle.getString("result"));
 				Log.e("扫描信息", bundle.getString("result"));
 				Toast.makeText(getActivity(), "扫描信息：" + bundle.getString("result"), Toast.LENGTH_SHORT).show();
+				String result = bundle.getString("result");
+				dealScanResult(result);
 				//显示
 //				mImageView.setImageBitmap((Bitmap) data.getParcelableExtra("bitmap"));
 			}
 			break;
 		}
     }
+	
+	private void dealScanResult(String result) {
+		String unknownScanPic = "未知的二维码";
+		// 判断使用"|"截取的个数是否为5个
+		String[] split = result.split("|");
+		if (split.length != 5) {
+			ViewUtil.showAlertDialog(this, unknownScanPic);
+			return;
+		}
+		String matchMark = split[0];
+		if (!matchMark.equals(ParamConst.MATCH_MARK)) {
+			ViewUtil.showAlertDialog(this, unknownScanPic);
+			return;
+		}
+		ScanBean scanBean = new ScanBean();
+		// 系统ID
+		scanBean.setScanId(split[1]);
+		// 系统的base_url
+		scanBean.setScanUrl(split[2]);
+		// 系统的版本号
+		scanBean.setScanVersion(split[3]);
+		// 系统的名称
+		scanBean.setScanName(split[4]);
+		StaticUtil.saveScanBeans(scanBean, this);
+		List<ScanBean> scanBeans = StaticUtil.getScanBeans(this);
+		List<String> scanNames = StaticUtil.getScanNames(this);
+		scanFrag.setScanBeans(scanBeans);
+		scanFrag.setScanNames(scanNames);
+		scanFrag.getSystemChooseTV().setVisibility(View.VISIBLE);
+	}
 	
 	private void initView() {
 //		loginLayout = (LinearLayout) findViewById(R.id.loginLayout);

@@ -4,18 +4,17 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.enorth.cms.adapter.news.NewsListFragmentPagerAdapter;
 import com.enorth.cms.adapter.news.NewsListViewAdapter;
 import com.enorth.cms.bean.BottomMenuOperateDataBasicBean;
-import com.enorth.cms.bean.ButtonColorBasicBean;
+import com.enorth.cms.bean.ViewColorBasicBean;
 import com.enorth.cms.bean.Page;
+import com.enorth.cms.bean.channel_search.RequestNewsSearchUrlBean;
 import com.enorth.cms.bean.login.ChannelBean;
 import com.enorth.cms.bean.login.LoginBean;
 import com.enorth.cms.bean.news_list.BottomMenuBasicBean;
@@ -36,11 +35,11 @@ import com.enorth.cms.presenter.newslist.INewsListFragPresenter;
 import com.enorth.cms.presenter.newslist.NewsListFragPresenter;
 import com.enorth.cms.utils.BeanParamsUtil;
 import com.enorth.cms.utils.ColorUtil;
-import com.enorth.cms.utils.DimenUtil;
 import com.enorth.cms.utils.DrawableUtil;
+import com.enorth.cms.utils.JsonUtil;
+import com.enorth.cms.utils.LayoutParamsUtil;
 import com.enorth.cms.utils.PopupWindowUtil;
 import com.enorth.cms.utils.ScreenTools;
-import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.utils.StaticUtil;
 import com.enorth.cms.utils.StringUtil;
 import com.enorth.cms.utils.ViewUtil;
@@ -51,12 +50,13 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -134,10 +134,6 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	 * 当前的状态，有INIT(初始状态)、REFRESHING(刷新)、LOADING(加载)三种
 	 */
 	private int curRefreshState = ParamConst.INIT;
-	/**
-	 * 默认显示到ListView中的Layout的高度
-	 */
-	private int defaultListViewHeight = 0;
 	// public List<View> views = new ArrayList<View>();
 	/**
 	 * 选中的新闻总和
@@ -146,11 +142,12 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	/**
 	 * 标题的所有类别（普通新闻）
 	 */
-	private int[] allNewsTitleName;
+	private List<String> allNewsTitleName;
+//	private Map<String, String> allNewsTitleName;
 	/**
 	 * 当前的新闻标题
 	 */
-	private int curNewsTitleName;
+	private String curNewsTitleName;
 	/**
 	 * 新闻排序的类别
 	 */
@@ -178,16 +175,11 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	/**
 	 * 切换新闻列表时对应的state状态
 	 */
-	private int[] newsTypeBtnState = { ParamConst.STATE_EDIT, ParamConst.STATE_TO_PUB, ParamConst.STATE_PUB };
-	/**
-	 * 切换新闻列表的标头按钮对应的id
-	 */
-	private String[] newsTypeBtnId = { "waitEdit", "tobeIssued", "hasIssued" };
-
+	private int[] newsStateBtnState = { ParamConst.STATE_EDIT, ParamConst.STATE_TO_PUB, ParamConst.STATE_PUB };
 	/**
 	 * 编辑、待签发、已签发的按钮组的集合
 	 */
-	private List<EnableSimpleChangeButton> newsTypeBtns;
+	private List<EnableSimpleChangeButton> newsStateBtns;
 	/**
 	 * 初始化新闻操作类型的按钮布局（待编辑、待签发、已签发）
 	 */
@@ -196,6 +188,10 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	 * 右下角的"+"在对应的新闻列表中是否显示
 	 */
 	public boolean[] isShowAddNewsBtn = { true, false, false };
+	/**
+	 * 获取搜索图标的Drawable，用于搜索新闻之后加入到对应按钮组中选中的按钮上
+	 */
+	public Drawable newsStateBtnRightDrawable;
 	/**
 	 * 底部菜单的基础bean（里面包括按钮可选/不可选图标、文组描述、提示信息、颜色）
 	 */
@@ -260,6 +256,16 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	 * 副标题中的频道加载
 	 */
 	protected Handler newsSubTitleHandler;
+	
+	private int refreshType = ParamConst.REFRESH_TYPE_DEFAULT;
+	/**
+	 * 如果进行新闻搜索，则在修改refreshType的同时，当新结果加载完之后，需要将此参数变为true
+	 */
+	private boolean isNewsSearched = false;
+	/**
+	 * 获取搜索的新闻条件bean
+	 */
+	private RequestNewsSearchUrlBean requestNewsSearchUrlBean;
 
 	/**
 	 * 初始化底部菜单bean
@@ -288,7 +294,7 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	 * 初始化所有新闻标题的名称
 	 * @return
 	 */
-	public abstract int[] setAllNewsTitleText();
+	public abstract List<String> setAllNewsTitleText();
 	
 	/**
 	 * 初始化副标题的一系列操作
@@ -324,12 +330,13 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 		case ParamConst.NEWS_LIST_FRAG_ACTIVITY_TO_NEWS_SEARCH_ACTIVITY_REQUEST_CODE:
 			if (resultCode == ParamConst.NEWS_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE) {
 				Bundle extras = data.getExtras();
-				Set<String> keySet = extras.keySet();
-				for (String key : keySet) {
-					Log.e(key, extras.getString(key));
-					Toast.makeText(NewsCommonActivity.this, key + ":" + extras.getString(key), Toast.LENGTH_SHORT)
-							.show();
-				}
+				// 获取搜索的新闻条件bean
+				requestNewsSearchUrlBean = (RequestNewsSearchUrlBean) extras.getSerializable(ParamConst.NEWS_SEARCH_BEAN);
+				Page page = new Page();
+				requestNewsSearchUrlBean.setPage(page);
+				refreshType = ParamConst.REFRESH_TYPE_NEWS_SEARCH;
+				isNewsSearched = false;
+				listViews.get(curPosition).setRefreshing();
 			}
 			break;
 		case ParamConst.NEWS_LIST_FRAG_ACTIVITY_TO_CHANNEL_SEARCH_ACTIVITY_REQUEST_CODE:
@@ -347,18 +354,6 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 						listViews.get(curPosition).setRefreshing();
 					}
 				}, 100);
-				/*Bundle extras = data.getExtras();
-				if (extras.containsKey(ParamConst.CUR_CHANNEL_ID)
-						&& extras.containsKey(ParamConst.CUR_CHANNEL_ID_PARENT_ID)
-						&& extras.containsKey(ParamConst.CUR_CHANNEL_NAME)) {
-					channelId = extras.getLong(ParamConst.CUR_CHANNEL_ID);
-					Long parentId = extras.getLong(ParamConst.CUR_CHANNEL_ID_PARENT_ID);
-					newsSubTitleText = extras.getString(ParamConst.CUR_CHANNEL_NAME);
-					newsSubTitleTV.setText(newsSubTitleText);
-					SharedPreUtil.put(NewsCommonActivity.this, ParamConst.CUR_CHANNEL_ID, channelId);
-					SharedPreUtil.put(NewsCommonActivity.this, ParamConst.CUR_CHANNEL_ID_PARENT_ID, parentId);
-					SharedPreUtil.put(NewsCommonActivity.this, ParamConst.CUR_CHANNEL_NAME, newsSubTitleText);
-				}*/
 			}
 		default:
 			super.onActivityResult(requestCode, resultCode, data);
@@ -377,7 +372,6 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 		whiteColor = ColorUtil.getWhiteColor(NewsCommonActivity.this);
 		blueColor = ColorUtil.getCommonBlueColor(NewsCommonActivity.this);
 		// 获取屏幕的分辨率
-
 		newsTitleAllowLength = ScreenTools.getPhoneWidth(NewsCommonActivity.this) / ParamConst.FONT_WIDTH;
 		channelBean = StaticUtil.getCurChannelBean(this);
 		loginBean = StaticUtil.getCurLoginBean(this);
@@ -385,11 +379,10 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 		initNewsListBean();
 		// 将所有的新闻标题进行初始化
 		allNewsTitleName = setAllNewsTitleText();
-//		newsTitleBeans = setAllNewsTitleText();
 		
 		// 将第一个标题存入当前标题中
-//		curNewsTitleName = newsTitleBeans.get(0).getNewsTitleName();
-		curNewsTitleName = allNewsTitleName[0];
+		curNewsTitleName = allNewsTitleName.get(0);
+		
 		curUrl = UrlConst.NEWS_LIST_POST_URL;
 		
 		initSortData();
@@ -410,11 +403,6 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	 * 将ViewPager中的所有ListView对应的adapter进行初始化
 	 */
 	private void initListViewAdapter() {
-		float titleHeight = DimenUtil.getDimension(this, R.dimen.news_title_height);
-		float subTitleHeight = DimenUtil.getDimension(this, R.dimen.news_sub_title_height);
-		float operateBtnHeight = DimenUtil.getDimension(this, R.dimen.news_operate_btn_layout_height);
-		defaultListViewHeight = (int) ((ScreenTools.getPhoneHeight(NewsCommonActivity.this) - titleHeight - subTitleHeight
-				- operateBtnHeight) / 2 + titleHeight + subTitleHeight);
 		int length = newsTypeBtnText.length;
 		for (int i = 0; i < length; i++) {
 //			NewsListViewAdapter adapter = new NewsListViewAdapter(this, 0, items);
@@ -437,7 +425,7 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	 * 标题点击弹出事件
 	 */
 	private void initNewsTitleEvent() {
-		titleText.setCompoundDrawablesWithIntrinsicBounds(null, null, DrawableUtil.getDrawable(this, R.drawable.news_sub_title_channel_iv), null);
+		titleText.setCompoundDrawablesWithIntrinsicBounds(null, null, DrawableUtil.getDrawable(this, R.drawable.news_down_btn), null);
 		ChangeBGColorOnTouchListener listener = new ChangeBGColorOnTouchListener(this) {
 			
 			@Override
@@ -471,9 +459,6 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 					initPopupWindowItemsContainCheckMark(layout, listener, allNewsTitleName, curNewsTitleName);
 				}
 			};
-			/*popupWindowUtil.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL);
-			int newsTitleHeightPx = ScreenTools.dimenDip2px(R.dimen.news_title_height, this);
-			popupWindowUtil.setY(newsTitleHeightPx);*/
 			newsTitlePopupWindowUtil.setXoffInPixels(-newsTitlePopupWindowUtil.getWidth() / 2);
 		}
 		newsTitlePopupWindow = newsTitlePopupWindowUtil.initPopupWindow();
@@ -527,7 +512,7 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 		newsListBean = new RequestNewsListUrlBean();
 		newsListBean.setChannelId(channelBean.getChannelId());
 		newsListBean.setInitEditor(loginBean.getUserId());
-		newsListBean.setState(newsTypeBtnState[0]);
+		newsListBean.setState(newsStateBtnState[0]);
 		newsListBean.setNewsType(initCurNewsType());
 		Page page = new Page();
 		page.setOrderBy(curSubNewsTitleSortColumn);
@@ -541,8 +526,10 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	 */
 	private void initNewsTypeBtnLayout() {
 		newsTypeBtnLineLayout = (LinearLayout) newsTypeBtnRelaLayout.getChildAt(0);
-		newsTypeBtns = ViewUtil.initBtnGroupLayout(NewsCommonActivity.this, newsTypeBtnLineLayout, newsTypeBtnText,
-				newsTypeBtnId, 0.9f);
+		newsStateBtns = ViewUtil.initBtnGroupLayout(NewsCommonActivity.this, newsTypeBtnLineLayout, newsTypeBtnText,
+				newsStateBtnState, 0.9f);
+		// 获取搜索图标的Drawable，用于搜索新闻之后加入到对应按钮组中选中的按钮上
+		newsStateBtnRightDrawable = DrawableUtil.getDrawable(this, R.drawable.nav_search);
 	}
 
 	/**
@@ -621,6 +608,26 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	}
 	
 	/**
+	 * 在从新闻搜索页待会条件时进行的新搜索
+	 * @param newsListView
+	 */
+	public void initNewsSearchListData(PullToRefreshListView newsListView) {
+		// 将bean处理成传入接口中的格式
+		List<BasicNameValuePair> initData = BeanParamsUtil.initData(requestNewsSearchUrlBean, this);
+		// 初始化当前ListView对应的handler
+		Handler newsListViewHandler = new NewsListViewHandler(this, listViews.get(curPosition), null);
+		// 将当前搜索URL进行替换
+		curUrl = UrlConst.SEARCH_NEWS_POST_URL;
+		// 在当前选中的按钮组中加入搜索图标
+//		newsStateBtns.get(curPosition).setCompoundDrawablesWithIntrinsicBounds(null, null, newsStateBtnRightDrawable, null);
+		int height = newsTypeBtnLineLayout.getMeasuredHeight();
+		newsStateBtnRightDrawable.setBounds(0, 0, height / 2, height / 2);
+		newsStateBtns.get(curPosition).setCompoundDrawables(null, null, newsStateBtnRightDrawable, null);
+		presenter.requestListViewData(curUrl, newsListViewHandler, initData);
+		isNewsSearched = true;
+	}
+	
+	/**
 	 * 访问新闻列表的接口，并将从中获取的数据放入对应的控件中显示
 	 * 
 	 * @param handler
@@ -638,24 +645,24 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	@Override
 	public void initReturnJsonData(String result, Handler handler) {
 		List<NewsListBean> resultView = new ArrayList<NewsListBean>();
-		try {
-			if (StringUtil.isNotEmpty(result)) {
-				JSONArray jsonArray = new JSONArray(result);
-				int length = jsonArray.length();
-				for (int i = 0; i < length; i++) {
-					JSONObject jo = jsonArray.getJSONObject(i);
-//					View view = packageNewsData(jo);
-					NewsListBean bean = packageNewsData(jo);
-					if (bean == null) {
-						throw new JSONException("数据错误");
-					}
-					resultView.add(bean);
+		if (StringUtil.isNotEmpty(result)) {
+			JSONArray jsonArray = JsonUtil.initJsonArray(result);
+			int length = jsonArray.length();
+			for (int i = 0; i < length; i++) {
+				JSONObject jo = JsonUtil.getJSONObject(jsonArray, i);
+//				View view = packageNewsData(jo);
+				NewsListBean bean = packageNewsData(jo);
+				if (bean == null) {
+//					ViewUtil.showAlertDialog(this, "数据错误");
+					Message msg = new Message();
+					msg.what = ParamConst.MESSAGE_WHAT_ERROR;
+					msg.obj = "数据错误";
+					handler.sendMessage(msg);
+					return;
+//					throw new JSONException("数据错误");
 				}
+				resultView.add(bean);
 			}
-			
-		} catch (JSONException e) {
-			Log.e("NewsCommonActivity.initData()Json转换成view时发生错误", e.toString());
-			e.printStackTrace();
 		}
 
 		if (resultView.size() == 0) {
@@ -689,7 +696,7 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	 * @param position
 	 * @throws Exception
 	 */
-	public void changeNewsTypeBtnStyleByFocusedState(int position) throws Exception {
+	public void changeNewsTypeBtnStyleByFocusedState(int position) {
 		ViewUtil.changeBtnGroupStyleByFocusedState(NewsCommonActivity.this, newsTypeBtnLineLayout, position,
 				ColorUtil.getCommonBlueColor(NewsCommonActivity.this),
 				ColorUtil.getWhiteColor(NewsCommonActivity.this));
@@ -701,11 +708,45 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	public void initNewsOperateBtn() {
 		int i = 0;
 		// 获取底部的每一个按钮的基本参数
-		bottomMenuList = initNewsOperateBtnData();
+		initNewsOperateBtnData();
 		changeCanEnableState();
 		for (final BottomMenuBasicBean bean : bottomMenuList) {
-			// final View view = inflater.inflate(R.layout.operate_btn_basic,
-			// null);
+			if (bean.getImageCheckedResource() == 0) {
+				continue;
+			}
+			LinearLayout layout = (LinearLayout) newsOperateBtnLayout.getChildAt(i++);
+			final ImageView bottomIV = (ImageView) layout.getChildAt(0);
+			
+			final String hint = bean.getDisableHint();
+			BottomMenuOnTouchListener listener = new BottomMenuOnTouchListener(this) {
+
+				@Override
+				public boolean onImgChangeBegin(View v) {
+					// 如果当前点击的按钮处于disable状态，则不进行任何操作
+					if ((Boolean) bottomIV.getTag()) {
+//						Toast.makeText(NewsCommonActivity.this, bean.getTextContent(), Toast.LENGTH_SHORT).show();
+						ViewUtil.showAlertDialog(NewsCommonActivity.this, bean.getTextContent());
+						return true;
+					} else {
+//						Toast.makeText(NewsCommonActivity.this, hint, Toast.LENGTH_SHORT).show();
+						ViewUtil.showAlertDialog(NewsCommonActivity.this, hint);
+						return false;
+					}
+				}
+			};
+			layout.setOnTouchListener(listener);
+		}
+	}
+	/*public void initNewsOperateBtn() {
+		int i = 0;
+		// 获取底部的每一个按钮的基本参数
+		bottomMenuList = initNewsOperateBtnData();
+		changeCanEnableState();
+		LinearLayout.LayoutParams layoutParams = LayoutParamsUtil.initLinePercentWeight(1f);
+		for (final BottomMenuBasicBean bean : bottomMenuList) {
+			if (bean.getImageCheckedResource() == 0) {
+				continue;
+			}
 			final LinearLayout layout = (LinearLayout) newsOperateBtnLayout.getChildAt(i++);
 			if (bean.getImageCheckedResource() == 0) {
 				layout.setVisibility(View.GONE);
@@ -744,21 +785,21 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 			tv.setText(bean.getTextContent());
 
 		}
-	}
+	}*/
 
 	/**
 	 * 初始化底部菜单的信息
 	 * 
 	 * @return
 	 */
-	protected List<BottomMenuBasicBean> initNewsOperateBtnData() {
-		List<BottomMenuBasicBean> resultList = new ArrayList<BottomMenuBasicBean>();
+	protected void initNewsOperateBtnData() {
 		int[] newsOperateBtnChecked = bottomMenuOperateBean.getNewsOperateBtnChecked(curPosition);
 		int[] newsOperateBtnDisabled = bottomMenuOperateBean.getNewsOperateBtnDisabled(curPosition);
 		String[] newsOperateBtnTextContent = bottomMenuOperateBean.getNewsOperateBtnTextContent(curPosition);
 		String[] disableHint = bottomMenuOperateBean.getDisableHint(curPosition);
 		int[] newsOperateBtnCanEnableState = bottomMenuOperateBean.getNewsOperateBtnCanEnableState(curPosition);
 		int length = newsOperateBtnChecked.length;
+		bottomMenuList = new ArrayList<BottomMenuBasicBean>();
 		for (int i = 0; i < length; i++) {
 			BottomMenuBasicBean bean = new BottomMenuBasicBean();
 			bean.setImageCheckedResource(newsOperateBtnChecked[i]);
@@ -767,9 +808,8 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 			bean.setTextContent(newsOperateBtnTextContent[i]);
 			bean.setDisableHint(disableHint[i]);
 			bean.setCanEnableState(newsOperateBtnCanEnableState[i]);
-			resultList.add(bean);
+			bottomMenuList.add(bean);
 		}
-		return resultList;
 	}
 
 	/**
@@ -791,26 +831,42 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	 */
 	protected void changeBottomMenuBtnState() {
 		int i = 0;
+		// 用作判断是否已经在newsOperateBtnLayout中添加了按钮组
+		/*boolean isInit = false;
+		if (newsOperateBtnLayout.getChildCount() == 0) {
+			isInit = false;
+		} else {
+			isInit = true;
+		}*/
+		newsOperateBtnLayout.removeAllViews();
+		LinearLayout.LayoutParams percentLayoutParams = LayoutParamsUtil.initLinePercentWeight(1f);
+		LinearLayout.LayoutParams wrapLayoutParams = LayoutParamsUtil.initLineWrapLayout();
 		for (BottomMenuBasicBean bean : bottomMenuList) {
-			// ImageView iv = bean.getImageView();
-			final LinearLayout layout = (LinearLayout) newsOperateBtnLayout.getChildAt(i);
-			final ImageView iv = (ImageView) layout.getChildAt(0);
-			final TextView tv = (TextView) layout.getChildAt(1);
+			if (bean.getImageCheckedResource() == 0) {
+				continue;
+			}
+			LinearLayout layout = new LinearLayout(this);
+			layout.setOrientation(LinearLayout.VERTICAL);
+			layout.setGravity(Gravity.CENTER);
+			newsOperateBtnLayout.addView(layout, percentLayoutParams);
+			
+			final ImageView iv = new ImageView(this);
+			final TextView tv = new TextView(this);
+			layout.addView(iv, wrapLayoutParams);
+			layout.addView(tv, wrapLayoutParams);
+			// 将是否可以点击的按钮的状态进行初始化/变化
 			if (bean.getCanEnableState() >= canEnableState && canEnableState != ParamConst.CAN_ENABLE_STATE_DEFAULT) {
 				iv.setImageResource(bean.getImageCheckedResource());
-				iv.setSelected(true);
-				iv.setEnabled(true);
-				bean.setEnable(true);
+				iv.setTag(true);
 				int color = ContextCompat.getColor(NewsCommonActivity.this,
 						bottomMenuOperateBean.getNewsOperateBtnColor()[i]);
 				tv.setTextColor(color);
 			} else {
 				iv.setImageResource(bean.getImageDisableResource());
-				iv.setSelected(false);
-				iv.setEnabled(false);
-				bean.setEnable(false);
+				iv.setTag(false);
 				tv.setTextColor(newsOperateBtnBasicColor);
 			}
+			tv.setText(bean.getTextContent());
 			i++;
 		}
 	}
@@ -823,8 +879,12 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 		}
 	}
 
-	public void changeToCurPosition(ButtonColorBasicBean colorBasicBean, EnableSimpleChangeButton btn,
+	public void changeToCurPosition(ViewColorBasicBean colorBasicBean, EnableSimpleChangeButton btn,
 			final PullToRefreshListView listView, int position) {
+		for (EnableSimpleChangeButton newsStateBtn : newsStateBtns) {
+			newsStateBtn.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+		}
+//		newsStateBtns.get(curPosition).setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 		ViewUtil.initBtnGroupStyleByFocusedState(colorBasicBean, btn, true, blueColor, whiteColor);
 		NewsListViewAdapter newsListViewAdapter = listViewAdapter.get(position);
 		if (newsListViewAdapter.getItems().size() == 0) {
@@ -863,7 +923,7 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	}
 
 	public void setNewsSubTitleText(String newsSubTitleText) {
-		this.newsSubTitleText = newsSubTitleText;
+		this.newsSubTitleText = newsSubTitleText + " ";
 	}
 
 	public TextView getNewsSubTitleTV() {
@@ -938,27 +998,27 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 		this.newsListBean = newsListBean;
 	}
 
-	public int[] getNewsTypeBtnState() {
-		return newsTypeBtnState;
+	public int[] getNewsStateBtnState() {
+		return newsStateBtnState;
 	}
 
-	public void setNewsTypeBtnState(int[] newsTypeBtnState) {
-		this.newsTypeBtnState = newsTypeBtnState;
+	public void setNewsStateBtnState(int[] newsStateBtnState) {
+		this.newsStateBtnState = newsStateBtnState;
 	}
 
-	public int[] getAllNewsTitleName() {
+	public List<String> getAllNewsTitleName() {
 		return allNewsTitleName;
 	}
 
-	public void setAllNewsTitleName(int[] allNewsTitleName) {
+	public void setAllNewsTitleName(List<String> allNewsTitleName) {
 		this.allNewsTitleName = allNewsTitleName;
 	}
 
-	public int getCurNewsTitleName() {
+	public String getCurNewsTitleName() {
 		return curNewsTitleName;
 	}
 
-	public void setCurNewsTitleName(int curNewsTitleName) {
+	public void setCurNewsTitleName(String curNewsTitleName) {
 		this.curNewsTitleName = curNewsTitleName;
 	}
 
@@ -1009,6 +1069,38 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 
 	public void setHintRelative(RelativeLayout hintRelative) {
 		this.hintRelative = hintRelative;
+	}
+
+	public List<EnableSimpleChangeButton> getNewsStateBtns() {
+		return newsStateBtns;
+	}
+
+	public void setNewsStateBtns(List<EnableSimpleChangeButton> newsStateBtns) {
+		this.newsStateBtns = newsStateBtns;
+	}
+
+	public int getRefreshType() {
+		return refreshType;
+	}
+
+	public void setRefreshType(int refreshType) {
+		this.refreshType = refreshType;
+	}
+
+	public boolean isNewsSearched() {
+		return isNewsSearched;
+	}
+
+	public void setNewsSearched(boolean isNewsSearched) {
+		this.isNewsSearched = isNewsSearched;
+	}
+
+	public RequestNewsSearchUrlBean getRequestNewsSearchUrlBean() {
+		return requestNewsSearchUrlBean;
+	}
+
+	public void setRequestNewsSearchUrlBean(RequestNewsSearchUrlBean requestNewsSearchUrlBean) {
+		this.requestNewsSearchUrlBean = requestNewsSearchUrlBean;
 	}
 
 }

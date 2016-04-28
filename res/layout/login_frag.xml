@@ -26,6 +26,7 @@
             android:drawableStart="@drawable/icon_person_a"
             android:drawableRight="@drawable/down"
             android:drawableEnd="@drawable/down"
+            android:drawablePadding="@dimen/common_drawable_padding"
             android:inputType="text" />
         <!--
              <AutoCompleteTextView
@@ -61,6 +62,7 @@
             android:background="@drawable/common_radius_and_stroke"
             android:drawableLeft="@drawable/icon_lock_a"
             android:drawableStart="@drawable/icon_lock_a"
+            android:drawablePadding="@dimen/common_drawable_padding"
             android:inputType="textPassword" />
     </LinearLayout>
 

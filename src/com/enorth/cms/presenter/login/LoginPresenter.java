@@ -29,9 +29,8 @@ public class LoginPresenter implements ILoginPresenter {
 	}
 
 	@Override
-	public void login(final LoginBean bean, final boolean rememberUser, final Handler handler) throws Exception {
+	public void login(final LoginBean bean, final boolean rememberUser, final Handler handler) {
 		List<BasicNameValuePair> params = BeanParamsUtil.initDataSimple(bean, view.getActivity());
-		params.add(new BasicNameValuePair("api_token", "0000010000109500000145828956906064d05eba6e6424fa92acf9ef9be55a57"));
 		Callback callback = new Callback() {
 			
 			@Override
@@ -41,7 +40,7 @@ public class LoginPresenter implements ILoginPresenter {
 					resultString = HttpUtil.checkResponseIsSuccess(r);
 					view.login(resultString, bean, rememberUser, handler);
 				} catch (Exception e) {
-					Log.e("error", e.toString());
+					Log.e("LoginPresenter login error", e.toString());
 					HttpUtil.responseOnFailure(r, e, handler);
 					e.printStackTrace();
 				}
@@ -49,7 +48,7 @@ public class LoginPresenter implements ILoginPresenter {
 			
 			@Override
 			public void onFailure(Request r, IOException e) {
-				
+				HttpUtil.requestOnFailure(r, e, handler);
 			}
 		};
 		AnimUtil.showRefreshFrame(view.getActivity(), true, "正在登录，请稍后");

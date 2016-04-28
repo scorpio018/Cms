@@ -6,6 +6,7 @@ import com.enorth.cms.view.R;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,21 +44,24 @@ public abstract class PopupWindowContainCheckMarkOnTouchListener extends CommonO
 	public void onImgChangeDo(View v) {
 		int childCount = layout.getChildCount();
 		Object curTag = v.getTag();
+		Log.e("check state", "VISIBLE:" + View.VISIBLE + ";GONE:" + View.GONE);
 		for (int j = 0; j < childCount; j++) {
 			View view = layout.getChildAt(j);
 			ImageView chooseCheckStateIV = (ImageView) view.findViewById(R.id.chooseCheckStateIV);
 			Object tag = view.getTag();
 			if (tag.equals(curTag)) {
-				if (chooseCheckStateIV.getVisibility() == View.GONE) {
-					TextView chooseTV = (TextView) view.findViewById(R.id.chooseText);
-					String chooseText = (String) chooseTV.getText();
-					chooseCheckStateIV.setVisibility(View.VISIBLE);
-					checkItem(curTag.toString(), chooseText);
-				}
+				TextView chooseTV = (TextView) view.findViewById(R.id.chooseText);
+				String chooseText = (String) chooseTV.getText();
+				Log.e("curIV check state before", chooseText + ":" + String.valueOf(chooseCheckStateIV.getVisibility()));
+				chooseCheckStateIV.setVisibility(View.VISIBLE);
+				Log.e("curIV check state after", chooseText + ":" + String.valueOf(chooseCheckStateIV.getVisibility()));
+				checkItem(curTag.toString(), chooseText);
 			} else {
-				if (chooseCheckStateIV.getVisibility() == View.VISIBLE) {
-					chooseCheckStateIV.setVisibility(View.GONE);
-				}
+				TextView chooseTV = (TextView) view.findViewById(R.id.chooseText);
+				String chooseText = (String) chooseTV.getText();
+				Log.e("curIV check state before", chooseText + ":" + String.valueOf(chooseCheckStateIV.getVisibility()));
+				chooseCheckStateIV.setVisibility(View.GONE);
+				Log.e("curIV check state after", chooseText + ":" + String.valueOf(chooseCheckStateIV.getVisibility()));
 			}
 		}
 	}

@@ -19,7 +19,7 @@ public abstract class SearchCommonFilterAdapter<T> extends BaseAdapter implement
 	
 	private List<T> originalValues;
 	
-	public List<T> objects;
+	private List<T> items;
 	
 	private Object lock = new Object();
 	
@@ -43,7 +43,7 @@ public abstract class SearchCommonFilterAdapter<T> extends BaseAdapter implement
 		this.context = context;
 		inflater = LayoutInflater.from(context);
 		this.resource = dropDownResource = resource;
-		this.objects = new ArrayList<T>(objects);
+		this.items = new ArrayList<T>(objects);
 //		filter = new SearchCommonFilter(objects, lock, originalValues);
 		/*new Handler() {
 			@Override
@@ -64,7 +64,7 @@ public abstract class SearchCommonFilterAdapter<T> extends BaseAdapter implement
 				originalValues.add(object);
 			}
 		} else {
-			objects.add(object);
+			items.add(object);
 		}
 	}
 	
@@ -74,7 +74,7 @@ public abstract class SearchCommonFilterAdapter<T> extends BaseAdapter implement
 				originalValues.add(index, object);
 			}
 		} else {
-			objects.add(index, object);
+			items.add(index, object);
 		}
 	}
 	
@@ -84,7 +84,7 @@ public abstract class SearchCommonFilterAdapter<T> extends BaseAdapter implement
 				originalValues.remove(object);
 			}
 		} else {
-			objects.remove(object);
+			items.remove(object);
 		}
 	}
 	
@@ -94,7 +94,7 @@ public abstract class SearchCommonFilterAdapter<T> extends BaseAdapter implement
 				originalValues.clear();
 			}
 		} else {
-			objects.clear();
+			items.clear();
 		}
 	}
 	
@@ -104,7 +104,7 @@ public abstract class SearchCommonFilterAdapter<T> extends BaseAdapter implement
 	
 	@Override
 	public int getCount() {
-		return objects.size();
+		return items.size();
 	}
 
 	/*@Override
@@ -145,5 +145,22 @@ public abstract class SearchCommonFilterAdapter<T> extends BaseAdapter implement
 	public View getDropDownView(int position, View convertView, ViewGroup parent) {
 		return createViewFromResource(position, convertView, parent, dropDownResource);
 	}
+	
+	/**
+	 * 在搜索框中输入文字时进行的搜索框中的图标处理。例：当搜索框中输入文字时，需要加上“x”图标来点击进行内容的删除操作
+	 */
+	public abstract void initDrawable();
+	/**
+	 * 在搜索框中文字清空时进行的搜索框中的图标处理。例：当搜索框中文字清空时，需要去掉“x”图标
+	 */
+	public abstract void removeDrawable();
 
+	public List<T> getItems() {
+		return items;
+	}
+
+	public void setItems(List<T> items) {
+		this.items = items;
+		originalValues = items;
+	}
 }

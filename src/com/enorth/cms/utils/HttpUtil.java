@@ -197,11 +197,12 @@ public class HttpUtil {
 	}
 
 	private static String checkResourseResult(String result) throws Exception {
-		JSONObject jo = new JSONObject(result);
-		int errorCode = jo.getInt("code");
+		JSONObject jo = JsonUtil.initJsonObject(result);
+		int errorCode = JsonUtil.getInt(jo, "code");
+		String resultStr = JsonUtil.getString(jo, "result");
 		switch (errorCode) {
 		case UrlCodeErrorConst.SUCCESS:
-			return jo.getString("result");
+			return resultStr;
 		case UrlCodeErrorConst.CHECK_TOKEN_FAILED:
 			throw new Exception("用户验证失败，请重新登录[-1]");
 		case UrlCodeErrorConst.CHECK_CHECK_SUM_FAILED:
@@ -212,7 +213,7 @@ public class HttpUtil {
 		case UrlCodeErrorConst.REQUEST_OBJECT_IS_NOT_EXISTS:
 		case UrlCodeErrorConst.CUR_USER_NO_FIRST_LEVEL_CHANNEL_PERMISSION:
 		case UrlCodeErrorConst.CREATE_LOGIN_TOKEN_FAILED:
-			throw new Exception("errorCode:【" + errorCode + "】" + jo.getString("result"));
+			throw new Exception("errorCode:【" + errorCode + "】" + resultStr);
 		default:
 			throw new Exception(UrlCodeErrorConst.UNKNOWN_ERROR_HINT);
 		}

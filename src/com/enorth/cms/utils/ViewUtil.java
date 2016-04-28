@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.enorth.cms.adapter.materialupload.MaterialUploadFileItemGridViewAdapter;
-import com.enorth.cms.bean.ButtonColorBasicBean;
+import com.enorth.cms.bean.ViewColorBasicBean;
 import com.enorth.cms.bean.news_list.NewsListImageViewBasicBean;
 import com.enorth.cms.common.EnableSimpleChangeButton;
 import com.enorth.cms.listener.menu.LeftMenuCommonOnClickListener;
@@ -18,18 +18,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView.LayoutParams;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +39,7 @@ public class ViewUtil {
 	 * 根据ListView里面的item的高度和设置ListView的总高度
 	 * @param listView
 	 */
+	@Deprecated
 	public static void setListViewHeightBasedOnChildren(ListView listView) {
 		// 获取ListView对应的Adapter
 		ListAdapter listAdapter = listView.getAdapter();
@@ -93,7 +93,7 @@ public class ViewUtil {
 	 * @param btnId
 	 * @throws Exception
 	 */
-	public static List<EnableSimpleChangeButton> initBtnGroupLayout(Activity activity, LinearLayout layout, String[] btnText, String[] btnId, float percentWeight) {
+	public static List<EnableSimpleChangeButton> initBtnGroupLayout(Activity activity, LinearLayout layout, String[] btnText, int[] btnId, float percentWeight) {
 //		RelativeLayout newsTypeBtnRelaLayout = (RelativeLayout) activity.findViewById(R.id.newsTypeBtnRelaLayout);
 //		newsTypeBtnLineLayout = (LinearLayout) newsTypeBtnRelaLayout.getChildAt(0);
 		int checkedColor = ColorUtil.getCommonBlueColor(activity);
@@ -111,7 +111,7 @@ public class ViewUtil {
 	 * @param unCheckedColor
 	 * @throws Exception
 	 */
-	public static List<EnableSimpleChangeButton> initBtnGroupLayout(Activity activity, LinearLayout layout, String[] btnText, String[] btnId, float percentWeight, int checkedColor, int unCheckedColor) {
+	public static List<EnableSimpleChangeButton> initBtnGroupLayout(Activity activity, LinearLayout layout, String[] btnText, int[] btnId, float percentWeight, int checkedColor, int unCheckedColor) {
 		int length = btnText.length;
 		// 此处初始化按钮的基本样式
 		LinearLayout.LayoutParams params = LayoutParamsUtil.initLinePercentWeight(percentWeight);
@@ -127,7 +127,7 @@ public class ViewUtil {
 				btn.needRaduisPosition(false, false, false, false);
 			}
 			btn.setText(btnText[i]);
-			ButtonColorBasicBean colorBasicBean = new ButtonColorBasicBean(activity);
+			ViewColorBasicBean colorBasicBean = new ViewColorBasicBean(activity);
 			boolean needFocused = i == 0 ? true : false;
 			initBtnGroupStyleByFocusedState(colorBasicBean, btn, needFocused, checkedColor, unCheckedColor);
 			btn.setColorBasicBean(colorBasicBean);
@@ -148,7 +148,7 @@ public class ViewUtil {
 	 * @param checkedColor
 	 * @param unCheckedColor
 	 */
-	public static void initBtnGroupStyleByFocusedState(ButtonColorBasicBean colorBasicBean, EnableSimpleChangeButton btn, boolean needFocused, int checkedColor, int unCheckedColor) {
+	public static void initBtnGroupStyleByFocusedState(ViewColorBasicBean colorBasicBean, EnableSimpleChangeButton btn, boolean needFocused, int checkedColor, int unCheckedColor) {
 		if (needFocused) {
 			// 需要选中
 			colorBasicBean.setmBgNormalColor(checkedColor);
@@ -167,11 +167,11 @@ public class ViewUtil {
 	 * @param position
 	 * @throws Exception
 	 */
-	public static void changeBtnGroupStyleByFocusedState(Activity activity, LinearLayout layout, int position, int checkedColor, int unCheckedColor) throws Exception {
+	public static void changeBtnGroupStyleByFocusedState(Activity activity, LinearLayout layout, int position, int checkedColor, int unCheckedColor) {
 		int childCount = layout.getChildCount();
 		for (int i = 0; i < childCount; i++) {
 			EnableSimpleChangeButton btn = (EnableSimpleChangeButton) layout.getChildAt(i);
-			ButtonColorBasicBean colorBasicBean = new ButtonColorBasicBean(activity);
+			ViewColorBasicBean colorBasicBean = new ViewColorBasicBean(activity);
 			if (i == position) {
 				initBtnGroupStyleByFocusedState(colorBasicBean, btn, true, checkedColor, unCheckedColor);
 			} else {
@@ -188,7 +188,7 @@ public class ViewUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static String getCurCheckedBtnGroupId(List<EnableSimpleChangeButton> btns) throws Exception {
+	public static int getCurCheckedBtnGroupId(List<EnableSimpleChangeButton> btns) {
 		int size = btns.size();
 		for (int i = 0; i < size; i++) {
 			EnableSimpleChangeButton btn = btns.get(i);
@@ -196,7 +196,8 @@ public class ViewUtil {
 				return btn.getButtonId();
 			}
 		}
-		return null;
+		Log.e("ViewUtil.getCurCheckedBtnGroupId", "在按钮组中没有找到对应的类别ID");
+		return -9999;
 	}
 	
 	/**
@@ -349,13 +350,13 @@ public class ViewUtil {
 	 * @param activity
 	 * @param titleName
 	 */
-	public static void initMenuTitle(Activity activity, int titleName) {
+	public static void initMenuTitle(Activity activity, String titleName) {
 		// 初始化左侧菜单键
 		ImageView menuBtn = (ImageView) activity.findViewById(R.id.titleLeftIV);
 		menuBtn.setBackgroundResource(R.drawable.news_menu);
 		initMenuEvent(activity, menuBtn);
 		//　初始化标头
-		if (titleName != 0) {
+		if (StringUtil.isNotEmpty(titleName)) {
 			TextView materialUploadTitleText = (TextView) activity.findViewById(R.id.titleMiddleTV);
 			materialUploadTitleText.setText(titleName);
 		}

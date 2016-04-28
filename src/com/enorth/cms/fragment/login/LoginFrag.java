@@ -1,6 +1,5 @@
 package com.enorth.cms.fragment.login;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,13 +8,11 @@ import java.util.Map;
 import com.enorth.cms.bean.login.LoginBean;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.handler.login.LoginHandler;
-import com.enorth.cms.listener.CommonOnKeyListener;
 import com.enorth.cms.listener.EditTextDrawableOnTouchListener;
 import com.enorth.cms.listener.login.UserNameAndPwdTextWatcher;
 import com.enorth.cms.listener.login.UserNameDelBtnListener;
 import com.enorth.cms.listener.login.UserNameHistoryOnTouchListener;
 import com.enorth.cms.utils.ColorUtil;
-import com.enorth.cms.utils.DrawableUtil;
 import com.enorth.cms.utils.PopupWindowUtil;
 import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.utils.StringUtil;
@@ -27,8 +24,6 @@ import com.enorth.cms.widget.popupwindow.CommonPopupWindow;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,13 +67,7 @@ public class LoginFrag extends Fragment {
 		layout = (LinearLayout) inflater.inflate(R.layout.login_frag, null);
 		initView();
 		initHandler();
-		try {
-			initData();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		initData();
 		initEvent();
 		return layout;
 	}
@@ -100,7 +89,7 @@ public class LoginFrag extends Fragment {
 		handler = new LoginHandler(getActivity());
 	}
 	
-	private void initData() throws ClassNotFoundException, IOException {
+	private void initData() {
 //		SharedPreUtil.remove(getContext(), ParamConst.REMEMBERED_USER, ParamConst.LOGIN_USER);
 		String[] usersStr = SharedPreUtil.getStringArray(getContext(), ParamConst.REMEMBERED_USER, ParamConst.LOGIN_USER);
 		
@@ -170,7 +159,7 @@ public class LoginFrag extends Fragment {
 	}
 	
 	private void initUserNameEvent() {
-		userNameET.setOnTouchListener(new EditTextDrawableOnTouchListener() {
+		userNameET.setOnTouchListener(new EditTextDrawableOnTouchListener(getActivity()) {
 			
 			@Override
 			public EditText getEditText() {
@@ -178,7 +167,7 @@ public class LoginFrag extends Fragment {
 			}
 			
 			@Override
-			public void evenDo() {
+			public void eventDo() {
 				initPopupWindow();
 			}
 		});
@@ -234,16 +223,11 @@ public class LoginFrag extends Fragment {
 					LoginBean bean = new LoginBean();
 					bean.setUserName(userNameET.getText().toString());
 					bean.setPassword(pwdET.getText().toString());
-					try {
-						boolean checked = rememberPwdCB.isChecked();
-						if (checked) {
-							loginView.getPresenter().login(bean, true, handler);
-						} else {
-							loginView.getPresenter().login(bean, false, handler);
-						}
-					} catch (Exception e) {
-						Log.e("initSubmitEvent.onClick() error", e.toString());
-						e.printStackTrace();
+					boolean checked = rememberPwdCB.isChecked();
+					if (checked) {
+						loginView.getPresenter().login(bean, true, handler);
+					} else {
+						loginView.getPresenter().login(bean, false, handler);
 					}
 				}
 			}

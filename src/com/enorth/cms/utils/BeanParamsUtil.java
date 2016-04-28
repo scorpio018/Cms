@@ -125,6 +125,9 @@ public class BeanParamsUtil {
 				Object value = null;
 				try {
 					value = method.invoke(ob);
+					if (value == null) {
+						value = "";
+					}
 				} catch (IllegalAccessException e) {
 					Log.e("BeanParamsUtil.initData error", e.toString());
 					e.printStackTrace();
@@ -139,7 +142,7 @@ public class BeanParamsUtil {
 				boolean isCheck = annotation.isCheck();
 				if (isCheck) {
 					int checkSort = annotation.checkSort();
-					isCheckObMap.put(checkSort, value);
+					isCheckObMap.put(checkSort, value == null ? "" : value);
 				}
 				if (checkIsString(type)) {
 					params.add(new BasicNameValuePair(key, value.toString()));

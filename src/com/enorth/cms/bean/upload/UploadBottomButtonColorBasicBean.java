@@ -1,12 +1,12 @@
 package com.enorth.cms.bean.upload;
 
-import com.enorth.cms.bean.ButtonColorBasicBean;
+import com.enorth.cms.bean.ViewColorBasicBean;
 import com.enorth.cms.view.R;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 
-public class UploadBottomButtonColorBasicBean extends ButtonColorBasicBean {
+public class UploadBottomButtonColorBasicBean extends ViewColorBasicBean {
 	
 	private Context context;
 

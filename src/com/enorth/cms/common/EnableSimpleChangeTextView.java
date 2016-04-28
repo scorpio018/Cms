@@ -1,12 +1,14 @@
 package com.enorth.cms.common;
 
-import com.enorth.cms.bean.ButtonColorBasicBean;
+import com.enorth.cms.bean.ViewColorBasicBean;
+import com.enorth.cms.utils.ColorUtil;
 import com.enorth.cms.view.R;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
@@ -74,15 +76,17 @@ public class EnableSimpleChangeTextView extends TextView {
 	/**
 	 * 默认文字和背景颜色bean
 	 */
-	private ButtonColorBasicBean colorBasicBean;
+	private ViewColorBasicBean colorBasicBean;
+	
+	private Context context;
 
 	public EnableSimpleChangeTextView(Context context) {
 		super(context);
-		this.colorBasicBean = new ButtonColorBasicBean(context);
+		this.colorBasicBean = new ViewColorBasicBean(context);
 		initUI(context);
 	}
 	
-	public EnableSimpleChangeTextView(Context context, ButtonColorBasicBean colorBasicBean) throws Exception {
+	public EnableSimpleChangeTextView(Context context, ViewColorBasicBean colorBasicBean) throws Exception {
 		super(context);
 		this.colorBasicBean = colorBasicBean;
 		initUI(context);
@@ -90,19 +94,19 @@ public class EnableSimpleChangeTextView extends TextView {
 	
 	public EnableSimpleChangeTextView(Context context, AttributeSet attrs) throws Exception {
         super(context, attrs);
-        this.colorBasicBean = new ButtonColorBasicBean(context);
+        this.colorBasicBean = new ViewColorBasicBean(context);
 		initUI(context);
 	}
 	
 	public EnableSimpleChangeTextView(Context context, AttributeSet attrs, int defStyleAttr) throws Exception {
 		super(context, attrs, defStyleAttr);
-		this.colorBasicBean = new ButtonColorBasicBean(context);
+		this.colorBasicBean = new ViewColorBasicBean(context);
 		initUI(context);
 	}
 	
 	public EnableSimpleChangeTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) throws Exception {
         super(context, attrs, defStyleAttr, defStyleRes);
-        this.colorBasicBean = new ButtonColorBasicBean(context);
+        this.colorBasicBean = new ViewColorBasicBean(context);
 		initUI(context);
 	}
 	
@@ -112,6 +116,7 @@ public class EnableSimpleChangeTextView extends TextView {
 	 */
 	private void initUI(Context context) {
 //		initPadding(context);
+		this.context = context;
 		initAllState();
 		setGravity(Gravity.CENTER);
 		buildDraweableState();
@@ -233,13 +238,21 @@ public class EnableSimpleChangeTextView extends TextView {
 		 * 是第一参数它是一个float的数组保存的是圆角的半径，它是按照top-left顺时针保存的八个值
 		 */
 		// 创建圆弧形状
-		RoundRectShape rectShape = new RoundRectShape(outRectr, null, null);
+//		RoundRectShape rectShape = new RoundRectShape(outRectr, null, null);
 		int length = allBgColor.length;
 		for (int i = 0; i < length; i++) {
 			// 创建drawable
-			ShapeDrawable shapeDrawable = new ShapeDrawable(rectShape);
+//			ShapeDrawable shapeDrawable = new ShapeDrawable(rectShape);
 			// 设置我们按钮背景的颜色
-			shapeDrawable.getPaint().setColor(allBgColor[i]);
+//			shapeDrawable.getPaint().setColor(allBgColor[i]);
+			// 添加到状态管理里面
+//			drawable.addState(allState[i], shapeDrawable);
+			// 创建drawable
+			GradientDrawable shapeDrawable = new GradientDrawable();
+			shapeDrawable.setCornerRadii(outRectr);
+			// 设置我们按钮背景的颜色
+			shapeDrawable.setColor(allBgColor[i]);
+			shapeDrawable.setStroke(1, ColorUtil.getCommonBlueColor(context));
 			// 添加到状态管理里面
 			drawable.addState(allState[i], shapeDrawable);
 		}
@@ -334,7 +347,7 @@ public class EnableSimpleChangeTextView extends TextView {
 		buildDraweableState();
 	}
 	
-	public void setColorBasicBean(ButtonColorBasicBean colorBasicBean) {
+	public void setColorBasicBean(ViewColorBasicBean colorBasicBean) {
 		this.colorBasicBean = colorBasicBean;
 		buildDraweableState();
 	}

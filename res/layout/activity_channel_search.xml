@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@drawable/news_title_bg" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,15 +23,15 @@
             android:layout_height="@dimen/channel_search_line_layout_height"
             android:background="@color/gray" >
 
+            <!-- android:drawableEnd="@drawable/edit_text_cross"
+                android:drawableRight="@drawable/edit_text_cross" -->
             <AutoCompleteTextView
                 android:id="@+id/channelSearchEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:completionThreshold="1"
-                android:drawableEnd="@drawable/edit_text_cross"
                 android:drawableLeft="@drawable/edit_text_search"
-                android:drawableRight="@drawable/edit_text_cross"
                 android:drawableStart="@drawable/edit_text_search"
                 android:gravity="center"
                 android:hint="@string/channel_search_edit_hint"
@@ -44,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:background="@color/news_sub_title_color_basic"
             android:gravity="center_vertical" >
 
             <!-- 当前选中频道 -->
@@ -99,7 +101,8 @@
         <com.enorth.cms.widget.listview.newslist.NewsListListView
             android:id="@+id/childChannelListView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:background="@color/bg_gray_default" >
         </com.enorth.cms.widget.listview.newslist.NewsListListView>
     </LinearLayout>
 

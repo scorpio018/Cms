@@ -2,12 +2,15 @@ package com.enorth.cms.view.news;
 
 import java.util.List;
 
+import com.enorth.cms.bean.channel_search.RequestNewsSearchUrlBean;
 import com.enorth.cms.common.EnableSimpleChangeButton;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.listener.newslist.newssearch.NewsChannelSubmitOnTouchListener;
 import com.enorth.cms.utils.ActivityJumpUtil;
 import com.enorth.cms.utils.ColorUtil;
 import com.enorth.cms.utils.ScreenTools;
+import com.enorth.cms.utils.StaticUtil;
+import com.enorth.cms.utils.StringUtil;
 import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.R;
 
@@ -27,27 +30,27 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 	/**
 	 * 抓取类型的文字描述
 	 */
-	private String[] crawlTypeText = {"全部", "抓取", "非抓取"};
+	private String[] spiderText = {"全部", "抓取", "非抓取"};
 	/**
 	 * 抓取类型的文字描述对应的ID
 	 */
-	private String[] crawlTypeId = {"all", "crawl", "notCrawl"};
+	private int[] spiderId = {ParamConst.SPIDER_STATE_ALL, ParamConst.SPIDER_STATE_YES, ParamConst.SPIDER_STATE_NO};
 	/**
 	 * 融合类型的文字描述
 	 */
-	private String[] mergeTypeText = {"全部", "融合", "非融合"};
+	private String[] convText = {"全部", "融合", "非融合"};
 	/**
 	 * 融合类型的文字描述对应的ID
 	 */
-	private String[] mergeTypeId = {"all", "merge", "notMerge"};
+	private int[] convId = {ParamConst.CONV_STATE_ALL, ParamConst.CONV_STATE_YES, ParamConst.CONV_STATE_NO};
 	/**
 	 * 抓取选择按钮组集合
 	 */
-	private List<EnableSimpleChangeButton> crawlTypeBtns;
+	private List<EnableSimpleChangeButton> spiderBtns;
 	/**
 	 * 融合选择按钮组集合
 	 */
-	private List<EnableSimpleChangeButton> mergeTypeBtns;
+	private List<EnableSimpleChangeButton> convBtns;
 	/**
 	 * “返回上一级”按钮
 	 */
@@ -60,6 +63,14 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 	 * 重置按钮
 	 */
 	private TextView titleRightBtn;
+	/**
+	 * 包裹抓取的按钮组的Layout
+	 */
+	private LinearLayout crawlBtnLineLayout;
+	/**
+	 * 包裹融合的按钮组的Layout
+	 */
+	private LinearLayout mergeBtnLineLayout;
 	/**
 	 * 新闻ID文本框
 	 */
@@ -78,28 +89,54 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_news_search);
 		
-		try {
-			initTitle();
-			initBtnGroup();
-			initEditText();
-			initSubmmitBtn();
-		} catch (Exception e) {
-			Log.e("error", e.toString());
-			e.printStackTrace();
-		}
+		initView();
+		initTitleEvent();
+		initBtnGroup();
+		initSubmmitBtn();
 	}
 	
-	private void initTitle() throws Exception {
+	private void initView() {
+		// 标头左侧的返回按钮
+		back = (ImageView) findViewById(R.id.titleLeftIV);
+		// 标题
+		titleText = (TextView) findViewById(R.id.titleMiddleTV);
+		// 标头右侧的重置按钮
+		titleRightBtn = (TextView) findViewById(R.id.titleRightTV);
+		
+		// 获取包裹抓取按钮组的layout
+		crawlBtnLineLayout = (LinearLayout) findViewById(R.id.crawlLineLayout);
+//		RelativeLayout crawlBtnRelaLayout = (RelativeLayout) findViewById(R.id.crawlBtnRelaLayout);
+//		crawlBtnLineLayout = (LinearLayout) crawlBtnRelaLayout.getChildAt(0);
+		
+		// 获取包裹融合按钮组的layout
+		mergeBtnLineLayout = (LinearLayout) findViewById(R.id.mergeLineLayout);
+//		RelativeLayout mergeBtnRelaLayout = (RelativeLayout) findViewById(R.id.mergeBtnRelaLayout);
+//		mergeBtnLineLayout = (LinearLayout) mergeBtnRelaLayout.getChildAt(0);
+		
+		// 新闻ID文本框
+		newsSearchNewsIdET = (EditText) findViewById(R.id.newsSearchNewsIdET);
+		// 关键词文本框
+		newsSearchKeywordET = (EditText) findViewById(R.id.newsSearchKeywordET);
+		
+		initViewBaseData();
+	}
+	
+	private void initViewBaseData() {
+		back.setImageResource(R.drawable.common_back);
+		titleText.setText("搜索");
+		titleRightBtn.setText("重置");
+		titleRightBtn.setTextColor(ColorUtil.getWhiteColor(this));
+	}
+	
+	private void initTitleEvent() {
 		initBackEvent();
-		initMiddelTitle();
-		initRightTitle();
+		initResetEvent();
 	}
-	
 	/**
 	 * 初始化返回键事件
 	 */
-	private void initBackEvent() throws Exception {
-		back = (ImageView) findViewById(R.id.titleLeftIV);
+	private void initBackEvent() {
+		
 		back.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -109,78 +146,52 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 		});
 	}
 	
-	private void initMiddelTitle() throws Exception {
-		titleText = (TextView) findViewById(R.id.titleMiddleTV);
-	}
-	
-	private void initRightTitle() throws Exception {
-		titleRightBtn = (TextView) findViewById(R.id.titleRightTV);
+	private void initResetEvent() {
+		titleRightBtn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// 将抓取按钮组进行重置
+				ViewUtil.changeBtnGroupStyleByFocusedState(NewsSearchActivity.this, crawlBtnLineLayout, 0, ColorUtil.getCommonBlueColor(NewsSearchActivity.this), ColorUtil.getWhiteColor(NewsSearchActivity.this));
+				// 将融合按钮组进行重置
+				ViewUtil.changeBtnGroupStyleByFocusedState(NewsSearchActivity.this, mergeBtnLineLayout, 0, ColorUtil.getCommonBlueColor(NewsSearchActivity.this), ColorUtil.getWhiteColor(NewsSearchActivity.this));
+				// 将新闻ID文本框进行清空
+				newsSearchNewsIdET.setText("");
+				// 将关键词文本框进行清空
+				newsSearchKeywordET.setText("");
+			}
+		});
 	}
 	
 	/**
 	 * 将抓取和融合的按钮组进行初始化
 	 * @throws Exception
 	 */
-	private void initBtnGroup() throws Exception {
-		initCrawlTypeLayout();
-		initMergeTypeLayout();
+	private void initBtnGroup() {
+		initspiderLayout();
+		initconvLayout();
 	}
 	
 	/**
 	 * 初始化抓取的选择按钮组
 	 * @throws Exception
 	 */
-	private void initCrawlTypeLayout() throws Exception {
-		RelativeLayout crawlBtnRelaLayout = (RelativeLayout) findViewById(R.id.crawlBtnRelaLayout);
-		LinearLayout crawlBtnLineLayout = (LinearLayout) crawlBtnRelaLayout.getChildAt(0);
-		crawlTypeBtns = ViewUtil.initBtnGroupLayout(this, crawlBtnLineLayout, crawlTypeText, crawlTypeId, 0.9f);
+	private void initspiderLayout() {
+		spiderBtns = ViewUtil.initBtnGroupLayout(this, crawlBtnLineLayout, spiderText, spiderId, 0.9f);
 	}
 	/**
 	 * 初始化融合的选择按钮组
 	 * @throws Exception
 	 */
-	private void initMergeTypeLayout() throws Exception {
-		RelativeLayout mergeBtnRelaLayout = (RelativeLayout) findViewById(R.id.mergeBtnRelaLayout);
-		LinearLayout mergeBtnLineLayout = (LinearLayout) mergeBtnRelaLayout.getChildAt(0);
-		mergeTypeBtns = ViewUtil.initBtnGroupLayout(this, mergeBtnLineLayout, mergeTypeText, mergeTypeId, 0.9f);
-	}
-	
-	/**
-	 * 初始化文本框，并设置百分比宽度
-	 * @throws Exception
-	 */
-	private void initEditText() throws Exception {
-		initNewsIdET();
-		initKeywordET();
-	}
-	
-	/**
-	 * 初始化搜索频道ID的文本框，并设置百分比宽度
-	 * @throws Exception
-	 */
-	private void initNewsIdET() throws Exception {
-		newsSearchNewsIdET = (EditText) findViewById(R.id.newsSearchNewsIdET);
-		/*newsSearchNewsIdET = new EditText(this);
-		ViewUtil.initViewByWeight(newsSearchNewsIdET, 2.7f);
-		newsSearchNewsIdET.setHint(R.string.news_search_et_news_id_hint);*/
-	}
-	
-	/**
-	 * 初始化关键词的文本框，并设置百分比宽度
-	 * @throws Exception
-	 */
-	private void initKeywordET() throws Exception {
-		newsSearchKeywordET = (EditText) findViewById(R.id.newsSearchKeywordET);
-		/*newsSearchKeywordET = new EditText(this);
-		ViewUtil.initViewByWeight(newsSearchKeywordET, 2.7f);
-		newsSearchKeywordET.setHint(R.string.news_search_et_keyword_hint);*/
+	private void initconvLayout() {
+		convBtns = ViewUtil.initBtnGroupLayout(this, mergeBtnLineLayout, convText, convId, 0.9f);
 	}
 	
 	/**
 	 * 初始化确定按钮，并将输入的搜索条件存入Bundle中返回给上一个activity
 	 * @throws Exception
 	 */
-	private void initSubmmitBtn() throws Exception {
+	private void initSubmmitBtn() {
 		newsSearchSubmitBtn = (Button) findViewById(R.id.newsSearchSubmitBtn);
 		NewsChannelSubmitOnTouchListener listener = new NewsChannelSubmitOnTouchListener(ScreenTools.getTouchSlop(this)) {
 			@Override
@@ -190,11 +201,6 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 		};
 		listener.changeColor(ColorUtil.getGrayLighter(this), ColorUtil.getCommonBlueColor(this));
 		newsSearchSubmitBtn.setOnTouchListener(listener);
-		/*newsSearchSubmitBtn = new Button(this);
-		ViewUtil.initViewByWeight(newsSearchSubmitBtn, 2.7f);
-		newsSearchSubmitBtn.setBackgroundColor(ColorUtil.getCommonBlueColor(this));
-		newsSearchSubmitBtn.setText(R.string.submit_btn_common);
-		newsSearchSubmitBtn.setTextColor(ColorUtil.getWhiteColor(this));*/
 	}
 	
 	@Override
@@ -203,26 +209,30 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 	}
 	
 	private void takeParamsBackToPrevActivity() {
-		Bundle values = null;
-		try {
-			values = getValues();
-		} catch (Exception e) {
-			Toast.makeText(NewsSearchActivity.this, "在NewsSearchActivity进行返回时发生错误：【" + e.toString() + "】", Toast.LENGTH_SHORT).show();
-			e.printStackTrace();
-		}
+		Bundle values = getValues();
 		ActivityJumpUtil.takeParamsBackToPrevActivity(this, values, ParamConst.NEWS_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE);
 	}
 	
-	private Bundle getValues() throws Exception {
-		String curCrawlTypeId = ViewUtil.getCurCheckedBtnGroupId(crawlTypeBtns);
-		String curMergeTypeId = ViewUtil.getCurCheckedBtnGroupId(mergeTypeBtns);
+	private Bundle getValues() {
+		int curSpiderId = ViewUtil.getCurCheckedBtnGroupId(spiderBtns);
+		int curConvState = ViewUtil.getCurCheckedBtnGroupId(convBtns);
 		String newsIdText = newsSearchNewsIdET.getText().toString();
 		String keywordText = newsSearchKeywordET.getText().toString();
+		RequestNewsSearchUrlBean bean = new RequestNewsSearchUrlBean();
+		bean.setSpiderState(curSpiderId);
+		bean.setConvState(curConvState);
+		if (StringUtil.isNotEmpty(newsIdText)) {
+			bean.setNewsId(newsIdText);
+		} else {
+			bean.setChannelId(StaticUtil.getCurChannelBean(this).getChannelId());
+			bean.setKeywords(keywordText);
+		}
 		Bundle bundle = new Bundle();
-		bundle.putString("curCrawlTypeId", curCrawlTypeId);
-		bundle.putString("curMergeTypeId", curMergeTypeId);
+		bundle.putSerializable(ParamConst.NEWS_SEARCH_BEAN, bean);
+		/*bundle.putInt("curspiderId", curspiderId);
+		bundle.putInt("curconvId", curconvId);
 		bundle.putString("newsIdText", newsIdText);
-		bundle.putString("keywordText", keywordText);
+		bundle.putString("keywordText", keywordText);*/
 		return bundle;
 	}
 	

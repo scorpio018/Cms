@@ -88,24 +88,20 @@ public class UploadPicGridViewAdapter extends ArrayAdapter<Object> {
 	}
 	
 	public void loadAllTasks(int firstVisibleItem, int visibleItemCount) {
-		try {
-			for (int i = firstVisibleItem; i < firstVisibleItem + visibleItemCount; i++) {
-				String imageUrl = imgs[i].toString();
-				Bitmap bitmap = memoryCacheUtil.getBitmapFromMemoryCache(imageUrl);
-				ImageView imageView = picImageViewMap.get(imageUrl);
-				if (bitmap == null) {
-					LocalPicWorkerTask task = new LocalPicWorkerTask(this, imageView);
-					tasks.add(task);
-					task.execute(imageUrl, String.valueOf(i));
-				} else {
-//					ImageView imageView = (ImageView) photoWall.findViewWithTag(i);
-					if (imageView != null && bitmap != null) {
-						imageView.setImageBitmap(bitmap);
-					}
+		for (int i = firstVisibleItem; i < firstVisibleItem + visibleItemCount; i++) {
+			String imageUrl = imgs[i].toString();
+			Bitmap bitmap = memoryCacheUtil.getBitmapFromMemoryCache(imageUrl);
+			ImageView imageView = picImageViewMap.get(imageUrl);
+			if (bitmap == null) {
+				LocalPicWorkerTask task = new LocalPicWorkerTask(this, imageView);
+				tasks.add(task);
+				task.execute(imageUrl, String.valueOf(i));
+			} else {
+//				ImageView imageView = (ImageView) photoWall.findViewWithTag(i);
+				if (imageView != null && bitmap != null) {
+					imageView.setImageBitmap(bitmap);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 	

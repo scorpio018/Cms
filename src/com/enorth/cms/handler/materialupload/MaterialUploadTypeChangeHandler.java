@@ -1,6 +1,5 @@
 package com.enorth.cms.handler.materialupload;
 
-import com.enorth.cms.utils.AnimUtil;
 import com.enorth.cms.view.material.MaterialUploadActivity;
 
 import android.os.Handler;

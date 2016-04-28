@@ -152,31 +152,35 @@ public class ParamConst {
 	/**
 	 * 全部新闻
 	 */
-	public static final int TYPE_ALL = 0;
+	public static final int NEWS_TYPE_ALL = 0;
 	/**
 	 * 普通新闻
 	 */
-	public static final int TYPE_NORMAL = 10000;
+	public static final int NEWS_TYPE_NORMAL = 10000;
 	/**
 	 * 专题新闻
 	 */
-	public static final int TYPE_TOPIC = 20000;
+	public static final int NEWS_TYPE_TOPIC = 20000;
 	/**
 	 * 专题更多页
 	 */
-	public static final int TYPE_TOPIC_MORE = 30000;
+	public static final int NEWS_TYPE_TOPIC_MORE = 30000;
 	/**
 	 * 多签新闻
 	 */
-	public static final int TYPE_LINK = 40000;
+	public static final int NEWS_TYPE_LINK = 40000;
 	/**
 	 * 跳转新闻
 	 */
-	public static final int TYPE_REDIRECT = 50000;
+	public static final int NEWS_TYPE_REDIRECT = 50000;
 	/**
 	 * 高清图新闻
 	 */
-	public static final int TYPE_HD_PIC = 60000;
+	public static final int NEWS_TYPE_HD_PIC = 60000;
+	/**
+	 * 图文直播
+	 */
+	public static final int NEWS_TYPE_PIC_TEXT_LIVE = 120000;
 	/**
 	 * 当前设置RadioButton的enabled状态的默认值
 	 */
@@ -276,6 +280,38 @@ public class ParamConst {
 	 * 有子频道
 	 */
 	public static final int HAS_CHILDREN_YES = 1;
+	/**
+	 * 抓取状态：全部
+	 */
+	public static final int SPIDER_STATE_ALL = -2;
+	/**
+	 * 抓取状态：非抓取
+	 */
+	public static final int SPIDER_STATE_NO = 0;
+	/**
+	 * 抓取状态：抓取
+	 */
+	public static final int SPIDER_STATE_YES = 1;
+	/**
+	 * 融合状态：全部
+	 */
+	public static final int CONV_STATE_ALL = -2;
+	/**
+	 * 融合状态：非融合
+	 */
+	public static final int CONV_STATE_NO = 0;
+	/**
+	 * 融合状态：融合
+	 */
+	public static final int CONV_STATE_YES = 1;
+	/**
+	 * 刷新动作为正常刷新
+	 */
+	public static final int REFRESH_TYPE_DEFAULT = 1;
+	/**
+	 * 刷新动作为新闻搜索后的结果刷新
+	 */
+	public static final int REFRESH_TYPE_NEWS_SEARCH = 2;
 	
 	/**
 	 * 弹出浮层的默认高度
@@ -424,12 +460,24 @@ public class ParamConst {
 	 * PopupWindow显示时调用showAsDropDown方法
 	 */
 	public static final int POPUP_WINDOW_SHOW_TYPE_AS_DROPDOWN = 2;
+	/**
+	 * 新闻搜索activity中返回的存入Bundle中的bean对应的key
+	 */
+	public static String NEWS_SEARCH_BEAN = "newsSearchBean";
+	/**
+	 * 扫描二维码时返回的抬头校对信息
+	 */
+	public static String MATCH_MARK = ":=$enorth-pub$=:";
 	
 	/*---------------------接口中返回的key一览 start-----------------------------------*/
 	/**
 	 * 登录成功时获取到的用户对象
 	 */
 	public static String LOGIN_USER = "user";
+	/**
+	 * 扫描二维码时获取的系统对象
+	 */
+	public static String SCAN = "scan";
 	/**
 	 * 登录成功时返回的频道对象
 	 */
@@ -502,6 +550,10 @@ public class ParamConst {
 	 * 当前保存的登录过的用户
 	 */
 	public static String REMEMBERED_USER = "rememberedUser";
+	/**
+	 * 当前扫描的二维码信息
+	 */
+	public static String REMEMBERED_SCAN_INFO = "rememberedScanInfo";
 	/**
 	 * 判断当前APK是否为第一次访问的key值（存入SharedPreference）
 	 */

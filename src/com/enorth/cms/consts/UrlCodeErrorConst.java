@@ -9,7 +9,7 @@ public class UrlCodeErrorConst {
 	/**
 	 * 成功
 	 */
-	public static final int SUCCESS = 0;
+	public static final int SUCCESS = 1;
 	/**
 	 * token验证失败
 	 */

@@ -73,6 +73,6 @@ public class NewsListBottomMenuOperateDataBean extends BottomMenuOperateDataBasi
 		 * 当底部菜单可以点击时，文字显示的颜色（按照修改、批注、送签、删除的顺序排列）
 		 */
 //		newsOperateBtnColor = new int[]{R.color.bottom_text_color_blue, R.color.bottom_text_color_green, R.color.bottom_text_color_yellow, R.color.bottom_text_color_red};
-		newsOperateBtnColor = new int[]{R.color.bottom_text_color_blue, R.color.bottom_text_color_blue, R.color.bottom_text_color_blue, R.color.bottom_text_color_red};
+		newsOperateBtnColor = new int[]{R.color.white, R.color.white, R.color.white, R.color.bottom_text_color_red};
 	}
 }

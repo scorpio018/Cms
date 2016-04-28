@@ -1,8 +1,14 @@
 package com.enorth.cms.view.news;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.enorth.cms.bean.BottomMenuOperateDataBasicBean;
 import com.enorth.cms.bean.news_list.NewsLiveListBottomMenuOperateDataBean;
 import com.enorth.cms.consts.ParamConst;
+import com.enorth.cms.consts.UrlConst;
 import com.enorth.cms.handler.newslist.NewsSubTitleHandler;
 import com.enorth.cms.listener.color.UnChangeBGColorOnTouchListener;
 import com.enorth.cms.listener.newslist.subtitle.ChooseChannelOnTouchListener;
@@ -110,14 +116,20 @@ public class NewsLiveListFragActivity extends NewsCommonActivity {
 	}
 
 	@Override
-	public int[] setAllNewsTitleText() {
-		// TODO Auto-generated method stub
-		return new int[]{R.string.news_live_title_text, R.string.my_news_title_text};
+	public List<String> setAllNewsTitleText() {
+		List<String> allNewsTitleText = new ArrayList<String>();
+		allNewsTitleText.add(getResources().getString(R.string.news_live_title_text));
+		allNewsTitleText.add(getResources().getString(R.string.my_news_title_text));
+		return allNewsTitleText;
+		/*Map<String, String> allNewsTitleText = new LinkedHashMap<String, String>();
+		allNewsTitleText.put(UrlConst.NEWS_LIST_POST_URL, getResources().getString(R.string.news_live_title_text));
+		allNewsTitleText.put(UrlConst.MY_NEWS_LIST_POST_URL, getResources().getString(R.string.my_news_title_text));
+		return allNewsTitleText;*/
 	}
-
+	
 	@Override
 	public int initCurNewsType() {
-		return ParamConst.TYPE_NORMAL;
+		return ParamConst.NEWS_TYPE_NORMAL;
 	}
 
 	@Override

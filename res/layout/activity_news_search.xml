@@ -6,7 +6,7 @@
      >
      
     <!-- 标题 -->
-    <include layout="@layout/common_title_iv_tv_iv"/>
+    <include layout="@layout/common_title_iv_tv_tv"/>
     <!-- <RelativeLayout 
         android:id="@+id/channelSearchTitle"
         android:layout_width="match_parent"

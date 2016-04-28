@@ -18,9 +18,6 @@ public class SearchChannelFilter extends SearchCommonFilter<ChannelBean> {
 
 	@Override
 	public void filterTest(ChannelBean value, List<ChannelBean> values, CharSequence constraint) {
-		if (constraint == null) {
-			return;
-		}
 		if (value.getChannelName().contains(constraint) || value.getSimpleName().toUpperCase(Locale.CHINA).contains(constraint.toString().toUpperCase(Locale.CHINA))) {
 			values.add(value);
 		}

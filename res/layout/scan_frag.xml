@@ -22,18 +22,47 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/common_margin"
-            android:orientation="horizontal"
             android:gravity="center_horizontal"
+            android:orientation="horizontal"
             android:weightSum="1" >
 
             <TextView
+                android:id="@+id/hintTV"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.9"
+                android:gravity="center_horizontal"
+                android:text="@string/login_scan_hint"
+                android:textColor="@color/white"
+                android:textSize="@dimen/login_scan_hint_text_size" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/common_margin"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:weightSum="1" >
+
+            <com.enorth.cms.common.EnableSimpleChangeTextView
+                android:id="@+id/systemChooseTV"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.7"
-                android:gravity="center_horizontal"
-                android:text="@string/login_scan_hint"
-                android:textSize="@dimen/login_scan_hint_text_size"
-                android:textColor="@color/white" />
+                android:drawableEnd="@drawable/icon_arrow"
+                android:drawablePadding="@dimen/common_drawable_padding"
+                android:drawableRight="@drawable/icon_arrow" />
+            <!--
+                 <TextView
+                android:id="@+id/systemChooseTV"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:background="@drawable/common_radius_and_stroke"
+                android:drawableEnd="@drawable/icon_arrow"
+                android:drawablePadding="@dimen/common_drawable_padding"
+                android:drawableRight="@drawable/icon_arrow" />            -->
         </LinearLayout>
     </LinearLayout>
 

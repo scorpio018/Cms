@@ -4,8 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.enorth.cms.adapter.upload.ImageGridItemContainCheckAdapter;
 import com.enorth.cms.adapter.upload.ImageFolderAdapter;
+import com.enorth.cms.adapter.upload.ImageGridItemContainCheckAdapter;
 import com.enorth.cms.broadcast.CommonClosedBroadcast;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.listener.uploadpic.OnPhotoSelectedListener;
@@ -14,19 +14,13 @@ import com.enorth.cms.utils.CameraUtil;
 import com.enorth.cms.utils.GalleryUtil;
 import com.enorth.cms.utils.ImgUtil;
 import com.enorth.cms.utils.ScreenTools;
-import com.enorth.cms.utils.TimeUtil;
-import com.enorth.cms.view.BaseActivity;
 import com.enorth.cms.view.R;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -116,17 +110,12 @@ public class GalleryActivity extends Activity implements IGalleryView {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_gallery);
 		ImageGridItemContainCheckAdapter.getmSelectedImage().clear();
-		try {
-			initBaseData();
-			initTitle();
-			initBottom();
-			initView();
-			getImg();
-			initEvent();
-		} catch (Exception e) {
-			Log.e("GalleryActivity.oncreate() error", e.toString());
-			e.printStackTrace();
-		}
+		initBaseData();
+		initTitle();
+		initBottom();
+		initView();
+		getImg();
+		initEvent();
 	}
 	
 	@Override
@@ -225,7 +214,7 @@ public class GalleryActivity extends Activity implements IGalleryView {
 	 * 获取控件
 	 * @throws Exception 
 	 */
-	private void initView() throws Exception {
+	private void initView() {
 		photoGrid = (GridView) findViewById(R.id.commonGridView);
 		materialFromTypeTV = (TextView) findViewById(R.id.materialFromTypeTV);
 	}

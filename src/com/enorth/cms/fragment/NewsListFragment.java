@@ -2,7 +2,7 @@ package com.enorth.cms.fragment;
 
 import com.enorth.cms.adapter.news.NewsListViewAdapter;
 import com.enorth.cms.consts.ParamConst;
-import com.enorth.cms.listener.newslist.news.NewsItemOnTouchListener;
+import com.enorth.cms.consts.UrlConst;
 import com.enorth.cms.listener.newslist.news.NewsListListViewOnScrollListener;
 import com.enorth.cms.view.R;
 import com.enorth.cms.view.news.NewsCommonActivity;
@@ -54,24 +54,64 @@ public class NewsListFragment extends ListFragment {
 				/*String label = DateUtils.formatDateTime(activity.getApplicationContext(), System.currentTimeMillis(),
 						DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
 				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);*/
-				if (curPageNum == 2) {
-					activity.getNewsListBean().getPage().setOrderBy(activity.getCurSubNewsTitleSortColumn());
-				} else {
-					activity.getNewsListBean().getPage().setOrderBy(ParamConst.NEWS_SORT_BY_MOD_DATE_KEY);
-				}
 				Mode currentMode = refreshView.getCurrentMode();
-				if (currentMode == Mode.PULL_FROM_START) {
-					// 下拉刷新操作
-					activity.setCurRefreshState(ParamConst.REFRESHING);
-				} else if (currentMode == Mode.PULL_FROM_END) {
-					// 上拉加载更多操作
-					activity.setCurRefreshState(ParamConst.LOADING);
-					activity.getNewsListBean().getPage().setPageNo(activity.getNewsListBean().getPage().getPageNo() + 1);
-				} else {
-					// 其他
-					activity.setCurRefreshState(ParamConst.REFRESHING);
+				/**
+				 * 在当前操作是下拉刷新，并且已经执行过一次新闻搜索的结果之后，才可以将刷新状态重置到初始状态
+				 * 	当前需求：新闻搜索后将条件进行保留并请求新的数据，当切换按钮组或进行下拉刷新时清空搜索条件
+				 * 	此处改变refreshType即为清空搜索条件
+				 */
+				if (currentMode == Mode.PULL_FROM_START && activity.isNewsSearched()) {
+					activity.setRefreshType(ParamConst.REFRESH_TYPE_DEFAULT);
 				}
-				activity.initNewsListData(newsListView, true, "数据请求错误");
+				switch(activity.getRefreshType()) {
+				case ParamConst.REFRESH_TYPE_DEFAULT:
+					// 只有当选中“已签发”按钮时才会进行排序选项的条件判断，其他的默认是修改时间进行排序
+					if (curPageNum == 2) {
+						activity.getNewsListBean().getPage().setOrderBy(activity.getCurSubNewsTitleSortColumn());
+					} else {
+						activity.getNewsListBean().getPage().setOrderBy(ParamConst.NEWS_SORT_BY_MOD_DATE_KEY);
+					}
+					currentMode = refreshView.getCurrentMode();
+					if (currentMode == Mode.PULL_FROM_START) {
+						// 下拉刷新操作
+						activity.setCurRefreshState(ParamConst.REFRESHING);
+						// 在下拉状态时，需要清空新闻搜索的所有条件
+						CharSequence curCheckedText = activity.getTitleText().getText();
+						if (curCheckedText.equals(activity.getResources().getString(R.string.normal_news_title_text))) {
+							activity.setCurUrl(UrlConst.NEWS_LIST_POST_URL);
+						} else if (curCheckedText.equals(activity.getResources().getString(R.string.my_news_title_text))) {
+							activity.setCurUrl(UrlConst.MY_NEWS_LIST_POST_URL);
+						}
+						activity.getNewsStateBtns().get(activity.getCurPosition()).setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+					} else if (currentMode == Mode.PULL_FROM_END) {
+						// 上拉加载更多操作
+						activity.setCurRefreshState(ParamConst.LOADING);
+						activity.getNewsListBean().getPage().setPageNo(activity.getNewsListBean().getPage().getPageNo() + 1);
+					} else {
+						// 其他
+						activity.setCurRefreshState(ParamConst.REFRESHING);
+					}
+					activity.initNewsListData(newsListView, true, "数据请求错误");
+					break;
+				case ParamConst.REFRESH_TYPE_NEWS_SEARCH:
+					if (currentMode == Mode.PULL_FROM_START) {
+						// 下拉刷新操作
+						activity.setCurRefreshState(ParamConst.REFRESHING);
+					} else if (currentMode == Mode.PULL_FROM_END) {
+						// 上拉加载更多操作
+						activity.setCurRefreshState(ParamConst.LOADING);
+						activity.getRequestNewsSearchUrlBean().getPage().setPageNo(activity.getRequestNewsSearchUrlBean().getPage().getPageNo() + 1);
+					} else {
+						// 其他
+						activity.setCurRefreshState(ParamConst.REFRESHING);
+					}
+					
+					activity.initNewsSearchListData(newsListView);
+					break;
+				default:
+					
+					break;
+				}
 			}
 		});
 		

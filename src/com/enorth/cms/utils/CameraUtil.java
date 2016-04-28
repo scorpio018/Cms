@@ -99,8 +99,8 @@ public class CameraUtil {
 			return BitmapFactory.decodeStream(fis);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			return null;
 		}
+		return null;
 	}
 
 	public static String getImagename() {

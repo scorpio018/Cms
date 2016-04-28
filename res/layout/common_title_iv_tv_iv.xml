@@ -4,8 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/newsTitle"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/news_title_height"
-    android:background="@color/common_blue">
+    android:layout_height="@dimen/news_title_height">
     
     <!-- android:background="@drawable/news_menu" -->
     <ImageView
@@ -23,10 +22,11 @@
     <TextView 
         android:id="@+id/titleMiddleTV"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/news_title_height"
         android:textColor="@color/white"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:gravity="center_vertical"
         />
     
     <!-- android:background="@drawable/news_search" -->

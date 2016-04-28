@@ -1,14 +1,21 @@
 package com.enorth.cms.view.news;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.enorth.cms.bean.BottomMenuOperateDataBasicBean;
 import com.enorth.cms.bean.news_list.NewsListBottomMenuOperateDataBean;
 import com.enorth.cms.consts.ParamConst;
+import com.enorth.cms.consts.UrlConst;
 import com.enorth.cms.handler.newslist.NewsSubTitleHandler;
 import com.enorth.cms.listener.color.UnChangeBGColorOnTouchListener;
 import com.enorth.cms.listener.newslist.subtitle.ChooseChannelOnTouchListener;
 import com.enorth.cms.utils.ColorUtil;
 import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.utils.StaticUtil;
+import com.enorth.cms.utils.StringUtil;
 import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.R;
 
@@ -38,13 +45,20 @@ public class NewsListFragActivity extends NewsCommonActivity {
 	}
 	
 	@Override
-	public int[] setAllNewsTitleText() {
-		return new int[]{R.string.normal_news_title_text, R.string.my_news_title_text};
+	public List<String> setAllNewsTitleText() {
+		List<String> allNewsTitleText = new ArrayList<String>();
+		allNewsTitleText.add(getResources().getString(R.string.normal_news_title_text));
+		allNewsTitleText.add(getResources().getString(R.string.my_news_title_text));
+		return allNewsTitleText;
+		/*Map<String, String> allNewsTitleText = new LinkedHashMap<String, String>();
+		allNewsTitleText.put(UrlConst.NEWS_LIST_POST_URL, getResources().getString(R.string.normal_news_title_text));
+		allNewsTitleText.put(UrlConst.MY_NEWS_LIST_POST_URL, getResources().getString(R.string.my_news_title_text));
+		return allNewsTitleText;*/
 	}
 	
 	@Override
 	public int initCurNewsType() {
-		return ParamConst.TYPE_NORMAL;
+		return ParamConst.NEWS_TYPE_NORMAL;
 	}
 
 	@Override
@@ -55,7 +69,7 @@ public class NewsListFragActivity extends NewsCommonActivity {
 	
 	private void initTitleSearchBtn() {
 		ImageView newsTitleNewsSearch = (ImageView) findViewById(R.id.titleRightIV);
-		newsTitleNewsSearch.setBackgroundResource(R.drawable.news_search);
+		newsTitleNewsSearch.setBackgroundResource(R.drawable.iconfont_sousuo);
 		UnChangeBGColorOnTouchListener listener = new UnChangeBGColorOnTouchListener(this) {
 			
 			@Override
@@ -71,19 +85,12 @@ public class NewsListFragActivity extends NewsCommonActivity {
 	@Override
 	public void initNewsSubTitle() {
 		// 如果没有频道ID，则存入默认的频道ID
-//		channelId = SharedPreUtil.getLong(this, ParamConst.CUR_CHANNEL_ID);
 		channelId = StaticUtil.getCurChannelBean(this).getChannelId();
 		newsSubTitleHandler = new NewsSubTitleHandler(this);
-		try {
-//			presenter.requestCurChannelData(channelId, ParamConst.USER_ID, newsSubTitleHandler);
-//			newsSubTitleHandler.sendEmptyMessage(0);
-			Message msg = new Message();
-			msg.obj = channelBean;
-			msg.what = ParamConst.MESSAGE_WHAT_SUCCESS;
-			newsSubTitleHandler.sendMessage(msg);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Message msg = new Message();
+		msg.obj = channelBean;
+		msg.what = ParamConst.MESSAGE_WHAT_SUCCESS;
+		newsSubTitleHandler.sendMessage(msg);
 		LinearLayout layout = (LinearLayout) findViewById(R.id.newsSubTitleLineLayout);
 		ChooseChannelOnTouchListener listener = new ChooseChannelOnTouchListener(this) {
 			@Override
@@ -103,15 +110,6 @@ public class NewsListFragActivity extends NewsCommonActivity {
 		};
 		listener.changeColor(ColorUtil.getWhiteColor(this), ColorUtil.getNewsSubTitleColorBasic(this));
 		layout.setOnTouchListener(listener);
-	}
-	
-	private Bundle initChannelId() {
-		Bundle bundle = new Bundle();
-		long channelId = SharedPreUtil.getLong(this, ParamConst.CUR_CHANNEL_ID);
-		long parentChannelId = SharedPreUtil.getLong(this, ParamConst.CUR_CHANNEL_ID_PARENT_ID);
-		bundle.putLong(ParamConst.CUR_CHANNEL_ID, channelId);
-		bundle.putLong(ParamConst.CUR_CHANNEL_ID_PARENT_ID, parentChannelId);
-		return bundle;
 	}
 
 	@Override

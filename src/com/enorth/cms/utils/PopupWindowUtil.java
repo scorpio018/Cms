@@ -190,28 +190,6 @@ public abstract class PopupWindowUtil {
 		}
 	}
 	
-	public void initPopupWindowItemsContainCheckMark(LinearLayout layout, CommonOnTouchListener listener, int[] allNewsTitleNames, int curCheckedName) {
-		LayoutInflater inflater = LayoutInflater.from(context);
-		for (int allNewsTitleName : allNewsTitleNames) {
-			RelativeLayout chooseItem = (RelativeLayout) inflater.inflate(R.layout.popup_contain_check_mark, null);
-			TextView chooseName = (TextView) chooseItem.findViewById(R.id.chooseText);
-			chooseName.setTextColor(textColor);
-			int curName = allNewsTitleName;
-			chooseName.setText(curName);
-			ImageView checkedIV = (ImageView) chooseItem.getChildAt(0);
-			if (curName == curCheckedName) {
-				checkedIV.setVisibility(View.VISIBLE);
-			} else {
-				checkedIV.setVisibility(View.GONE);
-			}
-			
-			listener.changeColor(popupBgTouchColor, popupBgColor);
-			chooseItem.setOnTouchListener(listener);
-			chooseItem.setTag(curName);
-			layout.addView(chooseItem);
-		}
-	}
-	
 	/**
 	 * 将所有要在弹出框中加入的内容按照key/value存入Map中（key表示对应的ID值之类的，value为显示给用户的内容），再传入当前要选中的key值
 	 * @param layout

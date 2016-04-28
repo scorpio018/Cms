@@ -56,23 +56,18 @@ public abstract class CommonViewPagerAdapter extends PagerAdapter {
 	@Override
 	public Object instantiateItem(final View container, final int position) {
 		View view = null;
-		try {
-			view = viewList.get(position);
-			if (view.getParent() == null) {
-				((ViewPager) container).addView(view, 0);
-			} else {
-				/**
-				 * 很难理解新添加进来的view会自动绑定一个父类，由于一个儿子view不能与两个父类相关， 所以得解绑不这样做否则会产生
-				 * viewpager java.lang.IllegalStateException: The specified
-				 * child already has a parent. You must call removeView() on the
-				 * child's parent first.
-				 */
-				((ViewGroup) view.getParent()).removeView(view);
-				((ViewPager) container).addView(view, 0);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
+		view = viewList.get(position);
+		if (view.getParent() == null) {
+			((ViewPager) container).addView(view, 0);
+		} else {
+			/**
+			 * 很难理解新添加进来的view会自动绑定一个父类，由于一个儿子view不能与两个父类相关， 所以得解绑不这样做否则会产生
+			 * viewpager java.lang.IllegalStateException: The specified
+			 * child already has a parent. You must call removeView() on the
+			 * child's parent first.
+			 */
+			((ViewGroup) view.getParent()).removeView(view);
+			((ViewPager) container).addView(view, 0);
 			pagerNum = position;
 		}
 		/*new Handler() {

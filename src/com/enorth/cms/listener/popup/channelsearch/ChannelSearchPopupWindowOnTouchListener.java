@@ -24,19 +24,10 @@ public abstract class ChannelSearchPopupWindowOnTouchListener extends PopupWindo
 		activity.setCurChooseChannelType(curCheckedText);
 		AnimUtil.showRefreshFrame(activity, true, "正在切换到" + curCheckedText + "，请稍后");
 		if (curCheckedText.equals(ParamConst.MY_CHANNEL)) {
-			try {
-				activity.setFirstEnter(true);
-				activity.getMyChannel();
-//				activity.presenter.getMyChannel(ParamConst.USER_ID, activity.myChannelHandler);
-			} catch (Exception e) {
-				activity.error(e);
-			}
+			activity.setFirstEnter(true);
+			activity.getMyChannel();
 		} else if (curCheckedText.equals(ParamConst.ALL_CHANNEL)) {
-			try {
-				activity.getAllChannel();
-			} catch (Exception e) {
-				activity.error(e);
-			}
+			activity.getAllChannel();
 		}
 	}
 }

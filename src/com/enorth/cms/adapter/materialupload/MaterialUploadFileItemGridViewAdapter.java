@@ -117,23 +117,19 @@ public class MaterialUploadFileItemGridViewAdapter extends ArrayAdapter<String> 
 	}
 
 	public void loadBitmaps(int firstVisibleItem, int visibleItemCount) {
-		try {
-			for (int i = firstVisibleItem; i < firstVisibleItem + visibleItemCount; i++) {
-				String imageUrl = imgUrl[i];
-				Bitmap bitmap = memoryCacheUtil.getBitmapFromMemoryCache(imageUrl);
-				if (bitmap == null) {
-					BitmapWorkerTask task = new BitmapWorkerTask(this);
-					taskCollection.add(task);
-					task.execute(imageUrl);
-				} else {
-					ImageView imageView = (ImageView) photoWall.findViewWithTag(imageUrl);
-					if (imageView != null && bitmap != null) {
-						imageView.setImageBitmap(bitmap);
-					}
+		for (int i = firstVisibleItem; i < firstVisibleItem + visibleItemCount; i++) {
+			String imageUrl = imgUrl[i];
+			Bitmap bitmap = memoryCacheUtil.getBitmapFromMemoryCache(imageUrl);
+			if (bitmap == null) {
+				BitmapWorkerTask task = new BitmapWorkerTask(this);
+				taskCollection.add(task);
+				task.execute(imageUrl);
+			} else {
+				ImageView imageView = (ImageView) photoWall.findViewWithTag(imageUrl);
+				if (imageView != null && bitmap != null) {
+					imageView.setImageBitmap(bitmap);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 	

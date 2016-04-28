@@ -1,6 +1,6 @@
 package com.enorth.cms.utils;
 
-import com.enorth.cms.bean.ButtonColorBasicBean;
+import com.enorth.cms.bean.ViewColorBasicBean;
 import com.enorth.cms.view.R;
 
 import android.content.Context;
@@ -156,8 +156,8 @@ public class ColorUtil {
 	 * @param context
 	 * @return
 	 */
-	public static ButtonColorBasicBean getOrangeButtonColorBasicBean(Context context) {
-		ButtonColorBasicBean bean = new ButtonColorBasicBean(context);
+	public static ViewColorBasicBean getOrangeButtonColorBasicBean(Context context) {
+		ViewColorBasicBean bean = new ViewColorBasicBean(context);
 		bean.setmBgNormalColor(getOrangeColor(context));
 		bean.setmTextNormalColor(getWhiteColor(context));
 		return bean;

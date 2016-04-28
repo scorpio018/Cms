@@ -1,7 +1,9 @@
 package com.enorth.cms.listener;
 
+import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.view.R;
 
+import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -37,6 +39,13 @@ public abstract class CommonOnTouchListener implements OnTouchListener {
 	protected int pressColor = R.color.gray_lighter;
 	
 	protected int normalColor = R.color.bottom_color_basic;
+	
+	public CommonOnTouchListener() {
+	}
+	
+	public CommonOnTouchListener(Context context) {
+		touchSlop = ScreenTools.getTouchSlop(context);
+	}
 	
 	public void changeColor(int pressColor, int normalColor) {
 		this.pressColor = pressColor;

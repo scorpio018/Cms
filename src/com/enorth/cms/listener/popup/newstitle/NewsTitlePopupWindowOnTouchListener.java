@@ -22,13 +22,14 @@ public abstract class NewsTitlePopupWindowOnTouchListener extends PopupWindowCon
 	@Override
 	public void checkItem(String tag, String curCheckedText) {
 		activity.getTitleText().setText(curCheckedText);
-//		AnimUtil.showRefreshFrame(activity, true, "正在切换到" + curCheckedText + "，请稍后");
+		activity.setCurNewsTitleName(curCheckedText);
 		if (curCheckedText.equals(activity.getResources().getString(R.string.normal_news_title_text))) {
 			activity.setCurUrl(UrlConst.NEWS_LIST_POST_URL);
 		} else if (curCheckedText.equals(activity.getResources().getString(R.string.my_news_title_text))) {
 			activity.setCurUrl(UrlConst.MY_NEWS_LIST_POST_URL);
 		}
-		activity.getViews().get(activity.getCurPosition()).getNewsListView().setRefreshing();
-//		activity.initNewsListData(activity.getViews().get(activity.getCurPosition()).getNewsListView(), true, "数据请求错误");
+//		activity.setCurUrl(tag);
+//		activity.getViews().get(activity.getCurPosition()).getNewsListView().setRefreshing();
+		activity.getListViews().get(activity.getCurPosition()).setRefreshing();
 	}
 }

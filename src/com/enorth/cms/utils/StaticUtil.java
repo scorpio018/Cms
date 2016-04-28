@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import com.enorth.cms.bean.LoginUserUsedBean;
 import com.enorth.cms.bean.login.ChannelBean;
 import com.enorth.cms.bean.login.LoginBean;
+import com.enorth.cms.bean.login.ScanBean;
 import com.enorth.cms.consts.ParamConst;
 
 import android.content.Context;
@@ -22,7 +23,7 @@ import android.content.Context;
 public class StaticUtil {
 
 	private static LoginUserUsedBean loginUserUsedBean;
-
+	
 	static {
 		loginUserUsedBean = new LoginUserUsedBean();
 	}
@@ -59,6 +60,48 @@ public class StaticUtil {
 	 */
 	public static void saveChannelNamesTree(String[] channelNamesTree) {
 		loginUserUsedBean.setChannelNamesTree(channelNamesTree);
+	}
+	/**
+	 * 当前用户要向登录，必须要对应一个系统，此处存入的是曾经扫描过的系统的信息
+	 * @param scanBeans
+	 */
+	public static void saveScanBeans(List<ScanBean> scanBeans) {
+		List<String> scanNames = new ArrayList<String>();
+		for (ScanBean scanBean : scanBeans) {
+			scanNames.add(scanBean.getScanName());
+		}
+		loginUserUsedBean.setScanBeans(scanBeans);
+		loginUserUsedBean.setScanNames(scanNames);
+	}
+	/**
+	 * 将当前扫描出的系统信息存入集合中，并查重
+	 * @param scanBean
+	 */
+	public static void saveScanBeans(ScanBean scanBean, Context context) {
+		// 将当前选中的扫描信息存入bean中
+		saveCurScanBean(scanBean);
+		// 获取曾经保存的扫描信息集合
+		List<ScanBean> scanBeans = getScanBeans(context);
+		if (scanBeans.size() == 0) {
+			// 如果没有记录，则将当前的扫描信息存入集合中
+			scanBeans.add(scanBean);
+			saveScanBeans(scanBeans);
+		} else {
+			// 如果有记录，则进行查重
+			for (ScanBean bean : scanBeans) {
+				if (bean.getScanId().equals(scanBean.getScanId())) {
+					break;
+				}
+			}
+			scanBeans.add(scanBean);
+		}
+	}
+	/**
+	 * 当前用户要向登录，必须要对应一个系统，此处存入的是当前对应的系统的信息
+	 * @param curScanBean
+	 */
+	public static void saveCurScanBean(ScanBean curScanBean) {
+		loginUserUsedBean.setCurScanBean(curScanBean);
 	}
 	
 	/**
@@ -150,5 +193,55 @@ public class StaticUtil {
 			loginUserUsedBean.setChannelNamesTree(channelNamesStr);
 		}
 		return loginUserUsedBean.getChannelNamesTree();
+	}
+	
+	/**
+	 * 获取曾经扫描过的所有的系统的集合
+	 * @param context
+	 * @return
+	 */
+	public static List<ScanBean> getScanBeans(Context context) {
+		if (loginUserUsedBean.getScanBeans() == null) {
+			String[] scanStr = SharedPreUtil.getStringArray(context, ParamConst.REMEMBERED_SCAN_INFO, ParamConst.SCAN);
+			List<ScanBean> scanBeans = new ArrayList<ScanBean>();
+			for (String scan : scanStr) {
+				if (StringUtil.isNotEmpty(scan)) {
+					ScanBean scanBean = (ScanBean) SharedPreUtil.deSerializeObject(scan);
+					scanBeans.add(scanBean);
+				}
+			}
+			loginUserUsedBean.setScanBeans(scanBeans);
+		}
+		return loginUserUsedBean.getScanBeans();
+	}
+	
+	/**
+	 * 获取曾经扫描过的所有的系统名称
+	 * @param context
+	 * @return
+	 */
+	public static List<String> getScanNames(Context context) {
+		if (loginUserUsedBean.getScanNames() == null) {
+			List<ScanBean> scanBeans = getScanBeans(context);
+			List<String> scanNames = new ArrayList<String>();
+			for (ScanBean scanBean : scanBeans) {
+				scanNames.add(scanBean.getScanName());
+			}
+			loginUserUsedBean.setScanNames(scanNames);
+		}
+		return loginUserUsedBean.getScanNames();
+	}
+	
+	/**
+	 * 获取当前要登录的系统
+	 * @param context
+	 * @return
+	 */
+	public static ScanBean getCurScanBean(Context context) {
+		if (loginUserUsedBean.getCurScanBean() == null) {
+			ScanBean scanBean = (ScanBean) BeanParamsUtil.getObject(ScanBean.class, context);
+			loginUserUsedBean.setCurScanBean(scanBean);
+		}
+		return loginUserUsedBean.getCurScanBean();
 	}
 }

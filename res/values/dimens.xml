@@ -1,12 +1,13 @@
 <resources>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="login_scan_hint_text_size">24sp</dimen>
+    <dimen name="login_scan_hint_text_size">16sp</dimen>
     <dimen name="login_remember_name_margin_left">60dip</dimen>
     <dimen name="common_edit_text_height">50dip</dimen>
     <dimen name="common_submit_btn_height">30dip</dimen>
     <dimen name="common_popup_text_size">18sp</dimen>
     <dimen name="common_alert_dialog_text_size">20sp</dimen>
+    <dimen name="common_drawable_padding">5dip</dimen>
     
     <dimen name="activity_horizontal_margin">16dip</dimen>
     <dimen name="activity_vertical_margin">16dip</dimen>
@@ -50,7 +51,7 @@
     <dimen name="news_sub_title_margin_left">15dip</dimen>
     <dimen name="news_sort_margin_right">20dip</dimen>
     
-    <dimen name="news_type_btn_rela_layout_margin_top">5dip</dimen>
+    <dimen name="news_type_btn_rela_layout_padding_top">5dip</dimen>
     
     <dimen name="news_title_change_viewpager_btn_height">20dip</dimen>
     <dimen name="news_title_change_viewpager_btn_padding_left">40dip</dimen>

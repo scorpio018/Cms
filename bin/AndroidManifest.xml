@@ -86,7 +86,8 @@
         <!-- <activity android:name=".news.NewsListFixActivity"></activity> -->
         <activity android:name=".news.NewsListFragActivity"></activity>
         <activity android:name=".news.NewsLiveListFragActivity"></activity>
-        <activity android:name=".news.NewsSearchActivity"></activity>
+        <activity android:name=".news.NewsSearchActivity"
+            android:windowSoftInputMode="stateUnspecified|stateHidden"></activity>
         <!-- <activity android:name=".upload.UploadPicActivity"></activity> -->
         <activity android:name=".upload.GalleryActivity"></activity>
         <activity android:name=".upload.UploadPicPreviewActivity"></activity>

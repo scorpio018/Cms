@@ -1,5 +1,6 @@
 package com.enorth.cms.handler.newslist;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.enorth.cms.adapter.news.NewsListViewAdapter;
@@ -61,19 +62,23 @@ public class NewsListViewHandler extends UrlRequestCommonHandler {
 //		AnimUtil.hideRefreshFrame();
 	}
 	@Override
-	public void noData(Message msg) throws Exception {
+	public void noData(Message msg) {
+		NewsListViewAdapter adapter = activity.getListViewAdapter().get(activity.getCurPosition());
+		if (activity.getCurRefreshState() == ParamConst.REFRESHING) {
+			adapter.setItems(new ArrayList<NewsListBean>());
+			adapter.notifyDataSetChanged();
+		} else {
+			Log.e("NewsListViewHandler success", "activity.getCurRefreshState()【" + activity.getCurRefreshState() + "】");
+		}
 		activity.initNewsListData(newsListView, false, "没有找到数据 ");
-		AnimUtil.hideRefreshFrame();
 	}
 	@Override
-	public void error(Message msg) throws Exception {
+	public void error(Message msg) {
 		String errorMsg = (String) msg.obj;
 		activity.initNewsListData(newsListView, false, errorMsg);
-		AnimUtil.hideRefreshFrame();
 	}
 	@Override
-	public void resultDefault(Message msg) throws Exception {
+	public void resultDefault(Message msg) {
 		activity.initNewsListData(newsListView, false, "未知错误");
-		AnimUtil.hideRefreshFrame();
 	}
 }
