@@ -89,6 +89,7 @@ public abstract class CommonOnTouchListener implements OnTouchListener {
 	public boolean onTouch(View v, MotionEvent event) {
 		switch (event.getActionMasked()) {
 		case MotionEvent.ACTION_DOWN:
+			Log.e("onTouch", "ACTION_DOWN");
 			onTouchBegin();
 			downX = v.getScaleX();
 			downY = v.getScaleY();
@@ -99,21 +100,51 @@ public abstract class CommonOnTouchListener implements OnTouchListener {
 			if (isClickBackgroungColorChange()) {
 //				int color = ContextCompat.getColor(v.getContext(), pressColor);
 				v.setBackgroundColor(pressColor);
+				Log.e("onTouch", "ClickBackgroungColorChange");
 			}
 //			Log.w("MotionEvent.ACTION_DOWN", "【x:" + downX + "、y:" + downY + "】");
 			isClick = true;
 			break;
 		case MotionEvent.ACTION_POINTER_DOWN:
-			Log.w("MotionEvent.ACTION_POINTER_DOWN", "多指放下动作记录");
+			Log.e("MotionEvent.ACTION_POINTER_DOWN", "多指放下动作记录");
 		case MotionEvent.ACTION_POINTER_UP:
-			Log.w("MotionEvent.ACTION_POINTER_UP", "多指抬起动作记录");
+			Log.e("MotionEvent.ACTION_POINTER_UP", "多指抬起动作记录");
 			isClick = false;
 			break;
+		/*case MotionEvent.ACTION_CANCEL:
+			Log.e("onTouch", "ACTION_CANCEL");
+			break;
+		case MotionEvent.ACTION_OUTSIDE:
+			Log.e("onTouch", "ACTION_OUTSIDE");
+			break;
+		case MotionEvent.ACTION_HOVER_MOVE:
+			Log.e("onTouch", "ACTION_HOVER_MOVE");
+			break;
+		case MotionEvent.ACTION_SCROLL:
+			Log.e("onTouch", "ACTION_SCROLL");
+			break;
+		case MotionEvent.ACTION_HOVER_ENTER:
+			Log.e("onTouch", "ACTION_HOVER_ENTER");
+			break;
+		case MotionEvent.ACTION_HOVER_EXIT:
+			Log.e("onTouch", "ACTION_HOVER_ENTER");
+			break;
+		case MotionEvent.ACTION_BUTTON_PRESS:
+			Log.e("onTouch", "ACTION_BUTTON_PRESS");
+			break;
+		case MotionEvent.ACTION_BUTTON_RELEASE:
+			Log.e("onTouch", "ACTION_BUTTON_RELEASE");
+			break;
+		case MotionEvent.ACTION_POINTER_INDEX_MASK:
+			Log.e("onTouch", "ACTION_BUTTON_RELEASE");
+			break;*/
+			
 		case MotionEvent.ACTION_MOVE:
+			Log.e("onTouch", "ACTION_MOVE");
 			moveX = v.getScaleX();
 			moveY = v.getScaleY();
 			double distinct = Math.sqrt(Math.pow(Math.abs(downX - moveX), 2) + Math.pow(Math.abs(downY - moveY), 2));
-			Log.w("MotionEvent.ACTION_MOVE", "【x:" + moveX + "、y:" + moveY + "、distinct:" + distinct + "、touchSlop:" + touchSlop + "】");
+			Log.e("MotionEvent.ACTION_MOVE", "【x:" + moveX + "、y:" + moveY + "、distinct:" + distinct + "、touchSlop:" + touchSlop + "】");
 			if (distinct >= touchSlop) {
 				isClick = false;
 			}
@@ -123,18 +154,26 @@ public abstract class CommonOnTouchListener implements OnTouchListener {
 			touchStartX = touchCurrentX;
 			touchStartY = touchCurrentY;
 			break;
+		case MotionEvent.ACTION_CANCEL:
+			Log.e("onTouch", "ACTION_CANCEL");
 		case MotionEvent.ACTION_UP:
+			Log.e("onTouch", "ACTION_UP");
 			if (isClickBackgroungColorChange()) {
 //				int color = ContextCompat.getColor(v.getContext(), normalColor);
 				v.setBackgroundColor(normalColor);
+				Log.e("onTouch", "ClickBackgroungColorChange");
 			}
 			if (isClick) {
+				Log.e("onTouch", "isClick");
 				boolean isContinue = onImgChangeBegin(v);
+				Log.e("onTouch", "onImgChangeBegin");
 				if (isContinue) {
 					onImgChangeDo(v);
+					Log.e("onTouch", "onImgChangeDo");
 				}
 			}
 			onImgChangeEnd(v);
+			Log.e("onTouch", "onImgChangeEnd");
 			break;
 		default:
 			if (isClickBackgroungColorChange()) {

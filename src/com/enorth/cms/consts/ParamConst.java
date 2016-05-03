@@ -238,7 +238,7 @@ public class ParamConst {
 	/**
 	 * 弹出浮层的默认宽度（）
 	 */
-	public static final int POP_WINDOW_COMMON_WIDTH = 200;
+	public static final int POP_WINDOW_COMMON_WIDTH = 300;
 	/**
 	 * 图片最多只能选9张
 	 */

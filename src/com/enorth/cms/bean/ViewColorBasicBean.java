@@ -28,7 +28,6 @@ public class ViewColorBasicBean {
 	
 	public ViewColorBasicBean(Context context) {
 		if (context == null) {
-//			throw new Exception("实例化此bean时需要传入一个非空的context");
 			Log.e("ButtonColorBasicBean() error", "实例化此bean时需要传入一个非空的context");
 		}
 		this.context = context;

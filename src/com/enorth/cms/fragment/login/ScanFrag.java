@@ -58,6 +58,8 @@ public class ScanFrag extends Fragment {
 	
 	private List<String> scanNames;
 	
+	private ScanBean curScanBeans;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		layout = (RelativeLayout) inflater.inflate(R.layout.scan_frag, null);
@@ -96,11 +98,13 @@ public class ScanFrag extends Fragment {
 	private void initData() {
 		// 初始化曾经扫描过的发布系统的信息
 		scanBeans = StaticUtil.getScanBeans(getContext());
+		curScanBeans = StaticUtil.getCurScanBean(getContext());
 		if (scanBeans == null || scanBeans.size() == 0) {
 			systemChooseTV.setVisibility(View.GONE);
 		} else {
 			scanNames = StaticUtil.getScanNames(getContext());
 			systemChooseTV.setVisibility(View.VISIBLE);
+			systemChooseTV.setText(curScanBeans.getScanName());
 		}
 	}
 	

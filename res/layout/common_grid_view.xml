@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="0dip"
     android:layout_weight="1"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@color/white" >
 
     <GridView
         android:id="@+id/commonGridView"

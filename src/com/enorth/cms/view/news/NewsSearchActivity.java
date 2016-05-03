@@ -203,10 +203,10 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 		newsSearchSubmitBtn.setOnTouchListener(listener);
 	}
 	
-	@Override
+	/*@Override
 	public void onBackPressed() {
 		takeParamsBackToPrevActivity();
-	}
+	}*/
 	
 	private void takeParamsBackToPrevActivity() {
 		Bundle values = getValues();

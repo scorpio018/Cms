@@ -57,7 +57,7 @@ public class HttpUtil {
 	 * @param callback
 	 * @throws Exception
 	 */
-	public static void okPost(String url, Callback callback, HttpBuilderType type) throws Exception {
+	public static void okPost(String url, Callback callback, HttpBuilderType type) {
 		RequestBody body = getRequestBodyByType(null, type);
 		Request request = new Request.Builder().url(url).post(body).build();
 		enqueue(request, callback);
@@ -207,15 +207,16 @@ public class HttpUtil {
 			throw new Exception("用户验证失败，请重新登录[-1]");
 		case UrlCodeErrorConst.CHECK_CHECK_SUM_FAILED:
 			throw new Exception("用户验证失败，请重新登录[-2]");
-		case UrlCodeErrorConst.CHECK_LOGIN_FAILED:
+		/*case UrlCodeErrorConst.CHECK_LOGIN_FAILED:
 		case UrlCodeErrorConst.CUR_STATE_CANNOT_DEL_NEWS:
 		case UrlCodeErrorConst.CANNOT_OPER_MULTI_TAGS_NEWS:
 		case UrlCodeErrorConst.REQUEST_OBJECT_IS_NOT_EXISTS:
 		case UrlCodeErrorConst.CUR_USER_NO_FIRST_LEVEL_CHANNEL_PERMISSION:
 		case UrlCodeErrorConst.CREATE_LOGIN_TOKEN_FAILED:
-			throw new Exception("errorCode:【" + errorCode + "】" + resultStr);
+			throw new Exception("errorCode:【" + errorCode + "】" + resultStr);*/
 		default:
-			throw new Exception(UrlCodeErrorConst.UNKNOWN_ERROR_HINT);
+			throw new Exception("errorCode:【" + errorCode + "】" + resultStr);
+//			throw new Exception(UrlCodeErrorConst.UNKNOWN_ERROR_HINT);
 		}
 	}
 	/**

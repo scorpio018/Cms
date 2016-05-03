@@ -65,13 +65,19 @@ public class StaticUtil {
 	 * 当前用户要向登录，必须要对应一个系统，此处存入的是曾经扫描过的系统的信息
 	 * @param scanBeans
 	 */
-	public static void saveScanBeans(List<ScanBean> scanBeans) {
+	public static void saveScanBeans(List<ScanBean> scanBeans, Context context) {
 		List<String> scanNames = new ArrayList<String>();
+		int size = scanBeans.size();
+		String[] scanBeansStr = new String[size];
+		int i = 0;
 		for (ScanBean scanBean : scanBeans) {
 			scanNames.add(scanBean.getScanName());
+			scanBeansStr[i] = SharedPreUtil.serializeObject(scanBean);
+			i++;
 		}
 		loginUserUsedBean.setScanBeans(scanBeans);
 		loginUserUsedBean.setScanNames(scanNames);
+		SharedPreUtil.put(context, ParamConst.REMEMBERED_SCAN_INFO, ParamConst.SCAN, scanBeansStr);
 	}
 	/**
 	 * 将当前扫描出的系统信息存入集合中，并查重
@@ -79,13 +85,12 @@ public class StaticUtil {
 	 */
 	public static void saveScanBeans(ScanBean scanBean, Context context) {
 		// 将当前选中的扫描信息存入bean中
-		saveCurScanBean(scanBean);
+		saveCurScanBean(scanBean, context);
 		// 获取曾经保存的扫描信息集合
 		List<ScanBean> scanBeans = getScanBeans(context);
 		if (scanBeans.size() == 0) {
 			// 如果没有记录，则将当前的扫描信息存入集合中
 			scanBeans.add(scanBean);
-			saveScanBeans(scanBeans);
 		} else {
 			// 如果有记录，则进行查重
 			for (ScanBean bean : scanBeans) {
@@ -95,13 +100,15 @@ public class StaticUtil {
 			}
 			scanBeans.add(scanBean);
 		}
+		saveScanBeans(scanBeans, context);
 	}
 	/**
 	 * 当前用户要向登录，必须要对应一个系统，此处存入的是当前对应的系统的信息
 	 * @param curScanBean
 	 */
-	public static void saveCurScanBean(ScanBean curScanBean) {
+	public static void saveCurScanBean(ScanBean curScanBean, Context context) {
 		loginUserUsedBean.setCurScanBean(curScanBean);
+		BeanParamsUtil.saveObject(curScanBean, context);
 	}
 	
 	/**

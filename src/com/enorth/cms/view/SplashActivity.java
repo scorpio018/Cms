@@ -31,27 +31,6 @@ public class SplashActivity extends BaseActivity {
 		 * MODE_WORLD_READABLE：表示当前文件可以被其他应用读取；MODE_WORLD_WRITEABLE：表示当前文件可以被其他应用写入。
 		 * 另外Activity还提供了另一个getPreferences(mode)方法操作SharedPreferences，这个方法默认使用当前类不带包名的类名作为文件的名称。
 		 */
-		/*SharedPreferences pre = getSharedPreferences(ParamConst.ACTIVITY_IS_FIRST_ENTER, Context.MODE_PRIVATE);
-		boolean isFirst = pre.getBoolean(ParamConst.ACTIVITY_IS_FIRST_ENTER, true);*/
-		/*Callback callback = new Callback() {
-			
-			@Override
-			public void onResponse(Response r) throws IOException {
-				String string = r.body().string();
-				Log.e("string", string);
-			}
-			
-			@Override
-			public void onFailure(Request r, IOException e) {
-				Log.e("error", e.toString());
-			}
-		};
-		try {
-			HttpUtil.okPost("http://10.0.70.71:9000/SpringMVC_MyBatisDemo/android/getHeader", callback);
-		} catch (Exception e) {
-			Log.e("error", e.toString());
-			e.printStackTrace();
-		}*/
 		boolean isEntered = SharedPreUtil.getBoolean(this, ParamConst.ACTIVITY_IS_ENTERED);
 		
 		if (isEntered) {

@@ -12,8 +12,8 @@ import org.json.JSONObject;
 import com.enorth.cms.adapter.news.NewsListFragmentPagerAdapter;
 import com.enorth.cms.adapter.news.NewsListViewAdapter;
 import com.enorth.cms.bean.BottomMenuOperateDataBasicBean;
-import com.enorth.cms.bean.ViewColorBasicBean;
 import com.enorth.cms.bean.Page;
+import com.enorth.cms.bean.ViewColorBasicBean;
 import com.enorth.cms.bean.channel_search.RequestNewsSearchUrlBean;
 import com.enorth.cms.bean.login.ChannelBean;
 import com.enorth.cms.bean.login.LoginBean;
@@ -383,7 +383,7 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 		// 将第一个标题存入当前标题中
 		curNewsTitleName = allNewsTitleName.get(0);
 		
-		curUrl = UrlConst.NEWS_LIST_POST_URL;
+		curUrl = StaticUtil.getCurScanBean(this).getScanUrl() + UrlConst.NEWS_LIST_POST_URL;
 		
 		initSortData();
 		initListViewAdapter();
@@ -438,7 +438,7 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 				initNewsTitlePopupWindow();
 			}
 		};
-		listener.changeColor(ColorUtil.getBgGrayPress(this), ColorUtil.getCommonBlueColor(this));
+//		listener.changeColor(ColorUtil.getBgGrayPress(this), ColorUtil.getCommonBlueColor(this));
 		titleText.setOnTouchListener(listener);
 	}
 	
@@ -617,7 +617,7 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 		// 初始化当前ListView对应的handler
 		Handler newsListViewHandler = new NewsListViewHandler(this, listViews.get(curPosition), null);
 		// 将当前搜索URL进行替换
-		curUrl = UrlConst.SEARCH_NEWS_POST_URL;
+		curUrl = StaticUtil.getCurScanBean(this).getScanUrl() + UrlConst.SEARCH_NEWS_POST_URL;
 		// 在当前选中的按钮组中加入搜索图标
 //		newsStateBtns.get(curPosition).setCompoundDrawablesWithIntrinsicBounds(null, null, newsStateBtnRightDrawable, null);
 		int height = newsTypeBtnLineLayout.getMeasuredHeight();

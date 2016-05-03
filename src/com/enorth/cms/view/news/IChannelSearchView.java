@@ -10,14 +10,14 @@ public interface IChannelSearchView {
 	 * @param handler
 	 * @throws Exception
 	 */
-	public void initChannelData(String result, Handler handler) throws Exception;
+	public void initChannelData(String result, Handler handler);
 	/**
 	 * 获取我的频道
 	 * @param result
 	 * @param handler
 	 * @throws Exception
 	 */
-	public void getMyChannel(String result, Handler handler) throws Exception;
+	public void getMyChannel(String result, Handler handler);
 	
 	public ChannelSearchActivity getActivity();
 	

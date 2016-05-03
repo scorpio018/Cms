@@ -77,6 +77,6 @@
     <string name="change_pwd_et_new_pwd_comfirm">密码确认</string>
     
     <string name="about_project_name">CMS</string>
-    <string name="about_version">版本号：手机发新闻1.0</string>
+    <!-- <string name="about_version">版本号：手机发新闻1.0</string> -->
     <string name="about_add_projects">已添加系统</string>
 </resources>

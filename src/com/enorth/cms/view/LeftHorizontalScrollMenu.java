@@ -6,6 +6,7 @@ import java.util.List;
 import com.enorth.cms.adapter.CommonListViewAdapter;
 import com.enorth.cms.bean.MenuBean;
 import com.enorth.cms.consts.ParamConst;
+import com.enorth.cms.listener.CommonOnClickListener;
 import com.enorth.cms.listener.menu.ContentOnTouchListener;
 import com.enorth.cms.listener.menu.LeftMenuItemOnTouchListener;
 import com.enorth.cms.utils.AnimUtil;

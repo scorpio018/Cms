@@ -292,10 +292,16 @@ public class BeanParamsUtil {
 		return ob;
 	}
 	
+	/**
+	 * 将对象以注解中定义的key（如果没有定义，则使用变量名）作为json的key，以保存的变量作为json的value进行返回
+	 * @param ob
+	 * @param context
+	 * @return
+	 */
 	public static JSONObject saveObjectToJson(Object ob, Context context) {
 		JSONObject jo = new JSONObject();
 		Class<?> c = ob.getClass();
-		String clazzName = c.getName();
+//		String clazzName = c.getName();
 		Field[] fields = c.getDeclaredFields();
 		Method[] declaredMethods = c.getDeclaredMethods();
 		int methodLength = declaredMethods.length;
@@ -306,10 +312,10 @@ public class BeanParamsUtil {
 		for (Field field : fields) {
 			if (field.isAnnotationPresent(SharedPreSaveAnnotation.class)) {
 				SharedPreSaveAnnotation annotation = field.getAnnotation(SharedPreSaveAnnotation.class);
-				String name = annotation.name();
+				/*String name = annotation.name();
 				if (name.equals("")) {
 					name = clazzName;
-				}
+				}*/
 				String fieldName = field.getName();
 				String key = annotation.key();
 				if (key.equals("")) {

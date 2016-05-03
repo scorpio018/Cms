@@ -11,6 +11,6 @@ public interface ILoginView {
 	
 	public ILoginPresenter getPresenter();
 	
-	public void login(String resultStr, LoginBean bean, Boolean rememberUser, Handler handler) throws Exception;
+	public void login(String resultStr, LoginBean bean, Boolean rememberUser, Handler handler);
 	
 }

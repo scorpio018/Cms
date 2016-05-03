@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.http.message.BasicNameValuePair;
 
+import com.enorth.cms.callback.CommonCallback;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.enums.HttpBuilderType;
 import com.enorth.cms.utils.HttpUtil;
@@ -30,7 +31,7 @@ public class NewsListFragPresenter implements INewsListFragPresenter {
 	 */
 	@Override
 	public void requestListViewData(String url, final Handler handler, List<BasicNameValuePair> params) {
-		final Callback callback = new Callback() {
+		/*final Callback callback = new Callback() {
 
 			@Override
 			public void onResponse(Response r) throws IOException {
@@ -55,8 +56,14 @@ public class NewsListFragPresenter implements INewsListFragPresenter {
 			public void onFailure(Request r, IOException e) {
 				HttpUtil.requestOnFailure(r, e, handler);
 			}
+		};*/
+		Callback callback = new CommonCallback(handler) {
+			
+			@Override
+			public void initReturnJsonData(String resultString) {
+				view.initReturnJsonData(resultString, handler);
+			}
 		};
-		Log.e("newsListFragPresenter", "curUrl:" + url);
 		HttpUtil.okPost(url, params, callback, HttpBuilderType.REQUEST_FORM_ENCODE);
 	}
 

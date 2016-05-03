@@ -2,179 +2,117 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-     >
-     
-    <!-- 标题 -->
-    <include layout="@layout/common_title_iv_tv_tv"/>
-    <!-- <RelativeLayout 
-        android:id="@+id/channelSearchTitle"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/news_title_height"
-        android:background="@color/common_blue">
-        
-        <ImageView 
-            android:id="@+id/channelSearchTitleBackBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/common_back"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/news_title_left_icon_margin_left"
-            android:layout_marginStart="@dimen/news_title_left_icon_margin_left"
-            />
-        <LinearLayout 
-            android:id="@+id/channelSearchTitleLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_centerHorizontal="true"
-			android:layout_centerVertical="true"
-			android:gravity="center_vertical">
-            
-            <TextView 
-				android:id="@+id/channelSearchTitleText"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:textColor="@color/white"
-				android:layout_gravity="center_vertical"
-	         />
-            
-        </LinearLayout>
-            
-        
-        <TextView 
-            android:id="@+id/channelTitleMenuConfirm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:paddingLeft="@dimen/news_title_right_icon_padding_left"
-            android:paddingStart="@dimen/news_title_right_icon_padding_left"
-            android:paddingRight="@dimen/news_title_right_icon_padding_right"
-            android:paddingEnd="@dimen/news_title_right_icon_padding_right"
-            android:text="@string/news_search_title_reset"
-            android:textColor="@color/white"
-            />
-    </RelativeLayout> -->
-    
-    <!-- 抓取按钮组 -->
-    <RelativeLayout
-	    android:id="@+id/crawlBtnRelaLayout"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	    android:layout_marginTop="@dimen/news_search_common_margin_top"
-	    android:layout_gravity="center_horizontal">
-	    
-	    <LinearLayout 
-	        android:id="@+id/crawlLineLayout"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_centerInParent="true"
-	        android:layout_centerHorizontal="true"
-	        android:layout_centerVertical="true"
-	        android:orientation="horizontal"
-	        android:gravity="center_horizontal"
-	        android:weightSum="3"
-	        ></LinearLayout>
-	    
-	</RelativeLayout>
-	
-    <!-- 融合按钮组 -->
-    <RelativeLayout
-	    android:id="@+id/mergeBtnRelaLayout"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:orientation="horizontal"
-	    android:layout_marginTop="@dimen/news_search_common_margin_top"
-	    android:layout_gravity="center_horizontal">
-	    
-	    <LinearLayout 
-	        android:id="@+id/mergeLineLayout"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_centerInParent="true"
-	        android:layout_centerHorizontal="true"
-	        android:layout_centerVertical="true"
-	        android:orientation="horizontal"
-	        android:gravity="center_horizontal"
-	        android:weightSum="3"
-	        ></LinearLayout>
-	    
-	</RelativeLayout>
-	
-	<LinearLayout 
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal"
-		android:gravity="center_horizontal"
-		android:weightSum="1">
-	    <!-- 新闻ID -->
-        <EditText 
-	        android:id="@+id/newsSearchNewsIdET"
-	        android:layout_width="0dip"
-	        android:layout_height="@dimen/common_edit_text_height"
-	        android:layout_weight="0.9"
-	        android:background="@drawable/common_radius_and_stroke"
-	        android:layout_marginTop="@dimen/news_search_common_margin_top"
-	        android:inputType="number"
-	        android:hint="@string/news_search_et_news_id_hint"/>
-	</LinearLayout>
-	
-	<LinearLayout 
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal"
-		android:gravity="center_horizontal"
-		android:weightSum="1">
-	    <EditText 
-	        android:id="@+id/newsSearchKeywordET"
-	        android:layout_width="0dip"
-	        android:layout_height="@dimen/common_edit_text_height"
-	        android:layout_weight="0.9"
-	        android:background="@drawable/common_radius_and_stroke"
-	        android:layout_marginTop="@dimen/news_search_common_margin_top"
-	        android:hint="@string/news_search_et_keyword_hint"/>
-	</LinearLayout>
+    android:background="@drawable/news_title_bg"
+    android:orientation="vertical" >
 
-	<LinearLayout 
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal"
-		android:gravity="center_horizontal"
-		android:weightSum="1">
-	    <Button 
-	        android:id="@+id/newsSearchSubmitBtn"
-	        android:layout_width="0dip"
-	        android:layout_height="@dimen/common_submit_btn_height"
-	        android:layout_weight="0.9"
-	        android:textColor="@color/white"
-	        android:background="@drawable/common_submit_btn_radius_and_stroke"
-	        android:layout_marginTop="@dimen/news_search_common_margin_top"
-	        android:text="@string/submit_btn_common"/>
-	</LinearLayout>
-	        
-    <!-- <EditText 
-        android:id="@+id/newsSearchNewsIdET"
+    <!-- 标题 -->
+
+    <include layout="@layout/common_title_iv_tv_tv" />
+
+    <!-- 抓取按钮组 -->
+	<!-- android:layout_marginTop="@dimen/news_search_common_margin_top" -->
+    <RelativeLayout
+        android:id="@+id/crawlBtnRelaLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/news_search_et_news_id_hint"/>
-    
-    <EditText 
-        android:id="@+id/newsSearchKeywordET"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/bg_gray_default"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/crawlLineLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/news_search_common_padding_top"
+            android:weightSum="3" >
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!-- 融合按钮组 -->
+
+    <RelativeLayout
+        android:id="@+id/mergeBtnRelaLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/news_search_et_keyword_hint"/>
-    
-    <Button 
-        android:id="@+id/newsSearchSubmitBtn"
-        android:layout_width="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/bg_gray_default"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/mergeLineLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="@dimen/news_search_common_padding_top"
+            android:orientation="horizontal"
+            android:weightSum="3" >
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/common_blue"
-        android:textColor="@color/white"
-        android:text="@string/submit_btn_common"/> -->
-    
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:background="@color/bg_gray_default"
+        android:weightSum="1" >
+
+        <!-- 新闻ID -->
+
+        <EditText
+            android:id="@+id/newsSearchNewsIdET"
+            android:layout_width="0dip"
+            android:layout_height="@dimen/common_edit_text_height"
+            android:layout_marginTop="@dimen/edit_text_common_margin_top"
+            android:layout_weight="0.9"
+            android:background="@drawable/common_radius_and_stroke"
+            android:hint="@string/news_search_et_news_id_hint"
+            android:inputType="number" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:background="@color/bg_gray_default"
+        android:weightSum="1" >
+
+        <EditText
+            android:id="@+id/newsSearchKeywordET"
+            android:layout_width="0dip"
+            android:layout_height="@dimen/common_edit_text_height"
+            android:layout_marginTop="@dimen/edit_text_common_margin_top"
+            android:layout_weight="0.9"
+            android:background="@drawable/common_radius_and_stroke"
+            android:hint="@string/news_search_et_keyword_hint" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:background="@color/bg_gray_default"
+        android:weightSum="1" >
+
+        <Button
+            android:id="@+id/newsSearchSubmitBtn"
+            android:layout_width="0dip"
+            android:layout_height="@dimen/common_submit_btn_height"
+            android:layout_marginTop="@dimen/edit_text_common_margin_top"
+            android:layout_weight="0.9"
+            android:background="@drawable/common_submit_btn_radius_and_stroke"
+            android:text="@string/submit_btn_common"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
 </LinearLayout>

@@ -4,6 +4,7 @@ import com.enorth.cms.adapter.news.NewsListViewAdapter;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.consts.UrlConst;
 import com.enorth.cms.listener.newslist.news.NewsListListViewOnScrollListener;
+import com.enorth.cms.utils.StaticUtil;
 import com.enorth.cms.view.R;
 import com.enorth.cms.view.news.NewsCommonActivity;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -78,9 +79,9 @@ public class NewsListFragment extends ListFragment {
 						// 在下拉状态时，需要清空新闻搜索的所有条件
 						CharSequence curCheckedText = activity.getTitleText().getText();
 						if (curCheckedText.equals(activity.getResources().getString(R.string.normal_news_title_text))) {
-							activity.setCurUrl(UrlConst.NEWS_LIST_POST_URL);
+							activity.setCurUrl(StaticUtil.getCurScanBean(activity).getScanUrl() + UrlConst.NEWS_LIST_POST_URL);
 						} else if (curCheckedText.equals(activity.getResources().getString(R.string.my_news_title_text))) {
-							activity.setCurUrl(UrlConst.MY_NEWS_LIST_POST_URL);
+							activity.setCurUrl(StaticUtil.getCurScanBean(activity).getScanUrl() + UrlConst.MY_NEWS_LIST_POST_URL);
 						}
 						activity.getNewsStateBtns().get(activity.getCurPosition()).setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 					} else if (currentMode == Mode.PULL_FROM_END) {

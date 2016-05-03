@@ -3,7 +3,11 @@ package com.enorth.cms.bean.channel_search;
 import java.io.Serializable;
 
 import com.enorth.cms.annotation.UrlParamAnnotation;
-
+/**
+ * 进行频道查询时传入的参数bean
+ * @author yangyang
+ *
+ */
 public class RequestChannelSearchUrlBean implements Serializable {
 
 	/**

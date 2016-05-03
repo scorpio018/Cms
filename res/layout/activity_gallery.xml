@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@drawable/news_title_bg" >
     
         
     <include layout="@layout/select_photo_header"/>
@@ -12,7 +13,6 @@
     <RelativeLayout 
         android:layout_width="match_parent"
         android:layout_height="@dimen/material_upload_bottom_layout_height"
-        android:background="@color/common_blue"
         >
         
         <TextView 

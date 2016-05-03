@@ -86,9 +86,9 @@ public class LoginActivity extends BaseFragmentActivity implements ILoginView {
     }
 	
 	private void dealScanResult(String result) {
-		String unknownScanPic = "未知的二维码";
+		String unknownScanPic = "未知的二维码，请重新扫描";
 		// 判断使用"|"截取的个数是否为5个
-		String[] split = result.split("|");
+		String[] split = result.split("\\|");
 		if (split.length != 5) {
 			ViewUtil.showAlertDialog(this, unknownScanPic);
 			return;
@@ -112,6 +112,7 @@ public class LoginActivity extends BaseFragmentActivity implements ILoginView {
 		List<String> scanNames = StaticUtil.getScanNames(this);
 		scanFrag.setScanBeans(scanBeans);
 		scanFrag.setScanNames(scanNames);
+		scanFrag.getSystemChooseTV().setText(StaticUtil.getCurScanBean(this).getScanName());
 		scanFrag.getSystemChooseTV().setVisibility(View.VISIBLE);
 	}
 	
@@ -151,7 +152,7 @@ public class LoginActivity extends BaseFragmentActivity implements ILoginView {
 	}
 
 	@Override
-	public void login(String resultStr, LoginBean bean, Boolean rememberUser, Handler handler) throws Exception {
+	public void login(String resultStr, LoginBean bean, Boolean rememberUser, Handler handler) {
 		JSONObject jo = JsonUtil.initJsonObject(resultStr);
 		// 将用户信息进行刷新保存
 		refreshUser(bean, jo, rememberUser);
@@ -171,7 +172,7 @@ public class LoginActivity extends BaseFragmentActivity implements ILoginView {
 	 * @param rememberUser
 	 * @throws Exception
 	 */
-	private void refreshUser(LoginBean bean, JSONObject jo, boolean rememberUser) throws Exception {
+	private void refreshUser(LoginBean bean, JSONObject jo, boolean rememberUser) {
 		// 将种子存入缓存中，用于每次请求接口的时候与接口进行随机码匹配
 		bean.setSeed(JsonUtil.getString(jo, ParamConst.USER_LOGIN_SEED));
 		// 获得登录成功的用户ID、用户名
@@ -225,7 +226,7 @@ public class LoginActivity extends BaseFragmentActivity implements ILoginView {
 	 * @param jo
 	 * @throws Exception
 	 */
-	private void saveChannel(JSONObject jo) throws Exception {
+	private void saveChannel(JSONObject jo) {
 		JSONArray channels = JsonUtil.getJSONArray(jo, ParamConst.CHANNEL);
 		int length = channels.length();
 		String[] channelsStr = new String[length];
@@ -256,7 +257,7 @@ public class LoginActivity extends BaseFragmentActivity implements ILoginView {
 	 * @param bean
 	 * @throws Exception 
 	 */
-	private void saveCurLoginUser(LoginBean bean) throws Exception {
+	private void saveCurLoginUser(LoginBean bean) {
 		BeanParamsUtil.saveObject(bean, this);
 		StaticUtil.saveCurLoginBean(bean);
 	}

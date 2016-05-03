@@ -7,11 +7,13 @@ import java.util.List;
 import org.apache.http.message.BasicNameValuePair;
 
 import com.enorth.cms.bean.login.LoginBean;
+import com.enorth.cms.callback.CommonCallback;
 import com.enorth.cms.consts.UrlConst;
 import com.enorth.cms.enums.HttpBuilderType;
 import com.enorth.cms.utils.AnimUtil;
 import com.enorth.cms.utils.BeanParamsUtil;
 import com.enorth.cms.utils.HttpUtil;
+import com.enorth.cms.utils.StaticUtil;
 import com.enorth.cms.view.login.ILoginView;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
@@ -31,7 +33,7 @@ public class LoginPresenter implements ILoginPresenter {
 	@Override
 	public void login(final LoginBean bean, final boolean rememberUser, final Handler handler) {
 		List<BasicNameValuePair> params = BeanParamsUtil.initDataSimple(bean, view.getActivity());
-		Callback callback = new Callback() {
+		/*Callback callback = new Callback() {
 			
 			@Override
 			public void onResponse(Response r) throws IOException {
@@ -50,9 +52,16 @@ public class LoginPresenter implements ILoginPresenter {
 			public void onFailure(Request r, IOException e) {
 				HttpUtil.requestOnFailure(r, e, handler);
 			}
+		};*/
+		Callback callback = new CommonCallback(handler) {
+			
+			@Override
+			public void initReturnJsonData(String resultString) {
+				view.login(resultString, bean, rememberUser, handler);
+			}
 		};
 		AnimUtil.showRefreshFrame(view.getActivity(), true, "正在登录，请稍后");
-		HttpUtil.okPost(UrlConst.LOGIN_URL, params, callback, HttpBuilderType.REQUEST_FORM_ENCODE);
+		HttpUtil.okPost(StaticUtil.getCurScanBean(view.getActivity()).getScanUrl() + UrlConst.LOGIN_URL, params, callback, HttpBuilderType.REQUEST_FORM_ENCODE);
 	}
 
 }

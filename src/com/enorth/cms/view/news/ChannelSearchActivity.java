@@ -565,16 +565,18 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	}
 	
 	@Override
-	public void initChannelData(String result, Handler handler) throws Exception {
+	public void initChannelData(String result, Handler handler) {
 //		jsonObject = new JSONObject(result);
 		jsonObject = JsonUtil.initJsonObject(result);
 		initChannelDataListView(jsonObject, handler);
 	}
 	
 	@Override
-	public void getMyChannel(String result, Handler handler) throws Exception {
-		JSONArray ja = new JSONArray(result);
+	public void getMyChannel(String result, Handler handler) {
+		JSONArray ja = JsonUtil.initJsonArray(result);
 		initMyChannelDataListView(ja, handler);
+//		JSONArray ja = new JSONArray(result);
+//		initMyChannelDataListView(ja, handler);
 	}
 	
 	/**
@@ -589,7 +591,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 		initDataListView(jsonArray, handler);
 	}
 	
-	private void initMyChannelDataListView(JSONArray jsonArray, Handler handler) throws JSONException {
+	private void initMyChannelDataListView(JSONArray jsonArray, Handler handler) {
 		canClickToChild = false;
 		initDataListView(jsonArray, handler);
 	}

@@ -9,7 +9,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:orientation="vertical" >
+
         <!-- android:layout_marginBottom="@dimen/news_operate_btn_layout_height" -->
+
 
         <!-- 标题 -->
 
@@ -23,8 +25,11 @@
             android:layout_height="@dimen/channel_search_line_layout_height"
             android:background="@color/gray" >
 
-            <!-- android:drawableEnd="@drawable/edit_text_cross"
-                android:drawableRight="@drawable/edit_text_cross" -->
+            <!--
+                 android:drawableEnd="@drawable/edit_text_cross"
+                android:drawableRight="@drawable/edit_text_cross"
+            -->
+
             <AutoCompleteTextView
                 android:id="@+id/channelSearchEdit"
                 android:layout_width="match_parent"
@@ -63,8 +68,8 @@
                     android:id="@+id/channelSearchCheckedText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/light_blue"
                     android:text="@string/company"
+                    android:textColor="@color/light_blue"
                     android:textSize="@dimen/channel_search_common_text_size" />
             </LinearLayout>
 
@@ -98,15 +103,22 @@
 
         <!-- 当前选中频道对应的下级频道 -->
 
-        <com.enorth.cms.widget.listview.newslist.NewsListListView
-            android:id="@+id/childChannelListView"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/bg_gray_default" >
-        </com.enorth.cms.widget.listview.newslist.NewsListListView>
+
+            <com.enorth.cms.widget.listview.newslist.NewsListListView
+                android:id="@+id/childChannelListView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/bg_gray_default" >
+            </com.enorth.cms.widget.listview.newslist.NewsListListView>
+        </RelativeLayout>
     </LinearLayout>
 
-    <!-- <RelativeLayout
+    <!--
+    <RelativeLayout
         android:id="@+id/hintRelative"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -120,6 +132,6 @@
             android:text="@string/news_list_view_default_text"
             android:textColor="@color/gray"
             android:textSize="@dimen/news_list_view_default_text" />
-    </RelativeLayout> -->
+    </RelativeLayout>    -->
 
 </RelativeLayout>

@@ -14,6 +14,7 @@ import com.enorth.cms.widget.popupwindow.CommonPopupWindow;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -107,8 +108,9 @@ public abstract class PopupWindowUtil {
 	}
 	
 	private void initPopupWindowCommon() {
-		layout = new LinearLayout(context);
-		layout.setOrientation(LinearLayout.VERTICAL);
+//		layout = new LinearLayout(context);
+		layout = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.popup_window_common, null);
+//		layout.setOrientation(LinearLayout.VERTICAL);
 		layout.setBackgroundColor(popupBgColor);
 		// 设置半透明
 		layout.getBackground().setAlpha(200);
@@ -176,11 +178,17 @@ public abstract class PopupWindowUtil {
 			chooseName.setTextColor(textColor);
 			String curName = allNames.get(i);
 			chooseName.setText(curName);
-			ImageView checkedIV = (ImageView) chooseItem.getChildAt(0);
+			/*ImageView checkedIV = (ImageView) chooseItem.getChildAt(0);
 			if (curName.equals(curCheckedName)) {
 				checkedIV.setVisibility(View.VISIBLE);
 			} else {
 				checkedIV.setVisibility(View.GONE);
+			}*/
+			if (curName.equals(curCheckedName)) {
+				chooseName.setCompoundDrawablesWithIntrinsicBounds(DrawableUtil.getDrawable(context, R.drawable.checked_iv_sm), null, null, null);
+				chooseName.setCompoundDrawablePadding(10);
+			} else {
+				chooseName.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 			}
 			
 			listener.changeColor(popupBgTouchColor, popupBgColor);

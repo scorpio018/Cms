@@ -15,8 +15,10 @@ import com.enorth.cms.listener.login.UserNameHistoryOnTouchListener;
 import com.enorth.cms.utils.ColorUtil;
 import com.enorth.cms.utils.PopupWindowUtil;
 import com.enorth.cms.utils.SharedPreUtil;
+import com.enorth.cms.utils.StaticUtil;
 import com.enorth.cms.utils.StringUtil;
 import com.enorth.cms.utils.UrlUtil;
+import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.R;
 import com.enorth.cms.view.login.ILoginView;
 import com.enorth.cms.widget.popupwindow.CommonPopupWindow;
@@ -220,6 +222,10 @@ public class LoginFrag extends Fragment {
 			@Override
 			public void onClick(View v) {
 				if (loginSubmitBtn.isClickable()) {
+					if (StringUtil.isEmpty(StaticUtil.getCurScanBean(getContext()).getScanUrl())) {
+						ViewUtil.showAlertDialog(getContext(), "请先扫描系统中手机发新闻功能页对应二维码再进行登录");
+						return;
+					}
 					LoginBean bean = new LoginBean();
 					bean.setUserName(userNameET.getText().toString());
 					bean.setPassword(pwdET.getText().toString());

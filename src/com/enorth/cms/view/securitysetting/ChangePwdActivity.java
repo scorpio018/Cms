@@ -1,20 +1,33 @@
 package com.enorth.cms.view.securitysetting;
 
+import java.util.List;
+
+import org.apache.http.message.BasicNameValuePair;
+
+import com.enorth.cms.bean.securitysetting.RequestChangePwdUrlBean;
+import com.enorth.cms.consts.UrlConst;
+import com.enorth.cms.presenter.securitysetting.ChangePwdPresenter;
+import com.enorth.cms.presenter.securitysetting.IChangePwdPresenter;
+import com.enorth.cms.utils.BeanParamsUtil;
+import com.enorth.cms.utils.StringUtil;
 import com.enorth.cms.view.R;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ChangePwdActivity extends Activity implements IChangePwdView {
 	/**
 	 * 退回
 	 */
-	private ImageView titleLeftTV;
+	private TextView titleLeftTV;
 	/**
 	 * 用户名
 	 */
@@ -35,18 +48,27 @@ public class ChangePwdActivity extends Activity implements IChangePwdView {
 	 * 确认按钮
 	 */
 	private Button changePwdSubmitBtn;
+	/**
+	 * 调用修改密码接口时传入的参数bean
+	 */
+	private RequestChangePwdUrlBean requestChangePwdUrlBean;
+	/**
+	 * 
+	 */
+	private IChangePwdPresenter presenter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_change_pwd);
 		initView();
+		initPresenter();
 		initData();
 		initEvent();
 	}
 	
 	private void initView() {
-		titleLeftTV = (ImageView) findViewById(R.id.titleLeftTV);
+		titleLeftTV = (TextView) findViewById(R.id.titleLeftTV);
 		userNameET = (EditText) findViewById(R.id.userNameET);
 		prevPwdET = (EditText) findViewById(R.id.prevPwdET);
 		newPwdET = (EditText) findViewById(R.id.newPwdET);
@@ -54,8 +76,13 @@ public class ChangePwdActivity extends Activity implements IChangePwdView {
 		changePwdSubmitBtn = (Button) findViewById(R.id.changePwdSubmitBtn);
 	}
 	
+	private void initPresenter() {
+		presenter = new ChangePwdPresenter(this);
+	}
+	
 	private void initData() {
 		initUserName();
+		requestChangePwdUrlBean = new RequestChangePwdUrlBean();
 	}
 	
 	private void initUserName() {
@@ -86,7 +113,24 @@ public class ChangePwdActivity extends Activity implements IChangePwdView {
 					Toast.makeText(ChangePwdActivity.this, "新密码和确认密码不一致，请重输！", Toast.LENGTH_SHORT).show();
 					return;
 				}
+				requestChangePwdUrlBean.setOrgPwd(prevPwdET.getText().toString());
+				requestChangePwdUrlBean.setNewPwd(newPwdET.getText().toString());
+				List<BasicNameValuePair> initData = BeanParamsUtil.initData(requestChangePwdUrlBean, ChangePwdActivity.this);
+				Handler handler = new Handler() {
+					@Override
+					public void handleMessage(Message msg) {
+						super.handleMessage(msg);
+					}
+				};
+				presenter.changePwd(UrlConst.CHANGE_PWD, handler, initData);
 			}
 		});
+	}
+
+	@Override
+	public void initReturnJsonData(String resultString, Handler handler) {
+		if (StringUtil.isEmpty(resultString)) {
+			Toast.makeText(this, "修改成功", Toast.LENGTH_SHORT).show();
+		}
 	}
 }

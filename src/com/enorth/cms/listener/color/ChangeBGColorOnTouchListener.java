@@ -14,7 +14,7 @@ public abstract class ChangeBGColorOnTouchListener extends CommonOnTouchListener
 
 	@Override
 	public boolean isClickBackgroungColorChange() {
-		return true;
+		return false;
 	}
 	
 	@Override
