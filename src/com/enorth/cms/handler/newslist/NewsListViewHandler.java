@@ -65,8 +65,15 @@ public class NewsListViewHandler extends UrlRequestCommonHandler {
 	public void noData(Message msg) {
 		NewsListViewAdapter adapter = activity.getListViewAdapter().get(activity.getCurPosition());
 		if (activity.getCurRefreshState() == ParamConst.REFRESHING) {
+			// 下拉刷新没数据的情况
 			adapter.setItems(new ArrayList<NewsListBean>());
 			adapter.notifyDataSetChanged();
+		} else if (activity.getCurRefreshState() == ParamConst.LOADING) {
+			// 上拉加载更多的情况
+			if (adapter.getItems() != null && adapter.getItems().size() != 0) {
+				activity.initNewsListData(newsListView, false, "已经全部加载完毕");
+				return;
+			}
 		} else {
 			Log.e("NewsListViewHandler success", "activity.getCurRefreshState()【" + activity.getCurRefreshState() + "】");
 		}

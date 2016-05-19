@@ -1,30 +1,27 @@
 package com.enorth.cms.view.news;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.enorth.cms.bean.BottomMenuOperateDataBasicBean;
 import com.enorth.cms.bean.news_list.NewsListBottomMenuOperateDataBean;
 import com.enorth.cms.consts.ParamConst;
-import com.enorth.cms.consts.UrlConst;
 import com.enorth.cms.handler.newslist.NewsSubTitleHandler;
 import com.enorth.cms.listener.color.UnChangeBGColorOnTouchListener;
 import com.enorth.cms.listener.newslist.subtitle.ChooseChannelOnTouchListener;
 import com.enorth.cms.utils.ColorUtil;
-import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.utils.StaticUtil;
-import com.enorth.cms.utils.StringUtil;
 import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.R;
 
 import android.app.Activity;
-import android.os.Bundle;
+import android.content.Intent;
 import android.os.Message;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class NewsListFragActivity extends NewsCommonActivity {
 	
@@ -115,6 +112,25 @@ public class NewsListFragActivity extends NewsCommonActivity {
 	@Override
 	public NewsCommonActivity getActivity() {
 		return this;
+	}
+
+	@Override
+	public int initNewsTypeBtnColor() {
+		return ColorUtil.getCommonBlueColor(this);
+	}
+
+	@Override
+	public void initAddNewsBtn() {
+		OnClickListener listener = new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.setClass(NewsListFragActivity.this, NewsAddActivity.class);
+				startActivity(intent);
+			}
+		};
+		addNewsBtn.setOnClickListener(listener);
 	}
 
 }

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.enorth.cms.bean.newstitle.NewsTitleBean;
+import com.enorth.cms.bean.news_list.BottomMenuBasicBean;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.listener.CommonOnClickListener;
 import com.enorth.cms.listener.CommonOnTouchListener;
@@ -14,8 +14,6 @@ import com.enorth.cms.widget.popupwindow.CommonPopupWindow;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -108,9 +106,9 @@ public abstract class PopupWindowUtil {
 	}
 	
 	private void initPopupWindowCommon() {
-//		layout = new LinearLayout(context);
-		layout = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.popup_window_common, null);
-//		layout.setOrientation(LinearLayout.VERTICAL);
+		layout = new LinearLayout(context);
+//		layout = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.popup_window_common, null);
+		layout.setOrientation(LinearLayout.VERTICAL);
 		layout.setBackgroundColor(popupBgColor);
 		// 设置半透明
 		layout.getBackground().setAlpha(200);
@@ -214,11 +212,17 @@ public abstract class PopupWindowUtil {
 			chooseName.setTextColor(textColor);
 			String curName = allNames.get(key);
 			chooseName.setText(curName);
-			ImageView checkedIV = (ImageView) chooseItem.getChildAt(0);
+			/*ImageView checkedIV = (ImageView) chooseItem.getChildAt(0);
 			if (curKey == key) {
 				checkedIV.setVisibility(View.VISIBLE);
 			} else {
 				checkedIV.setVisibility(View.GONE);
+			}*/
+			if (curKey.equals(key)) {
+				chooseName.setCompoundDrawablesWithIntrinsicBounds(DrawableUtil.getDrawable(context, R.drawable.checked_iv_sm), null, null, null);
+				chooseName.setCompoundDrawablePadding(10);
+			} else {
+				chooseName.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 			}
 			
 			listener.changeColor(popupBgTouchColor, popupBgColor);
@@ -248,6 +252,26 @@ public abstract class PopupWindowUtil {
 			itemListener.changeColor(popupBgTouchColor, popupBgColor);
 			chooseItem.setOnTouchListener(itemListener);
 			checkedIV.setOnTouchListener(delBtnListener);
+			chooseItem.setTag(curName);
+			layout.addView(chooseItem);
+		}
+	}
+	
+	public void initPopupWindowItemsContainDelMark(LinearLayout layout, CommonOnTouchListener itemListener, CommonOnClickListener delBtnListener, List<String> allNames) {
+		LayoutInflater inflater = LayoutInflater.from(context);
+		int size = allNames.size();
+		for (int i = 0; i < size; i++) {
+			RelativeLayout chooseItem = (RelativeLayout) inflater.inflate(R.layout.popup_contain_del_mark, null);
+//			View chooseItem = View.inflate(context, R.layout.popup_contain_del_mark, layout);
+			TextView chooseName = (TextView) chooseItem.findViewById(R.id.chooseText);
+			chooseName.setTextColor(textColor);
+			String curName = allNames.get(i);
+			chooseName.setText(curName);
+			ImageView checkedIV = (ImageView) chooseItem.findViewById(R.id.chooseDelIV);
+//			itemListener.changeColor(popupBgTouchColor, popupBgColor);
+			chooseItem.setOnTouchListener(itemListener);
+			ViewUtil.initClickBg(chooseItem, popupBgTouchColor);
+			checkedIV.setOnClickListener(delBtnListener);
 			chooseItem.setTag(curName);
 			layout.addView(chooseItem);
 		}
@@ -331,6 +355,14 @@ public abstract class PopupWindowUtil {
 
 	public void setPopupWindowShowType(int popupWindowShowType) {
 		this.popupWindowShowType = popupWindowShowType;
+	}
+
+	public LinearLayout getLayout() {
+		return layout;
+	}
+
+	public void setLayout(LinearLayout layout) {
+		this.layout = layout;
 	}
 	
 }

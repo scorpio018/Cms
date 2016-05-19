@@ -88,6 +88,11 @@
         <activity android:name=".news.NewsLiveListFragActivity"></activity>
         <activity android:name=".news.NewsSearchActivity"
             android:windowSoftInputMode="stateUnspecified|stateHidden"></activity>
+        <!-- adjustPan的目的是使软键盘弹出的时候，编辑文本框也能显示在视野中 -->
+        <activity android:name=".news.NewsAddActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
+        <activity android:name=".news.AddReadingPicActivity" android:theme="@style/MyDialogStyleBottom"></activity>
+        <activity android:name=".news.ChooseReadingPicFromActivity" android:theme="@style/MyDialogStyleBottom"></activity>
         <!-- <activity android:name=".upload.UploadPicActivity"></activity> -->
         <activity android:name=".upload.GalleryActivity"></activity>
         <activity android:name=".upload.UploadPicPreviewActivity"></activity>

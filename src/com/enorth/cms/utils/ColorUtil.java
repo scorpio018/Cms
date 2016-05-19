@@ -7,6 +7,10 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 
 public class ColorUtil {
+	
+	public static int getColor(Context context, int color) {
+		return ContextCompat.getColor(context, color);
+	}
 	/**
 	 * 白色
 	 * @param context
@@ -23,6 +27,14 @@ public class ColorUtil {
 	 */
 	public static int getCommonBlueColor(Context context) {
 		return ContextCompat.getColor(context, R.color.common_blue);
+	}
+	/**
+	 * 通用绿
+	 * @param context
+	 * @return
+	 */
+	public static int getCommonGreenColor(Context context) {
+		return ContextCompat.getColor(context, R.color.common_green);
 	}
 	
 	/**

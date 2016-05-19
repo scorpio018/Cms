@@ -25,10 +25,11 @@ import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.consts.UrlConst;
 import com.enorth.cms.fragment.NewsListFragment;
 import com.enorth.cms.handler.newslist.NewsListViewHandler;
+import com.enorth.cms.listener.CommonOnClickListener;
 import com.enorth.cms.listener.color.ChangeBGColorOnTouchListener;
 import com.enorth.cms.listener.color.UnChangeBGColorOnTouchListener;
-import com.enorth.cms.listener.newslist.bottommenu.BottomMenuOnTouchListener;
 import com.enorth.cms.listener.newslist.viewpager.NewsCommonViewPagerOnPageChangeListener;
+import com.enorth.cms.listener.popup.bottombtn.BottomBtnMorePopupWindowOnClickListener;
 import com.enorth.cms.listener.popup.newssubtitle.NewsSubTitlePopupWindowOnTouchListener;
 import com.enorth.cms.listener.popup.newstitle.NewsTitlePopupWindowOnTouchListener;
 import com.enorth.cms.presenter.newslist.INewsListFragPresenter;
@@ -63,7 +64,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public abstract class NewsCommonActivity extends BaseFragmentActivity implements INewsCommonView {
 	/**
@@ -111,6 +111,10 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	 */
 	private CommonPopupWindow subNewsTitleSortPopupWindow;
 	/**
+	 * 底部菜单点击“更多”弹出的弹出框
+	 */
+	private CommonPopupWindow bottomMenuBtnPopupWindow;
+	/**
 	 * 标题弹出框工具
 	 */
 	private PopupWindowUtil newsTitlePopupWindowUtil;
@@ -118,6 +122,10 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	 * 副标题中的排序图标弹出框工具
 	 */
 	private PopupWindowUtil subNewsTitleSortPopupWindowUtil;
+	/**
+	 * 底部菜单点击“更多”弹出的弹出框工具
+	 */
+	private PopupWindowUtil bottomMenuBtnPopupWindowUtil;
 	/**
 	 * 将ViewPager中的ListView存入此集合中
 	 */
@@ -197,6 +205,18 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	 */
 	protected BottomMenuOperateDataBasicBean bottomMenuOperateBean;
 	/**
+	 * 标识当前底部菜单是否存在“更多”按钮
+	 */
+	private boolean hasNewsIsInMore = false;
+	/**
+	 * “更多”按钮对应的bean
+	 */
+	private BottomMenuBasicBean moreBean;
+	/**
+	 * “更多”按钮
+	 */
+	private View moreOperateMenuBtn;
+	/**
 	 * 底部菜单的默认颜色
 	 */
 	protected int newsOperateBtnBasicColor;
@@ -205,9 +225,13 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	 */
 	protected int whiteColor;
 	/**
+	 * 选中的颜色
+	 */
+	private int checkedColor;
+	/**
 	 * 蓝色
 	 */
-	protected int blueColor;
+//	protected int blueColor;
 	/**
 	 * 新闻列表中的标题最多能显示多少字
 	 */
@@ -302,6 +326,8 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	public abstract void initNewsSubTitle();
 	
 	public abstract int initCurNewsType();
+	
+	public abstract int initNewsTypeBtnColor();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -339,7 +365,36 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 				listViews.get(curPosition).setRefreshing();
 			}
 			break;
+		case ParamConst.NEWS_LIVE_LIST_FRAG_ACTIVITY_TO_NEWS_SEARCH_ACTIVITY_REQUEST_CODE:
+			if (resultCode == ParamConst.NEWS_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE) {
+				Bundle extras = data.getExtras();
+				// 获取搜索的新闻条件bean
+				requestNewsSearchUrlBean = (RequestNewsSearchUrlBean) extras.getSerializable(ParamConst.NEWS_SEARCH_BEAN);
+				Page page = new Page();
+				requestNewsSearchUrlBean.setPage(page);
+				refreshType = ParamConst.REFRESH_TYPE_NEWS_SEARCH;
+				isNewsSearched = false;
+				listViews.get(curPosition).setRefreshing();
+			}
+			break;
+			
 		case ParamConst.NEWS_LIST_FRAG_ACTIVITY_TO_CHANNEL_SEARCH_ACTIVITY_REQUEST_CODE:
+			if (resultCode == ParamConst.CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE) {
+				channelBean = StaticUtil.getCurChannelBean(this);
+				newsListBean.setChannelId(channelBean.getChannelId());
+				newsSubTitleTV.setText(channelBean.getChannelName());
+				NewsListViewAdapter newsListViewAdapter = listViewAdapter.get(curPosition);
+				newsListViewAdapter.getItems().clear();
+				newsListViewAdapter.notifyDataSetChanged();
+				listViews.get(curPosition).postDelayed(new Runnable() {
+					
+					@Override
+					public void run() {
+						listViews.get(curPosition).setRefreshing();
+					}
+				}, 100);
+			}
+		case ParamConst.NEWS_LIVE_LIST_FRAG_ACTIVITY_TO_CHANNEL_SEARCH_ACTIVITY_REQUEST_CODE:
 			if (resultCode == ParamConst.CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE) {
 				channelBean = StaticUtil.getCurChannelBean(this);
 				newsListBean.setChannelId(channelBean.getChannelId());
@@ -370,7 +425,7 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 		presenter = new NewsListFragPresenter(this);
 		newsOperateBtnBasicColor = ContextCompat.getColor(NewsCommonActivity.this, R.color.bottom_text_color_basic);
 		whiteColor = ColorUtil.getWhiteColor(NewsCommonActivity.this);
-		blueColor = ColorUtil.getCommonBlueColor(NewsCommonActivity.this);
+		checkedColor = initNewsTypeBtnColor();
 		// 获取屏幕的分辨率
 		newsTitleAllowLength = ScreenTools.getPhoneWidth(NewsCommonActivity.this) / ParamConst.FONT_WIDTH;
 		channelBean = StaticUtil.getCurChannelBean(this);
@@ -526,7 +581,7 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	 */
 	private void initNewsTypeBtnLayout() {
 		newsTypeBtnLineLayout = (LinearLayout) newsTypeBtnRelaLayout.getChildAt(0);
-		newsStateBtns = ViewUtil.initBtnGroupLayout(NewsCommonActivity.this, newsTypeBtnLineLayout, newsTypeBtnText,
+		newsStateBtns = ViewUtil.initBtnGroupLayout(NewsCommonActivity.this, newsTypeBtnLineLayout, checkedColor, newsTypeBtnText,
 				newsStateBtnState, 0.9f);
 		// 获取搜索图标的Drawable，用于搜索新闻之后加入到对应按钮组中选中的按钮上
 		newsStateBtnRightDrawable = DrawableUtil.getDrawable(this, R.drawable.nav_search);
@@ -541,6 +596,7 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 		for (int i = 0; i < 3; i++) {
 			NewsListFragment fragment = new NewsListFragment(this, i);
 			views.add(fragment);
+			
 		}
 		NewsListFragmentPagerAdapter adapter = new NewsListFragmentPagerAdapter(getSupportFragmentManager(), views);
 		newsListViewPager.setAdapter(adapter);
@@ -558,16 +614,7 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	/**
 	 * 初始化右下角的“+”图案
 	 */
-	protected void initAddNewsBtn() {
-		OnClickListener listener = new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Toast.makeText(NewsCommonActivity.this, "点击了“添加新闻”按钮", Toast.LENGTH_SHORT).show();
-			}
-		};
-		addNewsBtn.setOnClickListener(listener);
-	}
+	public abstract void initAddNewsBtn();
 
 	/**
 	 * 初始化底部的操作按钮布局
@@ -608,7 +655,7 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	}
 	
 	/**
-	 * 在从新闻搜索页待会条件时进行的新搜索
+	 * 在从新闻搜索页带回条件时进行的新搜索
 	 * @param newsListView
 	 */
 	public void initNewsSearchListData(PullToRefreshListView newsListView) {
@@ -688,18 +735,18 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 			selectedNewsCount[curPosition]--;
 		}
 		changeCanEnableState();
+		changeBottomMenuBtnState();
 	}
 
 	/**
-	 * 根据当前选中的标头按钮的位置改变需要改变样式的按钮，并清除需要清除的ListView中的数据（只要在当前ListView前后超过一个间隔，则清空）
+	 * 根据当前选中的标头按钮的位置改变需要改变样式的按钮，并清除需要清除的ListView中的数据
 	 * 
 	 * @param position
 	 * @throws Exception
 	 */
 	public void changeNewsTypeBtnStyleByFocusedState(int position) {
 		ViewUtil.changeBtnGroupStyleByFocusedState(NewsCommonActivity.this, newsTypeBtnLineLayout, position,
-				ColorUtil.getCommonBlueColor(NewsCommonActivity.this),
-				ColorUtil.getWhiteColor(NewsCommonActivity.this));
+				checkedColor, whiteColor);
 	}
 
 	/**
@@ -710,106 +757,85 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 		// 获取底部的每一个按钮的基本参数
 		initNewsOperateBtnData();
 		changeCanEnableState();
+		initBottomMenuBtnState();
 		for (final BottomMenuBasicBean bean : bottomMenuList) {
-			if (bean.getImageCheckedResource() == 0) {
-				continue;
-			}
 			LinearLayout layout = (LinearLayout) newsOperateBtnLayout.getChildAt(i++);
 			final ImageView bottomIV = (ImageView) layout.getChildAt(0);
 			
 			final String hint = bean.getDisableHint();
-			BottomMenuOnTouchListener listener = new BottomMenuOnTouchListener(this) {
-
+			OnClickListener listener = new CommonOnClickListener() {
+				
 				@Override
-				public boolean onImgChangeBegin(View v) {
+				public void onClick(View v) {
 					// 如果当前点击的按钮处于disable状态，则不进行任何操作
 					if ((Boolean) bottomIV.getTag()) {
-//						Toast.makeText(NewsCommonActivity.this, bean.getTextContent(), Toast.LENGTH_SHORT).show();
-						ViewUtil.showAlertDialog(NewsCommonActivity.this, bean.getTextContent());
-						return true;
+						if ((Boolean)v.getTag()) {
+							initBottomMenuBtnPopupWindow();
+						} else {
+							ViewUtil.showAlertDialog(NewsCommonActivity.this, bean.getTextContent());
+						}
 					} else {
-//						Toast.makeText(NewsCommonActivity.this, hint, Toast.LENGTH_SHORT).show();
 						ViewUtil.showAlertDialog(NewsCommonActivity.this, hint);
-						return false;
 					}
 				}
 			};
-			layout.setOnTouchListener(listener);
+			layout.setOnClickListener(listener);
 		}
 	}
-	/*public void initNewsOperateBtn() {
-		int i = 0;
-		// 获取底部的每一个按钮的基本参数
-		bottomMenuList = initNewsOperateBtnData();
-		changeCanEnableState();
-		LinearLayout.LayoutParams layoutParams = LayoutParamsUtil.initLinePercentWeight(1f);
-		for (final BottomMenuBasicBean bean : bottomMenuList) {
-			if (bean.getImageCheckedResource() == 0) {
-				continue;
-			}
-			final LinearLayout layout = (LinearLayout) newsOperateBtnLayout.getChildAt(i++);
-			if (bean.getImageCheckedResource() == 0) {
-				layout.setVisibility(View.GONE);
-			} else {
-				layout.setVisibility(View.VISIBLE);
-			}
-			bean.setView(layout);
-			final ImageView iv = (ImageView) layout.getChildAt(0);
-			bean.setImageView(iv);
-			if (bean.isEnable()) {
-				iv.setImageResource(bean.getImageCheckedResource());
-				iv.setSelected(true);
-				iv.setEnabled(true);
-			} else {
-				iv.setImageResource(bean.getImageDisableResource());
-				iv.setSelected(false);
-				iv.setEnabled(false);
-			}
-			final String hint = bean.getDisableHint();
-			BottomMenuOnTouchListener listener = new BottomMenuOnTouchListener(bean, this) {
-
-				@Override
-				public boolean onImgChangeBegin(View v) {
-					// 如果当前点击的按钮处于disable状态，则不进行任何操作
-					if (iv.isEnabled()) {
-						Toast.makeText(NewsCommonActivity.this, bean.getTextContent(), Toast.LENGTH_SHORT).show();
-						return true;
-					} else {
-						Toast.makeText(NewsCommonActivity.this, hint, Toast.LENGTH_SHORT).show();
-						return false;
-					}
-				}
-			};
-			layout.setOnTouchListener(listener);
-			TextView tv = (TextView) layout.getChildAt(1);
-			tv.setText(bean.getTextContent());
-
-		}
-	}*/
 
 	/**
-	 * 初始化底部菜单的信息
+	 * 初始化底部菜单的信息（注释原因：底部菜单的展现格式有变）
 	 * 
 	 * @return
 	 */
 	protected void initNewsOperateBtnData() {
+		hasNewsIsInMore = false;
+		moreOperateMenuBtn = null;
 		int[] newsOperateBtnChecked = bottomMenuOperateBean.getNewsOperateBtnChecked(curPosition);
 		int[] newsOperateBtnDisabled = bottomMenuOperateBean.getNewsOperateBtnDisabled(curPosition);
 		String[] newsOperateBtnTextContent = bottomMenuOperateBean.getNewsOperateBtnTextContent(curPosition);
 		String[] disableHint = bottomMenuOperateBean.getDisableHint(curPosition);
 		int[] newsOperateBtnCanEnableState = bottomMenuOperateBean.getNewsOperateBtnCanEnableState(curPosition);
+		boolean[] newsIsInMore = bottomMenuOperateBean.getNewsIsInMore(curPosition);
 		int length = newsOperateBtnChecked.length;
 		bottomMenuList = new ArrayList<BottomMenuBasicBean>();
+		moreBean = initMoreBean();
 		for (int i = 0; i < length; i++) {
 			BottomMenuBasicBean bean = new BottomMenuBasicBean();
 			bean.setImageCheckedResource(newsOperateBtnChecked[i]);
-			// bean.setImageUncheckResource(newsOperateBtnUnchecked[i]);
 			bean.setImageDisableResource(newsOperateBtnDisabled[i]);
 			bean.setTextContent(newsOperateBtnTextContent[i]);
 			bean.setDisableHint(disableHint[i]);
 			bean.setCanEnableState(newsOperateBtnCanEnableState[i]);
-			bottomMenuList.add(bean);
+			if (bean.getCanEnableState() > moreBean.getCanEnableState()) {
+				moreBean.setCanEnableState(bean.getCanEnableState());
+			}
+			if (newsIsInMore[i]) {
+				hasNewsIsInMore = true;
+				List<BottomMenuBasicBean> items = moreBean.getItems();
+				items.add(bean);
+			} else {
+				bottomMenuList.add(bean);
+			}
 		}
+		if (hasNewsIsInMore) {
+			bottomMenuList.add(moreBean);
+		}
+	}
+	
+	/**
+	 * 初始化底部菜单的“更多”bean
+	 * @return
+	 */
+	private BottomMenuBasicBean initMoreBean() {
+		BottomMenuBasicBean moreBean = new BottomMenuBasicBean();
+		moreBean.setMore(true);
+		moreBean.setImageCheckedResource(R.drawable.operate_btn_more_checked);
+		moreBean.setImageDisableResource(R.drawable.operate_btn_more_disable);
+		moreBean.setTextContent("更多");
+		moreBean.setDisableHint("请选择新闻后再进行更多操作");
+		moreBean.setCanEnableState(ParamConst.CAN_ENABLE_STATE_DEFAULT);
+		return moreBean;
 	}
 
 	/**
@@ -823,51 +849,114 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 		} else if (selectedNewsCount[curPosition] >= 2) {
 			canEnableState = ParamConst.CAN_ENABLE_STATE_MORE;
 		}
-		changeBottomMenuBtnState();
 	}
 
 	/**
+	 * 先将底部菜单全部清除，再根据对应新闻类别进行数据切换
+	 */
+	protected void initBottomMenuBtnState() {
+		// 先将所有的按钮组全部移除
+		newsOperateBtnLayout.removeAllViews();
+		initHorizontalBottomMenuBtn(bottomMenuList);
+	}
+	
+	/**
 	 * 根据canEnableState改变底部菜单的状态
 	 */
-	protected void changeBottomMenuBtnState() {
+	private void changeBottomMenuBtnState() {
+		changeHorizontalBottomMenuBtn(bottomMenuList);
+	}
+	
+	private void initBottomMenuBtnPopupWindow() {
+		if (bottomMenuBtnPopupWindowUtil == null) {
+			bottomMenuBtnPopupWindowUtil = new PopupWindowUtil(this, moreOperateMenuBtn) {
+				@Override
+				public void initItems(LinearLayout layout) {
+					bottomMenuBtnPopupWindowUtil.setLayout(layout);
+					BottomBtnMorePopupWindowOnClickListener listener = new BottomBtnMorePopupWindowOnClickListener(NewsCommonActivity.this, layout);
+					initMoreOperateMenuBtns(layout, listener);
+				}
+			};
+		}
+		bottomMenuBtnPopupWindowUtil.setPopupWindowShowType(ParamConst.POPUP_WINDOW_SHOW_TYPE_AT_LOCATION);
+		bottomMenuBtnPopupWindowUtil.setGravity(Gravity.BOTTOM|Gravity.END);
+		bottomMenuBtnPopupWindowUtil.setY(newsOperateBtnLayout.getMeasuredHeight());
+//		bottomMenuBtnPopupWindowUtil.setXoffInPixels(-bottomMenuBtnPopupWindowUtil.getWidth());
+		bottomMenuBtnPopupWindow = bottomMenuBtnPopupWindowUtil.initPopupWindow();
+	}
+	
+	public void initMoreOperateMenuBtns(LinearLayout layout, CommonOnClickListener listener) {
+		List<BottomMenuBasicBean> items = moreBean.getItems();
+		for (BottomMenuBasicBean item : items) {
+			if (item.getCanEnableState() >= canEnableState && canEnableState != ParamConst.CAN_ENABLE_STATE_DEFAULT) {
+				LinearLayout itemLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.popup_bottom_btn, null);
+				TextView bottomBtnTV = (TextView) itemLayout.findViewById(R.id.bottomBtnTV);
+				bottomBtnTV.setCompoundDrawablesWithIntrinsicBounds(DrawableUtil.getDrawable(this, item.getImageCheckedResource()), null, null, null);
+				bottomBtnTV.setCompoundDrawablePadding(20);
+				bottomBtnTV.setText(item.getTextContent());
+				layout.addView(itemLayout);
+			}
+		}
+	}
+	
+	/**
+	 * 初始化底部菜单，并将所有菜单平均对称排列
+	 * @param bottomMenuList
+	 */
+	private void initHorizontalBottomMenuBtn(List<BottomMenuBasicBean> bottomMenuList) {
 		int i = 0;
-		// 用作判断是否已经在newsOperateBtnLayout中添加了按钮组
-		/*boolean isInit = false;
-		if (newsOperateBtnLayout.getChildCount() == 0) {
-			isInit = false;
-		} else {
-			isInit = true;
-		}*/
-		newsOperateBtnLayout.removeAllViews();
-		LinearLayout.LayoutParams percentLayoutParams = LayoutParamsUtil.initLinePercentWeight(1f);
+		LinearLayout.LayoutParams percentLayoutParams = LayoutParamsUtil.initLineWidthPercentWeight(1f);
 		LinearLayout.LayoutParams wrapLayoutParams = LayoutParamsUtil.initLineWrapLayout();
 		for (BottomMenuBasicBean bean : bottomMenuList) {
-			if (bean.getImageCheckedResource() == 0) {
-				continue;
-			}
 			LinearLayout layout = new LinearLayout(this);
 			layout.setOrientation(LinearLayout.VERTICAL);
 			layout.setGravity(Gravity.CENTER);
+			// 将当前底部菜单是否为“更多”存入tag中
+			layout.setTag(bean.isMore());
 			newsOperateBtnLayout.addView(layout, percentLayoutParams);
 			
-			final ImageView iv = new ImageView(this);
-			final TextView tv = new TextView(this);
+			ImageView iv = new ImageView(this);
+			TextView tv = new TextView(this);
 			layout.addView(iv, wrapLayoutParams);
 			layout.addView(tv, wrapLayoutParams);
-			// 将是否可以点击的按钮的状态进行初始化/变化
-			if (bean.getCanEnableState() >= canEnableState && canEnableState != ParamConst.CAN_ENABLE_STATE_DEFAULT) {
-				iv.setImageResource(bean.getImageCheckedResource());
-				iv.setTag(true);
-				int color = ContextCompat.getColor(NewsCommonActivity.this,
-						bottomMenuOperateBean.getNewsOperateBtnColor()[i]);
-				tv.setTextColor(color);
-			} else {
-				iv.setImageResource(bean.getImageDisableResource());
-				iv.setTag(false);
-				tv.setTextColor(newsOperateBtnBasicColor);
-			}
+			changeBottomMenuBtn(iv, tv, bean, i);
 			tv.setText(bean.getTextContent());
+			if (bean.isMore()) {
+				moreOperateMenuBtn = layout;
+			}
 			i++;
+		}
+	}
+	
+	private void changeHorizontalBottomMenuBtn(List<BottomMenuBasicBean> bottomMenuList) {
+		int childCount = newsOperateBtnLayout.getChildCount();
+		for (int i = 0; i < childCount; i++) {
+			LinearLayout layout = (LinearLayout) newsOperateBtnLayout.getChildAt(i);
+			ImageView iv = (ImageView) layout.getChildAt(0);
+			TextView tv = (TextView) layout.getChildAt(1);
+			changeBottomMenuBtn(iv, tv, bottomMenuList.get(i), i);
+		}
+	}
+	
+	/**
+	 * 改变底部菜单的状态
+	 * @param iv 底部菜单的图片
+	 * @param tv 底部菜单的文字
+	 * @param bean 底部菜单对应bean
+	 * @param i 当前处理的底部菜单
+	 */
+	private void changeBottomMenuBtn(ImageView iv, TextView tv, BottomMenuBasicBean bean, int i) {
+		// 将是否可以点击的按钮的状态进行初始化/变化
+		if (bean.getCanEnableState() >= canEnableState && canEnableState != ParamConst.CAN_ENABLE_STATE_DEFAULT) {
+			iv.setImageResource(bean.getImageCheckedResource());
+			iv.setTag(true);
+			int color = ColorUtil.getColor(this,
+					bottomMenuOperateBean.getNewsOperateBtnColor()[curPosition][i]);
+			tv.setTextColor(color);
+		} else {
+			iv.setImageResource(bean.getImageDisableResource());
+			iv.setTag(false);
+			tv.setTextColor(newsOperateBtnBasicColor);
 		}
 	}
 
@@ -882,10 +971,10 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	public void changeToCurPosition(ViewColorBasicBean colorBasicBean, EnableSimpleChangeButton btn,
 			final PullToRefreshListView listView, int position) {
 		for (EnableSimpleChangeButton newsStateBtn : newsStateBtns) {
+			ViewUtil.initBtnGroupStyleByFocusedState(colorBasicBean, newsStateBtn, false, checkedColor, whiteColor);
 			newsStateBtn.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 		}
-//		newsStateBtns.get(curPosition).setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-		ViewUtil.initBtnGroupStyleByFocusedState(colorBasicBean, btn, true, blueColor, whiteColor);
+		ViewUtil.initBtnGroupStyleByFocusedState(colorBasicBean, btn, true, checkedColor, whiteColor);
 		NewsListViewAdapter newsListViewAdapter = listViewAdapter.get(position);
 		if (newsListViewAdapter.getItems().size() == 0) {
 			hintRelative.setVisibility(View.VISIBLE);
@@ -1101,6 +1190,14 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 
 	public void setRequestNewsSearchUrlBean(RequestNewsSearchUrlBean requestNewsSearchUrlBean) {
 		this.requestNewsSearchUrlBean = requestNewsSearchUrlBean;
+	}
+
+	public CommonPopupWindow getBottomMenuBtnPopupWindow() {
+		return bottomMenuBtnPopupWindow;
+	}
+
+	public void setBottomMenuBtnPopupWindow(CommonPopupWindow bottomMenuBtnPopupWindow) {
+		this.bottomMenuBtnPopupWindow = bottomMenuBtnPopupWindow;
 	}
 
 }

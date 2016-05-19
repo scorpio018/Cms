@@ -16,18 +16,22 @@ import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.enums.Type;
 import com.enorth.cms.thread.uploadpic.LoadImageLocalThread;
 import com.enorth.cms.thread.uploadpic.LoadImageUrlThread;
-
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.util.LruCache;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 
+@SuppressLint("NewApi")
 public class ImageLoader {
 	/**
 	 * 图片缓存的核心类
@@ -210,6 +214,15 @@ public class ImageLoader {
 		int reqHeight = imageSize.getHeight();
 
 		return decodeSampledBitmapFromResource(path, reqWidth, reqHeight, loadLocation);
+	}
+	/**
+	 * 将imageView加载bitmap（如果图片是翻转过的，则将图片翻转回来）
+	 * @param imageView
+	 * @param localPath
+	 */
+	public void initBitmapByLocalPath(ImageView imageView, String localPath) {
+		Bitmap bitmapRotaDegree = MediaUtils.getBitmapRotaDegree(localPath);
+		imageView.setImageBitmap(bitmapRotaDegree);
 	}
 
 	/**

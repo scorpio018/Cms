@@ -2,98 +2,114 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/news_title_bg"
     android:orientation="vertical" >
-    
-    <include layout="@layout/common_title_tv_tv_tv"/>
-    
-    <LinearLayout 
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal"
-		android:gravity="center_horizontal"
-		android:weightSum="1">
-	    <!-- 用户名 -->
-        <EditText 
-	        android:id="@+id/userNameET"
-	        android:layout_width="0dip"
-	        android:layout_height="@dimen/common_edit_text_height"
-	        android:layout_weight="0.9"
-	        android:background="@drawable/common_radius_and_stroke"
-	        android:layout_marginTop="@dimen/edit_text_common_margin_top"
-	        android:inputType="text"
-	        android:focusable="false"
-	        />
-	</LinearLayout>
-	
-    <LinearLayout 
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal"
-		android:gravity="center_horizontal"
-		android:weightSum="1">
-	    <!-- 原密码 -->
-        <EditText 
-	        android:id="@+id/prevPwdET"
-	        android:layout_width="0dip"
-	        android:layout_height="@dimen/common_edit_text_height"
-	        android:layout_weight="0.9"
-	        android:background="@drawable/common_radius_and_stroke"
-	        android:layout_marginTop="@dimen/edit_text_common_margin_top"
-	        android:inputType="textPassword"
-	        android:hint="@string/change_pwd_et_prev_pwd_hint"/>
-	</LinearLayout>
-	
-    <LinearLayout 
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal"
-		android:gravity="center_horizontal"
-		android:weightSum="1">
-	    <!-- 新密码 -->
-        <EditText 
-	        android:id="@+id/newPwdET"
-	        android:layout_width="0dip"
-	        android:layout_height="@dimen/common_edit_text_height"
-	        android:layout_weight="0.9"
-	        android:background="@drawable/common_radius_and_stroke"
-	        android:layout_marginTop="@dimen/edit_text_common_margin_top"
-	        android:inputType="textPassword"
-	        android:hint="@string/change_pwd_et_new_pwd_hint"/>
-	</LinearLayout>
-	
-    <LinearLayout 
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal"
-		android:gravity="center_horizontal"
-		android:weightSum="1">
-	    <!-- 新密码确认 -->
-        <EditText 
-	        android:id="@+id/newPwdConfirmET"
-	        android:layout_width="0dip"
-	        android:layout_height="@dimen/common_edit_text_height"
-	        android:layout_weight="0.9"
-	        android:background="@drawable/common_radius_and_stroke"
-	        android:layout_marginTop="@dimen/edit_text_common_margin_top"
-	        android:inputType="textPassword"
-	        android:hint="@string/change_pwd_et_new_pwd_comfirm"/>
-	</LinearLayout>
-	
-    <LinearLayout 
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal"
-		android:gravity="center_horizontal"
-		android:weightSum="1">
-	    <Button 
-	        android:id="@+id/changePwdSubmitBtn"
-	        android:layout_width="0dip"
-	        android:layout_height="@dimen/common_submit_btn_height"
-	        android:layout_weight="0.9"
-	        android:textColor="@color/white"
-	        android:background="@drawable/common_submit_btn_radius_and_stroke"
-	        android:layout_marginTop="@dimen/edit_text_common_margin_top"
-	        android:text="@string/submit_btn_common"/>
-	</LinearLayout>
+
+    <include layout="@layout/common_title_tv_tv_tv" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:weightSum="1" >
+
+            <!-- 用户名 -->
+
+            <EditText
+                android:id="@+id/userNameET"
+                android:layout_width="0dip"
+                android:layout_height="@dimen/common_edit_text_height"
+                android:layout_marginTop="@dimen/edit_text_common_margin_top"
+                android:layout_weight="0.9"
+                android:background="@drawable/common_radius_and_stroke"
+                android:focusable="false"
+                android:inputType="text" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:weightSum="1" >
+
+            <!-- 原密码 -->
+
+            <EditText
+                android:id="@+id/prevPwdET"
+                android:layout_width="0dip"
+                android:layout_height="@dimen/common_edit_text_height"
+                android:layout_marginTop="@dimen/edit_text_common_margin_top"
+                android:layout_weight="0.9"
+                android:background="@drawable/common_radius_and_stroke"
+                android:hint="@string/change_pwd_et_prev_pwd_hint"
+                android:inputType="textPassword" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:weightSum="1" >
+
+            <!-- 新密码 -->
+
+            <EditText
+                android:id="@+id/newPwdET"
+                android:layout_width="0dip"
+                android:layout_height="@dimen/common_edit_text_height"
+                android:layout_marginTop="@dimen/edit_text_common_margin_top"
+                android:layout_weight="0.9"
+                android:background="@drawable/common_radius_and_stroke"
+                android:hint="@string/change_pwd_et_new_pwd_hint"
+                android:inputType="textPassword" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:weightSum="1" >
+
+            <!-- 新密码确认 -->
+
+            <EditText
+                android:id="@+id/newPwdConfirmET"
+                android:layout_width="0dip"
+                android:layout_height="@dimen/common_edit_text_height"
+                android:layout_marginTop="@dimen/edit_text_common_margin_top"
+                android:layout_weight="0.9"
+                android:background="@drawable/common_radius_and_stroke"
+                android:hint="@string/change_pwd_et_new_pwd_comfirm"
+                android:inputType="textPassword" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:weightSum="1" >
+
+            <Button
+                android:id="@+id/changePwdSubmitBtn"
+                android:layout_width="0dip"
+                android:layout_height="@dimen/common_submit_btn_height"
+                android:layout_marginTop="@dimen/edit_text_common_margin_top"
+                android:layout_weight="0.9"
+                android:background="@drawable/common_submit_btn_radius_and_stroke"
+                android:text="@string/submit_btn_common"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

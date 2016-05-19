@@ -61,33 +61,51 @@ public abstract class BottomMenuOperateDataBasicBean {
 	/**
 	 * 当底部菜单可以点击时，文字显示的颜色（按照修改、批注、送签、删除的顺序排列）
 	 */
-	protected int[] newsOperateBtnColor;
+	protected int[] newsOperateBtnColor1;
+	protected int[] newsOperateBtnColor2;
+	protected int[] newsOperateBtnColor3;
+	protected int[][] newsOperateBtnColor;
+	/**
+	 * 底部菜单存在于“更多”按钮中的菜单
+	 */
+	protected boolean[] newsIsInMore1;
+	protected boolean[] newsIsInMore2;
+	protected boolean[] newsIsInMore3;
+	protected boolean[][] newsIsInMore;
 	
 	public abstract void initData();
 	
 	public BottomMenuOperateDataBasicBean() {
 		initData();
 		// 将底部菜单的所有内容进行初始化
-		newsOperateBtnChecked = new int[3][4];
+		newsOperateBtnChecked = new int[3][];
 		newsOperateBtnChecked[0] = newsOperateBtnChecked1;
 		newsOperateBtnChecked[1] = newsOperateBtnChecked2;
 		newsOperateBtnChecked[2] = newsOperateBtnChecked3;
-		newsOperateBtnDisabled = new int[3][4];
+		newsOperateBtnDisabled = new int[3][];
 		newsOperateBtnDisabled[0] = newsOperateBtnDisabled1;
 		newsOperateBtnDisabled[1] = newsOperateBtnDisabled2;
 		newsOperateBtnDisabled[2] = newsOperateBtnDisabled3;
-		newsOperateBtnTextContent = new String[3][4];
+		newsOperateBtnTextContent = new String[3][];
 		newsOperateBtnTextContent[0] = newsOperateBtnTextContent1;
 		newsOperateBtnTextContent[1] = newsOperateBtnTextContent2;
 		newsOperateBtnTextContent[2] = newsOperateBtnTextContent3;
-		disableHint = new String[3][4];
+		disableHint = new String[3][];
 		disableHint[0] = disableHint1;
 		disableHint[1] = disableHint2;
 		disableHint[2] = disableHint3;
-		newsOperateBtnCanEnableState = new int[3][4];
+		newsOperateBtnCanEnableState = new int[3][];
 		newsOperateBtnCanEnableState[0] = newsOperateBtnCanEnableState1;
 		newsOperateBtnCanEnableState[1] = newsOperateBtnCanEnableState2;
 		newsOperateBtnCanEnableState[2] = newsOperateBtnCanEnableState3;
+		newsOperateBtnColor = new int[3][];
+		newsOperateBtnColor[0] = newsOperateBtnColor1;
+		newsOperateBtnColor[1] = newsOperateBtnColor2;
+		newsOperateBtnColor[2] = newsOperateBtnColor3;
+		newsIsInMore = new boolean[3][];
+		newsIsInMore[0] = newsIsInMore1;
+		newsIsInMore[1] = newsIsInMore2;
+		newsIsInMore[2] = newsIsInMore3;
 	}
 
 
@@ -139,18 +157,16 @@ public abstract class BottomMenuOperateDataBasicBean {
 	public int[] getNewsOperateBtnCanEnableState(int num) {
 		return newsOperateBtnCanEnableState[num];
 	}
-
-
+	
 	public void setNewsOperateBtnCanEnableState(int[][] newsOperateBtnCanEnableState) {
 		this.newsOperateBtnCanEnableState = newsOperateBtnCanEnableState;
 	}
 
-
-	public int[] getNewsOperateBtnColor() {
+	public int[][] getNewsOperateBtnColor() {
 		return newsOperateBtnColor;
 	}
 
-	public void setNewsOperateBtnColor(int[] newsOperateBtnColor) {
+	public void setNewsOperateBtnColor(int[][] newsOperateBtnColor) {
 		this.newsOperateBtnColor = newsOperateBtnColor;
 	}
 
@@ -164,6 +180,14 @@ public abstract class BottomMenuOperateDataBasicBean {
 
 	public void setNewsOperateBtnDisabled(int[][] newsOperateBtnDisabled) {
 		this.newsOperateBtnDisabled = newsOperateBtnDisabled;
+	}
+
+	public boolean[] getNewsIsInMore(int num) {
+		return newsIsInMore[num];
+	}
+
+	public void setNewsIsInMore(boolean[][] newsIsInMore) {
+		this.newsIsInMore = newsIsInMore;
 	}
 	
 }

@@ -119,7 +119,7 @@ public class EnableSimpleChangeTextView extends TextView {
 		this.context = context;
 		initAllState();
 		setGravity(Gravity.CENTER);
-		buildDraweableState();
+		buildDrawableState();
 //		buildColorDrawableState();
 	}
 	
@@ -226,7 +226,7 @@ public class EnableSimpleChangeTextView extends TextView {
 	 */
 	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
-	private void buildDraweableState() {
+	private void buildDrawableState() {
 		initAllBgColor();
 		if (needRefreshOutRectr) {
 			outRectr = new float[] { mRadius, mRadius, mRadius, mRadius, mRadius, mRadius, mRadius, mRadius };
@@ -252,7 +252,9 @@ public class EnableSimpleChangeTextView extends TextView {
 			shapeDrawable.setCornerRadii(outRectr);
 			// 设置我们按钮背景的颜色
 			shapeDrawable.setColor(allBgColor[i]);
-			shapeDrawable.setStroke(1, ColorUtil.getCommonBlueColor(context));
+//			shapeDrawable.setStroke(1, ColorUtil.getCommonBlueColor(context));
+			shapeDrawable.setStroke(1, colorBasicBean.getStrokeColor());
+//			shapeDrawable.setStroke(1, ColorUtil.getColor(context, colorBasicBean.getmBgPressedColor()));
 			// 添加到状态管理里面
 			drawable.addState(allState[i], shapeDrawable);
 		}
@@ -295,7 +297,7 @@ public class EnableSimpleChangeTextView extends TextView {
 	public void setRadius(int radius) {
 		this.mRadius = radius;
 		needRefreshOutRectr = true;
-		buildDraweableState();
+		buildDrawableState();
 	}
 	
 	/**
@@ -307,7 +309,7 @@ public class EnableSimpleChangeTextView extends TextView {
 	public void setBgNormalPressedColor(int normalColor, int pressedColor) {
 		colorBasicBean.setmBgNormalColor(normalColor);
 		colorBasicBean.setmBgPressedColor(pressedColor);
-		buildDraweableState();
+		buildDrawableState();
 	}
 	
 	/**
@@ -318,7 +320,7 @@ public class EnableSimpleChangeTextView extends TextView {
 	public void setBgNormalFocusedColor(int normalColor, int focusedColor) {
 		colorBasicBean.setmBgNormalColor(normalColor);
 		colorBasicBean.setmBgFocusedColor(focusedColor);
-		buildDraweableState();
+		buildDrawableState();
 	}
 	
 	/**
@@ -329,7 +331,7 @@ public class EnableSimpleChangeTextView extends TextView {
 	public void setBgNormalUnabledColor(int normalColor, int unableColor) {
 		colorBasicBean.setmBgNormalColor(normalColor);
 		colorBasicBean.setmBgUnabledColor(unableColor);
-		buildDraweableState();
+		buildDrawableState();
 	}
 	
 	/**
@@ -344,12 +346,12 @@ public class EnableSimpleChangeTextView extends TextView {
 		colorBasicBean.setmBgPressedColor(pressedColor);
 		colorBasicBean.setmBgFocusedColor(focusedColor);
 		colorBasicBean.setmBgUnabledColor(unableColor);
-		buildDraweableState();
+		buildDrawableState();
 	}
 	
 	public void setColorBasicBean(ViewColorBasicBean colorBasicBean) {
 		this.colorBasicBean = colorBasicBean;
-		buildDraweableState();
+		buildDrawableState();
 	}
 	
 	/**
@@ -361,7 +363,7 @@ public class EnableSimpleChangeTextView extends TextView {
 	public void setTextNormalPressedColor(int normalColor, int pressedColor) {
 		colorBasicBean.setmTextNormalColor(normalColor);
 		colorBasicBean.setmTextPressedColor(pressedColor);
-		buildDraweableState();
+		buildDrawableState();
 	}
 	
 	/**
@@ -372,7 +374,7 @@ public class EnableSimpleChangeTextView extends TextView {
 	public void setTextNormalFocusedColor(int normalColor, int focusedColor) {
 		colorBasicBean.setmTextNormalColor(normalColor);
 		colorBasicBean.setmTextFocusedColor(focusedColor);
-		buildDraweableState();
+		buildDrawableState();
 	}
 	
 	/**
@@ -383,7 +385,7 @@ public class EnableSimpleChangeTextView extends TextView {
 	public void setTextNormalUnabledColor(int normalColor, int unableColor) {
 		colorBasicBean.setmTextNormalColor(normalColor);
 		colorBasicBean.setmTextUnabledColor(unableColor);
-		buildDraweableState();
+		buildDrawableState();
 	}
 
 	/**
@@ -399,6 +401,22 @@ public class EnableSimpleChangeTextView extends TextView {
 		colorBasicBean.setmTextFocusedColor(focusedColor);
 		colorBasicBean.setmTextUnabledColor(unableColor);
 		buildColorDrawableState();
+	}
+	
+	public void setNormalPressedColor(int normalColor, int pressedColor) {
+		colorBasicBean.setmBgNormalColor(normalColor);
+		colorBasicBean.setmBgPressedColor(pressedColor);
+		colorBasicBean.setmTextNormalColor(normalColor);
+		colorBasicBean.setmTextPressedColor(pressedColor);
+		buildDrawableState();
+	}
+	
+	public void setNormalFocusedColor(int normalColor, int focusedColor) {
+		colorBasicBean.setmBgNormalColor(normalColor);
+		colorBasicBean.setmBgFocusedColor(focusedColor);
+		colorBasicBean.setmTextNormalColor(normalColor);
+		colorBasicBean.setmTextFocusedColor(focusedColor);
+		buildDrawableState();
 	}
 
 	public String getButtonId() {

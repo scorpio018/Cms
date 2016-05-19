@@ -2,11 +2,14 @@ package com.enorth.cms.handler.newslist;
 
 import java.util.List;
 
+import org.json.JSONObject;
+
 import com.enorth.cms.adapter.CommonListViewAdapter;
 import com.enorth.cms.adapter.news.SearchChannelFilterAdapter;
 import com.enorth.cms.bean.login.ChannelBean;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.utils.AnimUtil;
+import com.enorth.cms.utils.JsonUtil;
 import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.R;
@@ -18,6 +21,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 public abstract class ChannelSearchCommonHandler extends Handler {
 	
@@ -50,6 +54,13 @@ public abstract class ChannelSearchCommonHandler extends Handler {
 //			activity.searchChannelET.setOnItemClickListener(new ChannelSearchOnItemClickListener(activity, searchChannelFilterAdapter));
 			activity.setSearchChannelFilterAdapter(searchChannelFilterAdapter);
 //			activity.getHintRelative().setVisibility(View.GONE);
+			JSONObject curChannel = JsonUtil.getJSONObject(activity.getJsonObject(), ParamConst.CHANNEL_SELF);
+			int channelLevel = JsonUtil.getInt(curChannel, ParamConst.CHANNEL_LEVEL);
+			if (channelLevel == 0) {
+				activity.getChannelBackToPrevSearchLayout().setVisibility(View.GONE);
+			} else {
+				activity.getChannelBackToPrevSearchLayout().setVisibility(View.VISIBLE);
+			}
 		break;
 		case ParamConst.MESSAGE_WHAT_NO_DATA:
 //			activity.initDefaultData("没有数据");

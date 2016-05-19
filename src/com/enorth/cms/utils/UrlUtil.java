@@ -77,8 +77,8 @@ public class UrlUtil {
 	 * @param context
 	 * @return
 	 */
-	public static LoginBean getLoginUserBean(Context context) {
+	/*public static LoginBean getLoginUserBean(Context context) {
 		LoginBean loginBean = (LoginBean) BeanParamsUtil.getObject(LoginBean.class, context);
 		return loginBean;
-	}
+	}*/
 }

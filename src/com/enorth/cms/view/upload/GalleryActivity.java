@@ -257,7 +257,7 @@ public class GalleryActivity extends Activity implements IGalleryView {
 	/**
 	 * 初始化展示文件夹的popupWindw
 	 */
-	private void initListDirPopupWindw(){
+	private void initListDirPopupWindow(){
 		if(popupWindow == null){
 			dirview = LayoutInflater.from(this).inflate(R.layout.image_select_dirlist, null);
 			dirListView = (ListView)dirview.findViewById(R.id.id_list_dirs);
@@ -318,8 +318,8 @@ public class GalleryActivity extends Activity implements IGalleryView {
 		materialFromTypeTV.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
-				// 初始化展示文件夹的popupWindw
-				initListDirPopupWindw();
+				// 初始化展示文件夹的popupWindow
+				initListDirPopupWindow();
 			}
 		});
 		preview.setOnClickListener(new OnClickListener() {

@@ -38,6 +38,7 @@ public class NewsTypeBtnOnClickListener extends CommonOnClickListener {
 				super.handleMessage(msg);
 				// 如果是NewsCommonActivity，则会有后续的ViewPager操作
 				if (activity instanceof NewsCommonActivity) {
+					Log.e("NewsTypeBtnOnClickListener.onClick", "123");
 					NewsCommonActivity newsCommonActivity = (NewsCommonActivity) activity;
 					// 切换到对应的页
 					newsCommonActivity.getNewsListViewPager().setCurrentItem(position, false);

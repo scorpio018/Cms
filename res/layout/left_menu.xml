@@ -30,13 +30,6 @@
                 android:textSize="32dip"
                 android:textColor="#CCCCCC"/>
             
-            <TextView 
-                android:id="@+id/userTypeTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="26dip"
-                android:textColor="#999999"/>
-            
         </LinearLayout>
         
     </LinearLayout>

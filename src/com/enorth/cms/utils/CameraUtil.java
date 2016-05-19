@@ -86,9 +86,7 @@ public class CameraUtil {
 			intent.putExtra(MediaStore.Images.Media.ORIENTATION, 0); 
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, u); 
 			activity.startActivityForResult(intent, ParamConst.TAKE_CAMERA_PICTURE); 
-			Log.e("888888", "-------------0-------------------");
 		} else {  
-			Log.e("888888", "------------请插入SD卡-------------------");
 			Toast.makeText(activity, "请插入SD卡", Toast.LENGTH_SHORT).show();
 		}
 	}

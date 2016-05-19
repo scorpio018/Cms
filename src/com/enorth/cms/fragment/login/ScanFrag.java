@@ -6,6 +6,7 @@ import com.enorth.cms.bean.ViewColorBasicBean;
 import com.enorth.cms.bean.login.ScanBean;
 import com.enorth.cms.common.EnableSimpleChangeTextView;
 import com.enorth.cms.consts.ParamConst;
+import com.enorth.cms.listener.CommonOnClickListener;
 import com.enorth.cms.listener.CommonOnTouchListener;
 import com.enorth.cms.listener.login.ScanImageViewOnTouchListener;
 import com.enorth.cms.listener.login.SystemChooseDelBtnListener;
@@ -119,13 +120,20 @@ public class ScanFrag extends Fragment {
 				loginView.getActivity().startActivityForResult(intent, ParamConst.SCANNING_REQUEST_CODE);
 			}
 		});
-		systemChooseTV.setOnTouchListener(new SystemChooseOnTouchListener(getContext()) {
+		/*systemChooseTV.setOnClickListener(new CommonOnClickListener() {
 			
 			@Override
-			public void onImgChangeEnd(View v) {
+			public void onClick(View v) {
 				initPopupWindow();
 			}
-		});
+		});*/
+		new CommonOnClickListener(systemChooseTV, false, 0) {
+			
+			@Override
+			public void onClick(View v) {
+				initPopupWindow();
+			}
+		};
 	}
 	
 	private void initPopupWindow() {
@@ -145,7 +153,6 @@ public class ScanFrag extends Fragment {
 					SystemChooseDelBtnListener delBtnListener = new SystemChooseDelBtnListener(ScanFrag.this, layout);
 					initPopupWindowItemsContainDelMark(layout, itemListener, delBtnListener, scanNames);
 				}
-				
 			};
 		}
 		popupWindowUtil.setWidth(systemChooseTV.getMeasuredWidth());

@@ -6,11 +6,12 @@
     android:gravity="center_vertical"
     android:orientation="horizontal" >
 
+    <!-- android:layout_marginTop="@dimen/news_item_news_title_margin_top" -->
     <CheckBox 
         android:id="@+id/iv_check_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
+        android:layout_gravity="center_vertical"
         android:clickable="true"
         android:paddingBottom="@dimen/news_item_check_btn_padding_bottom"
         android:paddingEnd="@dimen/news_item_check_btn_padding_right"
@@ -18,7 +19,8 @@
         android:paddingRight="@dimen/news_item_check_btn_padding_right"
         android:paddingStart="@dimen/news_item_check_btn_padding_left"
         android:paddingTop="@dimen/news_item_check_btn_padding_top"
-        android:layout_marginTop="@dimen/news_item_news_title_margin_top"
+        android:layout_marginLeft="@dimen/news_item_check_btn_margin_left"
+        android:layout_marginStart="@dimen/news_item_check_btn_margin_left"
         style="@style/CustomCheckboxTheme"/>
 
     <RelativeLayout
@@ -27,7 +29,7 @@
         android:layout_height="match_parent" >
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:gravity="start|top" >
@@ -44,19 +46,22 @@
                 android:textSize="@dimen/news_title_text_size" />
         </LinearLayout>
 
+        <!-- android:minHeight="?android:attr/listPreferredItemHeight" -->
         <RelativeLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:gravity="bottom"
             android:paddingBottom="@dimen/news_item_news_title_padding_bottom"
-            android:minHeight="?android:attr/listPreferredItemHeight" >
+             >
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:gravity="bottom"
                 android:layout_marginLeft="@dimen/news_item_news_title_margin_left"
                 android:layout_marginStart="@dimen/news_item_news_title_margin_left" >
 
@@ -75,16 +80,17 @@
                     android:textColor="@color/gray" />
             </LinearLayout>
 
+            <!-- android:paddingBottom="@dimen/news_item_icon_padding_bottom" -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:gravity="end"
-                android:paddingBottom="@dimen/news_item_icon_padding_bottom"
+                android:layout_alignParentBottom="true"
                 android:layout_marginEnd="@dimen/news_item_news_title_margin_right"
                 android:layout_marginRight="@dimen/news_item_news_title_margin_right" >
 
+                <!-- android:paddingBottom="@dimen/news_item_icon_padding_bottom" -->
                 <ImageView
                     android:id="@+id/iv_link"
                     android:layout_width="@dimen/news_item_icon_align_width"
@@ -92,7 +98,6 @@
                     android:layout_marginEnd="@dimen/news_item_icon_margin_right"
                     android:layout_marginRight="@dimen/news_item_icon_margin_right"
                     android:background="@drawable/icon_link"
-                    android:paddingBottom="@dimen/news_item_icon_padding_bottom"
                     android:paddingEnd="@dimen/news_item_icon_padding_right"
                     android:paddingLeft="@dimen/news_item_icon_padding_left"
                     android:paddingRight="@dimen/news_item_icon_padding_right"
@@ -100,6 +105,7 @@
                     android:paddingTop="@dimen/news_item_icon_padding_top"
                     android:visibility="gone" />
 
+                <!-- android:paddingBottom="@dimen/news_item_icon_padding_bottom" -->
                 <ImageView
                     android:id="@+id/iv_guide_image"
                     android:layout_width="@dimen/news_item_icon_align_width"
@@ -107,7 +113,6 @@
                     android:layout_marginEnd="@dimen/news_item_icon_margin_right"
                     android:layout_marginRight="@dimen/news_item_icon_margin_right"
                     android:background="@drawable/icon_pic"
-                    android:paddingBottom="@dimen/news_item_icon_padding_bottom"
                     android:paddingEnd="@dimen/news_item_icon_padding_right"
                     android:paddingLeft="@dimen/news_item_icon_padding_left"
                     android:paddingRight="@dimen/news_item_icon_padding_right"

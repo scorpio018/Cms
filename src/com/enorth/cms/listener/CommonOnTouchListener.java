@@ -100,7 +100,7 @@ public abstract class CommonOnTouchListener implements OnTouchListener {
 			if (isClickBackgroungColorChange()) {
 //				int color = ContextCompat.getColor(v.getContext(), pressColor);
 				v.setBackgroundColor(pressColor);
-				Log.e("onTouch", "ClickBackgroungColorChange");
+				Log.e("onTouch", "ClickBackgroungColorChangePressColor");
 			}
 //			Log.w("MotionEvent.ACTION_DOWN", "【x:" + downX + "、y:" + downY + "】");
 			isClick = true;
@@ -154,14 +154,14 @@ public abstract class CommonOnTouchListener implements OnTouchListener {
 			touchStartX = touchCurrentX;
 			touchStartY = touchCurrentY;
 			break;
-		case MotionEvent.ACTION_CANCEL:
-			Log.e("onTouch", "ACTION_CANCEL");
+//		case MotionEvent.ACTION_CANCEL:
+//			Log.e("onTouch", "ACTION_CANCEL");
 		case MotionEvent.ACTION_UP:
 			Log.e("onTouch", "ACTION_UP");
 			if (isClickBackgroungColorChange()) {
 //				int color = ContextCompat.getColor(v.getContext(), normalColor);
 				v.setBackgroundColor(normalColor);
-				Log.e("onTouch", "ClickBackgroungColorChange");
+				Log.e("onTouch", "ClickBackgroungColorChangeNormalColor");
 			}
 			if (isClick) {
 				Log.e("onTouch", "isClick");

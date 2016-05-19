@@ -1,5 +1,8 @@
 package com.enorth.cms.bean.news_list;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.enorth.cms.bean.ImageBasicBean;
 import com.enorth.cms.consts.ParamConst;
 
@@ -10,6 +13,10 @@ public class BottomMenuBasicBean extends ImageBasicBean {
 	private boolean isEnable = false;
 
 	private int canEnableState = ParamConst.CAN_ENABLE_STATE_DEFAULT;
+	
+	private boolean isMore = false;
+	
+	private List<BottomMenuBasicBean> items = new ArrayList<BottomMenuBasicBean>();
 	
 	private ImageView imageView;
 	
@@ -29,6 +36,22 @@ public class BottomMenuBasicBean extends ImageBasicBean {
 
 	public void setCanEnableState(int canEnableState) {
 		this.canEnableState = canEnableState;
+	}
+
+	public boolean isMore() {
+		return isMore;
+	}
+
+	public void setMore(boolean isMore) {
+		this.isMore = isMore;
+	}
+
+	public List<BottomMenuBasicBean> getItems() {
+		return items;
+	}
+
+	public void setItems(List<BottomMenuBasicBean> items) {
+		this.items = items;
 	}
 
 	public ImageView getImageView() {

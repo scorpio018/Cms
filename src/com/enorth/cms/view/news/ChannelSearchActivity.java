@@ -265,7 +265,6 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 		
 		presenter = new ChannelSearchPresenter(this);
 		// 此处要减去该按钮的宽度，防止频道覆盖按钮
-//		channelSearchCheckedText
 		Rect bounds = new Rect();
 		// 目前默认的内容是“北方网”，所以算出的宽度就是“北方网”的宽度，再除以3即为一个字的宽度
 		channelSearchCheckedText.getPaint().getTextBounds(channelSearchCheckedText.getText().toString(), 0, channelSearchCheckedText.getText().length(), bounds);
@@ -483,8 +482,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 * 给“上一级”添加点击事件
 	 */
 	private void initBackToParentEvent() {
-		View view = findViewById(R.id.channelBackToPrevSearchLayout);
-		view.setOnClickListener(new View.OnClickListener() {
+		channelBackToPrevSearchLayout.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -883,6 +881,22 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 
 	public void setClickET(boolean isClickET) {
 		this.isClickET = isClickET;
+	}
+
+	public JSONObject getJsonObject() {
+		return jsonObject;
+	}
+
+	public void setJsonObject(JSONObject jsonObject) {
+		this.jsonObject = jsonObject;
+	}
+
+	public LinearLayout getChannelBackToPrevSearchLayout() {
+		return channelBackToPrevSearchLayout;
+	}
+
+	public void setChannelBackToPrevSearchLayout(LinearLayout channelBackToPrevSearchLayout) {
+		this.channelBackToPrevSearchLayout = channelBackToPrevSearchLayout;
 	}
 	
 	

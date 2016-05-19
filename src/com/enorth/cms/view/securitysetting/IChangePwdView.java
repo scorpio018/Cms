@@ -1,5 +1,6 @@
 package com.enorth.cms.view.securitysetting;
 
+import android.content.Context;
 import android.os.Handler;
 
 public interface IChangePwdView {
@@ -10,4 +11,8 @@ public interface IChangePwdView {
 	 * @param handler
 	 */
 	public void initReturnJsonData(String resultString, Handler handler);
+	
+	public void backToPrevActivity();
+	
+	public Context getContext();
 }

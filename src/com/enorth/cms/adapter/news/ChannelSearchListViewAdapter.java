@@ -4,20 +4,27 @@ import java.util.List;
 
 import com.enorth.cms.bean.login.ChannelBean;
 import com.enorth.cms.consts.ParamConst;
+import com.enorth.cms.listener.CommonOnClickListener;
+import com.enorth.cms.listener.CommonOnItemClickListener;
 import com.enorth.cms.listener.CommonOnTouchListener;
 import com.enorth.cms.listener.imageview.ImageViewOnTouchListener;
 import com.enorth.cms.listener.newslist.ListViewItemOnTouchListener;
+import com.enorth.cms.utils.ColorUtil;
+import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.R;
 import com.enorth.cms.view.news.ChannelSearchActivity;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class ChannelSearchListViewAdapter extends BaseAdapter {
 	
@@ -150,6 +157,24 @@ public class ChannelSearchListViewAdapter extends BaseAdapter {
 			}
 		};
 		holder.checkBtn.setOnTouchListener(listViewCheckBtnOnTouchListener);
+		view.setOnTouchListener(listViewCheckBtnOnTouchListener);
+		/*OnClickListener listViewCHeckBtnOnClickListener = new CommonOnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// 将焦点定位到搜索栏中
+				activity.setCurChannelListEnableView(ParamConst.CUR_CHANNEL_LIST_ENABLE_VIEW_CHANNEL_SEARCH_ACTIVITY);
+				checkChannel(channelBean, holder, view, position);
+				if (holder.checkBtn.isChecked()) {
+					activity.setCurCheckChannelId(channelBean.getChannelId());
+					activity.setCurCheckChannelName(channelBean.getChannelName());
+				} else {
+					activity.setCurCheckChannelId(-1L);
+					activity.setCurCheckChannelName("");
+				}
+			}
+		};
+		holder.checkBtn.setOnClickListener(listViewCHeckBtnOnClickListener);*/
 	}
 	
 	/**
@@ -175,7 +200,19 @@ public class ChannelSearchListViewAdapter extends BaseAdapter {
 				
 			}
 		};
-		view.setOnTouchListener(listViewItemOnTouchListener);
+//		view.setOnTouchListener(listViewItemOnTouchListener);
+		holder.channelNext.setOnTouchListener(listViewItemOnTouchListener);
+		/*OnClickListener listViewItemOnClickListener = new CommonOnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// 将焦点定位到搜索栏中
+				activity.setCurChannelListEnableView(ParamConst.CUR_CHANNEL_LIST_ENABLE_VIEW_CHANNEL_SEARCH_ACTIVITY);
+				channelClick(channelBean, holder, view, position);
+			}
+		};
+		view.setOnClickListener(listViewItemOnClickListener);*/
+//		ViewUtil.initClickBg(view, ColorUtil.getBgGrayPress(activity));
 	}
 	
 	private void channelClick(ChannelBean channelBean, Holder holder, View view, int position) {

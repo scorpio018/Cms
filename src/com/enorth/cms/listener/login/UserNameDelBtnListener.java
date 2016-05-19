@@ -5,6 +5,7 @@ import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.fragment.login.LoginFrag;
 import com.enorth.cms.listener.popup.PopupWindowContainDelMarkOnTouchListener;
 import com.enorth.cms.utils.SharedPreUtil;
+import com.enorth.cms.utils.StaticUtil;
 import com.enorth.cms.utils.StringUtil;
 
 import android.content.Context;
@@ -25,16 +26,21 @@ public class UserNameDelBtnListener extends PopupWindowContainDelMarkOnTouchList
 	@Override
 	public void checkItem(String curCheckedText) {
 		String[] usersStr = SharedPreUtil.getStringArray(context, ParamConst.REMEMBERED_USER, ParamConst.LOGIN_USER);
-		String[] newUsersStr = new String[usersStr.length];
+		String[] newUsersStr = new String[usersStr.length - 1];
 		int i = 0;
 		for (String userStr : usersStr) {
 			if (StringUtil.isNotEmpty(userStr)) {
 				LoginBean savedUser = (LoginBean) SharedPreUtil.deSerializeObject(userStr);
 				// 将不需要删除的用户存入新的数组中
-				if (!savedUser.getUserName().equals(curCheckedText)) {
+				if (savedUser.getUserName().equals(curCheckedText)) {
+					loginFrag.getUserNames().remove(curCheckedText);
+				} else {
 					newUsersStr[i++] = userStr;
 				}
 			}
+		}
+		if (newUsersStr.length == 1 && StringUtil.isEmpty(newUsersStr[0])) {
+			StaticUtil.removeCurLoginBean(context);
 		}
 		SharedPreUtil.put(context, ParamConst.REMEMBERED_USER, ParamConst.LOGIN_USER, newUsersStr);
 	}

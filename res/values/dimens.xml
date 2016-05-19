@@ -3,11 +3,16 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="login_scan_hint_text_size">16sp</dimen>
     <dimen name="login_remember_name_margin_left">60dip</dimen>
-    <dimen name="common_edit_text_height">50dip</dimen>
+    <dimen name="common_edit_text_height">40dip</dimen>
     <dimen name="common_submit_btn_height">30dip</dimen>
+    <dimen name="common_text_view_btn_height">40dip</dimen>
     <dimen name="common_popup_text_size">18sp</dimen>
     <dimen name="common_alert_dialog_text_size">20sp</dimen>
+    <dimen name="common_alert_dialog_horizontal_has_pic_height">160dip</dimen>
     <dimen name="common_drawable_padding">5dip</dimen>
+    <dimen name="operate_btn_drawable_padding">20dip</dimen>
+    <dimen name="common_popup_operate_btn_width">100dip</dimen>
+    <dimen name="common_popup_bottom_btn_height">30dip</dimen>
     
     <dimen name="activity_horizontal_margin">16dip</dimen>
     <dimen name="activity_vertical_margin">16dip</dimen>
@@ -25,6 +30,11 @@
     <dimen name="common_radius_and_stroke_padding_top">2dip</dimen>
     <dimen name="common_radius_and_stroke_padding_right">2dip</dimen>
     <dimen name="common_radius_and_stroke_padding_bottom">2dip</dimen>
+    
+    <dimen name="simple_image_view_padding_left">10dip</dimen>
+    <dimen name="simple_image_view_padding_top">10dip</dimen>
+    <dimen name="simple_image_view_padding_right">10dip</dimen>
+    <dimen name="simple_image_view_padding_bottom">10dip</dimen>
     
     <dimen name="common_padding">5dip</dimen>
     <dimen name="common_margin">20dip</dimen>
@@ -63,7 +73,10 @@
     <dimen name="news_title_change_viewpager_btn_margin_top">5dip</dimen>
     <dimen name="news_title_change_viewpager_btn_margin_bottom">5dip</dimen>
     
-    <dimen name="news_list_view_default_text">30dip</dimen>
+    <dimen name="news_list_view_default_image_view_width">100dip</dimen>
+    <dimen name="news_list_view_default_image_view_height">100dip</dimen>
+    <dimen name="news_list_view_default_text">18dip</dimen>
+    
     
     <dimen name="skip_btn_height">32dip</dimen>
     <dimen name="news_item_height">80dip</dimen>
@@ -90,7 +103,7 @@
     <dimen name="news_item_icon_padding_top">10dip</dimen>
     <dimen name="news_item_icon_padding_left">10dip</dimen>
     <dimen name="news_item_icon_padding_bottom">10dip</dimen>
-    <dimen name="news_item_icon_padding_right">10dip</dimen>
+    <dimen name="news_item_icon_padding_right">30dip</dimen>
     <dimen name="news_item_icon_margin_right">20dip</dimen>
     <dimen name="news_item_icon_margin_bottom">10dip</dimen>
     <dimen name="news_item_icon_margin_left">10dip</dimen>
@@ -145,5 +158,16 @@
     <dimen name="about_margin_top">30dip</dimen>
     <dimen name="about_project_name_text_size">18sp</dimen>
     <dimen name="common_list_view_item_padding">20dip</dimen>
+    <dimen name="reading_pic_layout_height">150dip</dimen>
+    <dimen name="reading_pic_layout_half_height">75dip</dimen>
+    <dimen name="add_reading_pic_btn_height">75dip</dimen>
+    <dimen name="add_reading_pic_text_size">18sp</dimen>
+    <dimen name="edit_news_common_text_size">16sp</dimen>
+    <dimen name="edit_news_common_margin_top">20dip</dimen>
+    <dimen name="edit_news_bottom_btn_height">40dip</dimen>
+    <dimen name="edit_news_bottom_btn_padding_left">10dip</dimen>
+    <dimen name="edit_news_bottom_btn_padding_right">10dip</dimen>
+    <dimen name="edit_news_content_and_abstract_title_padding">10dip</dimen>
+    <dimen name="edit_news_content_and_abstract_btn_height">30dip</dimen>
 
 </resources>

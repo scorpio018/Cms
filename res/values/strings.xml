@@ -34,7 +34,7 @@
     <string name="security_setting_title_text">安全设置</string>
     <string name="news_sub_title_Text">新闻中心</string>
     <string name="about_title_text">关于</string>
-    <string name="news_list_view_default_text">北方网手机发布系统</string>
+    <string name="news_list_view_default_text">暂无可查看的新闻</string>
     
     <string name="btnToMaterialBtnActivity">跳转到素材按钮动画实现页面</string>
     <string name="btnToPullableWebViewActivity">跳转到webView控件+下拉刷新+上拉加载更多</string>
@@ -79,4 +79,17 @@
     <string name="about_project_name">CMS</string>
     <!-- <string name="about_version">版本号：手机发新闻1.0</string> -->
     <string name="about_add_projects">已添加系统</string>
+    <string name="back">返回</string>
+    
+    <string name="songqian">送签</string>
+    <string name="save">保存</string>
+    <string name="save_and_quit">存退</string>
+    <string name="add_reading_pic">添加导读图片</string>
+    <string name="add_reading_pic_edittext_hint">新闻标题</string>
+    <string name="template_search_text_view">选择模版</string>
+    <string name="manuscripts">稿源：</string>
+    <string name="keyword">关键词：</string>
+    <string name="enclosure">附件</string>
+    <string name="reset">重置</string>
+    <string name="typesetting">排版</string>
 </resources>

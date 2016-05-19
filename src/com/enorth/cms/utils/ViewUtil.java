@@ -14,10 +14,15 @@ import com.enorth.cms.listener.newslist.newstypebtn.NewsTypeBtnOnClickListener;
 import com.enorth.cms.view.LeftHorizontalScrollMenu;
 import com.enorth.cms.view.R;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAssignedNumbers;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,16 +98,16 @@ public class ViewUtil {
 	 * @param btnId
 	 * @throws Exception
 	 */
-	public static List<EnableSimpleChangeButton> initBtnGroupLayout(Activity activity, LinearLayout layout, String[] btnText, int[] btnId, float percentWeight) {
+	public static List<EnableSimpleChangeButton> initBtnGroupLayout(Activity activity, LinearLayout layout, int checkedColor, String[] btnText, int[] btnId, float percentWeight) {
 //		RelativeLayout newsTypeBtnRelaLayout = (RelativeLayout) activity.findViewById(R.id.newsTypeBtnRelaLayout);
 //		newsTypeBtnLineLayout = (LinearLayout) newsTypeBtnRelaLayout.getChildAt(0);
-		int checkedColor = ColorUtil.getCommonBlueColor(activity);
+//		int checkedColor = ColorUtil.getCommonBlueColor(activity);
 		int unCheckedColor = ColorUtil.getWhiteColor(activity);
 		return initBtnGroupLayout(activity, layout, btnText, btnId, percentWeight, checkedColor, unCheckedColor);
 	}
 	
 	/**
-	 * 初始化平行多个按钮的按钮布局
+	 * 初始化平行多个按钮的按钮布局（按照百分比定义宽度）
 	 * @param activity
 	 * @param layout
 	 * @param btnText
@@ -112,26 +117,48 @@ public class ViewUtil {
 	 * @throws Exception
 	 */
 	public static List<EnableSimpleChangeButton> initBtnGroupLayout(Activity activity, LinearLayout layout, String[] btnText, int[] btnId, float percentWeight, int checkedColor, int unCheckedColor) {
-		int length = btnText.length;
 		// 此处初始化按钮的基本样式
-		LinearLayout.LayoutParams params = LayoutParamsUtil.initLinePercentWeight(percentWeight);
+		LinearLayout.LayoutParams params = LayoutParamsUtil.initLineWidthPercentWeight(percentWeight);
+		return initBtnGroupLayoutCommon(activity, layout, btnText, btnId, checkedColor, unCheckedColor, params);
+	}
+	
+	/**
+	 * 初始化平行多个按钮的按钮布局（自定义宽高）
+	 * @param activity
+	 * @param layout
+	 * @param btnText
+	 * @param btnId
+	 * @param width
+	 * @param height
+	 * @param checkedColor
+	 * @param unCheckedColor
+	 * @return
+	 */
+	public static List<EnableSimpleChangeButton> initStaticWidthBtnGroupLayout(Activity activity, LinearLayout layout, String[] btnText, int[] btnId, int width, int checkedColor, int unCheckedColor) {
+		// 此处初始化按钮的基本样式
+		LinearLayout.LayoutParams params = LayoutParamsUtil.initLineWidth(width);
+		return initBtnGroupLayoutCommon(activity, layout, btnText, btnId, checkedColor, unCheckedColor, params);
+	}
+	
+	public static List<EnableSimpleChangeButton> initBtnGroupLayoutCommon(Activity activity, LinearLayout layout, String[] btnText, int[] btnId, int checkedColor, int unCheckedColor, LinearLayout.LayoutParams params) {
+		int length = btnText.length;
 		List<EnableSimpleChangeButton> btns = new ArrayList<EnableSimpleChangeButton>();
 		for (int i = 0; i < length; i++) {
 			EnableSimpleChangeButton btn = new EnableSimpleChangeButton(activity);
 			btn.setButtonId(btnId[i]);
 			if (i == 0) {
-				btn.needRaduisPosition(false, false, false, true);
+				btn.needRadiusPosition(false, false, false, true);
 			} else if (i == length - 1) {
-				btn.needRaduisPosition(false, true, false, false);
+				btn.needRadiusPosition(false, true, false, false);
 			} else {
-				btn.needRaduisPosition(false, false, false, false);
+				btn.needRadiusPosition(false, false, false, false);
 			}
 			btn.setText(btnText[i]);
 			ViewColorBasicBean colorBasicBean = new ViewColorBasicBean(activity);
 			boolean needFocused = i == 0 ? true : false;
 			initBtnGroupStyleByFocusedState(colorBasicBean, btn, needFocused, checkedColor, unCheckedColor);
 			btn.setColorBasicBean(colorBasicBean);
-			final int position = i;
+			int position = i;
 			// 加点击事件，切换到相应的ListView中
 			NewsTypeBtnOnClickListener listener = new NewsTypeBtnOnClickListener(activity, layout, position);
 			btn.setOnClickListener(listener);
@@ -148,7 +175,19 @@ public class ViewUtil {
 	 * @param checkedColor
 	 * @param unCheckedColor
 	 */
+	/*public static void initBtnGroupStyleByFocusedState(ViewColorBasicBean colorBasicBean, EnableSimpleChangeButton btn, int checkedColor, int unCheckedColor) {
+		// 设置边框颜色
+		colorBasicBean.setStrokeColor(checkedColor);
+		colorBasicBean.setmBgNormalColor(unCheckedColor);
+		colorBasicBean.setmBgFocusedColor(checkedColor);
+		colorBasicBean.setmBgPressedColor(checkedColor);
+		colorBasicBean.setmTextNormalColor(checkedColor);
+		colorBasicBean.setmTextFocusedColor(unCheckedColor);
+		colorBasicBean.setmTextPressedColor(unCheckedColor);
+		btn.setColorBasicBean(colorBasicBean);
+	}*/
 	public static void initBtnGroupStyleByFocusedState(ViewColorBasicBean colorBasicBean, EnableSimpleChangeButton btn, boolean needFocused, int checkedColor, int unCheckedColor) {
+		// 设置边框颜色
 		if (needFocused) {
 			// 需要选中
 			colorBasicBean.setmBgNormalColor(checkedColor);
@@ -159,7 +198,23 @@ public class ViewUtil {
 			colorBasicBean.setmTextNormalColor(checkedColor);
 			btn.setChecked(false);
 		}
+		btn.setColorBasicBean(colorBasicBean);
 	}
+	
+	/*public static void changeBtnState(ViewColorBasicBean colorBasicBean, EnableSimpleChangeButton btn, boolean needFocused, int checkedColor, int unCheckedColor) {
+		if (needFocused) {
+			// 需要选中
+//			initBtnGroupStyleByFocusedState(colorBasicBean, btn, checkedColor, unCheckedColor);
+			btn.setPressed(true);
+			btn.setChecked(true);
+			btn.setFocusable(true);
+		} else {
+//			initBtnGroupStyleByFocusedState(colorBasicBean, btn, checkedColor, unCheckedColor);
+			btn.setPressed(false);
+			btn.setChecked(false);
+			btn.setFocusable(false);
+		}
+	}*/
 	
 	/**
 	 * 根据当前选中的标头按钮的位置改变需要改变样式的按钮
@@ -171,14 +226,14 @@ public class ViewUtil {
 		int childCount = layout.getChildCount();
 		for (int i = 0; i < childCount; i++) {
 			EnableSimpleChangeButton btn = (EnableSimpleChangeButton) layout.getChildAt(i);
-			ViewColorBasicBean colorBasicBean = new ViewColorBasicBean(activity);
+//			ViewColorBasicBean colorBasicBean = new ViewColorBasicBean(activity);
+			ViewColorBasicBean colorBasicBean = btn.getColorBasicBean();
 			if (i == position) {
 				initBtnGroupStyleByFocusedState(colorBasicBean, btn, true, checkedColor, unCheckedColor);
 			} else {
-				btn.setChecked(false);
-//				initBtnGroupStyleByFocusedState(colorBasicBean, false, unCheckedColor, checkedColor);
+				initBtnGroupStyleByFocusedState(colorBasicBean, btn, false, checkedColor, unCheckedColor);
 			}
-			btn.setColorBasicBean(colorBasicBean);
+//			btn.setColorBasicBean(colorBasicBean);
 		}
 	}
 	
@@ -192,7 +247,7 @@ public class ViewUtil {
 		int size = btns.size();
 		for (int i = 0; i < size; i++) {
 			EnableSimpleChangeButton btn = btns.get(i);
-			if (btn.isChecked()) {
+			if (btn.isChecked() || btn.isFocused()) {
 				return btn.getButtonId();
 			}
 		}
@@ -206,7 +261,7 @@ public class ViewUtil {
 	 * @param percentWeight
 	 */
 	public static void initViewByWeight(View view, float percentWeight) {
-		LinearLayout.LayoutParams params = LayoutParamsUtil.initLinePercentWeight(percentWeight);
+		LinearLayout.LayoutParams params = LayoutParamsUtil.initLineWidthPercentWeight(percentWeight);
 		view.setLayoutParams(params);
 	}
 	
@@ -379,6 +434,19 @@ public class ViewUtil {
 				
 			}
 		}).show();
+	}
+	
+	@SuppressLint("NewApi")
+	public static void initClickBg(View view, int color) {
+		StateListDrawable stateListDrawable = new StateListDrawable();
+		stateListDrawable.addState(new int[]{android.R.attr.state_pressed, android.R.attr.state_enabled}, new ColorDrawable(color));
+		stateListDrawable.addState(new int[]{android.R.attr.state_enabled}, new ColorDrawable(0));
+//		view.setBackground(stateListDrawable);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+			view.setBackground(stateListDrawable);
+		} else {
+			view.setBackgroundDrawable(stateListDrawable);
+		}
 	}
 	
 	/**

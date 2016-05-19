@@ -12,7 +12,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+/**
+ * 此处点击事件为PopupWindow弹出的item点击后将对勾显示在左侧
+ * @author yangyang
+ *
+ */
 public abstract class PopupWindowContainCheckMarkOnTouchListener extends CommonOnTouchListener {
 	
 	private LinearLayout layout;

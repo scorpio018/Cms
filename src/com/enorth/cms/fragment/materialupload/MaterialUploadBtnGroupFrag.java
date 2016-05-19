@@ -3,7 +3,6 @@ package com.enorth.cms.fragment.materialupload;
 import com.enorth.cms.view.R;
 import com.enorth.cms.view.material.IMaterialUploadView;
 import com.enorth.cms.view.upload.GalleryActivity;
-import com.enorth.cms.view.upload.UploadPicActivity;
 import com.enorth.cms.view.upload.VideoActivity;
 import com.enorth.cms.widget.linearlayout.MaterialUploadFragLinearLayout;
 
@@ -14,9 +13,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 /**
  * 素材上传的按钮组（拍照、照片、视频三个按钮）
  * @author yangyang
@@ -25,6 +24,10 @@ import android.widget.Toast;
 public class MaterialUploadBtnGroupFrag extends Fragment {
 	private LinearLayout layout;
 	/**
+	 * 为true则说明已经获取了layout的宽度
+	 */
+	private boolean hasMeasured = false;
+	/**
 	 * 向上箭头
 	 */
 	private ImageView materialUploadBtnGroupScrollBtn;
@@ -32,6 +35,26 @@ public class MaterialUploadBtnGroupFrag extends Fragment {
 	 * 用作收回/展开的自定义的linearlayout
 	 */
 	private MaterialUploadFragLinearLayout fragLayout;
+	/**
+	 * 拍照按钮
+	 */
+	private ImageView imgBtnAddPic;
+	/**
+	 * 照片按钮
+	 */
+	private ImageView imgBtnChoosePic;
+	/**
+	 * 视频按钮
+	 */
+	private ImageView imgBtnAddVideo;
+	/**
+	 * 图片的宽度
+	 */
+	private int picWidth;
+	/**
+	 * 图片的高度
+	 */
+	private int picHeight;
 	
 	private IMaterialUploadView view;
 	
@@ -43,7 +66,31 @@ public class MaterialUploadBtnGroupFrag extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		layout = (LinearLayout) inflater.inflate(R.layout.material_upload_btn_group, null);
 		initBtnEvent();
+		ViewTreeObserver viewTreeObserver = layout.getViewTreeObserver();
+		viewTreeObserver.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+			
+			@Override
+			public boolean onPreDraw() {
+				if (!hasMeasured) {
+					int measuredWidth = layout.getMeasuredWidth();
+					picWidth = picHeight = measuredWidth * 2 / 3 / 3;
+					initImgBtnLayoutParam(imgBtnAddPic);
+					initImgBtnLayoutParam(imgBtnChoosePic);
+					initImgBtnLayoutParam(imgBtnAddVideo);
+//					LayoutParams ivParams = LayoutParamsUtil.initLineWidthAndHeight(picWidth, picHeight);
+					
+				}
+				return true;
+			}
+		});
 		return layout;
+	}
+	
+	private void initImgBtnLayoutParam(View view) {
+		ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+		layoutParams.width = picWidth;
+		layoutParams.height = picHeight;
+		view.setLayoutParams(layoutParams);
 	}
 	
 	/**
@@ -80,7 +127,7 @@ public class MaterialUploadBtnGroupFrag extends Fragment {
 	 * 初始化拍照按钮
 	 */
 	private void initImgBtnAddPicEvent() {
-		ImageView imgBtnAddPic = (ImageView) layout.findViewById(R.id.imgBtnAddPic);
+		imgBtnAddPic = (ImageView) layout.findViewById(R.id.imgBtnAddPic);
 		imgBtnAddPic.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -95,7 +142,7 @@ public class MaterialUploadBtnGroupFrag extends Fragment {
 	 * 初始化照片按钮
 	 */
 	private void initImgBtnChoosePicEvent() {
-		ImageView imgBtnChoosePic = (ImageView) layout.findViewById(R.id.imgBtnChoosePic);
+		imgBtnChoosePic = (ImageView) layout.findViewById(R.id.imgBtnChoosePic);
 		imgBtnChoosePic.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -112,7 +159,7 @@ public class MaterialUploadBtnGroupFrag extends Fragment {
 	 * 初始化视频按钮
 	 */
 	private void initImgBtnAddVideo() {
-		ImageView imgBtnAddVideo = (ImageView) layout.findViewById(R.id.imgBtnChooseVideo);
+		imgBtnAddVideo = (ImageView) layout.findViewById(R.id.imgBtnChooseVideo);
 		imgBtnAddVideo.setOnClickListener(new View.OnClickListener() {
 			
 			@Override

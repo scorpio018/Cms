@@ -73,7 +73,7 @@
             android:layout_height="@dimen/common_edit_text_height"
             android:layout_marginTop="@dimen/edit_text_common_margin_top"
             android:layout_weight="0.9"
-            android:background="@drawable/common_radius_and_stroke"
+            android:background="@drawable/white_bg_radius_and_stroke"
             android:hint="@string/news_search_et_news_id_hint"
             android:inputType="number" />
     </LinearLayout>
@@ -92,7 +92,7 @@
             android:layout_height="@dimen/common_edit_text_height"
             android:layout_marginTop="@dimen/edit_text_common_margin_top"
             android:layout_weight="0.9"
-            android:background="@drawable/common_radius_and_stroke"
+            android:background="@drawable/white_bg_radius_and_stroke"
             android:hint="@string/news_search_et_keyword_hint" />
     </LinearLayout>
 

@@ -55,7 +55,7 @@ public class BeanParamsUtil {
 		
 //		String seed = UrlUtil.getSeed(context);
 		// 获取当前登录的用户bean
-		LoginBean loginUserBean = UrlUtil.getLoginUserBean(context);
+		LoginBean loginUserBean = StaticUtil.getCurLoginBean(context);
 		// 获取种子值
 		String seed = loginUserBean.getSeed();
 		// 将种子值拼入参数后面
@@ -535,6 +535,61 @@ public class BeanParamsUtil {
 				} catch (InvocationTargetException e) {
 					Log.e("BeanParamsUtil.getObject error", e.toString());
 					e.printStackTrace();
+				}
+			}
+		}
+		return ob;
+	}
+	
+	public static Object removeObject(Class<?> c, Context context) {
+		Field[] fields = c.getDeclaredFields();
+		Object ob = null;
+		try {
+			ob = c.newInstance();
+		} catch (InstantiationException e) {
+			Log.e("BeanParamsUtil.getObject error", e.toString());
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			Log.e("BeanParamsUtil.getObject error", e.toString());
+			e.printStackTrace();
+		}
+		String clazzName = c.getName();
+		for (Field field : fields) {
+			if (field.isAnnotationPresent(SharedPreSaveAnnotation.class)) {
+				Class<?> type = field.getType();
+				String fieldName = field.getName();
+				SharedPreSaveAnnotation annotation = field.getAnnotation(SharedPreSaveAnnotation.class);
+				String name = annotation.name();
+				if (name.equals("")) {
+					name = clazzName;
+				}
+				String key = annotation.key();
+				if (key.equals("")) {
+					key = fieldName;
+				}
+				
+				if (checkIsString(type)) {
+					SharedPreUtil.remove(context, name, key);
+				} else if (checkIsInteger(type)) {
+					SharedPreUtil.remove(context, name, key);
+				} else if (checkIsLong(type)) {
+					SharedPreUtil.remove(context, name, key);
+				} else if (checkIsDouble(type)) {
+					SharedPreUtil.remove(context, name, key);
+				} else if (checkIsBoolean(type)) {
+					SharedPreUtil.remove(context, name, key);
+				} else if (!type.isPrimitive()) {
+					if (checkIsList(type)) {
+						Log.e("BeanParamsUtil.getObject error", "目前尚未支持List方法~");
+					} else if (checkIsMap(type)) {
+						Log.e("BeanParamsUtil.getObject error", "目前尚未支持Map方法~");
+					} else if (checkIsSet(type)) {
+						Log.e("BeanParamsUtil.getObject error", "目前尚未支持Set方法~");
+					} else if (type.isArray()) {
+						Log.e("BeanParamsUtil.getObject error", "目前尚未支持数组方法~");
+					} else {
+						removeObject(type, context);
+					}
 				}
 			}
 		}

@@ -11,8 +11,11 @@ import com.enorth.cms.listener.menu.ContentOnTouchListener;
 import com.enorth.cms.listener.menu.LeftMenuItemOnTouchListener;
 import com.enorth.cms.utils.AnimUtil;
 import com.enorth.cms.utils.ColorUtil;
+import com.enorth.cms.utils.DrawableUtil;
 import com.enorth.cms.utils.ScreenTools;
 import com.enorth.cms.utils.SharedPreUtil;
+import com.enorth.cms.utils.StaticUtil;
+import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.about.AboutActivity;
 import com.enorth.cms.view.login.LoginActivity;
 import com.enorth.cms.view.material.MaterialUploadActivity;
@@ -20,10 +23,13 @@ import com.enorth.cms.view.news.NewsListFragActivity;
 import com.enorth.cms.view.news.NewsLiveListFragActivity;
 import com.enorth.cms.view.securitysetting.SecuritySettingActivity;
 import com.nineoldandroids.view.ViewHelper;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -110,7 +116,7 @@ public class LeftHorizontalScrollMenu extends HorizontalScrollView {
 			menuIcon.setImageResource(menuBean.getMenuIconResourceId());
 			TextView menuNameTV = (TextView) layout.getChildAt(1);
 			menuNameTV.setText(menuBean.getMenuName());
-			LeftMenuItemOnTouchListener listener = new LeftMenuItemOnTouchListener(ScreenTools.getTouchSlop(context)) {
+			/*LeftMenuItemOnTouchListener listener = new LeftMenuItemOnTouchListener(ScreenTools.getTouchSlop(context)) {
 				
 				@Override
 				public void onImgChangeDo(View v) {
@@ -118,7 +124,23 @@ public class LeftHorizontalScrollMenu extends HorizontalScrollView {
 				}
 			};
 			listener.changeColor(ColorUtil.getLightBlue(context), ColorUtil.getMenuBg(context));
-			layout.setOnTouchListener(listener);
+			layout.setOnTouchListener(listener);*/
+			/*OnClickListener listener = new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					menuClick(menuBean);
+				}
+			};
+			layout.setOnClickListener(listener);
+			ViewUtil.initClickBg(layout, ColorUtil.getCommonBlueColor(getContext()));*/
+			new CommonOnClickListener(layout, true, ColorUtil.getCommonBlueColor(getContext())) {
+				
+				@Override
+				public void onClick(View v) {
+					menuClick(menuBean);
+				}
+			};
 			items.add(layout);
 		}
 		ListAdapter adapter = new CommonListViewAdapter(items);
@@ -129,9 +151,7 @@ public class LeftHorizontalScrollMenu extends HorizontalScrollView {
 		ImageView headImg = (ImageView) mMenu.findViewById(R.id.headImg);
 		headImg.setImageResource(R.drawable.head_img);
 		TextView userNameTV = (TextView) mMenu.findViewById(R.id.userNameTV);
-		userNameTV.setText("杨洋");
-		TextView userTypeTV = (TextView) mMenu.findViewById(R.id.userTypeTV);
-		userTypeTV.setText("程序猿");
+		userNameTV.setText(StaticUtil.getCurLoginBean(getContext()).getTrueName());
 	}
 	
 	private void getContent(Context context) {

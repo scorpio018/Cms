@@ -1,5 +1,7 @@
 package com.enorth.cms.consts;
 
+import com.squareup.okhttp.MediaType;
+
 public class ParamConst {
 	/**
 	 * 下拉状态
@@ -247,6 +249,10 @@ public class ParamConst {
 	 * 视频最多只能选一条
 	 */
 	public static final int MAX_SELECT_VIDEO_COUNT = 1;
+	/**
+	 * 底部菜单最多只能同时排列4个
+	 */
+	public static final int MAX_HORIZONTAL_BOTTOM_MENU_BTN_COUNT = 4;
 	
 	/**
 	 * 不是融合新闻
@@ -312,6 +318,24 @@ public class ParamConst {
 	 * 刷新动作为新闻搜索后的结果刷新
 	 */
 	public static final int REFRESH_TYPE_NEWS_SEARCH = 2;
+	/**
+	 * 正文ID（标识position）
+	 */
+	public static final int EDIT_NEWS_BTN_CONTENT = 0;
+	/**
+	 * 摘要（标识position）
+	 */
+	public static final int EDIT_NEWS_BTN_ABSTRACT = 1;
+	/**
+	 * 正文文本框提示信息
+	 */
+	public static final String EDIT_NEWS_CONTENT_EDITTEXT_HINT = "请输入正文";
+	/**
+	 * 摘要文本框提示信息
+	 */
+	public static final String EDIT_NEWS_ABSTRACT_EDITTEXT_HINT = "请输入摘要";
+	
+	public static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
 	
 	/**
 	 * 弹出浮层的默认高度
@@ -355,7 +379,15 @@ public class ParamConst {
 	 * 跳转到扫一扫页面的REQUEST_CODE值
 	 */
 	public static final int SCANNING_REQUEST_CODE = 1;
-	
+	/**
+	 * 从添加/修改新闻跳转到选择设置/删除导读图操作的REQUEST_CODE值
+	 */
+	public static final int NEWS_EDIT_COMMON_ACTIVITY_TO_ADD_READING_PIC_ACTIVITY_REQUEST_CODE = 1;
+	/**
+	 * 从选择设置/删除导读图操作跳转到选择导读图的方式的REQUEST_CODE值
+	 */
+	public static final int ADD_READING_PIC_ACTIVITY_TO_CHOOSE_READING_PIC_FROM_ACTIVITY_REQUEST_CODE = 2;
+	/*--------*/
 	/**
 	 * 从搜索新闻页面返回到新闻列表的RESULT_CODE值
 	 */
@@ -365,9 +397,26 @@ public class ParamConst {
 	 */
 	public static final int CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE = 2;
 	/**
+	 * 从搜索新闻页面返回到新闻列表的RESULT_CODE值
+	 */
+	public static final int NEWS_SEARCH_ACTIVITY_BACK_TO_NEWS_LIVE_LIST_FRAG_ACTIVITY_RESULT_CODE = 4;
+	/**
+	 * 从频道搜索页面返回到新闻列表的RESULT_CODE值
+	 */
+	public static final int CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_LIVE_LIST_FRAG_ACTIVITY_RESULT_CODE = 5;
+
+	/**
 	 * 从预览页面返回到相册页面的RESULT_CODE值
 	 */
 	public static final int UPLOAD_PIC_PREVIEW_ACTIVITY_BACK_TO_GALLERY_ACTIVITY_RESULT_CODE = 3;
+	/**
+	 * 选择导读图后将导读图传回NewsEditCommonActivity的RESULT_CODE值
+	 */
+	public static final int ADD_READING_PIC_ACTIVITY_BACK_TO_NEWS_EIDT_COMMON_ACTIVITY_HAS_IMG_DATAS_RESULT_CODE = 1;
+	/**
+	 * 点击“删除导读图”的RESULT_CODE值
+	 */
+	public static final int ADD_READING_PIC_ACTIVITY_BACK_TO_NEWS_EIDT_COMMON_ACTIVITY_DEL_READING_PIC_RESULT_CODE = 2;
 	
 	/**
 	 * 调用系统相机拍照、系统相册选择照片并显示
@@ -612,7 +661,7 @@ public class ParamConst {
 	/**
 	 * 点击添加图片时，是不是返回到上一个activity
 	 */
-	public static final String ADD_PIC_IS_JUMP_TO_PREV_ACTIVITY = "addPicIsJUmpToPrevActivity";
+	public static final String ADD_PIC_IS_JUMP_TO_PREV_ACTIVITY = "addPicIsJumpToPrevActivity";
 	/**
 	 * 点击添加图片时，不是返回到上一个activity
 	 */

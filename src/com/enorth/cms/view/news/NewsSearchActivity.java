@@ -177,14 +177,14 @@ public class NewsSearchActivity extends Activity implements INewsSearchView {
 	 * @throws Exception
 	 */
 	private void initspiderLayout() {
-		spiderBtns = ViewUtil.initBtnGroupLayout(this, crawlBtnLineLayout, spiderText, spiderId, 0.9f);
+		spiderBtns = ViewUtil.initBtnGroupLayout(this, crawlBtnLineLayout, ColorUtil.getCommonBlueColor(this), spiderText, spiderId, 0.9f);
 	}
 	/**
 	 * 初始化融合的选择按钮组
 	 * @throws Exception
 	 */
 	private void initconvLayout() {
-		convBtns = ViewUtil.initBtnGroupLayout(this, mergeBtnLineLayout, convText, convId, 0.9f);
+		convBtns = ViewUtil.initBtnGroupLayout(this, mergeBtnLineLayout, ColorUtil.getCommonBlueColor(this), convText, convId, 0.9f);
 	}
 	
 	/**

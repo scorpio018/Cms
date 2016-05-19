@@ -101,7 +101,7 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Channe
 		}
 		
 		// 将CheckBox的状态进行初始化
-//		initCheckBtnState(channelBean, holder, convertView, position);
+		initCheckBtnState(channelBean, holder, convertView, position);
 		// 初始化CheckBox的点击事件
 		addCheckBtnClickEvent(channelBean, holder, convertView, position);
 		// 添加ListView的item的点击事件
@@ -138,7 +138,7 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Channe
 	 */
 	private void addCheckBtnClickEvent(final ChannelBean channelBean, final Holder holder, final View view, final int position) {
 		
-		OnTouchListener listViewCheckBtnOnTouchListener = new ImageViewOnTouchListener(activity) {
+		ImageViewOnTouchListener listViewCheckBtnOnTouchListener = new ImageViewOnTouchListener(activity) {
 			@Override
 			public boolean onImgChangeBegin(View v) {
 				checkChannel(channelBean, holder, view, position);
@@ -166,7 +166,10 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Channe
 				activity.setCurChannelListEnableView(ParamConst.CUR_CHANNEL_LIST_ENABLE_VIEW_CHANNEL_SEARCH_ACTIVITY);
 			}
 		};
+		listViewCheckBtnOnTouchListener.changeColor(R.color.bg_gray_press, R.color.bg_gray_default);
 		holder.checkBtn.setOnTouchListener(listViewCheckBtnOnTouchListener);
+		view.setOnTouchListener(listViewCheckBtnOnTouchListener);
+		
 	}
 	
 	/**
@@ -192,8 +195,8 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Channe
 				
 			}
 		};
-		listViewItemOnTouchListener.changeColor(R.color.bg_gray_press, R.color.bg_gray_default);
-		view.setOnTouchListener(listViewItemOnTouchListener);
+//		view.setOnTouchListener(listViewItemOnTouchListener);
+		holder.channelNext.setOnTouchListener(listViewItemOnTouchListener);
 	}
 	
 	private void channelClick(ChannelBean channelBean, Holder holder, View view, int position) {

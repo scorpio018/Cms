@@ -7,12 +7,17 @@ import com.enorth.cms.view.R;
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
+/**
+ * 此处点击事件为PopupWindow弹出的item点击后将对应的item删除
+ * @author yangyang
+ *
+ */
 public abstract class PopupWindowContainDelMarkOnTouchListener extends CommonOnTouchListener {
 
 	private LinearLayout layout;
@@ -50,7 +55,11 @@ public abstract class PopupWindowContainDelMarkOnTouchListener extends CommonOnT
 			TextView chooseTV = (TextView) layout.findViewById(R.id.chooseText);
 			String chooseText = (String) chooseTV.getText();
 			checkItem(chooseText);
-			layout.removeViewInLayout((View) v.getParent());
+//			this.layout.removeView((View) v.getParent());
+//			((ViewGroup) v.getParent().getParent()).removeView((View) v.getParent());
+			this.layout.removeView(layout);
+//			layout.removeView((View) v.getParent());
+//			layout.removeViewInLayout((View) v.getParent());
 		} else if (v instanceof RelativeLayout) {
 			// 点击整个item
 			TextView chooseTV = (TextView) v.findViewById(R.id.chooseText);

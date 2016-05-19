@@ -103,7 +103,7 @@ public class LoginFrag extends Fragment {
 			}
 		}
 		if (usersStr.length != 0) {
-			LoginBean loginUserBean = UrlUtil.getLoginUserBean(getContext());
+			LoginBean loginUserBean = StaticUtil.getCurLoginBean(getContext());
 			userNameET.setText(loginUserBean.getUserName());
 			Boolean rememberUser = loginUserBean.isRememberUser();
 			rememberPwdCB.setChecked(rememberUser);
@@ -134,7 +134,6 @@ public class LoginFrag extends Fragment {
 					UserNameDelBtnListener delBtnListener = new UserNameDelBtnListener(LoginFrag.this, layout);
 					initPopupWindowItemsContainDelMark(layout, itemListener, delBtnListener, userNames);
 				}
-				
 			};
 		}
 		popupWindowUtil.setWidth(userNameET.getMeasuredWidth());
@@ -278,6 +277,14 @@ public class LoginFrag extends Fragment {
 
 	public void setUsersMap(Map<String, LoginBean> usersMap) {
 		this.usersMap = usersMap;
+	}
+
+	public List<String> getUserNames() {
+		return userNames;
+	}
+
+	public void setUserNames(List<String> userNames) {
+		this.userNames = userNames;
 	}
 	
 }

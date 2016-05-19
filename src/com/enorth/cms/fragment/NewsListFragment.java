@@ -33,6 +33,8 @@ public class NewsListFragment extends ListFragment {
 	
 	private int curFirstShowItemPosition = 0;
 	
+	private boolean isFirstInit = false;
+	
 	public NewsListFragment(NewsCommonActivity activity, int curPageNum) {
 		this.activity = activity;
 		this.curPageNum = curPageNum;
@@ -82,6 +84,8 @@ public class NewsListFragment extends ListFragment {
 							activity.setCurUrl(StaticUtil.getCurScanBean(activity).getScanUrl() + UrlConst.NEWS_LIST_POST_URL);
 						} else if (curCheckedText.equals(activity.getResources().getString(R.string.my_news_title_text))) {
 							activity.setCurUrl(StaticUtil.getCurScanBean(activity).getScanUrl() + UrlConst.MY_NEWS_LIST_POST_URL);
+						} else if (curCheckedText.equals(activity.getResources().getString(R.string.news_live_title_text))) {
+							activity.setCurUrl(StaticUtil.getCurScanBean(activity).getScanUrl() + UrlConst.NEWS_LIST_POST_URL);
 						}
 						activity.getNewsStateBtns().get(activity.getCurPosition()).setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 					} else if (currentMode == Mode.PULL_FROM_END) {
@@ -126,12 +130,12 @@ public class NewsListFragment extends ListFragment {
 		refreshableView.setOnScrollListener(new NewsListListViewOnScrollListener(this));
 		// 不知为何，无效
 //		refreshableView.setOnItemClickListener(new NewsListItemOnClickListener(activity));
-		
-		if (curPageNum == 0) {
+		if (!isFirstInit && curPageNum == 0) {
 			newsListView.postDelayed(new Runnable() {
 				
 				@Override
 				public void run() {
+					isFirstInit = true;
 					newsListView.setRefreshing();
 				}
 			}, 100);

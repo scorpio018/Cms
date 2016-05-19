@@ -93,12 +93,16 @@ public class StaticUtil {
 			scanBeans.add(scanBean);
 		} else {
 			// 如果有记录，则进行查重
+			boolean hasBean = false;
 			for (ScanBean bean : scanBeans) {
 				if (bean.getScanId().equals(scanBean.getScanId())) {
+					hasBean = true;
 					break;
 				}
 			}
-			scanBeans.add(scanBean);
+			if (!hasBean) {
+				scanBeans.add(scanBean);
+			}
 		}
 		saveScanBeans(scanBeans, context);
 	}
@@ -250,5 +254,55 @@ public class StaticUtil {
 			loginUserUsedBean.setCurScanBean(scanBean);
 		}
 		return loginUserUsedBean.getCurScanBean();
+	}
+	
+	/**
+	 * 获得新闻频道的目录（长度根据allowLength进行限定）
+	 * @param allowLength
+	 * @param channelNamesTree
+	 * @return
+	 */
+	public static String getChannelContent(int allowLength, String[] channelNamesTree) {
+		int length = channelNamesTree.length;
+		String lastDeptName = channelNamesTree[length - 1];
+		String channelName = null;
+		if (length == 1) {
+			channelName = substrText(channelNamesTree[0], allowLength);
+		} else if (length == 2) {
+			channelName = substrText(channelNamesTree[0], allowLength / 2 - 1) + "/" + substrText(lastDeptName, allowLength / 2 - 1);
+		} else {
+			channelName = substrText(channelNamesTree[0], allowLength / 2 - 3) + "/../" + substrText(lastDeptName, allowLength / 2 - 3);
+		}
+		return channelName;
+	}
+	
+	private static String substrText(String text, int length) {
+		if (text.length() > length) {
+			return text.substring(0, length) + "..";
+		} else {
+			return text;
+		}
+	}
+	
+	/**
+	 * 移除当前登录的用户信息
+	 * @param context
+	 */
+	public static void removeCurLoginBean(Context context) {
+		BeanParamsUtil.removeObject(LoginBean.class, context);
+	}
+	/**
+	 * 移除当前的频道信息
+	 * @param context
+	 */
+	public static void removeCurChannelBean(Context context) {
+		BeanParamsUtil.removeObject(ChannelBean.class, context);
+	}
+	/**
+	 * 移除当前扫描的系统二维码信息
+	 * @param context
+	 */
+	public static void removeCurScanBean(Context context) {
+		BeanParamsUtil.removeObject(ScanBean.class, context);
 	}
 }

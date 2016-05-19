@@ -1,187 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- 新闻列表的主页面 -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/news_title_bg">
-    
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/news_title_bg" >
+
     <!-- 标题、副标题、新闻列表 -->
-    <LinearLayout 
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
         android:layout_marginBottom="@dimen/news_operate_btn_layout_height"
-        android:layout_alignParentTop="true">
-        
+        android:orientation="vertical" >
+
         <!-- 标题 -->
-        <include layout="@layout/common_title_iv_tv_iv"/>
-        
+
+        <include layout="@layout/common_title_iv_tv_iv" />
+
         <!-- 副标题 -->
-        <RelativeLayout android:id="@+id/newsSubTitle"
+
+        <RelativeLayout
+            android:id="@+id/newsSubTitle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/news_sub_title_height"
-            android:background="@color/news_sub_title_color_basic">
-            
-            <LinearLayout 
+            android:background="@color/news_sub_title_color_basic" >
+
+            <LinearLayout
                 android:id="@+id/newsSubTitleLineLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/news_sub_title_margin_left"
                 android:layout_marginStart="@dimen/news_sub_title_margin_left"
-                android:gravity="center_vertical">
-                
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
                 <!-- android:text="@string/news_sub_title_Text" -->
-                <TextView 
-	                android:id="@+id/newsSubTitleText"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:layout_marginLeft="@dimen/news_sub_title_margin_left"
-	                android:layout_marginStart="@dimen/news_sub_title_margin_left"
-	                android:layout_gravity="center_vertical"
-	                android:gravity="center_vertical"
-	                android:drawableRight="@drawable/news_sub_title_channel_iv"
-	                android:drawableEnd="@drawable/news_sub_title_channel_iv"
-	                />
-                
+
+                <TextView
+                    android:id="@+id/newsSubTitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/news_sub_title_margin_left"
+                    android:layout_marginStart="@dimen/news_sub_title_margin_left"
+                    android:drawableEnd="@drawable/news_sub_title_channel_iv"
+                    android:drawableRight="@drawable/news_sub_title_channel_iv"
+                    android:gravity="center_vertical" />
             </LinearLayout>
-            
-            <ImageView 
+
+            <ImageView
                 android:id="@+id/newsSubTitleSort"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/news_sort"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/news_sort_margin_right"
                 android:layout_marginEnd="@dimen/news_sort_margin_right"
-                />
-            
+                android:layout_marginRight="@dimen/news_sort_margin_right"
+                android:background="@drawable/news_sort" />
         </RelativeLayout>
-        
+
         <!-- 待编辑、待签发、已签发按钮 -->
+
         <RelativeLayout
             android:id="@+id/newsTypeBtnRelaLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center_horizontal">
-            
-            <LinearLayout 
+            android:layout_gravity="center_horizontal"
+            android:background="@color/bg_gray_default"
+            android:orientation="horizontal" >
+
+            <LinearLayout
                 android:id="@+id/newsTypeBtnLineLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal"
                 android:paddingTop="@dimen/news_type_btn_rela_layout_padding_top"
-                android:gravity="center_horizontal"
-                android:weightSum="3"
-                ></LinearLayout>
-            
+                android:weightSum="3" >
+            </LinearLayout>
         </RelativeLayout>
-        
+
         <android.support.v4.view.ViewPager
-        android:id="@+id/newsListViewPager"
+            android:id="@+id/newsListViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_gray_default" />
+    </LinearLayout>
+
+    <!-- <RelativeLayout
+        android:id="@+id/hintRelative"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/bg_gray_default"/>
-        
-    </LinearLayout>
+        android:layout_centerInParent="true" >
+
+        <TextView
+            android:id="@+id/newsListViewDefaultText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/news_list_view_default_text"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/news_list_view_default_text" />
+    </RelativeLayout> -->
+    <include layout="@layout/common_hint_relative_layout"/>
     
-    <LinearLayout
+    <LinearLayout 
         android:id="@+id/newsOperateBtnLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/news_operate_btn_layout_height"
-        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
         android:background="@color/operation_btn_layout_color"
-        android:layout_alignParentBottom="true">
-        
-        <LinearLayout
-		    style="@style/news_operate_btn_layout"
-		    android:orientation="vertical" >
-		    
-		    <ImageView 
-		        android:id="@+id/operateBtnImageView1"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        />
-		    
-		    <TextView 
-		        android:id="@+id/operateBtnText1"
-		        style="@style/news_operate_btn"/>
-		
-		</LinearLayout>
-        <LinearLayout
-		    style="@style/news_operate_btn_layout"
-		    android:orientation="vertical" >
-		    
-		    <ImageView 
-		        android:id="@+id/operateBtnImageView2"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        />
-		    
-		    <TextView 
-		        android:id="@+id/operateBtnText2"
-		        style="@style/news_operate_btn"/>
-		
-		</LinearLayout>
-        <LinearLayout
-		    style="@style/news_operate_btn_layout"
-		    android:orientation="vertical" >
-		    
-		    <ImageView 
-		        android:id="@+id/operateBtnImageView3"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        />
-		    
-		    <TextView 
-		        android:id="@+id/operateBtnText3"
-		        style="@style/news_operate_btn"/>
-		
-		</LinearLayout>
-        <LinearLayout
-		    style="@style/news_operate_btn_layout"
-		    android:orientation="vertical" >
-		    
-		    <ImageView 
-		        android:id="@+id/operateBtnImageView4"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        />
-		    
-		    <TextView 
-		        android:id="@+id/operateBtnText4"
-		        style="@style/news_operate_btn"/>
-		
-		</LinearLayout>
+        android:orientation="horizontal">
         
     </LinearLayout>
-    
-    <LinearLayout 
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:paddingBottom="@dimen/news_add_margin_bottom">
-        
-        <ImageView 
-        android:id="@+id/addNewsBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/news_add"
-        android:layout_marginRight="@dimen/news_add_margin_right"
-        android:layout_marginEnd="@dimen/news_add_margin_right"/>
-        
+        android:layout_alignParentRight="true"
+        android:paddingBottom="@dimen/news_add_margin_bottom" >
+
+        <ImageView
+            android:id="@+id/addNewsBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/news_add_margin_right"
+            android:layout_marginRight="@dimen/news_add_margin_right"
+            android:src="@drawable/news_live_add" />
     </LinearLayout>
-    
-    
+
 </RelativeLayout>

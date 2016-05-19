@@ -5,10 +5,12 @@ import java.util.List;
 import com.enorth.cms.bean.news_list.NewsListBean;
 import com.enorth.cms.common.EnableSimpleChangeTextView;
 import com.enorth.cms.consts.ParamConst;
+import com.enorth.cms.listener.CommonOnClickListener;
 import com.enorth.cms.listener.newslist.news.CheckBtnOnCheckedChangeListener;
 import com.enorth.cms.listener.newslist.news.NewsItemOnTouchListener;
 import com.enorth.cms.utils.ColorUtil;
 import com.enorth.cms.utils.TimeUtil;
+import com.enorth.cms.utils.ViewUtil;
 import com.enorth.cms.view.R;
 import com.enorth.cms.view.news.NewsCommonActivity;
 
@@ -16,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -71,7 +74,7 @@ public class NewsListViewAdapter extends BaseAdapter {
 		}
 		final NewsListBean item = getItem(position);
 		// 由于PullToRefreshListView的onItemClickListener失效，不得已出此下策，望轻喷
-		NewsItemOnTouchListener listItemOnTouchListener = new NewsItemOnTouchListener(activity) {
+		/*NewsItemOnTouchListener listItemOnTouchListener = new NewsItemOnTouchListener(activity) {
 			
 			@Override
 			public void onImgChangeDo(View v) {
@@ -79,7 +82,14 @@ public class NewsListViewAdapter extends BaseAdapter {
 			}
 		};
 		listItemOnTouchListener.changeColor(ColorUtil.getBgGrayPress(activity), ColorUtil.getBgGrayDefault(activity));
-		convertView.setOnTouchListener(listItemOnTouchListener);
+		convertView.setOnTouchListener(listItemOnTouchListener);*/
+		new CommonOnClickListener(convertView, true, ColorUtil.getBgGrayPress(activity)) {
+			
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(activity, "点击的新闻ID为【" + item.getNewsId() + "】", Toast.LENGTH_SHORT).show();
+			}
+		};
 		
 		// 左侧菜单的点击事件
 		holder.checkBtn.setOnCheckedChangeListener(new CheckBtnOnCheckedChangeListener(activity));

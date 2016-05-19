@@ -215,7 +215,7 @@ public class HttpUtil {
 		case UrlCodeErrorConst.CREATE_LOGIN_TOKEN_FAILED:
 			throw new Exception("errorCode:【" + errorCode + "】" + resultStr);*/
 		default:
-			throw new Exception("errorCode:【" + errorCode + "】" + resultStr);
+			throw new Exception("【" + errorCode + "】" + resultStr);
 //			throw new Exception(UrlCodeErrorConst.UNKNOWN_ERROR_HINT);
 		}
 	}

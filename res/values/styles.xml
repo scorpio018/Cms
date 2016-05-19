@@ -2,13 +2,13 @@
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
+            backward-compatibility can go here.
         -->
     </style>
 
@@ -61,16 +61,21 @@
 	    <item name="android:background">@drawable/color_button_background_checked</item>
 	    <item name="android:textColor">@color/white</item>
 	    <item name="android:layout_marginRight">@dimen/news_title_change_viewpager_btn_margin_right</item>
-    </style>
+    </style>
     -->
 
     <style name="Theme.Transparent" parent="android:Theme">
         <item name="android:windowBackground">@drawable/news_dialog</item>
-//此对话框的背景        <item name="android:windowIsTranslucent">true</item>
-//对话框是否透明        <item name="android:windowContentOverlay">@null</item>
-//对话框是否有遮盖        <item name="android:windowNoTitle">true</item>
-//对话框无标题        <item name="android:windowIsFloating">true</item>
-//对话框是否浮动        <item name="android:backgroundDimEnabled">false</item>
+        <!-- 此对话框的背景 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 对话框是否透明 -->
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- 对话框是否有遮盖 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 对话框无标题 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 对话框是否浮动 -->
+        <item name="android:backgroundDimEnabled">false</item>
     </style>
 
     <style name="Translucent_NoTitle" parent="android:style/Theme.Dialog">
@@ -96,6 +101,26 @@
     <style name="CustomCheckboxTheme" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/news_item_checkbox_selector</item>
     </style>
-    
+
+    <style name="AnimBottom" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
+    </style>
+
+    <style name="MyDialogStyleBottom" parent="android:Theme.Dialog">
+        <item name="android:windowAnimationStyle">@style/AnimBottom</item>
+        <item name="android:windowFrame">@null</item>
+        <!-- 边框 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!-- 半透明 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 无标题 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 背景透明 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 模糊 -->
+    </style>
 
 </resources>

@@ -1,6 +1,8 @@
 package com.enorth.cms.bean;
 
+import com.enorth.cms.utils.ColorUtil;
 import com.enorth.cms.view.R;
+import com.enorth.cms.view.R.color;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
@@ -26,6 +28,8 @@ public class ViewColorBasicBean {
 	
 	private int mTextUnabledColor = 0;
 	
+	private int strokeColor = 0;
+	
 	public ViewColorBasicBean(Context context) {
 		if (context == null) {
 			Log.e("ButtonColorBasicBean() error", "实例化此bean时需要传入一个非空的context");
@@ -35,7 +39,8 @@ public class ViewColorBasicBean {
 
 	public int getmBgNormalColor() {
 		if (mBgNormalColor == 0) {
-			mBgNormalColor = ContextCompat.getColor(context, R.color.white);
+//			mBgNormalColor = ContextCompat.getColor(context, R.color.white);
+			mBgNormalColor = ColorUtil.getWhiteColor(context);
 		}
 		return mBgNormalColor;
 	}
@@ -46,7 +51,8 @@ public class ViewColorBasicBean {
 	
 	public int getmTextNormalColor() {
 		if (mTextNormalColor == 0) {
-			mTextNormalColor = ContextCompat.getColor(context, R.color.common_blue);
+//			mTextNormalColor = ContextCompat.getColor(context, R.color.common_blue);
+			mTextNormalColor = ColorUtil.getCommonBlueColor(context);
 		}
 		return mTextNormalColor;
 	}
@@ -57,7 +63,8 @@ public class ViewColorBasicBean {
 
 	public int getmBgPressedColor() {
 		if (mBgPressedColor == 0) {
-			mBgPressedColor = ContextCompat.getColor(context, R.color.gray_lighter);
+//			mBgPressedColor = ContextCompat.getColor(context, R.color.gray_lighter);
+			mBgPressedColor = ColorUtil.getGrayLighter(context);
 		}
 		return mBgPressedColor;
 	}
@@ -68,7 +75,8 @@ public class ViewColorBasicBean {
 
 	public int getmTextPressedColor() {
 		if (mTextPressedColor == 0) {
-			mTextPressedColor = ContextCompat.getColor(context, R.color.black);
+//			mTextPressedColor = ContextCompat.getColor(context, R.color.black);
+			mTextPressedColor = ColorUtil.getBlack(context);
 		}
 		return mTextPressedColor;
 	}
@@ -79,7 +87,8 @@ public class ViewColorBasicBean {
 	
 	public int getmBgFocusedColor() {
 		if (mBgFocusedColor == 0) {
-			mBgFocusedColor = ContextCompat.getColor(context, R.color.common_blue);
+//			mBgFocusedColor = ContextCompat.getColor(context, R.color.common_blue);
+			mBgFocusedColor = ColorUtil.getCommonBlueColor(context);
 		}
 		return mBgFocusedColor;
 	}
@@ -90,7 +99,8 @@ public class ViewColorBasicBean {
 	
 	public int getmTextFocusedColor() {
 		if (mTextFocusedColor == 0) {
-			mTextFocusedColor = ContextCompat.getColor(context, R.color.white);
+//			mTextFocusedColor = ContextCompat.getColor(context, R.color.white);
+			mTextFocusedColor = ColorUtil.getWhiteColor(context);
 		}
 		return mTextFocusedColor;
 	}
@@ -101,7 +111,8 @@ public class ViewColorBasicBean {
 
 	public int getmBgUnabledColor() {
 		if (mBgUnabledColor == 0) {
-			mBgUnabledColor = ContextCompat.getColor(context, R.color.gray);
+//			mBgUnabledColor = ContextCompat.getColor(context, R.color.gray);
+			mBgUnabledColor = ColorUtil.getGray(context);
 		}
 		return mBgUnabledColor;
 	}
@@ -112,7 +123,8 @@ public class ViewColorBasicBean {
 
 	public int getmTextUnabledColor() {
 		if (mTextUnabledColor == 0) {
-			mTextUnabledColor = ContextCompat.getColor(context, R.color.dark_gray);
+//			mTextUnabledColor = ContextCompat.getColor(context, R.color.dark_gray);
+			mTextUnabledColor = ColorUtil.getDarkGray(context);
 		}
 		return mTextUnabledColor;
 	}
@@ -120,4 +132,16 @@ public class ViewColorBasicBean {
 	public void setmTextUnabledColor(int mTextUnabledColor) {
 		this.mTextUnabledColor = mTextUnabledColor;
 	}
+
+	public int getStrokeColor() {
+		if (strokeColor == 0) {
+			strokeColor = ColorUtil.getCommonBlueColor(context);
+		}
+		return strokeColor;
+	}
+
+	public void setStrokeColor(int strokeColor) {
+		this.strokeColor = strokeColor;
+	}
+	
 }
