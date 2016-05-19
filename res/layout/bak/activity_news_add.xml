@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/news_title_bg"
+    android:orientation="vertical" >
+
+    <include layout="@layout/common_news_add_title" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white" >
+
+        <LinearLayout
+            android:id="@+id/newsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="@dimen/edit_news_bottom_btn_height"
+            android:orientation="vertical" >
+
+            <include layout="@layout/edit_news_reading_pic" />
+
+            <!-- 表示普通新闻和图文直播中不同的地方 -->
+
+            <LinearLayout
+                android:id="@+id/differentLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            <include layout="@layout/edit_news_channel_search" />
+
+            <include layout="@layout/edit_news_template_search" />
+
+            <LinearLayout
+                android:id="@+id/keywordLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+            </LinearLayout>
+            
+            <include layout="@layout/edit_news_content_and_abstract"/>
+            
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/enclosureLayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_news_bottom_btn_height"
+            android:background="@color/gray_lighter"
+            android:layout_alignParentBottom="true"
+            android:gravity="end"
+            android:orientation="horizontal" >
+            
+            <TextView 
+                android:id="@+id/enclosure"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/enclosure"
+                android:textSize="@dimen/edit_news_common_text_size"
+                android:drawableLeft="@drawable/enclosure"
+                android:drawableStart="@drawable/enclosure"
+                android:paddingLeft="@dimen/edit_news_bottom_btn_padding_left"
+                android:paddingStart="@dimen/edit_news_bottom_btn_padding_left"
+                android:paddingRight="@dimen/edit_news_bottom_btn_padding_right"
+                android:paddingEnd="@dimen/edit_news_bottom_btn_padding_right"/>
+            
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

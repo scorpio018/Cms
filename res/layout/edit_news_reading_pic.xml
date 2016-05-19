@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 添加/修改新闻时的导读图模块 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/readingPicLayout"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/reading_pic_layout_height"
+    android:background="@color/gray_lighter" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/reading_pic_layout_half_height"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        android:weightSum="1" >
+
+        <TextView
+            android:id="@+id/addReadingPicTV"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="0.6"
+            android:drawableLeft="@drawable/common_add"
+            android:drawableStart="@drawable/common_add"
+            android:gravity="center"
+            android:text="@string/add_reading_pic"
+            android:textColor="@color/dark_gray"
+            android:textSize="@dimen/add_reading_pic_text_size" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/readingPicIV"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/reading_pic_layout_height"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:id="@+id/addReadingPicETLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/reading_pic_layout_half_height"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:weightSum="1" >
+
+        <EditText
+            android:id="@+id/addReadingPicET"
+            android:layout_width="0dip"
+            android:layout_height="@dimen/common_edit_text_height"
+            android:layout_weight="0.9"
+            android:background="@drawable/white_bg_radius_and_stroke"
+            android:hint="@string/add_reading_pic_edittext_hint" />
+    </LinearLayout>
+    <!--
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/reading_pic_layout_height"
+        android:background="@color/gray_lighter"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:weightSum="1" >
+
+        
+    </LinearLayout>    -->
+
+</RelativeLayout>
