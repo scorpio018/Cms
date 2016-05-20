@@ -14,7 +14,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-
+/**
+ * 通用的底部弹出按钮组
+ * @author yangyang
+ *
+ */
 public abstract class CommonAlertDialogActivity extends Activity {
 	
 	protected LinearLayout popLayout;
@@ -32,8 +36,6 @@ public abstract class CommonAlertDialogActivity extends Activity {
 	 * 按钮的类别（0：默认样式；1：EnableSimpleChangeButton；）
 	 */
 	private int btnType = 0;
-	
-	private int btnHeight = 80;
 	
 	private float textSize = 18f;
 	

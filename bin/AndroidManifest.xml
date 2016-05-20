@@ -2,35 +2,38 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.enorth.cms.view"
     android:versionCode="1"
-    android:versionName="1.0">
+    android:versionName="1.0" >
 
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="21" />
-    
-    <!-- CCESS_COARSE_LOCATION或者ACCESS_FINE_LOCATION权限是使用LoactionManger方法所必须依靠的。
+
+    <!--
+         CCESS_COARSE_LOCATION或者ACCESS_FINE_LOCATION权限是使用LoactionManger方法所必须依靠的。
     	例如，如果你的应用程序仅仅使用基于网络的位置提供者，你需要声明ACCESS_COARSE_LOCATION权限。
     	更高精度的GPS需要ACCESS_FINE_LOCATION权限。
-    	注意声明ACCESS_FINE_LOCATION权限已经包含了ACCESS_COARSE_LOCATION。 -->
+    	注意声明ACCESS_FINE_LOCATION权限已经包含了ACCESS_COARSE_LOCATION。
+    -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> -->
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-	<uses-permission android:name="android.permission.CAMERA" />
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-	<uses-permission android:name="android.permission.RECORD_AUDIO" />
-	<uses-permission android:name="android.permission.WAKE_LOCK" />
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-	<!-- 加入对sd卡访问的权限 -->
-	<uses-permission android:name="android.permission.RESTART_PACKAGES" />  
-	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	<!-- 使用震动得加权限 -->
-	<uses-permission android:name="android.permission.VIBRATE"></uses-permission>
-	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-	
-	<uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!-- 加入对sd卡访问的权限 -->
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 使用震动得加权限 -->
+    <uses-permission android:name="android.permission.VIBRATE" >
+    </uses-permission>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
@@ -38,6 +41,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Light.NoTitleBar" >
+
         <!-- 正式使用时的开始页面 -->
         <activity
             android:name=".SplashActivity"
@@ -49,7 +53,8 @@
             </intent-filter>
         </activity>
         <!-- 使用CrossWalk加载web页面的activity -->
-        <!-- <activity
+        <!--
+        <activity
             android:name=".CrossWalkActivity"
             android:label="@string/app_name" >
             <intent-filter>
@@ -57,8 +62,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> -->
-        <!-- <activity
+        </activity>
+        -->
+        <!--
+        <activity
             android:name=".news.NewsListActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >
@@ -67,43 +74,84 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> -->
-        <activity android:name=".login.LoginActivity"
-            android:windowSoftInputMode="stateUnspecified|stateHidden"></activity>
-        <activity android:name=".login.MipcaActivityCapture"></activity>
-        <activity android:name=".login.VirtualKeycode"></activity>
-        <activity android:name=".WelcomeActivity"></activity>
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".web.PullableWebViewActivity"></activity>
-        <activity android:name=".web.CrossWalkActivity"></activity>
-        <activity android:name=".material.MaterialUploadActivity"></activity>
-        <activity android:name=".material.MaterialBtnActivity"></activity>
-        <activity android:name=".BaseActivity"></activity>
-        <!-- 软键盘默认不弹出  -->
-        <activity android:name=".news.ChannelSearchActivity"
-            android:windowSoftInputMode="stateUnspecified|stateHidden"></activity>
+        </activity>
+        -->
+        <activity
+            android:name=".login.LoginActivity"
+            android:windowSoftInputMode="stateUnspecified|stateHidden" >
+        </activity>
+        <activity android:name=".login.MipcaActivityCapture" >
+        </activity>
+        <activity android:name=".login.VirtualKeycode" >
+        </activity>
+        <activity android:name=".WelcomeActivity" >
+        </activity>
+        <activity android:name=".MainActivity" >
+        </activity>
+        <activity android:name=".web.PullableWebViewActivity" >
+        </activity>
+        <!-- <activity android:name=".web.CrossWalkActivity"></activity> -->
+        <activity android:name=".material.MaterialUploadActivity" >
+        </activity>
+        <activity android:name=".material.MaterialBtnActivity" >
+        </activity>
+        <activity android:name=".BaseActivity" >
+        </activity>
+        <!-- 软键盘默认不弹出 -->
+        <activity
+            android:name=".news.ChannelSearchActivity"
+            android:windowSoftInputMode="stateUnspecified|stateHidden" >
+        </activity>
         <!-- <activity android:name=".news.NewsListActivity"></activity> -->
         <!-- <activity android:name=".news.NewsListFixActivity"></activity> -->
-        <activity android:name=".news.NewsListFragActivity"></activity>
-        <activity android:name=".news.NewsLiveListFragActivity"></activity>
-        <activity android:name=".news.NewsSearchActivity"
-            android:windowSoftInputMode="stateUnspecified|stateHidden"></activity>
+        <activity android:name=".news.NewsListFragActivity" >
+        </activity>
+        <activity android:name=".news.NewsLiveListFragActivity" >
+        </activity>
+        <activity
+            android:name=".news.NewsSearchActivity"
+            android:windowSoftInputMode="stateUnspecified|stateHidden" >
+        </activity>
         <!-- adjustPan的目的是使软键盘弹出的时候，编辑文本框也能显示在视野中 -->
-        <activity android:name=".news.NewsAddActivity"
-            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
-        <activity android:name=".news.AddReadingPicActivity" android:theme="@style/MyDialogStyleBottom"></activity>
-        <activity android:name=".news.ChooseReadingPicFromActivity" android:theme="@style/MyDialogStyleBottom"></activity>
+        <activity
+            android:name=".news.NewsAddActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden" >
+        </activity>
+        <activity
+            android:name=".news.AddReadingPicActivity"
+            android:theme="@style/MyDialogStyleBottom" >
+        </activity>
+        <activity
+            android:name=".news.ChooseReadingPicFromActivity"
+            android:theme="@style/MyDialogStyleBottom" >
+        </activity>
+        <activity
+            android:name=".news.AddManuscriptsActivity"
+            android:theme="@style/MyDialogStyleRight"
+            android:windowSoftInputMode="stateUnspecified|stateHidden" >
+        </activity>
+        <!-- <activity android:name=".news.AddManuscriptsActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity> -->
         <!-- <activity android:name=".upload.UploadPicActivity"></activity> -->
-        <activity android:name=".upload.GalleryActivity"></activity>
-        <activity android:name=".upload.UploadPicPreviewActivity"></activity>
-        <activity android:name=".upload.UploadPicFinishCheckActivity"
-            android:windowSoftInputMode="stateUnspecified|stateHidden"></activity>
-        <activity android:name=".upload.VideoActivity"></activity>
-        <activity android:name=".securitysetting.SecuritySettingActivity"></activity>
-        <activity android:name=".securitysetting.ChangePwdActivity"
-            android:windowSoftInputMode="stateUnspecified|stateHidden"></activity>
-        <activity android:name=".about.AboutActivity"></activity>
-        <activity android:name=".pulltorefreshlistview.PullToRefreshListActivity"></activity>
+        <activity android:name=".upload.GalleryActivity" >
+        </activity>
+        <activity android:name=".upload.UploadPicPreviewActivity" >
+        </activity>
+        <activity
+            android:name=".upload.UploadPicFinishCheckActivity"
+            android:windowSoftInputMode="stateUnspecified|stateHidden" >
+        </activity>
+        <activity android:name=".upload.VideoActivity" >
+        </activity>
+        <activity android:name=".securitysetting.SecuritySettingActivity" >
+        </activity>
+        <activity
+            android:name=".securitysetting.ChangePwdActivity"
+            android:windowSoftInputMode="stateUnspecified|stateHidden" >
+        </activity>
+        <activity android:name=".about.AboutActivity" >
+        </activity>
+        <activity android:name=".pulltorefreshlistview.PullToRefreshListActivity" >
+        </activity>
     </application>
 
 </manifest>

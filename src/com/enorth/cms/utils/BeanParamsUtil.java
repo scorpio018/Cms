@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import com.enorth.cms.annotation.SharedPreSaveAnnotation;
 import com.enorth.cms.annotation.UrlParamAnnotation;
 import com.enorth.cms.bean.login.LoginBean;
+import com.enorth.cms.bean.login.ScanBean;
 import com.enorth.cms.interutil.MapComparator;
 
 import android.content.Context;
@@ -67,6 +68,11 @@ public class BeanParamsUtil {
 		// token值
 		String token = loginUserBean.getToken();
 		params.add(new BasicNameValuePair("api_token", token));
+//		ScanBean curScanBean = StaticUtil.getCurScanBean(context);
+		int appVersion = StaticUtil.getAppVersion(context);
+		if (appVersion != 0) {
+			params.add(new BasicNameValuePair("version", String.valueOf(appVersion)));
+		}
 		return params;
 //		params = UrlUtil.addUrlCommonParams(params, context, ob);
 	}

@@ -35,4 +35,8 @@ public class UrlConst {
 	 * 修改密码
 	 */
 	public static final String CHANGE_PWD = "cms_api_60/Api!changePassword.do";
+	/**
+	 * 可选稿源
+	 */
+	public static final String SELECTABLE_MANUSCRIPTS = "cms_api_60/Api!sourceNames.do";
 }

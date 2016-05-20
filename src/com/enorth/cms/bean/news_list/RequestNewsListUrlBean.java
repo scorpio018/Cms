@@ -30,10 +30,10 @@ public class RequestNewsListUrlBean implements Serializable {
 	@UrlParamAnnotation
 	private int newsType = ParamConst.NEWS_TYPE_ALL;
 	/**
-	 * 当前用户
+	 * 当前用户（注释原因：接口中已去掉）
 	 */
-	@UrlParamAnnotation
-	private int initEditor;
+//	@UrlParamAnnotation
+//	private int initEditor;
 
 	public Long getChannelId() {
 		return channelId;
@@ -67,13 +67,13 @@ public class RequestNewsListUrlBean implements Serializable {
 		this.newsType = newsType;
 	}
 
-	public int getInitEditor() {
+	/*public int getInitEditor() {
 		return initEditor;
 	}
 
 	public void setInitEditor(int initEditor) {
 		this.initEditor = initEditor;
-	}
+	}*/
 	
 	
 }

@@ -92,4 +92,6 @@
     <string name="enclosure">附件</string>
     <string name="reset">重置</string>
     <string name="typesetting">排版</string>
+    <string name="add_manuscripts_hint">添加稿源</string>
+    <string name="selectable_manuscripts">可选稿源：</string>
 </resources>

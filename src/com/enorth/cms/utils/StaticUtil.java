@@ -13,6 +13,9 @@ import com.enorth.cms.bean.login.ScanBean;
 import com.enorth.cms.consts.ParamConst;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 
 /**
  * 存储项目中经常会用到的数据bean
@@ -23,6 +26,10 @@ import android.content.Context;
 public class StaticUtil {
 
 	private static LoginUserUsedBean loginUserUsedBean;
+	
+	private static ChannelBean tmpChannelBean;
+	
+	private static int appVersion;
 	
 	static {
 		loginUserUsedBean = new LoginUserUsedBean();
@@ -145,6 +152,13 @@ public class StaticUtil {
 		saveChannelBeansTree(channelBeans);
 		// 将从根频道到当前登录用户对应的频道的频道名对应的树型集合进行全局变量存入
 		saveChannelNamesTree(channelNames);
+	}
+	/**
+	 * 将临时使用的频道bean存入tmpChannelBean中
+	 * @param channelBean
+	 */
+	public static void saveTmpChannelBean(ChannelBean channelBean) {
+		StaticUtil.tmpChannelBean = channelBean;
 	}
 
 	/**
@@ -274,6 +288,41 @@ public class StaticUtil {
 			channelName = substrText(channelNamesTree[0], allowLength / 2 - 3) + "/../" + substrText(lastDeptName, allowLength / 2 - 3);
 		}
 		return channelName;
+	}
+	/**
+	 * 在添加/修改新闻中使用，不过此频道不与其他位置的频道进行联动
+	 * @param context
+	 * @param refresh true：表示获取联动的频道bean；false：表示获取当前存入tmpChannelBean的值
+	 * @return
+	 */
+	public static ChannelBean getTmpChannelBean(Context context, boolean refresh) {
+		if (refresh) {
+			StaticUtil.tmpChannelBean = getCurChannelBean(context);
+		} else {
+			if (StaticUtil.tmpChannelBean == null) {
+				StaticUtil.tmpChannelBean = getCurChannelBean(context);
+			}
+		}
+		
+		return StaticUtil.tmpChannelBean;
+	}
+	
+	/**
+	 * 获取应用的版本号
+	 * @param context
+	 * @return
+	 */
+	public static int getAppVersion(Context context) {
+		if (appVersion == 0) {
+			PackageManager manager = context.getPackageManager();
+			try {
+				PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+				appVersion = info.versionCode;
+			} catch (NameNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		return appVersion;
 	}
 	
 	private static String substrText(String text, int length) {

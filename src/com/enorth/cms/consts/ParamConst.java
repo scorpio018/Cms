@@ -387,6 +387,10 @@ public class ParamConst {
 	 * 从选择设置/删除导读图操作跳转到选择导读图的方式的REQUEST_CODE值
 	 */
 	public static final int ADD_READING_PIC_ACTIVITY_TO_CHOOSE_READING_PIC_FROM_ACTIVITY_REQUEST_CODE = 2;
+	/**
+	 * 从添加新闻跳转到添加稿源的REQUEST_CODE值
+	 */
+	public static final int NEWS_ADD_ACTIVITY_TO_ADD_MANUSCRIPTS_ACTIVITY_REQUEST_CODE = 1;
 	/*--------*/
 	/**
 	 * 从搜索新闻页面返回到新闻列表的RESULT_CODE值

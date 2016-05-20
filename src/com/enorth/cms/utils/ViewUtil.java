@@ -17,7 +17,6 @@ import com.enorth.cms.view.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.bluetooth.BluetoothAssignedNumbers;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
@@ -29,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -74,7 +74,7 @@ public class ViewUtil {
 		if (view != null) {
 			if (view instanceof LinearLayout) {
 				// 获取左侧的选中图标
-				ImageView checkBtn = (ImageView) view.findViewById(R.id.iv_check_btn);
+				CheckBox checkBtn = (CheckBox) view.findViewById(R.id.iv_check_btn);
 				int checkBtnHeight = checkBtn.getMeasuredHeight();
 				TextView title = (TextView) view.findViewById(R.id.tv_news_title);
 				int titleHeight = title.getMeasuredHeight();

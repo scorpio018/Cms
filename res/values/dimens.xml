@@ -47,6 +47,7 @@
     <dimen name="header_footer_top_bottom_padding">15dp</dimen>
     
     <dimen name="common_line_height">2dip</dimen>
+    <dimen name="common_line_height_sm">1dip</dimen>
     
     <dimen name="news_refresh_layout_height">70dip</dimen>
     <dimen name="news_reload_layout_height">70dip</dimen>
@@ -169,5 +170,9 @@
     <dimen name="edit_news_bottom_btn_padding_right">10dip</dimen>
     <dimen name="edit_news_content_and_abstract_title_padding">10dip</dimen>
     <dimen name="edit_news_content_and_abstract_btn_height">30dip</dimen>
+    
+    <dimen name="edit_news_add_manuscripts_layout_width">280dip</dimen>
+    <dimen name="edit_news_add_manuscripts_edit_text_layout_margin_top">20dip</dimen>
+    <dimen name="edit_news_add_manuscripts_line_margin_top">10dip</dimen>
 
 </resources>

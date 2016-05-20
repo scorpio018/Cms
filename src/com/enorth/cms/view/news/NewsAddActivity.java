@@ -1,9 +1,11 @@
 package com.enorth.cms.view.news;
 
+import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.listener.CommonOnClickListener;
 import com.enorth.cms.utils.ColorUtil;
 import com.enorth.cms.view.R;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -82,7 +84,7 @@ public class NewsAddActivity extends NewsEditCommonActivity {
 
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(NewsAddActivity.this, "点击了送签按钮", Toast.LENGTH_SHORT).show();
+				Toast.makeText(NewsAddActivity.this, "点击了保存按钮", Toast.LENGTH_SHORT).show();
 			}
 		};
 
@@ -91,7 +93,7 @@ public class NewsAddActivity extends NewsEditCommonActivity {
 
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(NewsAddActivity.this, "点击了送签按钮", Toast.LENGTH_SHORT).show();
+				Toast.makeText(NewsAddActivity.this, "点击了预览按钮", Toast.LENGTH_SHORT).show();
 			}
 		};
 		
@@ -100,7 +102,7 @@ public class NewsAddActivity extends NewsEditCommonActivity {
 			
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(NewsAddActivity.this, "点击了送签按钮", Toast.LENGTH_SHORT).show();
+				Toast.makeText(NewsAddActivity.this, "点击了存退按钮", Toast.LENGTH_SHORT).show();
 			}
 		};
 	}
@@ -110,6 +112,14 @@ public class NewsAddActivity extends NewsEditCommonActivity {
 		differentItem = (LinearLayout) getLayoutInflater().inflate(R.layout.normal_edit_news_diff_item, null);
 		manuscripts = (TextView) differentItem.findViewById(R.id.manuscripts);
 		differentLayout.addView(differentItem);
+		manuscripts.setOnClickListener(new CommonOnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(NewsAddActivity.this, AddManuscriptsActivity.class);
+				NewsAddActivity.this.startActivityForResult(intent, ParamConst.NEWS_ADD_ACTIVITY_TO_ADD_MANUSCRIPTS_ACTIVITY_REQUEST_CODE);
+			}
+		});
 	}
 
 	@Override

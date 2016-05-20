@@ -566,7 +566,7 @@ public abstract class NewsCommonActivity extends BaseFragmentActivity implements
 	private void initNewsListBean() {
 		newsListBean = new RequestNewsListUrlBean();
 		newsListBean.setChannelId(channelBean.getChannelId());
-		newsListBean.setInitEditor(loginBean.getUserId());
+//		newsListBean.setInitEditor(loginBean.getUserId());
 		newsListBean.setState(newsStateBtnState[0]);
 		newsListBean.setNewsType(initCurNewsType());
 		Page page = new Page();
