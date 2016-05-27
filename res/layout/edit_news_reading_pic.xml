@@ -8,10 +8,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/reading_pic_layout_half_height"
+        android:layout_height="@dimen/reading_pic_text_view_height"
+        android:layout_alignParentTop="true"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
-        android:layout_alignParentTop="true"
         android:weightSum="1" >
 
         <TextView
@@ -34,22 +34,40 @@
         android:scaleType="centerCrop" />
 
     <LinearLayout
-        android:id="@+id/addReadingPicETLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/reading_pic_layout_half_height"
-        android:gravity="center"
+        android:layout_height="@dimen/reading_pic_add_news_title_height"
         android:layout_alignParentBottom="true"
+        android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="1" >
 
-        <EditText
-            android:id="@+id/addReadingPicET"
+        <LinearLayout
+            android:id="@+id/addReadingPicETLayout"
             android:layout_width="0dip"
             android:layout_height="@dimen/common_edit_text_height"
             android:layout_weight="0.9"
             android:background="@drawable/white_bg_radius_and_stroke"
-            android:hint="@string/add_reading_pic_edittext_hint" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/common_edit_text_height"
+                android:gravity="center_vertical"
+                android:text="@string/add_reading_pic_edittext_hint"
+                android:textColor="@color/gray" />
+
+            <EditText
+                android:id="@+id/addReadingPicET"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/common_edit_text_height"
+                android:gravity="center_vertical"
+                android:background="@null"
+                android:singleLine="true"
+                android:textColor="@color/black" />
+        </LinearLayout>
     </LinearLayout>
+
     <!--
     <LinearLayout
         android:layout_width="match_parent"
@@ -60,6 +78,7 @@
         android:weightSum="1" >
 
         
-    </LinearLayout>    -->
+    </LinearLayout>
+    -->
 
 </RelativeLayout>

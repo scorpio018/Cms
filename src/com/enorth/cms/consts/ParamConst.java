@@ -123,6 +123,10 @@ public class ParamConst {
 	public static final int FAIL = 1;
 	
 	/**
+	 * 添加新闻
+	 */
+	public static final int STATE_ADD = -100;
+	/**
 	 * 编辑新闻
 	 */
 	public static final int STATE_EDIT = 0;
@@ -326,6 +330,7 @@ public class ParamConst {
 	 * 摘要（标识position）
 	 */
 	public static final int EDIT_NEWS_BTN_ABSTRACT = 1;
+	
 	/**
 	 * 正文文本框提示信息
 	 */
@@ -334,8 +339,27 @@ public class ParamConst {
 	 * 摘要文本框提示信息
 	 */
 	public static final String EDIT_NEWS_ABSTRACT_EDITTEXT_HINT = "请输入摘要";
-	
+	/**
+	 * 上传PNG图片
+	 */
 	public static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+	/**
+	 * 上传JPG图片
+	 */
+	public static final MediaType MEDIA_TYPE_JPG = MediaType.parse("image/jpg");
+	/**
+	 * 上传JPEG图片
+	 */
+	public static final MediaType MEDIA_TYPE_JPEG = MediaType.parse("image/jpg");
+	/**
+	 * 上传BMP图片
+	 */
+	public static final MediaType MEDIA_TYPE_BMP = MediaType.parse("image/bmp");
+	/**
+	 * 上传文件
+	 */
+	public static final MediaType MEDIA_TYPE_STREAM = MediaType.parse("application/octet-stream");
+	
 	
 	/**
 	 * 弹出浮层的默认高度
@@ -378,19 +402,36 @@ public class ParamConst {
 	/**
 	 * 跳转到扫一扫页面的REQUEST_CODE值
 	 */
-	public static final int SCANNING_REQUEST_CODE = 1;
+	public static final int SCANNING_REQUEST_CODE = 7;
 	/**
 	 * 从添加/修改新闻跳转到选择设置/删除导读图操作的REQUEST_CODE值
 	 */
-	public static final int NEWS_EDIT_COMMON_ACTIVITY_TO_ADD_READING_PIC_ACTIVITY_REQUEST_CODE = 1;
+	public static final int NEWS_EDIT_COMMON_ACTIVITY_TO_ADD_READING_PIC_ACTIVITY_REQUEST_CODE = 8;
 	/**
 	 * 从选择设置/删除导读图操作跳转到选择导读图的方式的REQUEST_CODE值
 	 */
-	public static final int ADD_READING_PIC_ACTIVITY_TO_CHOOSE_READING_PIC_FROM_ACTIVITY_REQUEST_CODE = 2;
+	public static final int ADD_READING_PIC_ACTIVITY_TO_CHOOSE_READING_PIC_FROM_ACTIVITY_REQUEST_CODE = 9;
 	/**
 	 * 从添加新闻跳转到添加稿源的REQUEST_CODE值
 	 */
-	public static final int NEWS_ADD_ACTIVITY_TO_ADD_MANUSCRIPTS_ACTIVITY_REQUEST_CODE = 1;
+	public static final int NEWS_ADD_ACTIVITY_TO_ADD_MANUSCRIPTS_ACTIVITY_REQUEST_CODE = 10;
+	/**
+	 * 从添加新闻跳转到添加关键词的REQUEST_CODE值
+	 */
+	public static final int NEWS_ADD_ACTIVITY_TO_ADD_KEYWORD_ACTIVITY_REQUEST_CODE = 11;
+	/**
+	 * 从添加/修改新闻跳转到选择新闻频道的REQUEST_CODE值
+	 */
+	public static final int NEWS_EDIT_COMMON_ACTIVITY_TO_CHANNEL_SEARCH_ACTIVITY_REQUEST_CODE = 12;
+	/**
+	 * 从添加/修改新闻跳转到选择新闻模版的REQUEST_CODE值
+	 */
+	public static final int NEWS_EDIT_COMMON_ACTIVITY_TO_TEMPLATE_SEARCH_ACTIVITY_REQUEST_CODE = 13;
+	/**
+	 * 从添加普通新闻跳转到选择新闻模版的REQUEST_CODE值
+	 */
+	public static final int NEWS_ADD_ACTIVITY_TO_TEMPLATE_SEARCH_ACTIVITY_REQUEST_CODE = 14;
+	
 	/*--------*/
 	/**
 	 * 从搜索新闻页面返回到新闻列表的RESULT_CODE值
@@ -405,7 +446,7 @@ public class ParamConst {
 	 */
 	public static final int NEWS_SEARCH_ACTIVITY_BACK_TO_NEWS_LIVE_LIST_FRAG_ACTIVITY_RESULT_CODE = 4;
 	/**
-	 * 从频道搜索页面返回到新闻列表的RESULT_CODE值
+	 * 从新闻频道搜索页面返回到新闻列表的RESULT_CODE值
 	 */
 	public static final int CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_LIVE_LIST_FRAG_ACTIVITY_RESULT_CODE = 5;
 
@@ -414,13 +455,29 @@ public class ParamConst {
 	 */
 	public static final int UPLOAD_PIC_PREVIEW_ACTIVITY_BACK_TO_GALLERY_ACTIVITY_RESULT_CODE = 3;
 	/**
+	 * 从新闻频道搜索页面返回到新闻添加/修改页面的RESULT_CODE值
+	 */
+	public static final int CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_EDIT_ACTIVITY_RESULT_CODE = 6;
+	/**
 	 * 选择导读图后将导读图传回NewsEditCommonActivity的RESULT_CODE值
 	 */
-	public static final int ADD_READING_PIC_ACTIVITY_BACK_TO_NEWS_EIDT_COMMON_ACTIVITY_HAS_IMG_DATAS_RESULT_CODE = 1;
+	public static final int ADD_READING_PIC_ACTIVITY_BACK_TO_NEWS_EDIT_COMMON_ACTIVITY_HAS_IMG_DATAS_RESULT_CODE = 7;
 	/**
 	 * 点击“删除导读图”的RESULT_CODE值
 	 */
-	public static final int ADD_READING_PIC_ACTIVITY_BACK_TO_NEWS_EIDT_COMMON_ACTIVITY_DEL_READING_PIC_RESULT_CODE = 2;
+	public static final int ADD_READING_PIC_ACTIVITY_BACK_TO_NEWS_EDIT_COMMON_ACTIVITY_DEL_READING_PIC_RESULT_CODE = 8;
+	/**
+	 * 从添加稿源返回到NewsEditCommonActivity的RESULT_CODE值
+	 */
+	public static final int ADD_MANUSCRIPTS_ACTIVITY_BACK_TO_NEWS_ADD_ACTIVITY_RESULT_CODE = 9;
+	/**
+	 * 从添加关键词返回到NewsEditCommonActivity的RESULT_CODE值
+	 */
+	public static final int ADD_KEYWORD_ACTIVITY_BACK_TO_NEWS_ADD_ACTIVITY_RESULT_CODE = 10;
+	/**
+	 * 从添加新闻模版返回到NewsEditCommonActivity的RESULT_CODE值
+	 */
+	public static final int TEMPLATE_SEARCH_ACTIVITY_BACK_TO_NEWS_EDIT_COMMON_ACTIVITY_RESULT_CODE = 11;
 	
 	/**
 	 * 调用系统相机拍照、系统相册选择照片并显示
@@ -667,6 +724,22 @@ public class ParamConst {
 	 */
 	public static final String ADD_PIC_IS_JUMP_TO_PREV_ACTIVITY = "addPicIsJumpToPrevActivity";
 	/**
+	 * 在“添加稿源”中输入的稿源
+	 */
+	public static final String MANUSCRIPTS = "manuscripts";
+	/**
+	 * 在跳转到ChannelSearchActivity时表示处理后的结果是否联动
+	 */
+	public static final String CHANNEL_SEARCH_IS_TEMP = "channelSearchIsTemp";
+	/**
+	 * 在跳转到ChannelSearchActivity时表示处理后的结果是联动的
+	 */
+	public static final Boolean CHANNEL_SEARCH_IS_TEMP_YES = true;
+	/**
+	 * 在跳转到ChannelSearchActivity时表示处理后的结果不是联动的
+	 */
+	public static final Boolean CHANNEL_SEARCH_IS_TEMP_NO = false;
+	/**
 	 * 点击添加图片时，不是返回到上一个activity
 	 */
 	public static final Integer ADD_PIC_IS_JUMP_TO_PREV_ACTIVITY_NO = 1;
@@ -674,6 +747,34 @@ public class ParamConst {
 	 * 点击添加图片时，是返回到上一个activity
 	 */
 	public static final Integer ADD_PIC_IS_JUMP_TO_PREV_ACTIVITY_YES = 2;
+	/**
+	 * 模版类型
+	 */
+	public static final String TEMPLATE_TYPE = "templateType";
+	/**
+	 * 默认模版类型
+	 */
+	public static final String TEMPLATE_TYPE_NORMAL = "doc";
+	/**
+	 * 图文直播的模版类型
+	 */
+	public static final String TEMPLATE_TYPE_LIVE = "template_interview";
+	/**
+	 * 当前选中的新闻频道
+	 */
+	public static final String CUR_TEMPLATE_FILE = "curTemplateFile";
+	/**
+	 * 跳转到模版页面时要读取的模版类型（分为普通新闻模版和4g模版）
+	 */
+	public static final String LOAD_TEMPLATE_FILE_TYPE = "loadTemplateFileType";
+	/**
+	 * 普通新闻模版
+	 */
+	public static final Integer LOAD_TEMPLATE_FILE_TYPE_NORMAL = 1;
+	/**
+	 * 4g新闻模版
+	 */
+	public static final Integer LOAD_TEMPLATE_FILE_TYPE_4G = 2;
 	
 	/*---------------------广播注册时的action及其对应的功能 start--------------------------------*/
 	/**

@@ -36,7 +36,23 @@ public class UrlConst {
 	 */
 	public static final String CHANGE_PWD = "cms_api_60/Api!changePassword.do";
 	/**
+	 * 生成新的newsId
+	 */
+	public static final String GENERATE_NEWS_ID = "cms_api_60/Api!generateNewsId.do";
+	/**
 	 * 可选稿源
 	 */
 	public static final String SELECTABLE_MANUSCRIPTS = "cms_api_60/Api!sourceNames.do";
+	/**
+	 * 新闻模版
+	 */
+	public static final String TEMPLATE_FILES = "cms_api_60/Api!templateFiles.do";
+	/**
+	 * 4G模板
+	 */
+	public static final String TEMPLATE_FILES_4G = "cms_api_60/Api!templateFiles4g.do";
+	/**
+	 * 保存新闻&图文直播新闻
+	 */
+	public static final String SAVE_NEWS = "cms_api_60/Api!saveNews.do";
 }

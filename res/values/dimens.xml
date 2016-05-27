@@ -39,6 +39,9 @@
     <dimen name="common_padding">5dip</dimen>
     <dimen name="common_margin">20dip</dimen>
     
+    <dimen name="common_circle_width">20dip</dimen>
+    <dimen name="common_circle_height">20dip</dimen>
+    
     <!-- 下拉刷新、上拉加载更多 -->
     <dimen name="indicator_right_padding">10dp</dimen>
     <dimen name="indicator_corner_radius">12dp</dimen>
@@ -54,6 +57,8 @@
     
     <dimen name="news_title_height">50dip</dimen>
     <dimen name="news_title_text_size">18dip</dimen>
+    <dimen name="news_title_left_icon_padding_left">10dip</dimen>
+    <dimen name="news_title_left_icon_padding_right">10dip</dimen>
     <dimen name="news_title_left_icon_margin_left">20dip</dimen>
     <dimen name="news_title_right_icon_margin_right">20dip</dimen>
     <dimen name="news_title_right_icon_padding_left">20dip</dimen>
@@ -113,6 +118,7 @@
     <dimen name="news_item_news_title_margin_bottom">5dip</dimen>
     <dimen name="news_item_news_title_margin_right">10dip</dimen>
     <dimen name="news_item_news_title_padding_bottom">5dip</dimen>
+    <dimen name="news_next_width">40dip</dimen>
     
     <dimen name="news_operate_btn_layout_padding_common">20dip</dimen>
     
@@ -160,11 +166,13 @@
     <dimen name="about_project_name_text_size">18sp</dimen>
     <dimen name="common_list_view_item_padding">20dip</dimen>
     <dimen name="reading_pic_layout_height">150dip</dimen>
-    <dimen name="reading_pic_layout_half_height">75dip</dimen>
+    <!-- <dimen name="reading_pic_layout_half_height">75dip</dimen> -->
+    <dimen name="reading_pic_text_view_height">60dip</dimen>
+    <dimen name="reading_pic_add_news_title_height">90dip</dimen>
     <dimen name="add_reading_pic_btn_height">75dip</dimen>
     <dimen name="add_reading_pic_text_size">18sp</dimen>
     <dimen name="edit_news_common_text_size">16sp</dimen>
-    <dimen name="edit_news_common_margin_top">20dip</dimen>
+    <dimen name="edit_news_common_margin_top">10dip</dimen>
     <dimen name="edit_news_bottom_btn_height">40dip</dimen>
     <dimen name="edit_news_bottom_btn_padding_left">10dip</dimen>
     <dimen name="edit_news_bottom_btn_padding_right">10dip</dimen>
@@ -174,5 +182,12 @@
     <dimen name="edit_news_add_manuscripts_layout_width">280dip</dimen>
     <dimen name="edit_news_add_manuscripts_edit_text_layout_margin_top">20dip</dimen>
     <dimen name="edit_news_add_manuscripts_line_margin_top">10dip</dimen>
-
+    
+    <dimen name="edit_news_add_template_file_item_height">50dip</dimen>
+    <dimen name="edit_news_add_template_file_text_view_margin_left">20dip</dimen>
+    
+    <dimen name="edit_news_add_keyword_layout_width">280dip</dimen>
+    <dimen name="edit_news_add_keyword_edit_text_layout_margin_top">20dip</dimen>
+    <dimen name="edit_news_add_keyword_line_margin_top">10dip</dimen>
+    
 </resources>

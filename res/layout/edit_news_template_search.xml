@@ -3,20 +3,35 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:gravity="center_horizontal"
     android:layout_marginTop="@dimen/edit_news_common_margin_top"
+    android:gravity="center_horizontal"
+    android:orientation="horizontal"
     android:weightSum="1" >
-    
-    <TextView 
-        android:id="@+id/templateSearchTV"
+
+    <LinearLayout
+        android:id="@+id/templateSearchLayout"
         android:layout_width="0dip"
-        android:layout_height="@dimen/common_text_view_btn_height"
+        android:layout_height="wrap_content"
         android:layout_weight="0.9"
-        android:gravity="center"
-        android:textColor="@color/gray"
-        android:textSize="@dimen/edit_news_common_text_size"
-        android:background="@drawable/gray_lighter_bg_radius_and_stroke"
-        android:text="@string/template_search_text_view"/>
+        android:background="@drawable/bg_gray_default_radius_and_stroke"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:weightSum="1" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/common_text_view_btn_height"
+            android:gravity="center_vertical"
+            android:text="@string/template_search_text_view"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/edit_news_common_text_size" />
+        <TextView
+            android:id="@+id/templateSearchTV"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/common_text_view_btn_height"
+            android:gravity="center"
+            android:textColor="@color/common_blue"
+            android:textSize="@dimen/edit_news_common_text_size" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -1,7 +1,10 @@
 package com.enorth.cms.listener.popup;
 
+import com.enorth.cms.bean.PopupWindowItemBean;
+import com.enorth.cms.bean.login.ScanBean;
 import com.enorth.cms.listener.CommonOnTouchListener;
 import com.enorth.cms.utils.ScreenTools;
+import com.enorth.cms.utils.StaticUtil;
 import com.enorth.cms.view.R;
 
 import android.app.Activity;
@@ -61,6 +64,17 @@ public abstract class PopupWindowContainDelMarkOnTouchListener extends CommonOnT
 //			layout.removeView((View) v.getParent());
 //			layout.removeViewInLayout((View) v.getParent());
 		} else if (v instanceof RelativeLayout) {
+			Object tag = v.getTag();
+			if (tag instanceof PopupWindowItemBean) {
+				// 需要获取文字对应的bean
+				PopupWindowItemBean bean = (PopupWindowItemBean) tag;
+				Object itemBean = bean.getItemBean();
+				if (itemBean instanceof ScanBean) {
+					// 刷新新选中的ScanBean
+					ScanBean scanBean = (ScanBean) itemBean;
+					StaticUtil.saveCurScanBean(scanBean, context);
+				}
+			}
 			// 点击整个item
 			TextView chooseTV = (TextView) v.findViewById(R.id.chooseText);
 			String chooseText = (String) chooseTV.getText();

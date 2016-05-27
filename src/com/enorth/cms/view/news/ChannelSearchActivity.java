@@ -183,6 +183,10 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	 */
 	private RequestChannelSearchUrlBean requestChannelSearchUrlBean;
 	/**
+	 * 表示当前频道搜索是否存入临时变量而不进行联动
+	 */
+	private boolean channelSearchIsTemp;
+	/**
 	 * 当前选中的频道bean
 	 */
 	private ChannelBean channelBean;
@@ -224,8 +228,8 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 		back = (ImageView) findViewById(R.id.titleLeftIV);
 		// 标题
 		curChooseChannelTV = (TextView) findViewById(R.id.titleMiddleTV);
-		
-		confirm = (TextView) findViewById(R.id.titleRightTV);
+		// 由于选中效果改变，不需要点击右上角的“完成”菜单了
+//		confirm = (TextView) findViewById(R.id.titleRightTV);
 		
 		// 搜索框包裹的Layout
 		channelSearchEditLayout = (RelativeLayout) findViewById(R.id.channelSearchEditLayout);
@@ -252,14 +256,19 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 		// 给标题的右侧添加一个向下的箭头
 		curChooseChannelTV.setCompoundDrawablesWithIntrinsicBounds(null, null, DrawableUtil.getDrawable(this, R.drawable.news_down_btn), null);
 		// 完成
-		confirm.setText(R.string.channel_search_title_confirm);
+//		confirm.setText(R.string.channel_search_title_confirm);
 		
 	}
 	
 	private void initBaseData() {
+		initChannelSearchIsTemp();
 		// 获取当前选中的频道bean
 //		channelBean = (ChannelBean) BeanParamsUtil.getObject(ChannelBean.class, this);
-		channelBean = StaticUtil.getCurChannelBean(this);
+		if (channelSearchIsTemp) {
+			channelBean = StaticUtil.getTmpChannelBean(this, false);
+		} else {
+			channelBean = StaticUtil.getCurChannelBean(this);
+		}
 		// 将当前的频道ID进行储存
 		initRequestChannelSearchUrlBean();
 		
@@ -278,6 +287,10 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 		initHandler();
 		getCurCheckedChannelId();
 		initAdapter();
+	}
+	
+	private void initChannelSearchIsTemp() {
+		channelSearchIsTemp = getIntent().getBooleanExtra(ParamConst.CHANNEL_SEARCH_IS_TEMP, ParamConst.CHANNEL_SEARCH_IS_TEMP_YES);
 	}
 	
 	private void initRequestChannelSearchUrlBean() {
@@ -322,7 +335,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	private void initTitleEvent() {
 		initBackEvent();
 		initChooseChannelEvent();
-		initConfirmEvent();
+//		initConfirmEvent();
 		initEditTextEvent();
 		initBackToParentEvent();
 	}
@@ -398,7 +411,7 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	/**
 	 * 点击右上角的“完成”，即将当前选中的频道存入SharedPreferences并返回新闻列表页
 	 */
-	private void initConfirmEvent() {
+	/*private void initConfirmEvent() {
 		
 		confirm.setOnClickListener(new View.OnClickListener() {
 			
@@ -421,6 +434,24 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 				
 			}
 		});
+	}*/
+	
+	public void confirmChannel(final long curCheckChannelId, final String curCheckChannelName, final long parentChannelId) {
+		boolean isNotSelectChannel = (curCheckChannelId == -1L);
+		confirmClickCommonEvent(isNotSelectChannel, curCheckChannelId, curCheckChannelName, parentChannelId);
+		/*switch (curChannelListEnableView) {
+		case ParamConst.CUR_CHANNEL_LIST_ENABLE_VIEW_CHANNEL_SEARCH_ACTIVITY:
+			isNotSelectChannel = (curCheckChannelId == -1L);
+			confirmClickCommonEvent(isNotSelectChannel, curCheckChannelId, curCheckChannelName, parentChannelId);
+			break;
+		case ParamConst.CUR_CHANNEL_LIST_ENABLE_VIEW_AUTO_COMPLETE_TEXT_VIEW:
+			isNotSelectChannel = (searchChannelFilterAdapter != null && searchChannelFilterAdapter.getCurCheckChannelId() == -1L);
+			confirmClickCommonEvent(isNotSelectChannel, searchChannelFilterAdapter.getCurCheckChannelId(), searchChannelFilterAdapter.getCurCheckChannelName(), searchChannelFilterAdapter.getParentChannelId());
+			break;
+		default:
+			ExceptionUtil.simpleExceptionCatch("点击完成时发生错误", new Exception("curChannelListEnableView【" + curChannelListEnableView + "】未知"));
+			break;
+		}*/
 	}
 	
 	private void confirmClickCommonEvent(boolean isNotSelectChannel, long curCheckChannelId, String curCheckChannelName, long parentChannelId) {
@@ -430,7 +461,11 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 		} else {
 			Bundle bundle = initChannelIdForPrevActivity();
 			if (bundle != null) {
-				ActivityJumpUtil.takeParamsBackToPrevActivity(this, bundle, ParamConst.CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE);
+				if (channelSearchIsTemp) {
+					ActivityJumpUtil.takeParamsBackToPrevActivity(this, bundle, ParamConst.CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_EDIT_ACTIVITY_RESULT_CODE);
+				} else {
+					ActivityJumpUtil.takeParamsBackToPrevActivity(this, bundle, ParamConst.CHANNEL_SEARCH_ACTIVITY_BACK_TO_NEWS_LIST_FRAG_ACTIVITY_RESULT_CODE);
+				}
 			} else {
 				finish();
 			}
@@ -458,7 +493,11 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 		}
 		JSONObject channelSelf = BeanParamsUtil.saveObjectToJson(cb, this);
 		jsonArray.put(channelSelf);
-		StaticUtil.saveChannel(jsonArray, this);
+		if (channelSearchIsTemp) {
+			StaticUtil.saveTmpChannel(jsonArray, this);
+		} else {
+			StaticUtil.saveChannel(jsonArray, this);
+		}
 		Bundle bundle = new Bundle();
 		return bundle;
 	}
@@ -618,6 +657,9 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 //			JSONObject jo = jsonArray.getJSONObject(i);
 			JSONObject jo = JsonUtil.getJSONObject(jsonArray, i);
 			ChannelBean channelBean = (ChannelBean) BeanParamsUtil.saveJsonToObject(jo, ChannelBean.class);
+			if (this.channelBean.getChannelId().equals(channelBean.getChannelId())) {
+				channelBean.setChecked(true);
+			}
 			channelBeans.add(channelBean);
 		}
 		return channelBeans;
@@ -661,7 +703,12 @@ public class ChannelSearchActivity extends Activity implements IChannelSearchVie
 	private String getChannelContent() {
 		if (channelNamesTree == null) {
 //			channelNamesTree = Arrays.asList(StaticUtil.getChannelNamesTree(this));
-			String[] names = StaticUtil.getChannelNamesTree(this);
+			String[] names = null;
+			if (channelSearchIsTemp) {
+				names = StaticUtil.getTmpChannelNamesTree(this, false);
+			} else {
+				names = StaticUtil.getChannelNamesTree(this);
+			}
 			int length = names.length - 1;
 			
 			channelNamesTree = new ArrayList<String>();

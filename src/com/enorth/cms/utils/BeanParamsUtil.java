@@ -1,5 +1,6 @@
 package com.enorth.cms.utils;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -19,6 +20,7 @@ import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,11 +28,15 @@ import org.json.JSONObject;
 
 import com.enorth.cms.annotation.SharedPreSaveAnnotation;
 import com.enorth.cms.annotation.UrlParamAnnotation;
+import com.enorth.cms.bean.UrlInitDataBean;
 import com.enorth.cms.bean.login.LoginBean;
 import com.enorth.cms.bean.login.ScanBean;
+import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.interutil.MapComparator;
+import com.squareup.okhttp.RequestBody;
 
 import android.content.Context;
+import android.os.Build.VERSION;
 import android.util.Log;
 
 public class BeanParamsUtil {
@@ -54,7 +60,6 @@ public class BeanParamsUtil {
 		// 将集合传入getCheckSumParam方法中
 		StringBuffer checkSumParams = UrlUtil.getCheckSumParam(list);
 		
-//		String seed = UrlUtil.getSeed(context);
 		// 获取当前登录的用户bean
 		LoginBean loginUserBean = StaticUtil.getCurLoginBean(context);
 		// 获取种子值
@@ -68,13 +73,50 @@ public class BeanParamsUtil {
 		// token值
 		String token = loginUserBean.getToken();
 		params.add(new BasicNameValuePair("api_token", token));
-//		ScanBean curScanBean = StaticUtil.getCurScanBean(context);
 		int appVersion = StaticUtil.getAppVersion(context);
 		if (appVersion != 0) {
 			params.add(new BasicNameValuePair("version", String.valueOf(appVersion)));
 		}
 		return params;
-//		params = UrlUtil.addUrlCommonParams(params, context, ob);
+	}
+	
+	public static List<UrlInitDataBean> initMultiData(Object ob, Context context) {
+		List<UrlInitDataBean> params = new ArrayList<UrlInitDataBean>();
+		Map<Integer, Object> isCheckObMap = new TreeMap<Integer, Object>(new MapComparator());
+		initMultiDataCommon(ob, context, params, isCheckObMap);
+		// 将要拼MD5的参数存入list中
+		List<Object> list = new ArrayList<Object>(isCheckObMap.values());
+		// 将集合传入getCheckSumParam方法中
+		StringBuffer checkSumParams = UrlUtil.getCheckSumParam(list);
+		
+		// 获取当前登录的用户bean
+		LoginBean loginUserBean = StaticUtil.getCurLoginBean(context);
+		// 获取种子值
+		String seed = loginUserBean.getSeed();
+		// 将种子值拼入参数后面
+		checkSumParams.append(seed);
+		// 进行MD5
+		String checkSum = MD5Util.getMD5(checkSumParams.toString());
+		// 将MD5后的结果以check_sum为key存入params中
+//		params.add(new BasicNameValuePair("check_sum", checkSum));
+		UrlInitDataBean checkSumBean = new UrlInitDataBean();
+		checkSumBean.setKey("check_sum");
+		checkSumBean.setRequestBody(RequestBody.create(null, checkSum));
+		params.add(checkSumBean);
+		// token值
+		String token = loginUserBean.getToken();
+		UrlInitDataBean tokenBean = new UrlInitDataBean();
+		tokenBean.setKey("api_token");
+		tokenBean.setRequestBody(RequestBody.create(null, token));
+//		params.add(new BasicNameValuePair("api_token", token));
+		int appVersion = StaticUtil.getAppVersion(context);
+		if (appVersion != 0) {
+//			params.add(new BasicNameValuePair("version", String.valueOf(appVersion)));
+			UrlInitDataBean appVersionBean = new UrlInitDataBean();
+			appVersionBean.setKey("version");
+			appVersionBean.setRequestBody(RequestBody.create(null, String.valueOf(appVersion)));
+		}
+		return params;
 	}
 	
 	/**
@@ -96,6 +138,18 @@ public class BeanParamsUtil {
 			initData(ob, params, isCheckObMap);
 		}
 		params.add(new BasicNameValuePair("devId", ParamsUtil.getDeviceID(context)));
+		return params;
+	}
+	
+	private static List<UrlInitDataBean> initMultiDataCommon(Object ob, Context context, List<UrlInitDataBean> params, Map<Integer, Object> isCheckObMap) {
+		if (ob != null) {
+			initMultiData(ob, params, isCheckObMap);
+		}
+//		params.add(new BasicNameValuePair("devId", ParamsUtil.getDeviceID(context)));
+		UrlInitDataBean bean = new UrlInitDataBean();
+		bean.setKey("devId");
+		bean.setRequestBody(RequestBody.create(null, ParamsUtil.getDeviceID(context)));
+		bean.setValue(ParamsUtil.getDeviceID(context));
 		return params;
 	}
 	
@@ -171,6 +225,102 @@ public class BeanParamsUtil {
 						Log.e("BeanParamsUtil.initData error", "目前尚未支持数组方法~");
 					} else {
 						initData(value, params, isCheckObMap);
+					}
+				}
+			}
+		}
+	}
+	
+	private static void initMultiData(Object ob, List<UrlInitDataBean> params, Map<Integer, Object> isCheckObMap) {
+		Class<?> c = ob.getClass();
+		Field[] fields = c.getDeclaredFields();
+		Method[] declaredMethods = c.getDeclaredMethods();
+		int methodLength = declaredMethods.length;
+		List<String> methodNames = new ArrayList<String>();
+		for (int i = 0; i < methodLength; i++) {
+			methodNames.add(declaredMethods[i].getName());
+		}
+		for (Field field : fields) {
+			// 将有@UrlParamAnnotation注释的变量取出并存入params中
+			if (field.isAnnotationPresent(UrlParamAnnotation.class)) {
+				UrlParamAnnotation annotation = field.getAnnotation(UrlParamAnnotation.class);
+				String key = annotation.key();
+				if (key.equals("")) {
+					key = field.getName();
+				}
+				Class<?> type = field.getType();
+				String getterName = "get" + key.substring(0, 1).toUpperCase(Locale.CHINA) + key.substring(1);
+				if (!methodNames.contains(getterName)) {
+					continue;
+				}
+				Method method = null;
+				try {
+					method = ob.getClass().getMethod(getterName, new Class[]{});
+				} catch (NoSuchMethodException e) {
+					Log.e("BeanParamsUtil.initData error", e.toString());
+					e.printStackTrace();
+				}
+				Object value = null;
+				try {
+					value = method.invoke(ob);
+					if (value == null) {
+						value = "";
+					}
+				} catch (IllegalAccessException e) {
+					Log.e("BeanParamsUtil.initData error", e.toString());
+					e.printStackTrace();
+				} catch (IllegalArgumentException e) {
+					Log.e("BeanParamsUtil.initData error", e.toString());
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					Log.e("BeanParamsUtil.initData error", e.toString());
+					e.printStackTrace();
+				}
+				// 用于check_sum的参数拼接，如果为true，则需要存入isCheckOb中，用于最终和种子进行拼接，再MD5成check_sum
+				boolean isCheck = annotation.isCheck();
+				if (isCheck) {
+					int checkSort = annotation.checkSort();
+					isCheckObMap.put(checkSort, value == null ? "" : value);
+				}
+				if (checkIsString(type) || checkIsInteger(type) || checkIsLong(type) || checkIsDouble(type) || checkIsBoolean(type)) {
+//					params.add(new BasicNameValuePair(key, value.toString()));
+					UrlInitDataBean bean = new UrlInitDataBean();
+					bean.setKey(key);
+					bean.setMediaType(null);
+					bean.setRequestBody(RequestBody.create(null, value.toString()));
+					bean.setValue(value);
+					params.add(bean);
+				} else if (checkIsFile(type)) {
+					UrlInitDataBean bean = new UrlInitDataBean();
+					bean.setKey(key);
+					File file = (File)value;
+					String fileName = file.getName();
+					String extName = fileName.substring(fileName.lastIndexOf('.') + 1);
+					if (extName.equalsIgnoreCase("png")) {
+						bean.setMediaType(ParamConst.MEDIA_TYPE_PNG);
+					} else if (extName.equalsIgnoreCase("jpg")) {
+						bean.setMediaType(ParamConst.MEDIA_TYPE_JPG);
+					} else if (extName.equalsIgnoreCase("bmp")) {
+						bean.setMediaType(ParamConst.MEDIA_TYPE_BMP);
+					} else if (extName.equalsIgnoreCase("jpeg")) {
+						bean.setMediaType(ParamConst.MEDIA_TYPE_JPEG);
+					} else {
+						bean.setMediaType(ParamConst.MEDIA_TYPE_STREAM);
+					}
+					bean.setRequestBody(RequestBody.create(null, file));
+					bean.setValue(file);
+					params.add(bean);
+				} else {
+					if (checkIsList(type)) {
+						Log.e("BeanParamsUtil.initData error", "目前尚未支持Map方法~");
+					} else if (checkIsMap(type)) {
+						Log.e("BeanParamsUtil.initData error", "目前尚未支持Map方法~");
+					} else if (checkIsSet(type)) {
+						Log.e("BeanParamsUtil.initData error", "目前尚未支持Set方法~");
+					} else if (type.isArray()) {
+						Log.e("BeanParamsUtil.initData error", "目前尚未支持数组方法~");
+					} else {
+						initMultiData(value, params, isCheckObMap);
 					}
 				}
 			}
@@ -689,4 +839,13 @@ public class BeanParamsUtil {
 			return false;
 		}
 	}
+	
+	private static boolean checkIsFile(Class<?> type) {
+		if (type == File.class) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 }

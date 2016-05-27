@@ -1,7 +1,11 @@
 package com.enorth.cms.fragment.login;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import com.enorth.cms.bean.PopupWindowBean;
+import com.enorth.cms.bean.PopupWindowItemBean;
 import com.enorth.cms.bean.ViewColorBasicBean;
 import com.enorth.cms.bean.login.ScanBean;
 import com.enorth.cms.common.EnableSimpleChangeTextView;
@@ -59,6 +63,8 @@ public class ScanFrag extends Fragment {
 	
 	private List<String> scanNames;
 	
+	private List<PopupWindowItemBean> popupWindowScanBeans;
+	
 	private ScanBean curScanBeans;
 	
 	@Override
@@ -103,9 +109,21 @@ public class ScanFrag extends Fragment {
 		if (scanBeans == null || scanBeans.size() == 0) {
 			systemChooseTV.setVisibility(View.GONE);
 		} else {
-			scanNames = StaticUtil.getScanNames(getContext());
+//			scanNames = StaticUtil.getScanNames(getContext());
+//			scanNamesMap = StaticUtil.getScanNamesMap(getContext());
+			initScanItem();
 			systemChooseTV.setVisibility(View.VISIBLE);
 			systemChooseTV.setText(curScanBeans.getScanName());
+		}
+	}
+	
+	private void initScanItem() {
+		popupWindowScanBeans = new ArrayList<PopupWindowItemBean>();
+		for (ScanBean scanBean : scanBeans) {
+			PopupWindowItemBean bean = new PopupWindowItemBean();
+			bean.setItemName(scanBean.getScanName());
+			bean.setItemBean(scanBean);
+			popupWindowScanBeans.add(bean);
 		}
 	}
 	
@@ -151,7 +169,7 @@ public class ScanFrag extends Fragment {
 						}
 					};
 					SystemChooseDelBtnListener delBtnListener = new SystemChooseDelBtnListener(ScanFrag.this, layout);
-					initPopupWindowItemsContainDelMark(layout, itemListener, delBtnListener, scanNames);
+					initPopupWindowItemBeansContainDelMark(layout, itemListener, delBtnListener, popupWindowScanBeans);
 				}
 			};
 		}

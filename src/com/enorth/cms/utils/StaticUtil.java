@@ -1,7 +1,9 @@
 package com.enorth.cms.utils;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,12 +29,17 @@ public class StaticUtil {
 
 	private static LoginUserUsedBean loginUserUsedBean;
 	
-	private static ChannelBean tmpChannelBean;
+//	private static ChannelBean tmpChannelBean;
+	/**
+	 * 用于临时寸存储的bean
+	 */
+	private static LoginUserUsedBean tmpLoginUserUsedBean;
 	
 	private static int appVersion;
 	
 	static {
 		loginUserUsedBean = new LoginUserUsedBean();
+		tmpLoginUserUsedBean = new LoginUserUsedBean();
 	}
 
 	/**
@@ -54,11 +61,21 @@ public class StaticUtil {
 	}
 	
 	/**
+	 * 将当前登录的用户对应的频道bean存入临时bean中
+	 * 
+	 * @param channelBean
+	 */
+	public static void saveTmpCurChannelBean(ChannelBean channelBean) {
+		tmpLoginUserUsedBean.setCurChannelBean(channelBean);
+	}
+	
+	/**
 	 * 将从根频道到当前登录的用户对应的频道的树型集合存入loginUserUsedBean中
 	 * @param channelBeans
 	 */
 	public static void saveChannelBeansTree(List<ChannelBean> channelBeans) {
 		loginUserUsedBean.setChannelBeansTree(channelBeans);
+		StaticUtil.tmpLoginUserUsedBean.setChannelBeansTree(channelBeans);
 	}
 	
 	/**
@@ -67,6 +84,23 @@ public class StaticUtil {
 	 */
 	public static void saveChannelNamesTree(String[] channelNamesTree) {
 		loginUserUsedBean.setChannelNamesTree(channelNamesTree);
+		StaticUtil.tmpLoginUserUsedBean.setChannelNamesTree(channelNamesTree);
+	}
+	
+	/**
+	 * 将从根频道到当前登录的用户对应的频道的树型集合存入临时bean中
+	 * @param channelBeans
+	 */
+	public static void saveTmpChannelBeansTree(List<ChannelBean> channelBeans) {
+		StaticUtil.tmpLoginUserUsedBean.setChannelBeansTree(channelBeans);
+	}
+	
+	/**
+	 * 当前登录的用户对应的从根频道到当前登录的用户对应的频道的名称的树型数组存入临时bean中
+	 * @param channelNamesTree
+	 */
+	public static void saveTmpChannelNamesTree(String[] channelNamesTree) {
+		StaticUtil.tmpLoginUserUsedBean.setChannelNamesTree(channelNamesTree);
 	}
 	/**
 	 * 当前用户要向登录，必须要对应一个系统，此处存入的是曾经扫描过的系统的信息
@@ -153,12 +187,41 @@ public class StaticUtil {
 		// 将从根频道到当前登录用户对应的频道的频道名对应的树型集合进行全局变量存入
 		saveChannelNamesTree(channelNames);
 	}
+	
+	/**
+	 * 将json格式的频道集合存入临时使用的bean中，其中包括curChannelBean、channelBeansTree、channelNamesTree
+	 * @param channels
+	 * @param context
+	 */
+	public static void saveTmpChannel(JSONArray channels, Context context) {
+		// 获取频道集合的长度进行遍历封装
+		int length = channels.length();
+		// 用作序列化频道集合
+		String[] channelsStr = new String[length];
+		String[] channelNames = new String[length];
+		List<ChannelBean> channelBeans = new ArrayList<ChannelBean>();
+		for (int i = 0; i < length; i++) {
+			JSONObject channel = JsonUtil.getJSONObject(channels, i);
+			ChannelBean channelBean = (ChannelBean) BeanParamsUtil.saveJsonToObject(channel, ChannelBean.class);
+			channelBeans.add(channelBean);
+			if (length == (i + 1)) {
+				saveTmpCurChannelBean(channelBean);
+			}
+			channelNames[i] = channelBean.getChannelName();
+			String channelStr = SharedPreUtil.serializeObject(channelBean);
+			channelsStr[i] = channelStr;
+		}
+		// 将从根频道到当前登录用户对应的频道的bean的树型集合进行全局变量存入
+		saveTmpChannelBeansTree(channelBeans);
+		// 将从根频道到当前登录用户对应的频道的频道名对应的树型集合进行全局变量存入
+		saveTmpChannelNamesTree(channelNames);
+	}
 	/**
 	 * 将临时使用的频道bean存入tmpChannelBean中
 	 * @param channelBean
 	 */
 	public static void saveTmpChannelBean(ChannelBean channelBean) {
-		StaticUtil.tmpChannelBean = channelBean;
+		StaticUtil.tmpLoginUserUsedBean.setCurChannelBean(channelBean);
 	}
 
 	/**
@@ -258,6 +321,23 @@ public class StaticUtil {
 	}
 	
 	/**
+	 * 获取曾经扫描过的所有的系统名称和对应的ScanBean
+	 * @param context
+	 * @return
+	 */
+	public static Map<String, ScanBean> getScanNamesMap(Context context) {
+		if (loginUserUsedBean.getScanNamesMap() == null) {
+			List<ScanBean> scanBeans = getScanBeans(context);
+			Map<String, ScanBean> scanNamesMap = new LinkedHashMap<String, ScanBean>();
+			for (ScanBean scanBean : scanBeans) {
+				scanNamesMap.put(scanBean.getScanName(), scanBean);
+			}
+			loginUserUsedBean.setScanNamesMap(scanNamesMap);
+		}
+		return loginUserUsedBean.getScanNamesMap();
+	}
+	
+	/**
 	 * 获取当前要登录的系统
 	 * @param context
 	 * @return
@@ -297,14 +377,56 @@ public class StaticUtil {
 	 */
 	public static ChannelBean getTmpChannelBean(Context context, boolean refresh) {
 		if (refresh) {
-			StaticUtil.tmpChannelBean = getCurChannelBean(context);
+			ChannelBean curChannelBean = getCurChannelBean(context);
+			StaticUtil.tmpLoginUserUsedBean.setCurChannelBean(curChannelBean);
+			// 将需要刷新的参数一并刷新
+			getTmpChannelBeansTree(context, refresh);
+			getTmpChannelNamesTree(context, refresh);
 		} else {
-			if (StaticUtil.tmpChannelBean == null) {
-				StaticUtil.tmpChannelBean = getCurChannelBean(context);
+			if (StaticUtil.tmpLoginUserUsedBean.getCurChannelBean() == null) {
+				ChannelBean curChannelBean = getCurChannelBean(context);
+				StaticUtil.tmpLoginUserUsedBean.setCurChannelBean(curChannelBean);
 			}
 		}
 		
-		return StaticUtil.tmpChannelBean;
+		return StaticUtil.tmpLoginUserUsedBean.getCurChannelBean();
+	}
+	
+	/**
+	 * 获取临时存储的从根频道到当前选中的频道的名称的树型数组
+	 * @param context
+	 * @return
+	 */
+	public static String[] getTmpChannelNamesTree(Context context, boolean refresh) {
+		if (refresh) {
+			String[] channelNamesTree = getChannelNamesTree(context);
+			StaticUtil.tmpLoginUserUsedBean.setChannelNamesTree(channelNamesTree);
+		} else {
+			if (StaticUtil.tmpLoginUserUsedBean.getChannelNamesTree() == null) {
+				String[] channelNamesTree = getChannelNamesTree(context);
+				StaticUtil.tmpLoginUserUsedBean.setChannelNamesTree(channelNamesTree);
+			}
+		}
+		return StaticUtil.tmpLoginUserUsedBean.getChannelNamesTree();
+	}
+	
+	/**
+	 * 获取临时存储的从根频道到当前选中的频道的树型集合
+	 * @param context
+	 * @param refresh
+	 * @return
+	 */
+	public static List<ChannelBean> getTmpChannelBeansTree(Context context, boolean refresh) {
+		if (refresh) {
+			List<ChannelBean> channelBeansTree = getChannelBeansTree(context);
+			StaticUtil.tmpLoginUserUsedBean.setChannelBeansTree(channelBeansTree);
+		} else {
+			if (StaticUtil.tmpLoginUserUsedBean.getChannelBeansTree() == null) {
+				List<ChannelBean> channelBeansTree = getChannelBeansTree(context);
+				StaticUtil.tmpLoginUserUsedBean.setChannelBeansTree(channelBeansTree);
+			}
+		}
+		return StaticUtil.tmpLoginUserUsedBean.getChannelBeansTree();
 	}
 	
 	/**

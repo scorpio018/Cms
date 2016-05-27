@@ -3,27 +3,47 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:gravity="center_horizontal"
+    android:orientation="horizontal"
+    android:weightSum="1" >
     
     <LinearLayout 
-        android:layout_width="match_parent"
+        android:id="@+id/keywordLayout"
+        android:layout_width="0dip"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_horizontal"
+        android:background="@drawable/white_bg_radius_and_stroke"
         android:layout_marginTop="@dimen/edit_news_common_margin_top"
+        android:layout_weight="0.9"
         android:weightSum="1">
         
         <!-- 关键词-->
         <TextView 
-            android:id="@+id/keywordTV"
-            android:layout_width="0dip"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/common_text_view_btn_height"
-            android:layout_weight="0.9"
-            android:background="@drawable/white_bg_radius_and_stroke"
             android:text="@string/keyword"
             android:gravity="center_vertical"
             android:textColor="@color/gray"
             android:textSize="@dimen/edit_news_common_text_size"/>
+        
+        <EditText
+            android:id="@+id/addKeywordET"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/common_text_view_btn_height"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:maxLength="33" />
+        
+        <!-- <TextView 
+            android:id="@+id/keywordTV"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/common_text_view_btn_height"
+            android:gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textSize="@dimen/edit_news_common_text_size"
+            /> -->
         
     </LinearLayout>
 

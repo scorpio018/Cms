@@ -90,9 +90,9 @@
             android:layout_weight="0.9"
             android:background="@null"
             android:gravity="top|start"
+            android:textColorHint="@color/gray"
             android:inputType="textMultiLine"
             android:minLines="6"
-            android:textColorHint="@color/gray"
             android:scrollbars="vertical"
             android:singleLine="false" />
     </LinearLayout>

@@ -3,6 +3,7 @@ package com.enorth.cms.listener.login;
 import com.enorth.cms.fragment.login.ScanFrag;
 import com.enorth.cms.listener.popup.PopupWindowContainDelMarkOnTouchListener;
 import com.enorth.cms.utils.ScreenTools;
+import com.enorth.cms.utils.StaticUtil;
 
 import android.widget.LinearLayout;
 

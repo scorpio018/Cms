@@ -130,6 +130,15 @@
             android:theme="@style/MyDialogStyleRight"
             android:windowSoftInputMode="stateUnspecified|stateHidden" >
         </activity>
+        <activity
+            android:name=".news.TemplateSearchActivity"
+            android:theme="@style/MyDialogStyleRight" >
+        </activity>
+        <activity
+            android:name=".news.AddKeywordActivity"
+            android:theme="@style/MyDialogStyleRight"
+            android:windowSoftInputMode="stateUnspecified|stateHidden" >
+        </activity>
         <!-- <activity android:name=".news.AddManuscriptsActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity> -->
         <!-- <activity android:name=".upload.UploadPicActivity"></activity> -->
         <activity android:name=".upload.GalleryActivity" >

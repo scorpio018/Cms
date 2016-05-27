@@ -164,6 +164,15 @@ public class ColorUtil {
 	}
 	
 	/**
+	 * 蓝色背景
+	 * @param context
+	 * @return
+	 */
+	public static int getBlueBgColor(Context context) {
+		return ContextCompat.getColor(context, R.color.blue_bg);
+	}
+	
+	/**
 	 * 获取带圆角的橘黄色背景、白色文字的bean
 	 * @param context
 	 * @return

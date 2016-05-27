@@ -99,6 +99,7 @@ public class NewsLiveListFragActivity extends NewsCommonActivity {
 			@Override
 			public void onImgChangeDo(View v) {
 				intent.setClass(NewsLiveListFragActivity.this, ChannelSearchActivity.class);
+				intent.putExtra(ParamConst.CHANNEL_SEARCH_IS_TEMP, ParamConst.CHANNEL_SEARCH_IS_TEMP_NO);
 				// 将当前用户的频道传到频道搜索中(由于使用了全局静态变量，所以不需要这样传值了)
 				// Bundle bundle = initChannelId();
 				// intent.putExtras(bundle);

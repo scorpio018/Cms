@@ -51,6 +51,10 @@ public class ChannelBean implements Serializable {
 	 */
 	@SharedPreSaveAnnotation
 	private SeniorBean senior;
+	/**
+	 * 是否选中
+	 */
+	private boolean isChecked = false;
 
 	public Long getChannelId() {
 		return channelId;
@@ -106,6 +110,14 @@ public class ChannelBean implements Serializable {
 
 	public void setSimpleName(String simpleName) {
 		this.simpleName = simpleName;
+	}
+
+	public boolean isChecked() {
+		return isChecked;
+	}
+
+	public void setChecked(boolean isChecked) {
+		this.isChecked = isChecked;
 	}
 
 }

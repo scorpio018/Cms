@@ -9,10 +9,12 @@
     <color name="black">#000000</color>
     <color name="gray">#aaaaaa</color>
     <color name="dark_gray">#666666</color>
-    <color name="bg_gray_default">#efefef</color>
+    <color name="gray_stroke">#e4e4e4</color>
+    <color name="bg_gray_default">#f2f2f2</color>
     <color name="bg_gray_press">#dedede</color>
     <color name="gray_lighter">#eeeeee</color>
     <color name="light_blue">#6593cb</color>
+    <color name="blue_bg">#E3F0FA</color>
     <color name="yellow">#ffc40d</color>
     <color name="common_blue">#56abe4</color>
     <color name="common_green">#01BA9C</color>

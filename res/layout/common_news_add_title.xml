@@ -5,14 +5,16 @@
     android:layout_height="@dimen/news_title_height"
     android:orientation="horizontal" >
 
+	<!-- android:drawablePadding="@dimen/common_drawable_padding" -->
     <TextView
         android:id="@+id/titleLeftTV"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/news_title_left_icon_margin_left"
-        android:layout_marginStart="@dimen/news_title_left_icon_margin_left"
+        android:paddingLeft="@dimen/news_title_left_icon_padding_left"
+        android:paddingStart="@dimen/news_title_left_icon_padding_left"
+        android:paddingRight="@dimen/news_title_left_icon_padding_right"
+        android:paddingEnd="@dimen/news_title_left_icon_padding_right"
         android:drawableLeft="@drawable/common_left"
-        android:drawablePadding="@dimen/common_drawable_padding"
         android:drawableStart="@drawable/common_left"
         android:gravity="center_vertical"
         android:text="@string/back"

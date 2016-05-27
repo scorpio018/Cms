@@ -4,6 +4,7 @@ import com.enorth.cms.consts.ParamConst;
 
 import android.os.Handler;
 import android.os.Message;
+import android.widget.BaseAdapter;
 
 public abstract class UrlRequestCommonHandler extends Handler {
 	@Override

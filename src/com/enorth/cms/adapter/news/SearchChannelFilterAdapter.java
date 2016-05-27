@@ -3,12 +3,15 @@ package com.enorth.cms.adapter.news;
 import java.util.List;
 
 import com.enorth.cms.adapter.SearchCommonFilterAdapter;
+import com.enorth.cms.adapter.news.ChannelSearchListViewAdapter.Holder;
 import com.enorth.cms.bean.login.ChannelBean;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.filter.news.SearchChannelFilter;
+import com.enorth.cms.listener.CommonOnClickListener;
 import com.enorth.cms.listener.CommonOnTouchListener;
 import com.enorth.cms.listener.imageview.ImageViewOnTouchListener;
 import com.enorth.cms.listener.newslist.ListViewItemOnTouchListener;
+import com.enorth.cms.utils.ColorUtil;
 import com.enorth.cms.utils.DrawableUtil;
 import com.enorth.cms.view.R;
 import com.enorth.cms.view.news.ChannelSearchActivity;
@@ -20,23 +23,24 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<ChannelBean> {
 	
 	private ChannelSearchActivity activity;
 	
-	private long curCheckChannelId = -1L;
+//	private long curCheckChannelId = -1L;
 	
-	private String curCheckChannelName = "";
+//	private String curCheckChannelName = "";
 	
-	private long parentChannelId = -1L;
+//	private long parentChannelId = -1L;
 	
 	private View view;
 	
 	private ChannelBean channelBean;
 	
-	private int checkedPosition = -1;
+//	private int checkedPosition = -1;
 	
 	private Drawable left;
 	
@@ -70,7 +74,8 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Channe
 		if (convertView == null) {
 			holder = new Holder();
 			convertView = inflater.inflate(resource, null);
-			holder.checkBtn = (CheckBox) convertView.findViewById(R.id.iv_check_btn);
+//			holder.checkBtn = (CheckBox) convertView.findViewById(R.id.iv_check_btn);
+			holder.newsTextLayout = (RelativeLayout) convertView.findViewById(R.id.newsTextLayout);
 			holder.channelNameTV = (TextView) convertView.findViewById(R.id.tv_news_title);
 			holder.channelNext = (ImageView) convertView.findViewById(R.id.iv_news_next);
 			convertView.setTag(holder);
@@ -79,19 +84,13 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Channe
 		}
 		
 		ChannelBean channelBean = super.getItems().get(position);
-		if (channelBean.getChannelId().equals(activity.getCurCheckChannelId())) {
-			holder.checkBtn.setChecked(true);
-			holder.checkBtn.setTag(true);
-			this.view = convertView;
-			this.channelBean = channelBean;
-			this.checkedPosition = position;
-			curCheckChannelId = channelBean.getChannelId();
-			curCheckChannelName = channelBean.getChannelName();
-			parentChannelId = channelBean.getParentId();
+		if (channelBean.isChecked()) {
+			convertView.setBackgroundColor(ColorUtil.getBlueBgColor(activity));
+			holder.channelNameTV.setTextColor(ColorUtil.getCommonBlueColor(activity));
 		} else {
-			holder.checkBtn.setChecked(false);
+			convertView.setBackgroundColor(ColorUtil.getWhiteColor(activity));
+			holder.channelNameTV.setTextColor(ColorUtil.getBlack(activity));
 		}
-		
 		holder.channelNameTV.setText(channelBean.getChannelName());
 		
 		if (channelBean.getHasChildren() == ParamConst.HAS_CHILDREN_NO) {
@@ -99,13 +98,10 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Channe
 		} else if (channelBean.getHasChildren() == ParamConst.HAS_CHILDREN_YES) {
 			holder.channelNext.setVisibility(View.VISIBLE);
 		}
-		
-		// 将CheckBox的状态进行初始化
-		initCheckBtnState(channelBean, holder, convertView, position);
-		// 初始化CheckBox的点击事件
-		addCheckBtnClickEvent(channelBean, holder, convertView, position);
 		// 添加ListView的item的点击事件
 		addListViewItemClickEvent(channelBean, holder, convertView, position);
+		// 添加ListView的item右侧的按钮点击事件
+		addChannelNextClickEvent(channelBean, holder, convertView, position);
 		return convertView;
 	}
 	
@@ -115,127 +111,39 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Channe
 	}
 	
 	/**
-	 * 初始化左侧按钮的状态
-	 * @param bean
-	 */
-	private void initCheckBtnState(ChannelBean channelBean, Holder holder, View view, int position) {
-		if (channelBean.getChannelId().equals(activity.getChannelId()) || (checkedPosition == position)) {
-			holder.checkBtn.setChecked(true);
-			holder.checkBtn.setTag(true);
-			this.view = view;
-			this.channelBean = channelBean;
-			activity.setCurCheckChannelId(channelBean.getChannelId());
-			activity.setCurCheckChannelName(channelBean.getChannelName());				
-			activity.setParentChannelId(channelBean.getParentId());
-		} else {
-			holder.checkBtn.setChecked(false);
-		}
-	}
-	
-	/**
-	 * 给每一个频道左侧的选中图标添加点击事件
-	 * @param bean
-	 */
-	private void addCheckBtnClickEvent(final ChannelBean channelBean, final Holder holder, final View view, final int position) {
-		
-		ImageViewOnTouchListener listViewCheckBtnOnTouchListener = new ImageViewOnTouchListener(activity) {
-			@Override
-			public boolean onImgChangeBegin(View v) {
-				checkChannel(channelBean, holder, view, position);
-				return true;
-			}
-
-			@Override
-			public void onImgChangeEnd(View v) {
-				if (!holder.checkBtn.isChecked()) {
-					curCheckChannelId = -1L;
-					curCheckChannelName = "";
-//					activity.setCurCheckChannelId(-1L);
-//					activity.setCurCheckChannelName("");
-				} else {
-					curCheckChannelId = channelBean.getChannelId();
-					curCheckChannelName = channelBean.getChannelName();
-//					activity.setCurCheckChannelId(channelBean.getChannelId());
-//					activity.setCurCheckChannelName(channelBean.getChannelName());
-				}
-			}
-
-			@Override
-			public void onTouchBegin() {
-				// 将焦点定位到搜索栏中
-				activity.setCurChannelListEnableView(ParamConst.CUR_CHANNEL_LIST_ENABLE_VIEW_CHANNEL_SEARCH_ACTIVITY);
-			}
-		};
-		listViewCheckBtnOnTouchListener.changeColor(R.color.bg_gray_press, R.color.bg_gray_default);
-		holder.checkBtn.setOnTouchListener(listViewCheckBtnOnTouchListener);
-		view.setOnTouchListener(listViewCheckBtnOnTouchListener);
-		
-	}
-	
-	/**
 	 * 给ListView中的item添加点击事件（点击搜索下一级）
 	 * @param bean
 	 */
 	private void addListViewItemClickEvent(final ChannelBean channelBean, final Holder holder, final View view, final int position) {
-		CommonOnTouchListener listViewItemOnTouchListener = new ListViewItemOnTouchListener(activity) {
-			@Override
-			public void onImgChangeDo(View v) {
-				channelClick(channelBean, holder, view, position);
-			}
+		new CommonOnClickListener(holder.newsTextLayout, false, 0) {
 			
 			@Override
-			public boolean isClickBackgroungColorChange() {
-				return false;
-			}
-
-			@Override
-			public void onTouchBegin() {
+			public void onClick(View v) {
 				// 将焦点定位到搜索栏中
-				activity.setCurChannelListEnableView(ParamConst.CUR_CHANNEL_LIST_ENABLE_VIEW_CHANNEL_SEARCH_ACTIVITY);
-				
+				activity.setCurChannelListEnableView(ParamConst.CUR_CHANNEL_LIST_ENABLE_VIEW_AUTO_COMPLETE_TEXT_VIEW);
+				channelClick(channelBean, holder, view, position);
 			}
 		};
-//		view.setOnTouchListener(listViewItemOnTouchListener);
-		holder.channelNext.setOnTouchListener(listViewItemOnTouchListener);
+	}
+	
+	private void addChannelNextClickEvent(final ChannelBean channelBean, final Holder holder, final View view, final int position) {
+		new CommonOnClickListener(holder.channelNext, false, 0) {
+			
+			@Override
+			public void onClick(View v) {
+				// 将焦点定位到搜索栏中
+				activity.setCurChannelListEnableView(ParamConst.CUR_CHANNEL_LIST_ENABLE_VIEW_AUTO_COMPLETE_TEXT_VIEW);
+				activity.setChannelId(channelBean.getChannelId());
+				activity.setChannelName(channelBean.getChannelName());
+				activity.setBackToParent(false);
+				activity.initChannelDefaultData();
+			}
+		};
 	}
 	
 	private void channelClick(ChannelBean channelBean, Holder holder, View view, int position) {
-		if (channelBean.getHasChildren() == ParamConst.HAS_CHILDREN_YES) {
-			activity.setChannelId(channelBean.getChannelId());
-			activity.setChannelName(channelBean.getChannelName());
-			activity.setBackToParent(false);
-			activity.initChannelDefaultData();
-		} else {
-			activity.setCurCheckChannelId(channelBean.getChannelId());
-			activity.setCurCheckChannelName(channelBean.getChannelName());
-			checkChannel(channelBean, holder, view, position);
-		}
-	}
-	
-	/**
-	 * 选中频道
-	 * @param holder
-	 * @param view
-	 */
-	public void checkChannel(ChannelBean channelBean, Holder holder, View view, int position) {
-		activity.setCurChannelListEnableView(ParamConst.CUR_CHANNEL_LIST_ENABLE_VIEW_AUTO_COMPLETE_TEXT_VIEW);
-		if (holder.checkBtn.isChecked()) {
-			this.view = null;
-			holder.checkBtn.setChecked(false);
-		} else {
-			holder.checkBtn.setChecked(true);
-			holder.checkBtn.setTag(true);
-			if (this.view != null) {
-				View checkedView = this.view.findViewWithTag(true);
-				if (checkedView != null) {
-					CheckBox checkBtn = (CheckBox) checkedView;
-					checkBtn.setChecked(false);
-				}
-			}
-			this.view = view;
-			this.channelBean = channelBean;
-			this.checkedPosition = position;
-		}
+		setChannelBean(channelBean);
+		activity.confirmChannel(channelBean.getChannelId(), channelBean.getChannelName(), channelBean.getParentId());
 	}
 	
 	@Override
@@ -248,30 +156,6 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Channe
 		activity.getSearchChannelET().setCompoundDrawablesWithIntrinsicBounds(left, null, null, null);
 	}
 	
-	public long getCurCheckChannelId() {
-		return curCheckChannelId;
-	}
-
-	public void setCurCheckChannelId(long curCheckChannelId) {
-		this.curCheckChannelId = curCheckChannelId;
-	}
-
-	public String getCurCheckChannelName() {
-		return curCheckChannelName;
-	}
-
-	public void setCurCheckChannelName(String curCheckChannelName) {
-		this.curCheckChannelName = curCheckChannelName;
-	}
-
-	public long getParentChannelId() {
-		return parentChannelId;
-	}
-
-	public void setParentChannelId(long parentChannelId) {
-		this.parentChannelId = parentChannelId;
-	}
-
 	public ChannelBean getChannelBean() {
 		return channelBean;
 	}
@@ -284,7 +168,8 @@ public class SearchChannelFilterAdapter extends SearchCommonFilterAdapter<Channe
 		/**
 		 * 新闻左侧的点击图标
 		 */
-		CheckBox checkBtn;
+//		CheckBox checkBtn;
+		RelativeLayout newsTextLayout;
 		/**
 		 * 频道名称
 		 */

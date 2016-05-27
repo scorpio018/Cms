@@ -7,6 +7,7 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import com.enorth.cms.bean.UrlInitDataBean;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.consts.UrlCodeErrorConst;
 import com.enorth.cms.enums.HttpBuilderType;
@@ -95,10 +96,10 @@ public class HttpUtil {
 		if (type.equals(HttpBuilderType.REQUEST_FORM_ENCODE)) {
 			// 普通表单
 			return attachHttpPostParamsFormEncodingBuilder(params);
-		} else if (type.equals(HttpBuilderType.REQUEST_FILE)) {
+		} /*else if (type.equals(HttpBuilderType.REQUEST_FILE)) {
 			// 文件表单
 			return attachHttpPostParamsMultipartBuilder(params);
-		} /*else if (type.equals(HttpBuilderType.REQUEST_STREAM)) {
+		} else if (type.equals(HttpBuilderType.REQUEST_STREAM)) {
 			// 文件流表单
 		} else if (type.equals(HttpBuilderType.REQUEST_STRING)) {
 			// String类型表单
@@ -107,6 +108,19 @@ public class HttpUtil {
 		}*/ else {
 			return null;
 		}
+	}
+	
+	/**
+	 * 可以进行复杂的上传
+	 * @param url
+	 * @param params
+	 * @param callback
+	 */
+	public static void okPostMulti(String url, List<UrlInitDataBean> params, Callback callback) {
+//		RequestBody body = RequestBody.create(JSON, paramsJson);
+		RequestBody body = attachHttpPostParamsMultipartBuilder(params);
+		Request request = new Request.Builder().url(url).post(body).build();
+		enqueue(request, callback);
 	}
 	
 	/**
@@ -285,12 +299,14 @@ public class HttpUtil {
 	 * @param params
 	 * @return
 	 */
-	public static RequestBody attachHttpPostParamsMultipartBuilder(List<BasicNameValuePair> params) {
+	public static RequestBody attachHttpPostParamsMultipartBuilder(List<UrlInitDataBean> beans) {
 		MultipartBuilder multipartBuilder = new MultipartBuilder();
 		multipartBuilder.type(MultipartBuilder.FORM);
-		if (params != null) {
-			for (BasicNameValuePair param : params) {
-				multipartBuilder.addFormDataPart(param.getName(), param.getValue());
+		if (beans != null) {
+			for (UrlInitDataBean bean : beans) {
+//				multipartBuilder.addFormDataPart(param.getName(), param.getValue());
+//				multipartBuilder.addFormDataPart(name, filename, value)
+				multipartBuilder.addFormDataPart("Content-Disposition", "form-data; name=\"" + bean.getKey() + "\"", bean.getRequestBody());
 			}
 		} else {
 			multipartBuilder.addFormDataPart("111", "111");

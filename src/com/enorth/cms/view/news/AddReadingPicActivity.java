@@ -62,7 +62,7 @@ public class AddReadingPicActivity extends CommonAlertDialogActivity {
 			public void onClick(View v) {
 //				Toast.makeText(AddReadingPicActivity.this, "点击了“删除导读图”按钮", Toast.LENGTH_SHORT).show();
 				Bundle bundle = new Bundle();
-				ActivityJumpUtil.takeParamsBackToPrevActivity(AddReadingPicActivity.this, bundle, ParamConst.ADD_READING_PIC_ACTIVITY_BACK_TO_NEWS_EIDT_COMMON_ACTIVITY_DEL_READING_PIC_RESULT_CODE);
+				ActivityJumpUtil.takeParamsBackToPrevActivity(AddReadingPicActivity.this, bundle, ParamConst.ADD_READING_PIC_ACTIVITY_BACK_TO_NEWS_EDIT_COMMON_ACTIVITY_DEL_READING_PIC_RESULT_CODE);
 			}
 		});
 	}
@@ -86,7 +86,7 @@ public class AddReadingPicActivity extends CommonAlertDialogActivity {
 					bundle = new Bundle();
 					ActivityJumpUtil.takeParamsBackToPrevActivity(this, bundle, resultCode);
 				} else {
-					ActivityJumpUtil.takeParamsBackToPrevActivity(this, bundle, ParamConst.ADD_READING_PIC_ACTIVITY_BACK_TO_NEWS_EIDT_COMMON_ACTIVITY_HAS_IMG_DATAS_RESULT_CODE);
+					ActivityJumpUtil.takeParamsBackToPrevActivity(this, bundle, ParamConst.ADD_READING_PIC_ACTIVITY_BACK_TO_NEWS_EDIT_COMMON_ACTIVITY_HAS_IMG_DATAS_RESULT_CODE);
 				}
 			}
 			break;

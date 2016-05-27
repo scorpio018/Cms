@@ -1,6 +1,7 @@
 package com.enorth.cms.bean;
 
 import java.util.List;
+import java.util.Map;
 
 import com.enorth.cms.bean.login.ChannelBean;
 import com.enorth.cms.bean.login.LoginBean;
@@ -35,6 +36,10 @@ public class LoginUserUsedBean {
 	 * 当前扫描过的已保存的系统名称
 	 */
 	private List<String> scanNames;
+	/**
+	 * 当前扫描过的已保存的系统名称和对应的ScanBean
+	 */
+	private Map<String, ScanBean> scanNamesMap;
 
 	public LoginBean getLoginBean() {
 		return loginBean;
@@ -90,6 +95,14 @@ public class LoginUserUsedBean {
 
 	public void setScanNames(List<String> scanNames) {
 		this.scanNames = scanNames;
+	}
+
+	public Map<String, ScanBean> getScanNamesMap() {
+		return scanNamesMap;
+	}
+
+	public void setScanNamesMap(Map<String, ScanBean> scanNamesMap) {
+		this.scanNamesMap = scanNamesMap;
 	}
 
 }

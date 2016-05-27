@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.enorth.cms.bean.PopupWindowItemBean;
+import com.enorth.cms.bean.login.ScanBean;
 import com.enorth.cms.bean.news_list.BottomMenuBasicBean;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.listener.CommonOnClickListener;
@@ -256,6 +258,33 @@ public abstract class PopupWindowUtil {
 			layout.addView(chooseItem);
 		}
 	}
+	
+	/**
+	 * 初始化弹出框里面的选项（以选项名+右侧删除图标为显示样式）
+	 * @param layout
+	 * @param itemListener
+	 * @param delBtnListener
+	 * @param allBeans 用于显示PopupWindow中ListView的每一个item
+	 */
+	public void initPopupWindowItemBeansContainDelMark(LinearLayout layout, CommonOnTouchListener itemListener, CommonOnClickListener delBtnListener, List<PopupWindowItemBean> allBeans) {
+		LayoutInflater inflater = LayoutInflater.from(context);
+		int size = allBeans.size();
+		for (int i = 0; i < size; i++) {
+			RelativeLayout chooseItem = (RelativeLayout) inflater.inflate(R.layout.popup_contain_del_mark, null);
+			TextView chooseName = (TextView) chooseItem.findViewById(R.id.chooseText);
+			chooseName.setTextColor(textColor);
+			PopupWindowItemBean popupWindowItemBean = allBeans.get(i);
+			String curName = popupWindowItemBean.getItemName();
+			chooseName.setText(curName);
+			ImageView checkedIV = (ImageView) chooseItem.findViewById(R.id.chooseDelIV);
+			itemListener.changeColor(popupBgTouchColor, popupBgColor);
+			chooseItem.setOnTouchListener(itemListener);
+			checkedIV.setOnClickListener(delBtnListener);
+			chooseItem.setTag(popupWindowItemBean);
+			layout.addView(chooseItem);
+		}
+	}
+	
 	
 	public void initPopupWindowItemsContainDelMark(LinearLayout layout, CommonOnTouchListener itemListener, CommonOnClickListener delBtnListener, List<String> allNames) {
 		LayoutInflater inflater = LayoutInflater.from(context);

@@ -85,8 +85,11 @@
     <string name="save">保存</string>
     <string name="save_and_quit">存退</string>
     <string name="add_reading_pic">添加导读图片</string>
-    <string name="add_reading_pic_edittext_hint">新闻标题</string>
-    <string name="template_search_text_view">选择模版</string>
+    <string name="add_reading_pic_edittext_hint">新闻标题：</string>
+    <string name="mobile_title_text_view">移动标题：</string>
+    <string name="channel_search_text_view">频道：</string>
+    <string name="template_search_text_view">模版：</string>
+    <string name="template_search_4g_text_view">4g模版：</string>
     <string name="manuscripts">稿源：</string>
     <string name="keyword">关键词：</string>
     <string name="enclosure">附件</string>
@@ -94,4 +97,6 @@
     <string name="typesetting">排版</string>
     <string name="add_manuscripts_hint">添加稿源</string>
     <string name="selectable_manuscripts">可选稿源：</string>
+    <string name="add_keyword_hint">添加关键词</string>
+    <string name="convergent_news_check_box">融合新闻</string>
 </resources>
