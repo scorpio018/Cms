@@ -7,7 +7,7 @@ import java.util.Set;
 import com.enorth.cms.adapter.upload.ImageGridItemContainCheckAdapter;
 import com.enorth.cms.adapter.upload.VideoGridItemContainCheckAdapter;
 import com.enorth.cms.bean.upload.VideoInfo;
-import com.enorth.cms.broadcast.CommonClosedBroadcast;
+import com.enorth.cms.broadcast.CommonBroadcast;
 import com.enorth.cms.utils.AnimUtil;
 import com.enorth.cms.utils.VideoUtil;
 import com.enorth.cms.view.R;

@@ -15,11 +15,13 @@ public class DetermineCheckBoxOnCheckedChangeListener extends CommonOnCheckedCha
 	private UploadPicPreviewActivity activity;
 	
 	public DetermineCheckBoxOnCheckedChangeListener(UploadPicPreviewActivity activity) {
+		super(activity);
 		this.activity = activity;
 	}
 
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		super.onCheckedChanged(buttonView, isChecked);
 		// 当刚进入选中图片的位置，或者滚动到选中的图片的位置，或者当前图片已经选中的时候，不进入check方法
 		if (activity.isNeedUseCheckBoxChangeEvent()) {
 			check(buttonView, isChecked);

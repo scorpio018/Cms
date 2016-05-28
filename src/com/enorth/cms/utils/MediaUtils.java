@@ -155,13 +155,13 @@ public class MediaUtils {
      * @param path
      */
     public static Bitmap getBitmapRotaDegree(String path){
-        int degree = readPictureDegree(path);
-        if(degree == 0){
-            return null;
-        }
-        Bitmap bitmap = BitmapFactory.decodeFile(path);
+    	Bitmap bitmap = BitmapFactory.decodeFile(path);
         if(bitmap == null){
             return null;
+        }
+        int degree = readPictureDegree(path);
+        if(degree == 0){
+            return bitmap;
         }
         Matrix matrix = new Matrix();
         matrix.postRotate(degree);

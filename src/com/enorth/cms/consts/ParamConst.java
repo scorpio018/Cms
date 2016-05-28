@@ -775,12 +775,24 @@ public class ParamConst {
 	 * 4g新闻模版
 	 */
 	public static final Integer LOAD_TEMPLATE_FILE_TYPE_4G = 2;
+	/**
+	 * activity跳转时需要标识广播注册的action时存入intent中对应的key
+	 */
+	public static final String BROADCAST_ACTION = "broadcaseAction";
+	/**
+	 * 接口中返回的附件html代码
+	 */
+	public static final String NEWS_ATT_HTML_CODE = "newsAttHtmlCode";
 	
 	/*---------------------广播注册时的action及其对应的功能 start--------------------------------*/
 	/**
 	 * 关闭activity的广播标识
 	 */
 	public static final String CLOSE_ACTIVITY = "closeActivity";
+	/**
+	 * 上传新闻附件后的广播标识
+	 */
+	public static final String UPLOAD_NEWS_ATT = "uploadNewsAtt";
 	/*---------------------广播注册时的action及其对应的功能 end--------------------------------*/
 
 }

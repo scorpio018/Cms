@@ -78,88 +78,120 @@
         -->
         <activity
             android:name=".login.LoginActivity"
-            android:windowSoftInputMode="stateUnspecified|stateHidden" >
+            android:windowSoftInputMode="stateUnspecified|stateHidden"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".login.MipcaActivityCapture" >
+        <activity android:name=".login.MipcaActivityCapture"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".login.VirtualKeycode" >
+        <activity android:name=".login.VirtualKeycode"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".WelcomeActivity" >
+        <activity android:name=".WelcomeActivity"
+            android:screenOrientation="portrait" >
         </activity>
-        <activity android:name=".MainActivity" >
+        <activity android:name=".MainActivity" 
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".web.PullableWebViewActivity" >
+        <activity android:name=".web.PullableWebViewActivity" 
+            android:screenOrientation="portrait">
         </activity>
         <!-- <activity android:name=".web.CrossWalkActivity"></activity> -->
-        <activity android:name=".material.MaterialUploadActivity" >
+        <activity android:name=".material.MaterialUploadActivity" 
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".material.MaterialBtnActivity" >
+        <activity android:name=".material.MaterialBtnActivity" 
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".BaseActivity" >
+        <activity android:name=".BaseActivity" 
+            android:screenOrientation="portrait">
         </activity>
         <!-- 软键盘默认不弹出 -->
         <activity
             android:name=".news.ChannelSearchActivity"
-            android:windowSoftInputMode="stateUnspecified|stateHidden" >
+            android:windowSoftInputMode="stateUnspecified|stateHidden" 
+            android:screenOrientation="portrait">
         </activity>
         <!-- <activity android:name=".news.NewsListActivity"></activity> -->
         <!-- <activity android:name=".news.NewsListFixActivity"></activity> -->
-        <activity android:name=".news.NewsListFragActivity" >
+        <activity android:name=".news.NewsListFragActivity" 
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".news.NewsLiveListFragActivity" >
+        <activity android:name=".news.NewsLiveListFragActivity" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".news.NewsSearchActivity"
-            android:windowSoftInputMode="stateUnspecified|stateHidden" >
+            android:windowSoftInputMode="stateUnspecified|stateHidden" 
+            android:screenOrientation="portrait">
         </activity>
         <!-- adjustPan的目的是使软键盘弹出的时候，编辑文本框也能显示在视野中 -->
         <activity
             android:name=".news.NewsAddActivity"
-            android:windowSoftInputMode="adjustPan|stateHidden" >
+            android:windowSoftInputMode="adjustPan|stateHidden" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".news.AddReadingPicActivity"
-            android:theme="@style/MyDialogStyleBottom" >
+            android:theme="@style/MyDialogStyleBottom" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".news.ChooseReadingPicFromActivity"
-            android:theme="@style/MyDialogStyleBottom" >
+            android:theme="@style/MyDialogStyleBottom" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".news.AddManuscriptsActivity"
             android:theme="@style/MyDialogStyleRight"
-            android:windowSoftInputMode="stateUnspecified|stateHidden" >
+            android:windowSoftInputMode="stateUnspecified|stateHidden" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".news.TemplateSearchActivity"
-            android:theme="@style/MyDialogStyleRight" >
+            android:theme="@style/MyDialogStyleRight" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".news.AddKeywordActivity"
             android:theme="@style/MyDialogStyleRight"
-            android:windowSoftInputMode="stateUnspecified|stateHidden" >
+            android:windowSoftInputMode="stateUnspecified|stateHidden" 
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".news.NewsAddChooseEnclosureActivity"
+            android:theme="@style/MyDialogStyleBottom" 
+            android:screenOrientation="portrait">
         </activity>
         <!-- <activity android:name=".news.AddManuscriptsActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity> -->
         <!-- <activity android:name=".upload.UploadPicActivity"></activity> -->
-        <activity android:name=".upload.GalleryActivity" >
+        <activity android:name=".upload.GalleryActivity" 
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".upload.UploadPicPreviewActivity" >
+        <activity android:name=".upload.UploadPicPreviewActivity" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".upload.UploadPicFinishCheckActivity"
-            android:windowSoftInputMode="stateUnspecified|stateHidden" >
+            android:windowSoftInputMode="stateUnspecified|stateHidden" 
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".upload.VideoActivity" >
+        <activity android:name=".upload.VideoActivity" 
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".securitysetting.SecuritySettingActivity" >
+        <activity android:name=".securitysetting.SecuritySettingActivity" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".securitysetting.ChangePwdActivity"
-            android:windowSoftInputMode="stateUnspecified|stateHidden" >
+            android:windowSoftInputMode="stateUnspecified|stateHidden" 
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".about.AboutActivity" >
+        <activity android:name=".about.AboutActivity" 
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".pulltorefreshlistview.PullToRefreshListActivity" >
+        <activity android:name=".pulltorefreshlistview.PullToRefreshListActivity" 
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

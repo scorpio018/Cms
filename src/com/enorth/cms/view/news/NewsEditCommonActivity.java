@@ -13,6 +13,7 @@ import com.enorth.cms.bean.news_list.GenerateNewsIdBean;
 import com.enorth.cms.bean.news_list.RequestGenerateNewsIdUrlBean;
 import com.enorth.cms.bean.news_list.RequestSaveNewsUrlBean;
 import com.enorth.cms.bean.news_list.TemplateSearchBean;
+import com.enorth.cms.broadcast.CommonBroadcast;
 import com.enorth.cms.common.EnableSimpleChangeButton;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.consts.UrlConst;
@@ -312,6 +313,7 @@ public abstract class NewsEditCommonActivity extends Activity implements INewsEd
 		requestSaveNewsUrlBean = new RequestSaveNewsUrlBean();
 		requestSaveNewsUrlBean.setChannelId(channelBean.getChannelId());
 		initNewsId();
+		new CommonBroadcast(this, ParamConst.UPLOAD_NEWS_ATT);
 	}
 	
 	private void initPresenter() {

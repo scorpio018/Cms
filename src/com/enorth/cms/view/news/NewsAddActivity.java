@@ -2,9 +2,6 @@ package com.enorth.cms.view.news;
 
 import java.util.List;
 
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
-
 import com.enorth.cms.bean.UrlInitDataBean;
 import com.enorth.cms.bean.news_list.RequestSaveNewsUrlBean;
 import com.enorth.cms.bean.news_list.TemplateSearchBean;
@@ -17,7 +14,6 @@ import com.enorth.cms.presenter.newslist.INewsAddPresenter;
 import com.enorth.cms.presenter.newslist.NewsAddPresenter;
 import com.enorth.cms.utils.BeanParamsUtil;
 import com.enorth.cms.utils.ColorUtil;
-import com.enorth.cms.utils.JsonUtil;
 import com.enorth.cms.utils.SharedPreUtil;
 import com.enorth.cms.utils.StaticUtil;
 import com.enorth.cms.utils.StringUtil;
@@ -30,7 +26,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -192,6 +187,7 @@ public class NewsAddActivity extends NewsEditCommonActivity implements INewsAddV
 			presenter = new NewsAddPresenter(this);
 			handler = new NewsAddHandler(this);
 			String url = StaticUtil.getCurScanBean(this).getScanUrl() + UrlConst.SAVE_NEWS;
+//			String url = UrlConst.TEST_URL;
 			presenter.saveNews(url, initData, handler);
 		}
 	}
@@ -375,6 +371,15 @@ public class NewsAddActivity extends NewsEditCommonActivity implements INewsAddV
 		enclosureCount = (TextView) findViewById(R.id.enclosureCount);
 		enclosureCount.setText("6");
 		enclosure = (TextView) findViewById(R.id.enclosure);
+		new CommonOnClickListener(enclosure, false, 0) {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(NewsAddActivity.this, NewsAddChooseEnclosureActivity.class);
+				intent.putExtra(ParamConst.BROADCAST_ACTION, ParamConst.UPLOAD_NEWS_ATT);
+				NewsAddActivity.this.startActivity(intent);
+			}
+		};
 	}
 
 	@Override
@@ -403,5 +408,10 @@ public class NewsAddActivity extends NewsEditCommonActivity implements INewsAddV
 		msg.what = ParamConst.MESSAGE_WHAT_SUCCESS;
 		msg.obj = htmlUrl;
 		handler.sendMessage(msg);
+	}
+	
+	public void addCmsBlock(String cmsBlockHtmlCode) {
+		String str = contentAndAbstractET.getText().toString();
+		contentAndAbstractET.setText(cmsBlockHtmlCode + "\n" + str);
 	}
 }

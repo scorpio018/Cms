@@ -1,5 +1,6 @@
 package com.enorth.cms.fragment.materialupload;
 
+import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.view.R;
 import com.enorth.cms.view.material.IMaterialUploadView;
 import com.enorth.cms.view.upload.GalleryActivity;
@@ -149,6 +150,7 @@ public class MaterialUploadBtnGroupFrag extends Fragment {
 			public void onClick(View v) {
 //				Toast.makeText(getContext(), "点击了照片按钮", Toast.LENGTH_SHORT).show();
 				Intent intent = new Intent();
+				intent.putExtra(ParamConst.BROADCAST_ACTION, ParamConst.CLOSE_ACTIVITY);
 				intent.setClass(getActivity(), GalleryActivity.class);
 				startActivity(intent);
 			}
@@ -167,6 +169,7 @@ public class MaterialUploadBtnGroupFrag extends Fragment {
 //				Toast.makeText(getContext(), "点击了视频按钮", Toast.LENGTH_SHORT).show();
 //				view.takePhotoGallery();
 				Intent intent = new Intent();
+				intent.putExtra(ParamConst.BROADCAST_ACTION, ParamConst.CLOSE_ACTIVITY);
 				intent.setClass(getActivity(), VideoActivity.class);
 				startActivity(intent);
 				

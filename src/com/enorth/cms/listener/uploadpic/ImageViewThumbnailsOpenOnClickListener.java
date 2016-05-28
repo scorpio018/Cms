@@ -23,17 +23,22 @@ public class ImageViewThumbnailsOpenOnClickListener extends CommonOnClickListene
 	
 	private int checkPosition;
 	
-	public ImageViewThumbnailsOpenOnClickListener(Activity activity, ImageGridItemContainCheckAdapter adapter, int checkPosition) {
+	private String broadcastAction;
+	
+	public ImageViewThumbnailsOpenOnClickListener(Activity activity, ImageGridItemContainCheckAdapter adapter, int checkPosition, String broadcastAction) {
 		this.activity = activity;
 		this.adapter = adapter;
 		this.checkPosition = checkPosition;
+		this.broadcastAction = broadcastAction;
 	}
 
 	@Override
 	public void onClick(View v) {
 		ArrayList<String> datas = (ArrayList<String>) adapter.getmDatas();
 		ArrayList<String> checkedDatas = (ArrayList<String>) ImageGridItemContainCheckAdapter.getmSelectedImage();
-		ActivityJumpUtil.sendImgDatasToActivity(datas, checkedDatas, checkPosition, activity, UploadPicPreviewActivity.class);
+		Intent intent = new Intent();
+		intent.putExtra(ParamConst.BROADCAST_ACTION, broadcastAction);
+		ActivityJumpUtil.sendImgDatasToActivity(datas, checkedDatas, checkPosition, activity, UploadPicPreviewActivity.class, intent);
 	}
 
 }

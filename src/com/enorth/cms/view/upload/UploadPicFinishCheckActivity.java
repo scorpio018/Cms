@@ -7,11 +7,12 @@ import java.util.Map;
 
 import com.enorth.cms.adapter.upload.ImageGridItemContainCheckAdapter;
 import com.enorth.cms.adapter.upload.ImageGridItemContainDelAdapter;
-import com.enorth.cms.broadcast.CommonClosedBroadcast;
+import com.enorth.cms.broadcast.CommonBroadcast;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.utils.ActivityJumpUtil;
 import com.enorth.cms.utils.AnimUtil;
 import com.enorth.cms.utils.ImgUtil;
+import com.enorth.cms.utils.StringUtil;
 import com.enorth.cms.view.R;
 
 import android.app.Activity;
@@ -44,6 +45,10 @@ public class UploadPicFinishCheckActivity extends Activity {
 	
 	private int addPicIsJumpToPrevActivity;
 	
+	private String broadcaseAction;
+	
+	private CommonBroadcast commonBroadcast;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,7 +66,13 @@ public class UploadPicFinishCheckActivity extends Activity {
 	}
 	
 	private void initData() {
-		new CommonClosedBroadcast(this);
+		Intent intent = getIntent();
+		if (intent != null) {
+			broadcaseAction = intent.getStringExtra(ParamConst.BROADCAST_ACTION);
+			if (StringUtil.isNotEmpty(broadcaseAction)) {
+				commonBroadcast = new CommonBroadcast(this, ParamConst.CLOSE_ACTIVITY);
+			}
+		}
 		initImgDatas();
 	}
 	
@@ -111,7 +122,14 @@ public class UploadPicFinishCheckActivity extends Activity {
 					@Override
 					public void handleMessage(Message msg) {
 						AnimUtil.hideRefreshFrame();
-						CommonClosedBroadcast.close(UploadPicFinishCheckActivity.this);
+						if (broadcaseAction.equals(ParamConst.CLOSE_ACTIVITY)) {
+							commonBroadcast.close(UploadPicFinishCheckActivity.this);
+						} else if (broadcaseAction.equals(ParamConst.UPLOAD_NEWS_ATT)) {
+							Intent intent = new Intent();
+							intent.putExtra(ParamConst.NEWS_ATT_HTML_CODE, "<div class=\"enorth-plugin enorth-plugin-default\"><@cms_block name=\"heiheihei\"/></div>");
+							commonBroadcast.uploadNewsAtt(UploadPicFinishCheckActivity.this, intent);
+							commonBroadcast.close(UploadPicFinishCheckActivity.this);
+						}
 //						UploadPicFinishCheckActivity.this.finish();
 					};
 				}.sendMessageDelayed(new Message(), 2000);
@@ -168,5 +186,10 @@ public class UploadPicFinishCheckActivity extends Activity {
 	
 	private void initToUploadEvent() {
 		
+	}
+	
+	@Override
+	public void onBackPressed() {
+		backEvent(true);
 	}
 }

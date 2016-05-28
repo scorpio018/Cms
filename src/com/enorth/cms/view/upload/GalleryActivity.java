@@ -6,14 +6,16 @@ import java.util.List;
 
 import com.enorth.cms.adapter.upload.ImageFolderAdapter;
 import com.enorth.cms.adapter.upload.ImageGridItemContainCheckAdapter;
-import com.enorth.cms.broadcast.CommonClosedBroadcast;
+import com.enorth.cms.broadcast.CommonBroadcast;
 import com.enorth.cms.consts.ParamConst;
+import com.enorth.cms.listener.CommonOnCheckedChangeListener;
 import com.enorth.cms.listener.uploadpic.OnPhotoSelectedListener;
 import com.enorth.cms.utils.ActivityJumpUtil;
 import com.enorth.cms.utils.CameraUtil;
 import com.enorth.cms.utils.GalleryUtil;
 import com.enorth.cms.utils.ImgUtil;
 import com.enorth.cms.utils.ScreenTools;
+import com.enorth.cms.utils.StringUtil;
 import com.enorth.cms.view.R;
 
 import android.app.Activity;
@@ -30,6 +32,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,9 +54,20 @@ public class GalleryActivity extends Activity implements IGalleryView {
 	 */
 	private GridView photoGrid;
 	/**
+	 * 原图
+	 */
+	private RadioButton artworkPicRB;
+	/**
+	 * 中图
+	 */
+	private RadioButton middlePicRB;
+	/**
+	 * 小图
+	 */
+	private RadioButton smallPicRB;
+	/**
 	 * 底部预览按钮
 	 */
-//	private EnableSimpleChangeButton selectedPhotoBtn;
 	private TextView preview;
 	/**
 	 * 头部的标题
@@ -105,6 +119,10 @@ public class GalleryActivity extends Activity implements IGalleryView {
 	
 	private ListView dirListView;
 	
+	private String broadcaseAction;
+	
+	private CommonBroadcast commonBroadcast;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -149,7 +167,13 @@ public class GalleryActivity extends Activity implements IGalleryView {
 	 * 初始化基本数据
 	 */
 	private void initBaseData() {
-		new CommonClosedBroadcast(this);
+		Intent intent = getIntent();
+		if (intent != null) {
+			broadcaseAction = intent.getStringExtra(ParamConst.BROADCAST_ACTION);
+			if (StringUtil.isNotEmpty(broadcaseAction)) {
+				commonBroadcast = new CommonBroadcast(this, ParamConst.CLOSE_ACTIVITY);
+			}
+		}
 		getCheckedImg();
 	}
 	
@@ -169,6 +193,7 @@ public class GalleryActivity extends Activity implements IGalleryView {
 	}
 	
 	private void initBottom() {
+		initRadioBtn();
 		initPreview();
 	}
 	
@@ -179,7 +204,8 @@ public class GalleryActivity extends Activity implements IGalleryView {
 			
 			@Override
 			public void onClick(View v) {
-				GalleryActivity.this.onBackPressed();
+				commonBroadcast.close(GalleryActivity.this);
+//				GalleryActivity.this.onBackPressed();
 			}
 		});
 	}
@@ -200,9 +226,20 @@ public class GalleryActivity extends Activity implements IGalleryView {
 					return;
 				}
 //				ActivityJumpUtil.sendImgDatasToActivity((ArrayList<String>) GridItemContainCheckAdapter.getmSelectedImage(), (ArrayList<String>) GridItemContainCheckAdapter.getmSelectedImage(), 0, GalleryActivity.this, UploadPicFinishCheckActivity.class);
-				ActivityJumpUtil.sendTakePhotoToActivity((ArrayList<String>) ImageGridItemContainCheckAdapter.getmSelectedImage(), GalleryActivity.this, UploadPicFinishCheckActivity.class, ParamConst.ADD_PIC_IS_JUMP_TO_PREV_ACTIVITY_YES);
+				Intent intent = new Intent();
+				// 用于表示当前进入相册进行操作时发送到广播中的action
+				intent.putExtra(ParamConst.BROADCAST_ACTION, broadcaseAction);
+				ActivityJumpUtil.sendTakePhotoToActivity((ArrayList<String>) ImageGridItemContainCheckAdapter.getmSelectedImage(), GalleryActivity.this, UploadPicFinishCheckActivity.class, ParamConst.ADD_PIC_IS_JUMP_TO_PREV_ACTIVITY_YES, intent);
 			}
 		});
+	}
+	
+	private void initRadioBtn() {
+		artworkPicRB = (RadioButton) findViewById(R.id.artworkPicRB);
+		// 将原图选中
+		artworkPicRB.setChecked(true);
+		middlePicRB = (RadioButton) findViewById(R.id.middlePicRB);
+		smallPicRB = (RadioButton) findViewById(R.id.smallPicRB);
 	}
 	
 	private void initPreview() {
@@ -234,7 +271,7 @@ public class GalleryActivity extends Activity implements IGalleryView {
 					setmImgs(getmImageFoldersMap().get(galleryUtil.getmImgDir().getAbsolutePath()).getImgs());
 				}
 				
-				gridItemAdapter = new ImageGridItemContainCheckAdapter(GalleryActivity.this, getmImgs()/*, getmImgDir().getAbsolutePath()*/);
+				gridItemAdapter = new ImageGridItemContainCheckAdapter(GalleryActivity.this, getmImgs(), broadcaseAction/*, getmImgDir().getAbsolutePath()*/);
 				photoGrid.setAdapter(gridItemAdapter);
 				gridItemAdapter.setOnPhotoSelectedListener(new OnPhotoSelectedListener() {
 					@Override
@@ -305,16 +342,22 @@ public class GalleryActivity extends Activity implements IGalleryView {
 	 * 监听事件
 	 */
 	private void initEvent(){
-		/*quxiaoBtn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				finish();
-			}
-		});*/
-		/**
-		 * 为底部的布局设置点击事件，弹出popupWindow
-		 */
+		initRadioBtnEvent();
+		initMaterialFromTypeTVEvent();
+		initPreviewEvent();
+	}
+	
+	private void initRadioBtnEvent() {
+//		artworkPicRB.setOnCheckedChangeListener();
+		artworkPicRB.setOnCheckedChangeListener(new CommonOnCheckedChangeListener(this, artworkPicRB){});
+		middlePicRB.setOnCheckedChangeListener(new CommonOnCheckedChangeListener(this, middlePicRB){});
+		smallPicRB.setOnCheckedChangeListener(new CommonOnCheckedChangeListener(this, smallPicRB){});
+	}
+	
+	/**
+	 * 为底部的布局设置点击事件，弹出popupWindow
+	 */
+	private void initMaterialFromTypeTVEvent() {
 		materialFromTypeTV.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v){
@@ -322,6 +365,9 @@ public class GalleryActivity extends Activity implements IGalleryView {
 				initListDirPopupWindow();
 			}
 		});
+	}
+	
+	private void initPreviewEvent() {
 		preview.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -329,10 +375,17 @@ public class GalleryActivity extends Activity implements IGalleryView {
 					Toast.makeText(GalleryActivity.this, "请先选择一张图片后再点击预览", Toast.LENGTH_SHORT).show();
 					return;
 				}
+				Intent intent = new Intent();
+				intent.putExtra(ParamConst.BROADCAST_ACTION, broadcaseAction);
 //				Toast.makeText(GalleryActivity.this, GridItemAdapter.getmSelectedImage().toString(), 1).show();
-				ActivityJumpUtil.sendImgDatasToActivity((ArrayList<String>) ImageGridItemContainCheckAdapter.getmSelectedImage(), (ArrayList<String>) ImageGridItemContainCheckAdapter.getmSelectedImage(), 0, GalleryActivity.this, UploadPicPreviewActivity.class);
+				ActivityJumpUtil.sendImgDatasToActivity((ArrayList<String>) ImageGridItemContainCheckAdapter.getmSelectedImage(), (ArrayList<String>) ImageGridItemContainCheckAdapter.getmSelectedImage(), 0, GalleryActivity.this, UploadPicPreviewActivity.class, intent);
 			}
 		});
 	}
 	
+	@Override
+	public void onBackPressed() {
+		commonBroadcast.close(this);
+//		super.onBackPressed();
+	}
 }

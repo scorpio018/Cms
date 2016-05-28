@@ -100,7 +100,10 @@ public class MaterialUploadActivity extends BaseFragmentActivity implements IMat
 			ArrayList<String> imgDatas = new ArrayList<String>();
 			imgDatas.add(CameraUtil.getNewTakePhotoFile().getAbsolutePath());
 //			ActivityJumpUtil.sendImgDatasToActivity(imgDatas, imgDatas, 0, MaterialUploadActivity.this, UploadPicFinishCheckActivity.class);
-			ActivityJumpUtil.sendTakePhotoToActivity(imgDatas, MaterialUploadActivity.this, UploadPicFinishCheckActivity.class, ParamConst.ADD_PIC_IS_JUMP_TO_PREV_ACTIVITY_NO);
+			Intent intent = new Intent();
+			// 用于表示当前进入相册进行操作时发送到广播中的action
+			intent.putExtra(ParamConst.BROADCAST_ACTION, ParamConst.CLOSE_ACTIVITY);
+			ActivityJumpUtil.sendTakePhotoToActivity(imgDatas, MaterialUploadActivity.this, UploadPicFinishCheckActivity.class, ParamConst.ADD_PIC_IS_JUMP_TO_PREV_ACTIVITY_NO, intent);
 			break;
 		}
 	}

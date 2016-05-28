@@ -10,11 +10,13 @@ public class CheckBtnOnCheckedChangeListener extends CommonOnCheckedChangeListen
 	private NewsCommonActivity activity;
 	
 	public CheckBtnOnCheckedChangeListener(NewsCommonActivity activity) {
+		super(activity);
 		this.activity = activity;
 	}
 
 	@Override
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		super.onCheckedChanged(buttonView, isChecked);
 		activity.checkBtnClickEvent(isChecked);
 	}
 

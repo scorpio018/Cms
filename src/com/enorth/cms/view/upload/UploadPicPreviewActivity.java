@@ -10,7 +10,7 @@ import java.util.Set;
 
 import com.enorth.cms.adapter.upload.ImageGridItemContainCheckAdapter;
 import com.enorth.cms.adapter.uploadpic.UploadPicPreviewViewPagerAdapter;
-import com.enorth.cms.broadcast.CommonClosedBroadcast;
+import com.enorth.cms.broadcast.CommonBroadcast;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.listener.uploadpic.DetermineCheckBoxOnCheckedChangeListener;
 import com.enorth.cms.listener.uploadpic.ImageViewFullScreenOnTouchListener;
@@ -19,6 +19,7 @@ import com.enorth.cms.listener.uploadpic.UploadPicPreviewViewPagerOnPageSelectLi
 import com.enorth.cms.utils.ActivityJumpUtil;
 import com.enorth.cms.utils.ImageLoader;
 import com.enorth.cms.utils.LayoutParamsUtil;
+import com.enorth.cms.utils.StringUtil;
 import com.enorth.cms.view.BaseActivity;
 import com.enorth.cms.view.R;
 
@@ -69,6 +70,8 @@ public class UploadPicPreviewActivity extends Activity implements IUploadPicPrev
 	
 	private boolean isNeedUseCheckBoxChangeEvent = true;
 	
+	private String broadcaseAction;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -118,7 +121,13 @@ public class UploadPicPreviewActivity extends Activity implements IUploadPicPrev
 	}
 	
 	private void initBaseData() {
-		new CommonClosedBroadcast(this);
+		Intent intent = getIntent();
+		if (intent != null) {
+			broadcaseAction = intent.getStringExtra(ParamConst.BROADCAST_ACTION);
+			if (StringUtil.isNotEmpty(broadcaseAction)) {
+				new CommonBroadcast(this, ParamConst.CLOSE_ACTIVITY);
+			}
+		}
 	}
 	
 	private void initView() {
@@ -148,7 +157,9 @@ public class UploadPicPreviewActivity extends Activity implements IUploadPicPrev
 			public void onClick(View v) {
 				ArrayList<String> checkedImgs = new ArrayList<String>(checkedImgsMap.values());
 //				ActivityJumpUtil.sendImgDatasToActivity(checkedImgs, checkedImgs, 0, UploadPicPreviewActivity.this, UploadPicFinishCheckActivity.class);
-				ActivityJumpUtil.sendTakePhotoToActivity(checkedImgs, UploadPicPreviewActivity.this, UploadPicFinishCheckActivity.class, ParamConst.ADD_PIC_IS_JUMP_TO_PREV_ACTIVITY_YES);
+				Intent intent = new Intent();
+				intent.putExtra(ParamConst.BROADCAST_ACTION, broadcaseAction);
+				ActivityJumpUtil.sendTakePhotoToActivity(checkedImgs, UploadPicPreviewActivity.this, UploadPicFinishCheckActivity.class, ParamConst.ADD_PIC_IS_JUMP_TO_PREV_ACTIVITY_YES, intent);
 			}
 		});
 	}

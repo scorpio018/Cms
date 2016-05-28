@@ -24,8 +24,8 @@ public class ActivityJumpUtil {
 	 * @param checkPosition
 	 * @param activity
 	 */
-	public static void sendImgDatasToActivity(ArrayList<String> imgDatas, ArrayList<String> checkedImgDatas, int checkPosition, Activity activity, Class toActivityClass) {
-		Intent intent = new Intent();
+	public static void sendImgDatasToActivity(ArrayList<String> imgDatas, ArrayList<String> checkedImgDatas, int checkPosition, Activity activity, Class toActivityClass, Intent intent) {
+		
 		Bundle bundle = new Bundle();
 		bundle.putStringArrayList(ParamConst.IMG_DATAS, imgDatas);
 		bundle.putStringArrayList(ParamConst.CHECKED_IMG_DATAS, checkedImgDatas);
@@ -59,8 +59,7 @@ public class ActivityJumpUtil {
 	 * @param toActivityClass
 	 * @param addPicIsJumpToPrevActivity
 	 */
-	public static void sendTakePhotoToActivity(ArrayList<String> imgDatas, Activity activity, Class toActivityClass, int addPicIsJumpToPrevActivity) {
-		Intent intent = new Intent();
+	public static void sendTakePhotoToActivity(ArrayList<String> imgDatas, Activity activity, Class toActivityClass, int addPicIsJumpToPrevActivity, Intent intent) {
 		Bundle bundle = new Bundle();
 		bundle.putStringArrayList(ParamConst.IMG_DATAS, imgDatas);
 		bundle.putInt(ParamConst.ADD_PIC_IS_JUMP_TO_PREV_ACTIVITY, addPicIsJumpToPrevActivity);

@@ -13,6 +13,7 @@ import com.enorth.cms.consts.UrlCodeErrorConst;
 import com.enorth.cms.enums.HttpBuilderType;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.Headers;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.MultipartBuilder;
 import com.squareup.okhttp.OkHttpClient;
@@ -302,14 +303,10 @@ public class HttpUtil {
 	public static RequestBody attachHttpPostParamsMultipartBuilder(List<UrlInitDataBean> beans) {
 		MultipartBuilder multipartBuilder = new MultipartBuilder();
 		multipartBuilder.type(MultipartBuilder.FORM);
-		if (beans != null) {
-			for (UrlInitDataBean bean : beans) {
-//				multipartBuilder.addFormDataPart(param.getName(), param.getValue());
-//				multipartBuilder.addFormDataPart(name, filename, value)
-				multipartBuilder.addFormDataPart("Content-Disposition", "form-data; name=\"" + bean.getKey() + "\"", bean.getRequestBody());
-			}
-		} else {
-			multipartBuilder.addFormDataPart("111", "111");
+		for (UrlInitDataBean bean : beans) {
+//			multipartBuilder.addFormDataPart(param.getName(), param.getValue());
+//			multipartBuilder.addFormDataPart(name, filename, value)
+			multipartBuilder.addPart(Headers.of("Content-Disposition", "form-data; name=\"" + bean.getKey() + "\""), bean.getRequestBody());
 		}
 		return multipartBuilder.build();
 	}

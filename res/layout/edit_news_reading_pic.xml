@@ -47,7 +47,7 @@
             android:layout_height="@dimen/common_edit_text_height"
             android:layout_weight="0.9"
             android:background="@drawable/white_bg_radius_and_stroke"
-            android:gravity="center_vertical"
+            android:gravity="bottom"
             android:orientation="horizontal" >
 
             <TextView

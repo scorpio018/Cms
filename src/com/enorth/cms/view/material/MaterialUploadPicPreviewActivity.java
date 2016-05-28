@@ -10,7 +10,7 @@ import java.util.Set;
 
 import com.enorth.cms.adapter.upload.ImageGridItemContainCheckAdapter;
 import com.enorth.cms.adapter.uploadpic.UploadPicPreviewViewPagerAdapter;
-import com.enorth.cms.broadcast.CommonClosedBroadcast;
+import com.enorth.cms.broadcast.CommonBroadcast;
 import com.enorth.cms.consts.ParamConst;
 import com.enorth.cms.listener.materialupload.MaterialUploadImageViewFullScreenOnTouchListener;
 import com.enorth.cms.listener.materialupload.MaterialUploadPicPreviewViewPagerOnPageSelectListener;

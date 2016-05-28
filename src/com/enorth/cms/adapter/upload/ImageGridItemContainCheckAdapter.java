@@ -35,11 +35,14 @@ public class ImageGridItemContainCheckAdapter extends CommonGridItemContainCheck
 	 * 用户选择的图片，存储为图片的完整路径
 	 */
 	private static List<String> mSelectedImage = new ArrayList<String>();
+	
+	private String broadcastAction;
 
-	public ImageGridItemContainCheckAdapter(Activity activity, List<String> mDatas/*, String dirPath*/) {
+	public ImageGridItemContainCheckAdapter(Activity activity, List<String> mDatas, String broadcastAction/*, String dirPath*/) {
 		super(activity, mDatas);
 		this.activity = activity;
 		super.mDatas = mDatas;
+		this.broadcastAction = broadcastAction;
 //		this.mDirPath = dirPath;
 	}
 	
@@ -121,7 +124,7 @@ public class ImageGridItemContainCheckAdapter extends CommonGridItemContainCheck
 			// 设置ImageView的点击事件
 			viewThumbnails.getIdItemSelect().setOnClickListener(
 					new ImageViewThumbnailsCheckOnClickListener(viewThumbnails, position, this, activity));
-			viewThumbnails.getIdItemImage().setOnClickListener(new ImageViewThumbnailsOpenOnClickListener(activity, this, position - 1));
+			viewThumbnails.getIdItemImage().setOnClickListener(new ImageViewThumbnailsOpenOnClickListener(activity, this, position - 1, broadcastAction));
 			/**
 			 * 已经选择过的图片，显示出选择过的效果
 			 */

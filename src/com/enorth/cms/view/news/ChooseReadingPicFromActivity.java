@@ -72,7 +72,7 @@ public class ChooseReadingPicFromActivity extends CommonAlertDialogActivity {
 			public boolean onPreDraw() {
 				if (!hasMeasured) {
 					int popLayoutWidth = popLayout.getMeasuredWidth();
-					// 图片的宽度控制在popLayout的7/20
+					// 图片的宽度控制在popLayout的1/4
 					ivWidth = ivHeight = popLayoutWidth * 1 / 4;
 					hasMeasured = true;
 					init();

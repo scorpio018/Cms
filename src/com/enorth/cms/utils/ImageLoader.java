@@ -19,6 +19,7 @@ import com.enorth.cms.thread.uploadpic.LoadImageUrlThread;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
@@ -383,9 +384,17 @@ public class ImageLoader {
 			bitmap = BitmapFactory.decodeStream(resourceConn.getInputStream(), null, options);
 			break;
 		}
+//		return bitmap;
 		
-
-		return bitmap;
+		int degree = MediaUtils.readPictureDegree(pathName);
+        if(degree == 0){
+            return bitmap;
+        }
+		Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        Bitmap tempBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        return tempBitmap;
+		
 	}
 	
 	/**

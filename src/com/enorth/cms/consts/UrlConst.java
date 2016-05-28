@@ -55,4 +55,6 @@ public class UrlConst {
 	 * 保存新闻&图文直播新闻
 	 */
 	public static final String SAVE_NEWS = "cms_api_60/Api!saveNews.do";
+	
+	public static final String TEST_URL = "http://10.0.70.71:9000/SpringMVC_MyBatisDemo/android/getForm";
 }
