@@ -252,11 +252,10 @@ public class MediaUtils {
     /**
      * 获取视频截图路径
      * @param context
-     * @param cr
      * @param uri
      * @return
      */
-    public static String getVideoThumbnail(Context context, ContentResolver cr, Uri uri) {
+    public static String getVideoThumbnail(Context context, Uri uri) {
         String filePath = "";
         if (uri != null) {
             if (uri.getScheme().toString().compareTo("content") == 0) {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.widget.BaseAdapter;
 
 public abstract class CommonGridItemContainCheckAdapter extends BaseAdapter{
@@ -30,7 +31,7 @@ public abstract class CommonGridItemContainCheckAdapter extends BaseAdapter{
 	 * 所有的图片
 	 */
 	protected List<String> mDatas = new ArrayList<String>();
-
+	
 	public CommonGridItemContainCheckAdapter(Activity activity, List<String> mDatas/*, String dirPath*/) {
 		super();
 		this.activity = activity;

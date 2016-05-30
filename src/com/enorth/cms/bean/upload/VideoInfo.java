@@ -1,5 +1,7 @@
 package com.enorth.cms.bean.upload;
 
+import android.graphics.Bitmap;
+
 public class VideoInfo {
 
 	private int videoId;
@@ -7,7 +9,9 @@ public class VideoInfo {
 	private String mimeType;
 
 	private String thumbPath;
-	
+
+	private Bitmap thumbBitmap;
+
 	private String videoPath;
 
 	public int getVideoId() {
@@ -32,6 +36,14 @@ public class VideoInfo {
 
 	public void setMimeType(String mimeType) {
 		this.mimeType = mimeType;
+	}
+
+	public Bitmap getThumbBitmap() {
+		return thumbBitmap;
+	}
+
+	public void setThumbBitmap(Bitmap thumbBitmap) {
+		this.thumbBitmap = thumbBitmap;
 	}
 
 	public String getVideoPath() {
